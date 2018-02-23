@@ -6,6 +6,22 @@
 _start:
 	push {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, lr}
 
+#if 0
+	/* print DRAM */
+        ldr r10, ='D'
+        STREG(RF_GRP(18, 0), r10);
+        ldr r10, ='R'
+        STREG(RF_GRP(18, 0), r10);
+        ldr r10, ='A'
+        STREG(RF_GRP(18, 0), r10);
+        ldr r10, ='M'
+        STREG(RF_GRP(18, 0), r10);
+        ldr r10, ='\n'
+        STREG(RF_GRP(18, 0), r10);
+        ldr r10, ='\r'
+        STREG(RF_GRP(18, 0), r10);
+#endif
+
 #if 0 // Set dram size (8700)
     LDREG(RF_GRP(1, 7 ), r5);
     and r5, r5, #~(0xF << 21)
@@ -28,12 +44,12 @@ clbss_l:
     add r0, r0, #4
     b   clbss_l
 clbss_e:
-	bl dram_init_main
+	blx dram_init_main
 
 	//bl pwr_ctrl
 
 	pop {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, lr}
-	mov pc, lr
+	bx	lr
 	nop
 	nop
 	nop

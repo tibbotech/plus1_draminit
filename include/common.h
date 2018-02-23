@@ -25,7 +25,6 @@ extern void uart0_putc(unsigned char c);
 #define prn_byten(_x)       do {} while(0)
 #define prn_dword(_x)       do {} while(0)
 #define prn_decimal(_x)     do {} while(0)
-#define prn_dump_buffer(_x,_y) do {} while(0)
 #define prn_dump_buffer(buf,len) do {} while(0)
 #else
 void prn_string(char *);

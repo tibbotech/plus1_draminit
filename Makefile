@@ -5,12 +5,19 @@ GEMINI_ROOT=$(TOPDIR)
 COMMON_DIR = common
 LIB = lib
 
-CROSS ?= armv7a-unknown-eabi-
+# Toolchain path
+ifeq ($(CROSS),)
+export PATH := ../../build/tools/armv5-eabi--glibc--stable/bin/:$(PATH)
+CROSS ?= armv5-glibc-linux-
+endif
+
 BIN = bin
 TARGET = draminit
-LD_FILE = dram_init.ld
-LDFLAGS = -T $(LD_FILE)
-CFLAGS = -O2 -Wall -g -mtune=cortex-a9 -nostdlib -fno-builtin -Iinclude -mthumb -mthumb-interwork
+LD_SRC  = boot.ldi
+LD_GEN  = boot.ld
+CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude -mthumb -mthumb-interwork
+LDFLAGS += -L $(shell dirname `$(CROSS)gcc -print-libgcc-file-name`) -lgcc
+LDFLAGS += -Wl,--gc-sections
 
 # SIM_TYPE and these dram options are defined in Makefile.in
 CFLAGS += -D$(SIM_TYPE) \
@@ -47,8 +54,7 @@ CSOURCES = plf_dram.c
 CSOURCES += $(COMMON_DIR)/diag.c $(COMMON_DIR)/common.c
 
 # lib
-ASOURCES += $(LIB)/_udivsi3.S $(LIB)/_divsi3.S
-CSOURCES += $(LIB)/div0.c
+CSOURCES += $(LIB)/eabi_compat.c
 
 OBJS = $(ASOURCES:.S=.o) $(CSOURCES:.c=.o)
 
@@ -58,7 +64,8 @@ all: clean
 
 $(TARGET): $(OBJS)
 	@mkdir -p $(BIN)
-	$(CROSS)ld $(LDFLAGS) $(OBJS) -o $(BIN)/$(TARGET) -Map $(BIN)/$(TARGET).map
+	$(CROSS)cpp -P $(CFLAGS) $(LD_SRC) $(LD_GEN)
+	$(CROSS)gcc $(CFLAGS) $(OBJS) -T $(LD_GEN) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
 	$(CROSS)objcopy -O binary -S $(BIN)/$(TARGET) $(BIN)/$(TARGET).bin
 	$(CROSS)objdump -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
 	@# Add image header
@@ -81,7 +88,7 @@ $(TARGET): $(OBJS)
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJS)
+	-rm -f $(OBJS) $(LD_GEN)
 	-cd $(BIN); rm -f $(TARGET) $(TARGET).bin $(TARGET).map $(TARGET).dis $(TARGET).img
 	-rm -f scan/*.o $(BIN)/dramscan $(BIN)/dramscan.bin $(BIN)/dramscan.map $(BIN)/dramscan.dis
 
@@ -89,7 +96,7 @@ clean:
 # debug version
 .PHONY: debug
 debug: CFLAGS+=-DDRAM_INIT_DEBUG=1
-debug: all
+debug: $(TARGET)
 
 
 ###################
@@ -101,7 +108,8 @@ dramscan: CSOURCES+=scan/dram_scan.c scan/hw_init.c scan/regRW.c
 dramscan: ASOURCES+=scan/scan_start.S
 dramscan: $(OBJS) scan/dram_scan.o scan/scan_start.o scan/hw_init.o scan/regRW.o
 	@mkdir -p $(BIN)
-	$(CROSS)ld -T scan/dram_scan.ld $(OBJS) -o $(BIN)/$@ -Map $(BIN)/$@.map
+	#$(CROSS)ld -T scan/dram_scan.ld $(OBJS) -o $(BIN)/$@ -Map $(BIN)/$@.map
+	$(CROSS)gcc $(CFLAGS) $(OBJS) -T scan/dram_scan.ld $(LDFLAGS) -o $(BIN)/$@ -Wl,-Map,$(BIN)/$@.map
 	$(CROSS)objcopy -O binary -S $(BIN)/$@ $(BIN)/$@.bin
 	$(CROSS)objdump -d -S $(BIN)/$@ > $(BIN)/$@.dis
 	@echo ">> $@ is built"

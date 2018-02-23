@@ -136,3 +136,43 @@ void prn_dump_buffer(unsigned char *buf, int len)
     prn_string("\n");
 }
 #endif
+
+/******************
+ * Force Print
+ ******************/
+#if 0
+void prn_string2(char *str)
+{
+    while(*str) {
+        if (*str == '\n')
+            UART_put_byte('\r');
+        UART_put_byte(*str);
+        str++;
+    }
+}
+
+void prn_decimal2(unsigned int num)
+{
+    char a[16];
+    int  i = 0;
+
+    do {
+        a[i] = num % 10;
+        num /= 10;
+        i++;
+    } while (num);
+
+    while(i > 0) {
+        UART_put_byte(a[i-1] + 0x30);
+        i--;
+    }
+    UART_put_byte(' ');
+}
+
+void force_dbg(int line)
+{
+        prn_string2("L#");
+        prn_decimal2(line);
+        prn_string2("\n");
+}
+#endif
