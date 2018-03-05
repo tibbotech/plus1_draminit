@@ -4,8 +4,8 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
 
-#define BIN_ADDR     0x9e804d40      /* 0x40: 64-byte header */
-#define BIN_SIZE     (9K - 64)
+#define BIN_ADDR     0x9e805040      /* 0x40: 64-byte header */
+#define BIN_SIZE     (7K - 64)
 
 MEMORY
 {
