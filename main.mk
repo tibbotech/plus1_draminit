@@ -4,7 +4,7 @@ GEMINI_ROOT = $(shell cd ../../ && pwd)
 COMMON_DIR = common
 LIB = lib
 BIN = bin
-CROSS ?= $(GEMINI_ROOT)/boot/xboot/tools/armv7a-unknown-eabi_gcc_4.7.2/bin/armv7a-unknown-eabi-
+CROSS ?= ../../build/tools/armv5-eabi--glibc--stable/bin/armv5-glibc-linux-
 
 ifeq ($(MK_DRAM_INIT),1)
 	TARGET = draminit
@@ -24,9 +24,9 @@ else ifeq ($(MK_SCAN),1)
 endif
 
 LDFLAGS = -T autogen.ld
-# LDFLAGS += -L $(shell dirname `$(CROSS)gcc -print-libgcc-file-name`) -lgcc
+LDFLAGS += -L $(shell dirname `$(CROSS)gcc -print-libgcc-file-name`) -lgcc
 
-CFLAGS = -O2 -Wall -g -mtune=cortex-a9 -nostdlib -fno-builtin -Iinclude
+CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
 ifeq ($(DRAM_INIT),1)
 CFLAGS += -mthumb -mthumb-interwork
 endif
@@ -85,8 +85,9 @@ CSOURCES = plf_dram.c
 CSOURCES += $(COMMON_DIR)/diag.c $(COMMON_DIR)/common.c
 
 # lib
-ASOURCES += $(LIB)/_udivsi3.S $(LIB)/_divsi3.S
-CSOURCES += $(LIB)/div0.c
+#ASOURCES += $(LIB)/_udivsi3.S $(LIB)/_divsi3.S
+#CSOURCES += $(LIB)/div0.c
+CSOURCES += $(LIB)/eabi_compat.c
 
 OBJS = $(ASOURCES:.S=.o) $(CSOURCES:.c=.o)
 
@@ -104,8 +105,7 @@ else ifeq ($(MK_SCAN),1)
 	gcc -E -x c -DDRAMSCAN  gen_ld.lds | grep -v '^#' > autogen.ld
 endif
 	@mkdir -p $(BIN)
-	# $(CROSS)ld $(LDFLAGS) $(OBJS) -o $(BIN)/$(TARGET) -Map $(BIN)/$(TARGET).map ${LDFLAGS}
-	$(CROSS)ld $(LDFLAGS) $(OBJS) -o $(BIN)/$(TARGET) -Map $(BIN)/$(TARGET).map
+	$(CROSS)gcc $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
 	$(CROSS)objcopy -O binary -S $(BIN)/$(TARGET) $(BIN)/$(TARGET).bin
 	$(CROSS)objdump -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
 ifeq ($(DRAM_INIT),1)

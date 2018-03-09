@@ -37,13 +37,12 @@ clbss_l:
 	add	r0, r0, #4
 	b	clbss_l
 clbss_e:
-
-	bl	dram_init_main
+	blx	dram_init_main
 
 #ifdef DRAM_INIT
 	/* return back to xboot */
-	pop {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, lr}
-	mov pc, lr
+	pop	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, lr}
+	bx	lr
 	nop
 	nop
 	nop
@@ -51,5 +50,5 @@ clbss_e:
 	nop
 #elif (defined(DRAMSCAN) || defined(SISCOPE))
 die_here:
-	bl	die_here
+	b	die_here
 #endif

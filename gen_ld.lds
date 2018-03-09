@@ -5,9 +5,9 @@ ENTRY(_start)
 MEMORY
 {
 #ifdef DRAM_INIT
-	header : ORIGIN = 0x9e800000, LENGTH = 64
-	public : ORIGIN = 0x9e800040, LENGTH = 18K - 64
-	sram   : ORIGIN = 0x9e804800, LENGTH = 2K
+	header : ORIGIN = 0x9e807000, LENGTH = 64
+	public : ORIGIN = 0x9e807040, LENGTH = 7K - 64
+	sram   : ORIGIN = 0x9e808c00, LENGTH = 1K + 512    /* borrow xboot sect_buf */
 #elif defined DRAMSCAN
 	public : ORIGIN = 0x98000000, LENGTH = 1M
 	sram   : ORIGIN = 0x9e800000, LENGTH = 60K
@@ -30,6 +30,7 @@ SECTIONS
 	.data :
 	{
 		*(.data)
+		*(.data.*)
 	} > sram
 
 	.bss :
