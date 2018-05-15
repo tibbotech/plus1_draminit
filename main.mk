@@ -92,7 +92,7 @@ CSOURCES += $(LIB)/eabi_compat.c
 OBJS = $(ASOURCES:.S=.o) $(CSOURCES:.c=.o)
 
 
-all: clean $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(OBJS)
 ifeq ($(MK_DRAM_INIT),1)
