@@ -1,10 +1,10 @@
 include Makefile.in
 
-GEMINI_ROOT = $(shell cd ../../ && pwd)
+PROJECT_ROOT = $(shell cd ../../ && pwd)
 COMMON_DIR = common
 LIB = lib
 BIN = bin
-CROSS ?= ../../build/tools/armv5-eabi--glibc--stable/bin/armv5-glibc-linux-
+CROSS ?= $(PROJECT_ROOT)/build/tools/armv5-eabi--glibc--stable/bin/armv5-glibc-linux-
 
 ifeq ($(MK_DRAM_INIT),1)
 	TARGET = draminit
@@ -32,8 +32,8 @@ CFLAGS += -mthumb -mthumb-interwork
 endif
 
 # Get DRAM configuration from ../../.config or Makefile.in
-USE_DRAM_CFG := $(shell cat $(GEMINI_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG")
-DRAM0_SIZE := $(shell cat $(GEMINI_ROOT)/.config | grep "CONFIG_DRAM0_SIZE_CFG")
+USE_DRAM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG")
+DRAM0_SIZE := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_DRAM0_SIZE_CFG")
 
 CFLAGS += -D$(SIM_TYPE)\
           -D$(QUICK_SIM)_QUICK_SIM

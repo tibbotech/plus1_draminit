@@ -3,7 +3,9 @@
 
 #include <config.h>
 
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#include <regmap_pentagram.h>
+#elif defined(PLATFORM_GEMINI)
 #include <regmap_gemini.h>
 #else
 #error "NO PLATFORM_XXXX defined."

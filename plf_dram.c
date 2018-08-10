@@ -727,7 +727,9 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 // ***********************************************************************
 void assert_sdc_phy_reset(unsigned int DRAM_ID)
 {
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	if (DRAM_ID == 0) {
 		SP_REG(0, 17) |= (
 						 (1 << 14) | // SDCTRL0_RESET
@@ -744,7 +746,9 @@ void assert_sdc_phy_reset(unsigned int DRAM_ID)
 // ***********************************************************************
 void release_sdc_phy_reset(void)
 {
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	SP_REG(0, 17) &= ~(
 					 (1 << 14) | // SDCTRL0_RESET
 					 (1 << 16)   // DDR_PHY0_RESET
@@ -3045,7 +3049,9 @@ int dram_init_main()
 #else
 	prn_string("Built at " __DATE__ " " __TIME__);
 
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
 	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
 #endif
