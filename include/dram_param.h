@@ -490,7 +490,7 @@
 #ifdef       SDCTRL_DRAM_ODT_OFF
 #define       nDRAM_ODT_MODE 0 // DRAM ODT pin , always-off
 #elif defined SDCTRL_DRAM_ODT_ON
-#define       nDRAM_ODT_MODE 1 // DRAM ODT pin , always-on 
+#define       nDRAM_ODT_MODE 1 // DRAM ODT pin , always-on
 #else
 // #define SDCTRL_DRAM_ODT_DYN
 #define       nDRAM_ODT_MODE 3 // Dynamic ODT on/off
@@ -527,11 +527,11 @@
 
 #elif defined(SDRAM_SPEED_933)
 #define n_tCL           13
-#define DPCU_CL_M2                      // MR0 CL_M2 = 1 
+#define DPCU_CL_M2                      // MR0 CL_M2 = 1
 
 #elif defined(SDRAM_SPEED_1066)
 #define n_tCL           14              // 14T -- Case latency (set to mrs)
-#define DPCU_CL_M2                      // MR0 CL_M2 = 1 
+#define DPCU_CL_M2                      // MR0 CL_M2 = 1
 #else
 #error  Please define DRAM tCL...
 #endif
@@ -753,7 +753,7 @@
 #elif defined SDRAM_SIZE_4Gb
 #define n_tRFC  (174 + DRAM_PARAMETER_OFFSET)   // 174T -- Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
 #elif defined SDRAM_SIZE_8Gb
-#define n_tRFC  (234 + DRAM_PARAMETER_OFFSET)   // 234T -- Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns    
+#define n_tRFC  (234 + DRAM_PARAMETER_OFFSET)   // 234T -- Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns
 #else
 #error  Please defined DDR3 n_tRFC ...
 #endif
@@ -772,7 +772,7 @@
 #elif defined SDRAM_SIZE_4Gb
 #define n_tRFC  (207 + DRAM_PARAMETER_OFFSET)   // 208T -- Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
 #elif defined SDRAM_SIZE_8Gb
-#define n_tRFC  (279 + DRAM_PARAMETER_OFFSET)   // 280T -- Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns    
+#define n_tRFC  (279 + DRAM_PARAMETER_OFFSET)   // 280T -- Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns
 #else
 // #error    Please defined DDR3 n_tRFC ...
 #define n_tRFC  (88  + DRAM_PARAMETER_OFFSET)   // 88T  -- Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
@@ -816,9 +816,9 @@
 // PUB.DTPR1
 #define     PUB_tMRD        ( n_tMRD + PUB_DRAM_PARAMETER_OFFSET )      //  4T -- DRAM's MRS-CMD to MRS/EMRS-CMD
 #define     PUB_tMOD        ((n_tMOD + PUB_DRAM_PARAMETER_OFFSET)-12 )  // 12T -- DRAM's MRS-CMD to non-MRS/EMRS-CMD
-#define     PUB_tFAW        ( n_tFAW + PUB_DRAM_PARAMETER_OFFSET )      // 30T -- 4-bank activate period  
+#define     PUB_tFAW        ( n_tFAW + PUB_DRAM_PARAMETER_OFFSET )      // 30T -- 4-bank activate period
 #define     PUB_tRFC        ( n_tRFC + PUB_DRAM_PARAMETER_OFFSET )      // 59T -- Refresh-to=Refresh
-#define     PUB_tWLMRD      ( n_tWLMRD  )                               // 40T -- 
+#define     PUB_tWLMRD      ( n_tWLMRD  )                               // 40T --
 #define     PUB_tWLO        ( n_tWLO    )
 #define     PUB_DTPR1_SET   ( (PUB_tWLO<<26) | (PUB_tWLMRD<<20) | (PUB_tRFC<<11) | \
 			      (PUB_tFAW<<5)  | (PUB_tMOD<<2)    | (PUB_tMRD<<0)    )
@@ -1336,7 +1336,7 @@
 // -------------------------------------------
 // DDR3 SDRAM EMRS(2) Register Setting
 // -------------------------------------------
-#define SDCTRL_MRS_RTT_WR   (0 << 9) // 0 : Disable DDR3 Dynamic ODT , 1 : Dynamic ODT , Rtt(WR)= 60Ohm , 2 : Dynamic ODT , Rtt(WR)= 120Ohm , 
+#define SDCTRL_MRS_RTT_WR   (0 << 9) // 0 : Disable DDR3 Dynamic ODT , 1 : Dynamic ODT , Rtt(WR)= 60Ohm , 2 : Dynamic ODT , Rtt(WR)= 120Ohm ,
 #define SDCTRL_MRS_SRT      (0 << 7)
 #define SDCTRL_MRS_SRT_EXT  (1 << 7)
 #define SDCTRL_MRS_ASR      (0 << 6)
@@ -1485,7 +1485,7 @@
 
 #define DPCU_DDR3_MODE          (1<<5)
 
-#define DPCU_GLB_DEF            0x0000AA00
+#define DPCU_GLB_DEF            0x0430AA00
 
 #define DPCU_GLB_CFG0           DPCU_GLB_DEF                        | \
 	DPCU_DDR3_MODE                      | \
@@ -1622,7 +1622,7 @@
 #define n_MPLL_DIV  0x1D
 #endif
 
-#define MPLL_CFG1_DEF   0x00455600
+#define MPLL_CFG1_DEF   0x00415600
 // #define MPLL_CFG1_DEF   0x00365700
 
 #define MPLL_DIV(n)     ((n)<<0)
@@ -1883,3 +1883,1100 @@
 
 #define DESKEW_TYPE_BANK_SEL = DT_PAT_TYPE_SEL(n_DESKEW_TYPE)
 
+// Add for New UMCTL2
+        #define UMCTL2_0_1      0
+        #define UMCTL2_0_2      4
+        #define UMCTL2_0_3      SDCTRL_MRS_DLL_MODE
+        #ifdef  MPEG_DRAM_TYPE_DDR3
+                #define UMCTL2_0_4      1
+        #else
+                #define UMCTL2_0_4      0
+        #endif
+        #define UMCTL2_0        ((UMCTL2_0_1)   << 22 |\
+                                 (UMCTL2_0_2)   << 16 |\
+                                 (UMCTL2_0_3)   << 15 |\
+                                 (UMCTL2_0_4)   <<  0 )
+
+        #define UMCTL2_10       0x0000f010
+
+        #define UMCTL2_14       0x0000c067
+
+        #define UMCTL2_30_1     1
+        #define UMCTL2_30_2     0
+        #define UMCTL2_30(n)    ((n) << 0)
+
+        #define UMCTL2_34_1     64
+        #define UMCTL2_34_2     4
+        #define UMCTL2_34       ((UMCTL2_34_1)  << 16 |\
+                                 (UMCTL2_34_2)  <<  0 )
+
+        #define UMCTL2_38_1             99
+        #define UMCTL2_38_2             0
+        #define UMCTL2_38_3             0
+        #define UMCTL2_38               ((UMCTL2_38_1)  << 16 |\
+                                         (UMCTL2_38_2)  <<  1 |\
+                                         (UMCTL2_38_3)  <<  0 )
+
+        #define UMCTL2_50_1     2
+        #define UMCTL2_50_2     32
+        #define UMCTL2_50_3     0
+        #define UMCTL2_50_4     0
+        #define UMCTL2_50       ((UMCTL2_50_1)  << 20 |\
+                                 (UMCTL2_50_2)  << 12 |\
+                                 (UMCTL2_50_3)  <<  4 |\
+                                 (UMCTL2_50_4)  <<  2 )
+
+        #define UMCTL2_60_1     0
+        #define UMCTL2_60_2     0
+        #define UMCTL2_60_3     0
+        #define UMCTL2_60_4     0
+        #define UMCTL2_60       ((UMCTL2_60_1)  << 16 |\
+                                 (UMCTL2_60_2)  <<  4 |\
+                                 (UMCTL2_60_3)  <<  1 |\
+                                 (UMCTL2_60_4)  <<  0 )
+
+        #define UMCTL2_64_1     0
+        #define UMCTL2_64_2     nAREF_INTVAL
+        #define UMCTL2_64_3     0
+        #define UMCTL2_64_4     ((n_tRFC + 1) >> 1)
+        #define UMCTL2_64       ((UMCTL2_64_1)  << 31 |\
+                                 (UMCTL2_64_2)  << 16 |\
+                                 (UMCTL2_64_3)  << 15 |\
+                                 (UMCTL2_64_4)  <<  0 )
+
+        #define UMCTL2_C0_1     0
+        #define UMCTL2_C0_2     0
+        #define UMCTL2_C0_3     0
+        #define UMCTL2_C0_4     0
+        #define UMCTL2_C0_5     0
+        #define UMCTL2_C0_6     0
+        #define UMCTL2_C0_7     0
+        #define UMCTL2_C0       ((UMCTL2_C0_1)  << 16 |\
+                                 (UMCTL2_C0_2)  << 15 |\
+                                 (UMCTL2_C0_3)  <<  8 |\
+                                 (UMCTL2_C0_4)  <<  4 |\
+                                 (UMCTL2_C0_5)  <<  2 |\
+                                 (UMCTL2_C0_6)  <<  1 |\
+                                 (UMCTL2_C0_7)  <<  0 )
+
+        #define UMCTL2_D0_1     0
+        #define UMCTL2_D0_2     2
+        #define UMCTL2_D0_3     2
+        #define UMCTL2_D0       ((UMCTL2_D0_1)  << 30 |\
+                                 (UMCTL2_D0_2)  << 16 |\
+                                 (UMCTL2_D0_3)  <<  0 )
+
+        #define UMCTL2_D4_1     1
+        #define UMCTL2_D4_2     2
+        #define UMCTL2_D4       ((UMCTL2_D4_1)  << 16 |\
+                                 (UMCTL2_D4_2)  <<  0 )
+
+        #define UMCTL2_DC_1     MRS_DLL_ON
+        #define UMCTL2_DC_2     MRS_WRITE_RECOVERY
+        #define UMCTL2_DC_3     MRS_DLL_RESET
+        #define UMCTL2_DC_4     0
+        #define UMCTL2_DC_5     MRS_CAS_LATENCY
+        #define UMCTL2_DC_6     MRS_CL_M2
+        #define UMCTL2_DC_7     0
+        #define UMCTL2_DC_8     DDR3_BURST_LEN
+        #define UMCTL2_DC_9     SDCTRL_MRS_QOFF
+        #define UMCTL2_DC_10    SDCTRL_MRS_TDQS
+        #define UMCTL2_DC_11    SDCTRL_MRS_RTT_2
+        #define UMCTL2_DC_12    SDCTRL_MRS_RTT_1
+        #define UMCTL2_DC_13    SDCTRL_MRS_RTT_0
+        #define UMCTL2_DC_14    SDCTRL_MRS_WL
+        #define UMCTL2_DC_15    SDCTRL_MRS_ODS_1
+        #define UMCTL2_DC_16    SDCTRL_MRS_ODS_0
+        #define UMCTL2_DC_17    SDCTRL_MRS_AL(0)
+        #define UMCTL2_DC_18    SDCTRL_MRS_DLL_MODE
+        #define UMCTL2_DC       ((UMCTL2_DC_1)  << 16 |\
+                                 (UMCTL2_DC_2)  << 16 |\
+                                 (UMCTL2_DC_3)  << 16 |\
+                                 (UMCTL2_DC_4)  << 23 |\
+                                 (UMCTL2_DC_5)  << 16 |\
+                                 (UMCTL2_DC_7)  << 19 |\
+                                 (UMCTL2_DC_6)  << 16 |\
+                                 (UMCTL2_DC_8)  << 16 |\
+                                 (UMCTL2_DC_9)  <<  0 |\
+                                 (UMCTL2_DC_10) <<  0 |\
+                                 (UMCTL2_DC_11) <<  0 |\
+                                 (UMCTL2_DC_14) <<  0 |\
+                                 (UMCTL2_DC_12) <<  0 |\
+                                 (UMCTL2_DC_15) <<  0 |\
+                                 (UMCTL2_DC_17) <<  0 |\
+                                 (UMCTL2_DC_13) <<  0 |\
+                                 (UMCTL2_DC_16) <<  0 |\
+                                 (UMCTL2_DC_18) <<  0 )
+
+        #define UMCTL2_E0_1     SDCTRL_MRS_RTT_WR
+        #define UMCTL2_E0_2     SDCTRL_MRS_SRT
+        #define UMCTL2_E0_3     SDCTRL_MRS_ASR
+        #define UMCTL2_E0_4     SDCTRL_MRS_CWL
+        #define UMCTL2_E0_5     0
+        #define UMCTL2_E0_6     0
+        #define UMCTL2_E0_7     0
+        #define UMCTL2_E0       ((UMCTL2_E0_1)  << 16 |\
+                                 (UMCTL2_E0_2)  << 16 |\
+                                 (UMCTL2_E0_3)  << 16 |\
+                                 (UMCTL2_E0_4)  << 16 |\
+                                 (UMCTL2_E0_5)  << 16 |\
+                                 (UMCTL2_E0_6)  <<  0 |\
+                                 (UMCTL2_E0_7)  <<  0 )
+
+        #define UMCTL2_E4_1     9
+        #define UMCTL2_E4_2     0
+        #define UMCTL2_E4       ((UMCTL2_E4_1)  << 16 |\
+                                 (UMCTL2_E4_2)  <<  0 )
+
+        #define UMCTL2_F0_1     0
+        #define UMCTL2_F0_2     0
+        #define UMCTL2_F0_3     0
+        #define UMCTL2_F0_4     0
+        #define UMCTL2_F0_5     0
+        #define UMCTL2_F0_6     0
+        #define UMCTL2_F0_7     0
+        #define UMCTL2_F0_8     0
+        #define UMCTL2_F0_9     0
+        #define UMCTL2_F0_10    0
+        #define UMCTL2_F0_11    0
+        #define UMCTL2_F0       ((UMCTL2_F0_1)  << 14 |\
+                                 (UMCTL2_F0_2)  << 13 |\
+                                 (UMCTL2_F0_3)  << 12 |\
+                                 (UMCTL2_F0_4)  <<  8 |\
+                                 (UMCTL2_F0_5)  <<  6 |\
+                                 (UMCTL2_F0_6)  <<  5 |\
+                                 (UMCTL2_F0_7)  <<  4 |\
+                                 (UMCTL2_F0_8)  <<  3 |\
+                                 (UMCTL2_F0_9)  <<  2 |\
+                                 (UMCTL2_F0_10) <<  1 |\
+                                 (UMCTL2_F0_11) <<  0 )
+
+        #define UMCTL2_100_1    ((n_tCL + 4 + n_tWR + 1) >> 1)
+        #define UMCTL2_100_2    ((n_tFAW + 1) >> 1)
+        #define UMCTL2_100_3    37440
+        #define UMCTL2_100_4    (((UMCTL2_100_3 >> 10) -1) >> 1)
+        #define UMCTL2_100_5    ((n_tRAS + 1) >> 1)
+        #define UMCTL2_100      ((UMCTL2_100_1) << 24 |\
+                                 (UMCTL2_100_2) << 16 |\
+                                 (UMCTL2_100_4) <<  8 |\
+                                 (UMCTL2_100_5) <<  0 )
+
+        #define UMCTL2_104_1    2
+        #define UMCTL2_104_2    ((nRTP + 1) >> 1)
+        #define UMCTL2_104_3    ((n_tRC + 1) >> 1)
+        #define UMCTL2_104      ((UMCTL2_104_1) << 16 |\
+                                 (UMCTL2_104_2) <<  8 |\
+                                 (UMCTL2_104_3) <<  0 )
+
+        #define UMCTL2_108_1    2
+        #define UMCTL2_108_2    3
+        #define UMCTL2_108_3    (((n_tCL + 4 + 2 - MRS_CWL_CNT) + 1) >> 1)
+        #define UMCTL2_108_4    (((MRS_CWL_CNT + 4 + n_tWTR) +1) >> 1)
+        #define UMCTL2_108      ((UMCTL2_108_1) << 24 |\
+                                 (UMCTL2_108_2) << 16 |\
+                                 (UMCTL2_108_3) <<  8 |\
+                                 (UMCTL2_108_4) <<  0 )
+
+        #define UMCTL2_10C_1    0
+        #define UMCTL2_10C_2    ((n_tMRD + 1) >> 1)
+        #define UMCTL2_10C_3    ((n_tMOD + 1) >> 1)
+        #define UMCTL2_10C      ((UMCTL2_10C_1) << 20 |\
+                                 (UMCTL2_10C_2) << 12 |\
+                                 (UMCTL2_10C_3) <<  0 )
+
+        #define UMCTL2_110_1    ((n_tRCD + 1) >> 1)
+        #define UMCTL2_110_2    ((n_tCCD + 1) >> 1)
+        #define UMCTL2_110_3    ((n_tRRD + 1) >> 1)
+        #define UMCTL2_110_4    (((n_tRP + 1) >> 1) + 1)
+        #define UMCTL2_110      ((UMCTL2_110_1) << 24 |\
+                                 (UMCTL2_110_2) << 16 |\
+                                 (UMCTL2_110_3) <<  8 |\
+                                 (UMCTL2_110_4) <<  0 )
+
+        #define UMCTL2_114_1    3
+        #define UMCTL2_114_2    3
+        #define UMCTL2_114_3    2
+        #define UMCTL2_114_4    2
+        #define UMCTL2_114      ((UMCTL2_114_1) << 24 |\
+                                 (UMCTL2_114_2) << 16 |\
+                                 (UMCTL2_114_3) <<  8 |\
+                                 (UMCTL2_114_4) <<  0 )
+
+        #define UMCTL2_120_1    0
+        #define UMCTL2_120_2    0
+        #define UMCTL2_120_3    10
+        #define UMCTL2_120_4    3
+        #define UMCTL2_120      ((UMCTL2_120_1) << 24 |\
+                                 (UMCTL2_120_2) << 16 |\
+                                 (UMCTL2_120_3) <<  8 |\
+                                 (UMCTL2_120_4) <<  0 )
+
+        #define UMCTL2_13C_1    0
+        #define UMCTL2_13C_2    0
+        #define UMCTL2_13C_3    0
+        #define UMCTL2_13C      ((UMCTL2_13C_1) << 31 |\
+                                 (UMCTL2_13C_2) << 24 |\
+                                 (UMCTL2_13C_3) <<  0 )
+
+        #define UMCTL2_180_1    0
+        #define UMCTL2_180_2    0
+        #define UMCTL2_180_3    0
+        #define UMCTL2_180_4    0
+        #define UMCTL2_180_5    128
+        #define UMCTL2_180_6    32
+        #define UMCTL2_180      ((UMCTL2_180_1) << 31 |\
+                                 (UMCTL2_180_2) << 30 |\
+                                 (UMCTL2_180_3) << 29 |\
+                                 (UMCTL2_180_4) << 28 |\
+                                 (UMCTL2_180_5) << 16 |\
+                                 (UMCTL2_180_6) <<  0 )
+
+        #define UMCTL2_184_1    0
+        #define UMCTL2_184_2    857089
+        #define UMCTL2_184      ((UMCTL2_184_1) << 20 |\
+                                 (UMCTL2_184_2) <<  0 )
+
+        #define UMCTL2_190_1    3
+        #define UMCTL2_190_2    1
+        #ifdef NO_QUICK_SIM
+                #ifdef  POST_SIM
+                        #define UMCTL2_190_3    10
+                #else
+                        #define UMCTL2_190_3    9
+                #endif
+        #else
+                #define UMCTL2_190_3    9
+        #endif
+        #define UMCTL2_190_4    1
+        #define UMCTL2_190_5    1
+        #define UMCTL2_190_6    5
+        #define UMCTL2_190      ((UMCTL2_190_1) << 24 |\
+                                 (UMCTL2_190_2) << 23 |\
+                                 (UMCTL2_190_3) << 16 |\
+                                 (UMCTL2_190_4) << 15 |\
+                                 (UMCTL2_190_5) <<  8 |\
+                                 (UMCTL2_190_6) <<  0 )
+
+        #define UMCTL2_194_1    0
+        #define UMCTL2_194_2    0
+        #define UMCTL2_194_3    6
+        #define UMCTL2_194_4    1
+        #define UMCTL2_194_5    1
+        #define UMCTL2_194      ((UMCTL2_194_1) << 28 |\
+                                 (UMCTL2_194_2) << 24 |\
+                                 (UMCTL2_194_3) << 16 |\
+                                 (UMCTL2_194_4) <<  8 |\
+                                 (UMCTL2_194_5) <<  0 )
+
+        #define UMCTL2_198_1    7
+        #define UMCTL2_198_2    0
+        #define UMCTL2_198_3    0
+        #define UMCTL2_198_4    3
+        #define UMCTL2_198_5    0
+        #define UMCTL2_198_6    1
+        #define UMCTL2_198_7    1
+        #define UMCTL2_198      ((UMCTL2_198_1) << 24 |\
+                                 (UMCTL2_198_2) << 20 |\
+                                 (UMCTL2_198_3) << 16 |\
+                                 (UMCTL2_198_4) << 12 |\
+                                 (UMCTL2_198_5) <<  8 |\
+                                 (UMCTL2_198_6) <<  4 |\
+                                 (UMCTL2_198_7) <<  0 )
+
+        #define UMCTL2_1A0_1    1
+        #define UMCTL2_1A0_2    1
+        #define UMCTL2_1A0_3    1
+        #define UMCTL2_1A0_4    64
+        #define UMCTL2_1A0_5    5
+        #define UMCTL2_1A0      ((UMCTL2_1A0_1) << 31 |\
+                                 (UMCTL2_1A0_2) << 30 |\
+                                 (UMCTL2_1A0_3) << 29 |\
+                                 (UMCTL2_1A0_4) << 16 |\
+                                 (UMCTL2_1A0_5) <<  0 )
+
+        #define UMCTL2_1A4_1    1
+        #define UMCTL2_1A4_2    2
+        #define UMCTL2_1A4      ((UMCTL2_1A4_1) << 16 |\
+                                 (UMCTL2_1A4_2) <<  0 )
+
+        #define UMCTL2_1A8_1    0
+        #define UMCTL2_1A8      ((UMCTL2_1A8_1) << 31 )
+
+        #define UMCTL2_1B0_4    0
+        #define UMCTL2_1B0_5    0
+        #define UMCTL2_1B0_6    0
+        #define UMCTL2_1B0_7    0
+        #define UMCTL2_1B0_8    1
+        #define UMCTL2_1B0_9    0
+        #define UMCTL2_1B0_10   0
+        #define UMCTL2_1B0_11   0
+        #define UMCTL2_1B0_12   0
+        #define UMCTL2_1B0_13   1
+        #define UMCTL2_1B0_14   1
+        #define UMCTL2_1B0_15   0
+        #define UMCTL2_1B0_1    ((UMCTL2_1B0_8)         << 4 |\
+                                 (UMCTL2_1B0_10)        << 3 |\
+                                 (UMCTL2_1B0_11)        << 2 |\
+                                 (UMCTL2_1B0_12)        << 1 |\
+                                 (UMCTL2_1B0_14)        << 0 )
+        #define UMCTL2_1B0_2    ((UMCTL2_1B0_8)         << 4 |\
+                                 (UMCTL2_1B0_10)        << 3 |\
+                                 (UMCTL2_1B0_11)        << 2 |\
+                                 (UMCTL2_1B0_12)        << 1 |\
+                                 (UMCTL2_1B0_14)        << 0 )
+        #define UMCTL2_1B0_3    ((UMCTL2_1B0_8)         << 4 |\
+                                 (UMCTL2_1B0_10)        << 3 |\
+                                 (UMCTL2_1B0_11)        << 2 |\
+                                 (UMCTL2_1B0_12)        << 1 |\
+                                 (UMCTL2_1B0_14)        << 0 )
+        #define UMCTL2_1B0(n)   ((UMCTL2_1B0_4)         << 8 |\
+                                 (UMCTL2_1B0_5)         << 7 |\
+                                 (UMCTL2_1B0_6)         << 6 |\
+                                 (UMCTL2_1B0_7)         << 5 |\
+                                 (n)                    << 0 )
+
+        #define UMCTL2_1B4_1    4
+        #define UMCTL2_1B4_2    1
+        #define UMCTL2_1B4      ((UMCTL2_1B4_1) << 8 |\
+                                 (UMCTL2_1B4_2) << 0 )
+
+        #define UMCTL2_1C4_1    0
+        #define UMCTL2_1C4      ((UMCTL2_1C4_1) << 0 )
+
+        #ifdef  UMCTL2_BA_NO_2
+                #define UMCTL2_204_1    (nCOL_WIDTH - 1)
+                #define UMCTL2_204_2    (nCOL_WIDTH - 1)
+                #define UMCTL2_204_3    (nCOL_WIDTH - 1)
+        #endif
+        #ifdef  UMCTL2_BA_NO_1
+                #define UMCTL2_204_1    63
+                #define UMCTL2_204_2    (nCOL_WIDTH - 1)
+                #define UMCTL2_204_3    (nCOL_WIDTH - 1)
+        #endif
+        #ifdef  UMCTL2_BA_NO_0
+                #define UMCTL2_204_1    63
+                #define UMCTL2_204_2    63
+                #define UMCTL2_204_3    (nCOL_WIDTH - 1)
+        #endif
+        #define UMCTL2_204      ((UMCTL2_204_1) << 16 |\
+                                 (UMCTL2_204_2) <<  8 |\
+                                 (UMCTL2_204_3) <<  0 )
+
+        #ifdef  UMCTL2_CA_NO_11
+                #define UMCTL2_210_1    0
+                #define UMCTL2_210_2    0
+                #define UMCTL2_20C_1    0
+                #define UMCTL2_20C_2    0
+                #define UMCTL2_20C_3    0
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_10
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    0
+                #define UMCTL2_20C_1    0
+                #define UMCTL2_20C_2    0
+                #define UMCTL2_20C_3    0
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_9
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    0
+                #define UMCTL2_20C_2    0
+                #define UMCTL2_20C_3    0
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_8
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    0
+                #define UMCTL2_20C_3    0
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_7
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    0
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_6
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    0
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_5
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    31
+                #define UMCTL2_208_1    0
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_4
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    31
+                #define UMCTL2_208_1    15
+                #define UMCTL2_208_2    0
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_3
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    31
+                #define UMCTL2_208_1    15
+                #define UMCTL2_208_2    15
+                #define UMCTL2_208_3    0
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_2
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    31
+                #define UMCTL2_208_1    15
+                #define UMCTL2_208_2    15
+                #define UMCTL2_208_3    15
+                #define UMCTL2_208_4    0
+        #endif
+        #ifdef  UMCTL2_CA_NO_1
+                #define UMCTL2_210_1    31
+                #define UMCTL2_210_2    31
+                #define UMCTL2_20C_1    31
+                #define UMCTL2_20C_2    31
+                #define UMCTL2_20C_3    31
+                #define UMCTL2_20C_4    31
+                #define UMCTL2_208_1    15
+                #define UMCTL2_208_2    15
+                #define UMCTL2_208_3    15
+                #define UMCTL2_208_4    15
+        #endif
+        #define UMCTL2_208      ((UMCTL2_208_1) << 24 |\
+                                 (UMCTL2_208_2) << 16 |\
+                                 (UMCTL2_208_3) <<  8 |\
+                                 (UMCTL2_208_4) <<  0 )
+
+        #define UMCTL2_20C      ((UMCTL2_20C_1) << 24 |\
+                                 (UMCTL2_20C_2) << 16 |\
+                                 (UMCTL2_20C_3) <<  8 |\
+                                 (UMCTL2_20C_4) <<  0 )
+
+        #define UMCTL2_210_3    0
+        #define UMCTL2_210      ((UMCTL2_210_3) << 31 |\
+                                 (UMCTL2_210_1) <<  8 |\
+                                 (UMCTL2_210_2) <<  0 )
+
+        #ifdef  UMCTL2_RA_NO_17
+                #define UMCTL2_218_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_5    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_16
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_5    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_15
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_5    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_14
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_5    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_13
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_12
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_11
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_10
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_9
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_8
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_7
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_6
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_5
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_4
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    15
+                #define UMCTL2_224_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_3
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    15
+                #define UMCTL2_224_2    15
+                #define UMCTL2_224_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_2
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    15
+                #define UMCTL2_224_2    15
+                #define UMCTL2_224_3    15
+                #define UMCTL2_224_4    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_1
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    15
+                #define UMCTL2_224_2    15
+                #define UMCTL2_224_3    15
+                #define UMCTL2_224_4    15
+                #define UMCTL2_214_2    (nBANK_WIDTH + nCOL_WIDTH - 4)
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #ifdef  UMCTL2_RA_NO_0
+                #define UMCTL2_218_1    15
+                #define UMCTL2_218_2    15
+                #define UMCTL2_218_3    15
+                #define UMCTL2_218_4    15
+                #define UMCTL2_218_5    15
+                #define UMCTL2_218_6    15
+                #define UMCTL2_214_1    15
+                #define UMCTL2_22C_1    15
+                #define UMCTL2_228_1    15
+                #define UMCTL2_228_2    15
+                #define UMCTL2_228_3    15
+                #define UMCTL2_228_4    15
+                #define UMCTL2_224_1    15
+                #define UMCTL2_224_2    15
+                #define UMCTL2_224_3    15
+                #define UMCTL2_224_4    15
+                #define UMCTL2_214_2    15
+                #define UMCTL2_214_3    (nBANK_WIDTH + nCOL_WIDTH - 4)
+        #endif
+        #define UMCTL2_214_4    15
+        #define UMCTL2_214      ((UMCTL2_214_1) << 24 |\
+                                 (UMCTL2_214_4) << 16 |\
+                                 (UMCTL2_214_2) <<  8 |\
+                                 (UMCTL2_214_3) <<  0 )
+
+        #define UMCTL2_218_7    0
+        #define UMCTL2_218_8    0
+        #define UMCTL2_218      ((UMCTL2_218_7) << 31 |\
+                                 (UMCTL2_218_8) << 29 |\
+                                 (UMCTL2_218_3) << 24 |\
+                                 (UMCTL2_218_4) << 16 |\
+                                 (UMCTL2_218_5) <<  8 |\
+                                 (UMCTL2_218_6) <<  0 )
+
+        #define UMCTL2_224      ((UMCTL2_224_1) << 24 |\
+                                 (UMCTL2_224_2) << 16 |\
+                                 (UMCTL2_224_3) <<  8 |\
+                                 (UMCTL2_224_4) <<  0 )
+
+        #define UMCTL2_228      ((UMCTL2_228_1) << 24 |\
+                                 (UMCTL2_228_2) << 16 |\
+                                 (UMCTL2_228_3) <<  8 |\
+                                 (UMCTL2_228_4) <<  0 )
+
+        #define UMCTL2_22C_2    0
+        #define UMCTL2_22C_3    0
+        #define UMCTL2_22C      ((UMCTL2_22C_2) << 16 |\
+                                 (UMCTL2_22C_3) <<  8 |\
+                                 (UMCTL2_22C_1) <<  0 )
+
+        #define UMCTL2_240_1    6
+        #define UMCTL2_240_2    0
+        #define UMCTL2_240_3    6
+        #define UMCTL2_240_4    (n_tCL - MRS_CWL_CNT)
+        #define UMCTL2_240      ((UMCTL2_240_1) << 24 |\
+                                 (UMCTL2_240_2) << 16 |\
+                                 (UMCTL2_240_3) <<  8 |\
+                                 (UMCTL2_240_4) <<  2 )
+
+        #define UMCTL2_244_1    0
+        #define UMCTL2_244_2    0
+        #define UMCTL2_244_3    0
+        #define UMCTL2_244_4    0
+        #define UMCTL2_244_5    0
+        #define UMCTL2_244_6    0
+        #define UMCTL2_244_7    0
+        #define UMCTL2_244_8    1
+        #define UMCTL2_244      ((UMCTL2_244_1) << 28 |\
+                                 (UMCTL2_244_2) << 24 |\
+                                 (UMCTL2_244_3) << 20 |\
+                                 (UMCTL2_244_4) << 16 |\
+                                 (UMCTL2_244_5) << 12 |\
+                                 (UMCTL2_244_6) <<  8 |\
+                                 (UMCTL2_244_7) <<  4 |\
+                                 (UMCTL2_244_8) <<  0 )
+
+        #define UMCTL2_250_1    0
+        #define UMCTL2_250_2    55
+        #define UMCTL2_250_3    63
+        #define UMCTL2_250_4    0
+        #define UMCTL2_250_5    0
+        #define UMCTL2_250_6    1
+        #define UMCTL2_250      ((UMCTL2_250_1) << 24 |\
+                                 (UMCTL2_250_2) << 16 |\
+                                 (UMCTL2_250_3) <<  8 |\
+                                 (UMCTL2_250_4) <<  2 |\
+                                 (UMCTL2_250_5) <<  1 |\
+                                 (UMCTL2_250_6) <<  0 )
+
+        #define UMCTL2_254_1    0
+        #define UMCTL2_254      ((UMCTL2_254_1) << 0 )
+
+        #define UMCTL2_25C_1    15
+        #define UMCTL2_25C_2    1
+        #define UMCTL2_25C      ((UMCTL2_25C_1) << 24 |\
+                                 (UMCTL2_25C_2) <<  0 )
+
+        #define UMCTL2_264_1    128
+        #define UMCTL2_264_2    1
+        #define UMCTL2_264      ((UMCTL2_264_1) << 24 |\
+                                 (UMCTL2_264_2) <<  0 )
+
+        #define UMCTL2_26C_1    8
+        #define UMCTL2_26C_2    2048
+        #define UMCTL2_26C      ((UMCTL2_26C_1) << 24 |\
+                                 (UMCTL2_26C_2) <<  0 )
+
+        #define UMCTL2_300_1    0
+        #define UMCTL2_300_2    0
+        #define UMCTL2_300_3    0
+        #define UMCTL2_300_4    0
+        #define UMCTL2_300      ((UMCTL2_300_1) << 4 |\
+                                 (UMCTL2_300_2) << 2 |\
+                                 (UMCTL2_300_3) << 1 |\
+                                 (UMCTL2_300_4) << 0 )
+
+        #define UMCTL2_304_3    0
+        #define UMCTL2_304_1    1
+        #define UMCTL2_304_2    0
+        #define UMCTL2_304(n)   ((UMCTL2_304_3) << 1 |\
+                                 (n)            << 0 )
+
+        #define UMCTL2_30C_1    0
+        #define UMCTL2_30C_2    0
+        #define UMCTL2_30C_3    0
+        #define UMCTL2_30C_4    0
+        #define UMCTL2_30C_5    0
+        #define UMCTL2_30C_6    0
+        #define UMCTL2_30C_7    0
+        #define UMCTL2_30C_8    0
+        #define UMCTL2_30C_9    0
+        #define UMCTL2_30C_10   0
+        #define UMCTL2_30C_11   0
+        #define UMCTL2_30C_12   0
+        #define UMCTL2_30C_13   0
+        #define UMCTL2_30C_14   0
+        #define UMCTL2_30C_15   0
+        #define UMCTL2_30C_16   0
+        #define UMCTL2_30C_17   0
+        #define UMCTL2_30C_18   0
+        #define UMCTL2_30C      ((UMCTL2_30C_1)         << 19 |\
+                                 (UMCTL2_30C_2)         << 18 |\
+                                 (UMCTL2_30C_3)         << 17 |\
+                                 (UMCTL2_30C_4)         << 16 |\
+                                 (UMCTL2_30C_5)         << 15 |\
+                                 (UMCTL2_30C_6)         << 14 |\
+                                 (UMCTL2_30C_7)         << 13 |\
+                                 (UMCTL2_30C_8)         << 12 |\
+                                 (UMCTL2_30C_9)         << 11 |\
+                                 (UMCTL2_30C_10)        << 10 |\
+                                 (UMCTL2_30C_11)        <<  9 |\
+                                 (UMCTL2_30C_12)        <<  8 |\
+                                 (UMCTL2_30C_13)        <<  5 |\
+                                 (UMCTL2_30C_14)        <<  4 |\
+                                 (UMCTL2_30C_15)        <<  3 |\
+                                 (UMCTL2_30C_16)        <<  2 |\
+                                 (UMCTL2_30C_17)        <<  1 |\
+                                 (UMCTL2_30C_18)        <<  0 )
+
+        #define UMCTL2_320_1    1
+        #define UMCTL2_320_2    0
+        #define UMCTL2_320(n)   ((n)    << 0 )
+
+        #define UMCTL2_36C_1    0
+        #define UMCTL2_36C_2    0
+        #define UMCTL2_36C_3    1
+        #define UMCTL2_36C_4    0
+        #define UMCTL2_36C_5    1
+        #define UMCTL2_36C_6    0
+        #define UMCTL2_36C      ((UMCTL2_36C_1) << 24 |\
+                                 (UMCTL2_36C_2) << 20 |\
+                                 (UMCTL2_36C_3) << 16 |\
+                                 (UMCTL2_36C_4) <<  8 |\
+                                 (UMCTL2_36C_5) <<  4 |\
+                                 (UMCTL2_36C_6) <<  0 )
+
+        #define UMCTL2_400_1    0
+        #define UMCTL2_400_2    0
+        #define UMCTL2_400_3    0
+        #define UMCTL2_400      ((UMCTL2_400_1) << 8 |\
+                                 (UMCTL2_400_2) << 4 |\
+                                 (UMCTL2_400_3) << 0 )
+
+        #define UMCTL2_404_4    0
+        #define UMCTL2_404_5    1
+        #define UMCTL2_404_6    0
+        #define UMCTL2_404_7    0
+        #define UMCTL2_404_8    1
+        #define UMCTL2_404_9    0
+        #define UMCTL2_404_10   0
+        #define UMCTL2_404_11   15
+        #define UMCTL2_404_1    ((UMCTL2_404_5)         <<  2 |\
+                                 (UMCTL2_404_7)         <<  1 |\
+                                 (UMCTL2_404_9)         <<  0 )
+        #define UMCTL2_404_2    ((UMCTL2_404_5)         <<  2 |\
+                                 (UMCTL2_404_7)         <<  1 |\
+                                 (UMCTL2_404_8)         <<  0 )
+        #define UMCTL2_404_3    ((UMCTL2_404_6)         <<  2 |\
+                                 (UMCTL2_404_7)         <<  1 |\
+                                 (UMCTL2_404_8)         <<  0 )
+        #define UMCTL2_404(n)   ((UMCTL2_404_4)         << 16 |\
+                                 (n)                    << 12 |\
+                                 (UMCTL2_404_10)        << 11 |\
+                                 (UMCTL2_404_11)        <<  0 )
+
+        #define UMCTL2_408_5    1
+        #define UMCTL2_408_6    0
+        #define UMCTL2_408_7    0
+        #define UMCTL2_408_8    1
+        #define UMCTL2_408_9    0
+        #define UMCTL2_408_10   15
+        #define UMCTL2_408_1    ((UMCTL2_408_5)         <<  2 |\
+                                 (UMCTL2_408_7)         <<  1 |\
+                                 (UMCTL2_408_9)         <<  0 )
+        #define UMCTL2_408_2    ((UMCTL2_408_5)         <<  2 |\
+                                 (UMCTL2_408_7)         <<  1 |\
+                                 (UMCTL2_408_8)         <<  0 )
+        #define UMCTL2_408_3    ((UMCTL2_408_6)         <<  2 |\
+                                 (UMCTL2_408_7)         <<  1 |\
+                                 (UMCTL2_408_8)         <<  0 )
+        #define UMCTL2_408_4    ((UMCTL2_408_6)         <<  2 |\
+                                 (UMCTL2_408_7)         <<  1 |\
+                                 (UMCTL2_408_9)         <<  0 )
+        #define UMCTL2_408(n)   ((n)                    << 12 |\
+                                 (UMCTL2_408_10)        <<  0 )
+
+        #define UMCTL2_490_1    1
+        #define UMCTL2_490      ((UMCTL2_490_1) << 0 )
+
+        #define uMCTL2_register_offset  0x9c107000
