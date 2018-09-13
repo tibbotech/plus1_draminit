@@ -44,6 +44,14 @@ struct sp_registers {
 static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers *)(RF_GRP(0, 0));
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
 
+#ifdef PLATFORM_PENTAGRAM
+struct umctl2_regs {
+	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
+};
+static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_regs *)(UMCTL2_REG_Base);
+#define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
+#endif
+
 // DRAM 0/1 size is 2Byte width
 #define DRAM0_BASE_ADDR     0x00000000
 #define DRAM1_BASE_ADDR     0x10000000
@@ -139,9 +147,12 @@ void wait_loop(unsigned int wait_counter)
 {
 	unsigned int    i   =   0   ;
 
-	for (i = 0 ; i < wait_counter ; i++) {;}
+	for (i = 0 ; i < wait_counter ; i++) {
+		__asm__("nop");
+	}
 
 } // end - wait_loop
+
 
 
 // ***********************************************************************
@@ -728,7 +739,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 void assert_sdc_phy_reset(unsigned int DRAM_ID)
 {
 #ifdef PLATFORM_PENTAGRAM
-#error "TBD"
+// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	if (DRAM_ID == 0) {
 		SP_REG(0, 17) |= (
@@ -747,7 +758,7 @@ void assert_sdc_phy_reset(unsigned int DRAM_ID)
 void release_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
-#error "TBD"
+// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(0, 17) &= ~(
 					 (1 << 14) | // SDCTRL0_RESET
@@ -1259,7 +1270,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 	dbg_stamp(0xA003) ;
 
 #ifdef PLATFORM_PENTAGRAM
-	SP_REG(PHY_BASR_GRP + 0, 12) = (SP_REG(PHY_BASR_GRP + 0, 12) & 0xFFF3FFFF) | 0x000C0000;
+	SP_REG(PHY_BASE_GRP + 0, 12) = (SP_REG(PHY_BASE_GRP + 0, 12) & 0xFFF3FFFF) | 0x000C0000;
 #endif
 
 	// trigger CMD_ISSUE DRAM_INIT sequence
@@ -1414,14 +1425,14 @@ int dram_training_flow(unsigned int DRAM_ID)
 	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_3);
 	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_1);
 	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_4);
-	wait_loop(5)
+	wait_loop(5);
 	UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_2);
 	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_2);
 	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_2);
 	UMCTL2_REG(0x320) = UMCTL2_320(UMCTL2_320_2);
 	UMCTL2_REG(0x1b0) = UMCTL2_1B0(UMCTL2_1B0_2);
-	wait_loop(5)
-	wait_loop(5)
+	wait_loop(5);
+	wait_loop(5);
 	UMCTL2_REG(0x1b0) = UMCTL2_1B0(UMCTL2_1B0_3);
 	UMCTL2_REG(0x320) = UMCTL2_320(UMCTL2_320_1);
 	do {

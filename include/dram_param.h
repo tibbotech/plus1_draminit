@@ -2253,6 +2253,10 @@
         #define UMCTL2_1C4_1    0
         #define UMCTL2_1C4      ((UMCTL2_1C4_1) << 0 )
 
+        #define UMCTL2_BA_NO_1  // ?? William
+        #define nCOL_WIDTH     16  // ?? William
+
+
         #ifdef  UMCTL2_BA_NO_2
                 #define UMCTL2_204_1    (nCOL_WIDTH - 1)
                 #define UMCTL2_204_2    (nCOL_WIDTH - 1)
@@ -2271,6 +2275,8 @@
         #define UMCTL2_204      ((UMCTL2_204_1) << 16 |\
                                  (UMCTL2_204_2) <<  8 |\
                                  (UMCTL2_204_3) <<  0 )
+
+        #define  UMCTL2_CA_NO_11      // ?? William
 
         #ifdef  UMCTL2_CA_NO_11
                 #define UMCTL2_210_1    0
@@ -2418,6 +2424,9 @@
         #define UMCTL2_210      ((UMCTL2_210_3) << 31 |\
                                  (UMCTL2_210_1) <<  8 |\
                                  (UMCTL2_210_2) <<  0 )
+
+        #define UMCTL2_RA_NO_17 // ?? William
+        #define nBANK_WIDTH     3  // ?? William
 
         #ifdef  UMCTL2_RA_NO_17
                 #define UMCTL2_218_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
