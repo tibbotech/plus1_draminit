@@ -727,7 +727,9 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 // ***********************************************************************
 void assert_sdc_phy_reset(unsigned int DRAM_ID)
 {
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	if (DRAM_ID == 0) {
 		SP_REG(0, 17) |= (
 						 (1 << 14) | // SDCTRL0_RESET
@@ -744,7 +746,9 @@ void assert_sdc_phy_reset(unsigned int DRAM_ID)
 // ***********************************************************************
 void release_sdc_phy_reset(void)
 {
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	SP_REG(0, 17) &= ~(
 					 (1 << 14) | // SDCTRL0_RESET
 					 (1 << 16)   // DDR_PHY0_RESET
@@ -1069,8 +1073,9 @@ int dram_booting_flow(unsigned int DRAM_ID)
 		do_system_reset_flow(DRAM_ID);
 	dbg_stamp(0xA000);
 
-
-  SP_REG(0, 21) = ((SP_REG(0, 21) | 0x04000000) | 0x00000400) & 0xFFFFFBFF;
+#ifdef PLATFORM_PENTAGRAM
+	SP_REG(0, 21) = ((SP_REG(0, 21) | 0x04000000) | 0x00000400) & 0xFFFFFBFF;
+#endif
 	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_DPCU);
 	// set MPLL_DIV to operation freq.
 	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(gMPLL_DIV) ;
@@ -1089,7 +1094,9 @@ int dram_booting_flow(unsigned int DRAM_ID)
 	// setting PZQ CFG1
 	SP_REG(PHY_BASE_GRP + 0, 19) = DPCU_PZQ_CFG1;
 	// setting AI CFG
+#ifdef PLATFORM_PENTAGRAM
 	SP_REG(PHY_BASE_GRP + 0, 14) = (SP_REG(PHY_BASE_GRP + 0, 14) & 0xFFFDFFFF) | 0x00020000;
+#endif
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1;
 	// enable APHY_INIT start
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1 | AI_INIT_START(n_AI_INIT_START_EN);
@@ -1119,7 +1126,9 @@ int dram_booting_flow(unsigned int DRAM_ID)
 	aphy_select2_value = rgst_value;
 	aphy_select_value = (aphy_select1_value | aphy_select2_value);
 
-  SP_REG(PHY_BASE_GRP + 0, 0) = SP_REG(PHY_BASE_GRP + 0, 0) & 0xFFFFFFBF;
+#ifdef PLATFORM_PENTAGRAM
+	SP_REG(PHY_BASE_GRP + 0, 0) = SP_REG(PHY_BASE_GRP + 0, 0) & 0xFFFFFFBF;
+#endif
 
 	if (rgst_value != 0) {
 		prn_string("<<< leave dram_booting_flow for DRAM");
@@ -1249,7 +1258,10 @@ int dram_training_flow(unsigned int DRAM_ID)
 
 	dbg_stamp(0xA003) ;
 
+#ifdef PLATFORM_PENTAGRAM
 	SP_REG(PHY_BASR_GRP + 0, 12) = (SP_REG(PHY_BASR_GRP + 0, 12) & 0xFFF3FFFF) | 0x000C0000;
+#endif
+
 	// trigger CMD_ISSUE DRAM_INIT sequence
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
 		prn_string("<<< 3 leave dram_training_flow for DRAM");
@@ -1270,64 +1282,67 @@ int dram_training_flow(unsigned int DRAM_ID)
 	// -------------------------------------------------------
 	// 2. SDCTRL RGST setting => a002
 	// -------------------------------------------------------
+#ifdef PLATFORM_GEMINI
 #ifdef DISABLE_L3_CACHE
-//	SP_REG(24, 0) = SP_REG(24, 0) & (~(3 << 12));
+	SP_REG(24, 0) = SP_REG(24, 0) & (~(3 << 12));
 #endif
 #ifdef DISABLE_L3_ACCESS_DRAM_TO_MBUS
-//	SP_REG(SDC_BASE_GRP + 7, 5) = (SP_REG(SDC_BASE_GRP + 7, 5) & ~(1 << 1));
+	SP_REG(SDC_BASE_GRP + 7, 5) = (SP_REG(SDC_BASE_GRP + 7, 5) & ~(1 << 1));
 #endif
 	// #ifdef L3C_SIZE_64KB
 	//   SP_REG(SDC_BASE_GRP+7, 1) =   0x0010                      ;
 	// #endif
-//	SP_REG(SDC_BASE_GRP - 1, 1) = MCPP_BKLEN_CFG_VAL;
-//	SP_REG(SDC_BASE_GRP - 1, 7) = MCPP_LIFE_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 3) = DATA_NO_LIM_CFG_VAL; // ASIC ONLY
-//	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_REG_DIS_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 9) = AREF_INTVAL(nAREF_INTVAL); // ASIC DIFF
+	SP_REG(SDC_BASE_GRP - 1, 1) = MCPP_BKLEN_CFG_VAL;
+	SP_REG(SDC_BASE_GRP - 1, 7) = MCPP_LIFE_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 3) = DATA_NO_LIM_CFG_VAL; // ASIC ONLY
+	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_REG_DIS_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 9) = AREF_INTVAL(nAREF_INTVAL); // ASIC DIFF
 
 	if (DRAM_ID == 1) {
-//		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM1_SIZE_TYPE_VAL; // ASIC DIFF
+		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM1_SIZE_TYPE_VAL; // ASIC DIFF
 	} else {
-//		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM0_SIZE_TYPE_VAL; // ASIC DIFF
+		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM0_SIZE_TYPE_VAL; // ASIC DIFF
 	}
-//	SP_REG(SDC_BASE_GRP + 0, 6) = SD_SYS_MISC;
-//	SP_REG(SDC_BASE_GRP + 0, 7) = 0;
+	SP_REG(SDC_BASE_GRP + 0, 6) = SD_SYS_MISC;
+	SP_REG(SDC_BASE_GRP + 0, 7) = 0;
 	if (DRAM_ID == 1) {
-//		SP_REG(SDC_BASE_GRP + 0, 11) = SCAN_SD1_ACC_LATENCY;
+		SP_REG(SDC_BASE_GRP + 0, 11) = SCAN_SD1_ACC_LATENCY;
 	} else {
-//		SP_REG(SDC_BASE_GRP + 0, 11) = ((gEXTRA_CL_CNT << 25) | (gSTR_DQS_IN << 20) | (gWL_CNT << 8));
+		SP_REG(SDC_BASE_GRP + 0, 11) = ((gEXTRA_CL_CNT << 25) | (gSTR_DQS_IN << 20) | (gWL_CNT << 8));
 	}
-//	SP_REG(SDC_BASE_GRP + 0, 12) = SD_PAR_INTERVAL_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 13) = SD_PAR_TIMING0_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 14) = SD_PAR_TIMING1_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 15) = SD_PAR_TIMING2_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 16) = SD_PAR_TIMING3_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 19) = ODT_SIGNAL_TIMING_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 27) = ZQCL_CFG_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 28) = ZQCS_CFG_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 29) = SCPP_CFG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 12) = SD_PAR_INTERVAL_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 13) = SD_PAR_TIMING0_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 14) = SD_PAR_TIMING1_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 15) = SD_PAR_TIMING2_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 16) = SD_PAR_TIMING3_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 19) = ODT_SIGNAL_TIMING_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 27) = ZQCL_CFG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 28) = ZQCS_CFG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 29) = SCPP_CFG_VAL;
 	// -------------------------------------------------------
 	// 3. SDCTRL-0 initial task sequence
 	// -------------------------------------------------------
 	// switch DFI path to SDCTRL
-//	SP_REG(SDC_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
+	SP_REG(SDC_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
 	// assert SDCTRL's DDR3_RST & DDR3_CKE register
-//	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_DISABLE;
+	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_DISABLE;
 	wait_loop(10)   ;   // wait for DRAM RST
 
 	// release SDCTRL's DDR3_RST & DDR3_CKE register
-//	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_EN;
+	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_EN;
 	wait_loop(5)   ;    // wait for RST high
 
-//	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_EN;
+	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_EN;
 	wait_loop(5)   ;    // wait for CKE high
+#endif
 
 	// DRAM MRS SETTING
 	// DDR2: PREA -> MRS2 -> MRS3 -> MRS1 ->
 	//       MRS0(DLL_RESET0) -> MRS0(DLL_RESET1) -> MRS1(OCD DFLT) -> MRS1(OCD EXIT)
 	// DDR3: MRS2 -> MRS3 -> MRS1 -> MRS0
 
-  UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_1);
+#ifdef PLATFORM_PENTAGRAM
+	UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_1);
 	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_1);
 	UMCTL2_REG(0x000) = UMCTL2_0;
 	UMCTL2_REG(0x010) = UMCTL2_10;
@@ -1412,44 +1427,53 @@ int dram_training_flow(unsigned int DRAM_ID)
 	do {
 		wait_flag = UMCTL2_REG(0x324) & 0x00000001;
 	} while ((wait_flag == 0));
-#ifdef MPEG_DRAM_TYPE_DDR2
-	// PREA
-//	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
 #endif
 
+#if defined(MPEG_DRAM_TYPE_DDR2) && defined(PLATFORM_GEMINI)
+	// PREA
+	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
+#endif
+
+#ifdef PLATFORM_GEMINI
 	// MRS_MODE2
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE2_VAL_SET;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE2_VAL_SET;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 	// MRS_MODE3
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE3_VAL_SET;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE3_VAL_SET;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 	// MRS_MODE1
 	// OCD Exit & DLL_ENABLE
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 
 	// MRS_MODE0
 	// SDRAM DLL Reset
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+#endif
 
-#ifdef MPEG_DRAM_TYPE_DDR2
-//	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
+#if defined(MPEG_DRAM_TYPE_DDR2) && defined(PLATFORM_GEMINI)
+	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
 	// Write_recovery_6T , SDRAM DLL Without Reset
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET_1;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET_1;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 	// OCD Default
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET_1;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET_1;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 	// OCD Exit
-//	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
-//	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
+	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
+	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
 #endif
 #ifdef DRAM_ZQ_CFG
 	// ZQCL setting
-//	SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
+#ifdef PLATFORM_PENTAGRAM
+	// SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
+#elif defined(PLATFORM_GEMINI)
+	SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
+#endif
+
 #endif
 
 	dbg_stamp(0xA002) ;
@@ -1606,8 +1630,11 @@ int dram_training_flow(unsigned int DRAM_ID)
 	SP_REG(PHY_BASE_GRP + 1, 5) = rgst_value | DT_RG_LINEAR(n_DT_RG_LINEAR_EN);
 #endif
 
-  SP_REG(PHY_BASE_GRP + 1, 5) = (SP_REG(PHY_BASE_GRP + 1, 5) & 0xFFFFFFF6) | 0x00000009;
-  SP_REG(PHY_BASE_GRP + 1, 6) = (SP_REG(PHY_BASE_GRP + 1, 6) & 0xFFFFFF00) | 0x0000000B;
+#ifdef PLATFORM_PENTAGRAM
+	SP_REG(PHY_BASE_GRP + 1, 5) = (SP_REG(PHY_BASE_GRP + 1, 5) & 0xFFFFFFF6) | 0x00000009;
+	SP_REG(PHY_BASE_GRP + 1, 6) = (SP_REG(PHY_BASE_GRP + 1, 6) & 0xFFFFFF00) | 0x0000000B;
+#elif defined(PLATFORM_GEMINI)
+#endif
 
 	// refresh period
 	rgst_value = SP_REG(PHY_BASE_GRP + 1, 1);
@@ -3137,7 +3164,9 @@ int dram_init_main()
 #else
 	prn_string("Built at " __DATE__ " " __TIME__);
 
-#ifdef PLATFORM_GEMINI
+#ifdef PLATFORM_PENTAGRAM
+#error "TBD"
+#elif defined(PLATFORM_GEMINI)
 	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
 	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
 #endif

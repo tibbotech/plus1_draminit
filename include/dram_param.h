@@ -1485,7 +1485,12 @@
 
 #define DPCU_DDR3_MODE          (1<<5)
 
+#ifdef PLATFORM_PENTAGRAM
 #define DPCU_GLB_DEF            0x0430AA00
+#elif defined(PLATFORM_GEMINI)
+#define DPCU_GLB_DEF            0x0000AA00
+#endif
+
 
 #define DPCU_GLB_CFG0           DPCU_GLB_DEF                        | \
 	DPCU_DDR3_MODE                      | \
@@ -1622,8 +1627,12 @@
 #define n_MPLL_DIV  0x1D
 #endif
 
+#ifdef PLATFORM_PENTAGRAM
 #define MPLL_CFG1_DEF   0x00415600
+#elif defined(PLATFORM_GEMINI)
+#define MPLL_CFG1_DEF   0x00455600
 // #define MPLL_CFG1_DEF   0x00365700
+#endif
 
 #define MPLL_DIV(n)     ((n)<<0)
 
@@ -1883,6 +1892,7 @@
 
 #define DESKEW_TYPE_BANK_SEL = DT_PAT_TYPE_SEL(n_DESKEW_TYPE)
 
+#ifdef PLATFORM_PENTAGRAM
 // Add for New UMCTL2
         #define UMCTL2_0_1      0
         #define UMCTL2_0_2      4
@@ -2980,3 +2990,4 @@
         #define UMCTL2_490      ((UMCTL2_490_1) << 0 )
 
         #define uMCTL2_register_offset  0x9c107000
+#endif
