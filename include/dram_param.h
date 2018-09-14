@@ -25,6 +25,11 @@
 // #define MPEG_DRAM_DDR_1066
 // #define MPEG_DRAM_DDR_800
 
+#ifdef PLATFORM_PENTAGRAM
+#define MPEG_DRAM0_16BIT
+#define SDRAM0_SIZE_2Gb
+#define SDRAM1_SIZE_2Gb
+#elif defined(PLATFORM_GEMINI)
 #ifndef CONFIG_USE_DRAM_CFG
 // #define SDRAM0_SIZE_256Mb
 // #define SDRAM0_SIZE_512Mb
@@ -52,6 +57,7 @@
 #define SDRAM1_SIZE_4Gb
 #else
 #error USE DRAM CONFIG..BUT DRAM SIZE NOT SUPPORT.
+#endif
 #endif
 #endif
 
@@ -313,6 +319,82 @@
 #define nDDR_TYPE       2
 #endif
 
+#ifdef PLATFORM_PENTAGRAM
+#ifdef MPEG_DRAM0_16BIT
+  #ifdef SDRAM0_SIZE_256Mb
+    #define nROW_WIDTH      12
+    #define nCOL_WIDTH       8
+    #define nBANK_WIDTH      1
+	#define	UMCTL2_RA_NO_12
+	#define	UMCTL2_CA_NO_8
+	#define	UMCTL2_BA_NO_1
+  #elif defined SDRAM0_SIZE_512Mb
+    #define nROW_WIDTH      12
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      1
+	#define	UMCTL2_RA_NO_12
+	#define	UMCTL2_CA_NO_9
+	#define	UMCTL2_BA_NO_1
+  #elif defined SDRAM0_SIZE_1Gb
+    #define nROW_WIDTH      12
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+	#define	UMCTL2_RA_NO_12
+	#define	UMCTL2_CA_NO_9
+	#define	UMCTL2_BA_NO_2
+  #elif defined SDRAM0_SIZE_2Gb
+    #define nROW_WIDTH      13
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+	#define	UMCTL2_RA_NO_13
+	#define	UMCTL2_CA_NO_9
+	#define	UMCTL2_BA_NO_2
+  #elif defined SDRAM0_SIZE_4Gb
+    #define nROW_WIDTH      14
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+	#define	UMCTL2_RA_NO_14
+	#define	UMCTL2_CA_NO_9
+	#define	UMCTL2_BA_NO_2
+  #elif defined SDRAM0_SIZE_8Gb
+    #define nROW_WIDTH      15
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+	#define	UMCTL2_RA_NO_15
+	#define	UMCTL2_CA_NO_9
+	#define	UMCTL2_BA_NO_2
+  #else
+    #error  Please define => DRAM-0 IC_USE_DRAM_SIZE...
+  #endif
+#elif defined (MPEG_DRAM0_8BIT) //iam X8 => MPEG_DRAM0_8BIT
+  #ifdef SDRAM0_SIZE_256MB
+    #define nROW_WIDTH      12
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      1
+  #elif defined SDRAM0_SIZE_512MB
+    #define nROW_WIDTH      13
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      1
+  #elif defined SDRAM0_SIZE_1Gb
+    #define nROW_WIDTH      13
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+  #elif defined SDRAM0_SIZE_2Gb
+    #define nROW_WIDTH      14
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+  #elif defined SDRAM0_SIZE_4Gb
+    #define nROW_WIDTH      15
+    #define nCOL_WIDTH       9
+    #define nBANK_WIDTH      2
+  #elif defined SDRAM0_SIZE_8Gb
+    #error  NO support, please recheck
+  #else
+    #error  Please define => DRAM-0 IC_USE_DRAM_SIZE...
+  #endif
+#endif
+
+#elif defined(PLATFORM_GEMINI)
 #ifdef MPEG_DRAM_16BIT
 #ifdef SDRAM0_SIZE_256Mb
 #define nROW0_WIDTH      12
@@ -366,6 +448,7 @@
 #error  NO support, please recheck
 #else
 #error  Please define => DRAM-0 IC_USE_DRAM_SIZE...
+#endif
 #endif
 #endif
 
@@ -2253,10 +2336,6 @@
         #define UMCTL2_1C4_1    0
         #define UMCTL2_1C4      ((UMCTL2_1C4_1) << 0 )
 
-        #define UMCTL2_BA_NO_1  // ?? William
-        #define nCOL_WIDTH     16  // ?? William
-
-
         #ifdef  UMCTL2_BA_NO_2
                 #define UMCTL2_204_1    (nCOL_WIDTH - 1)
                 #define UMCTL2_204_2    (nCOL_WIDTH - 1)
@@ -2275,8 +2354,6 @@
         #define UMCTL2_204      ((UMCTL2_204_1) << 16 |\
                                  (UMCTL2_204_2) <<  8 |\
                                  (UMCTL2_204_3) <<  0 )
-
-        #define  UMCTL2_CA_NO_11      // ?? William
 
         #ifdef  UMCTL2_CA_NO_11
                 #define UMCTL2_210_1    0
@@ -2424,9 +2501,6 @@
         #define UMCTL2_210      ((UMCTL2_210_3) << 31 |\
                                  (UMCTL2_210_1) <<  8 |\
                                  (UMCTL2_210_2) <<  0 )
-
-        #define UMCTL2_RA_NO_17 // ?? William
-        #define nBANK_WIDTH     3  // ?? William
 
         #ifdef  UMCTL2_RA_NO_17
                 #define UMCTL2_218_1    (nBANK_WIDTH + nCOL_WIDTH - 4)
