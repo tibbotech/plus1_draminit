@@ -261,7 +261,7 @@
 #elif defined(SDRAM_SPEED_800)
 // DDR3-1600
 #define SD0_STR_DQS_IN      15
-#define SD0_EXTRA_CL_CNT    22
+#define SD0_EXTRA_CL_CNT    25
 
 #define SD1_STR_DQS_IN      15
 #define SD1_EXTRA_CL_CNT    23

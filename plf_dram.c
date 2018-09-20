@@ -61,7 +61,14 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 #define DRAM_1_SDC_REG_BASE     46
 #define DRAM_1_PHY_REG_BASE     49
 
+#ifdef SDRAM0_SIZE_2Gb
 #define TEST_LEN                (256 << 20) // 0x10000000 // 256MB
+#elif defined(SDRAM0_SIZE_1Gb)
+#define TEST_LEN                (128 << 20)
+#else
+#error Please assign TEST_LEN
+#endif
+
 #define SCAN_TRIM_LEN           5
 
 
@@ -117,6 +124,7 @@ unsigned char       gResetMPLL      =    0;
 unsigned char       gSiScopeDebug   =    0;
 u32 mp;
 u32 mpb;
+unsigned int flag_SiScope = 0;
 
 void select_SDC_PHY_GRP(unsigned int DRAM_ID, unsigned int *sdc, unsigned int *phy)
 {
@@ -1921,7 +1929,13 @@ DRAM_BOOT_FLOW_AGAIN:
 			}
 			int i = 0;
 			int pass_count = 0;
+#if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
+#elif defined(SDRAM0_SIZE_1Gb)
+			unsigned int TEST_ADDRESS[3] = {0x00000000, 32 << 20, 64 << 20};
+#else
+#error Please assign TEST_ADDRESS[]
+#endif
 			const unsigned int TEST_COUNT = sizeof(TEST_ADDRESS) >> 2;
 			for (i = 0; i < TEST_COUNT; i++) {
 				if (SDCTRL_TRIMMER_TEST_(DRAM_ID, TEST_ADDRESS[i], 0x0100) != 0)
@@ -2201,7 +2215,7 @@ void trim_WDM(unsigned int PHY_REG_BASE)
 	// CAL OFFSET PSD
 	new_wdm = ori_wdm;
 	right_psd = SAFE_MARGIN_VALUE - (psd * trim_count);
-	if (right_psd < 0) {
+	if (right_psd > 0xff) {
 		SP_REG(PHY_REG_BASE, 8) = rgst_value | ori_wdm;
 	} else {
 #ifdef DBG_DM
@@ -2967,7 +2981,9 @@ int silent_dram_init()
 	int ret = dram_init(0) ;
 #ifndef DRAMSCAN
 #ifdef SW_REFINE_DT_RESULT
-	dram_refine_flow(0);
+	if (flag_SiScope == 0) {
+		dram_refine_flow(0);
+	}
 #endif
 #endif
 	mp = mpb;
@@ -3138,7 +3154,9 @@ void check_run_siscope()
 		prn_string("\n\n*Would you like to run SISCOPE?(y/n)\n");
 		input = sp_getChar();
 		if ('y' == input || 'Y' == input) {
+			flag_SiScope = 1;
 			run_SiScope();
+			flag_SiScope = 0;
 		} else if ('n' == input || 'N' == input) {
 			break;
 		}
