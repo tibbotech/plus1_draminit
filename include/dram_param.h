@@ -20,10 +20,15 @@
 
 // #define MPEG_DRAM_DDR_2133
 // #define MPEG_DRAM_DDR_1866
-#define MPEG_DRAM_DDR_1600
+// #define MPEG_DRAM_DDR_1600
 // #define MPEG_DRAM_DDR_1333
 // #define MPEG_DRAM_DDR_1066
 // #define MPEG_DRAM_DDR_800
+#ifdef PLATFORM_PENTAGRAM
+#define MPEG_DRAM_DDR_1066
+#elif defined(PLATFORM_GEMINI)
+#define MPEG_DRAM_DDR_1600
+#endif
 
 #ifdef PLATFORM_PENTAGRAM
 #define MPEG_DRAM0_16BIT
@@ -602,7 +607,7 @@
 // #define n_tCL           10              // 10T -- Case latency (set to mrs)
 // #endif
 
-#define n_tCL           10              // 10T -- Case latency (set to mrs)  , 800 and 1066 ok
+#define n_tCL           8              // 8T -- Case latency (set to mrs)  , 800 and 1066 ok
 // #define n_tCL           11              // 11T -- Case latency (set to mrs)
 
 #elif defined(SDRAM_SPEED_800)
