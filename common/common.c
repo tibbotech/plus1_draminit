@@ -48,7 +48,6 @@ char sp_getChar(void)
 
 int sp_getString(char *data)
 {
-	const int max_len = 100;
 	int len = 0;
 	do {
 		uart0_rx_wait();

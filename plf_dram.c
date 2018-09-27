@@ -70,17 +70,8 @@ static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
 static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
 static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
 static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
-static unsigned int gAC = 0;
-static unsigned int gACK = 0;
-static unsigned int gCK = 0;
-static unsigned int gEXTRA_CL_CNT = 0;
-static unsigned int gSTR_DQS_IN = 0;
-static unsigned int gWL_CNT = 0;
-static unsigned int gMPLL_DIV = 0;
-static unsigned char gResetMPLL = 0;
-static unsigned char gSiScopeDebug = 0;
-static unsigned int flag_SiScope = 0;
-static u32 mpb;
+static unsigned int gAC, gACK, gCK;
+static unsigned int gEXTRA_CL_CNT, gSTR_DQS_IN, gWL_CNT;
 u32 mp;
 
 void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy)
@@ -88,7 +79,7 @@ void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy
 	const unsigned int dram_sdc_reg_addr[] = {DRAM_0_SDC_REG_BASE, DRAM_1_SDC_REG_BASE};
 	const unsigned int dram_phy_reg_addr[] = {DRAM_0_PHY_REG_BASE, DRAM_1_PHY_REG_BASE};
 
-	if (dram_id < (sizeof(dram_sdc_reg_addr)/sizeof(dram_sdc_reg_addr[0]))) {
+	if (dram_id < (sizeof(dram_sdc_reg_addr) / sizeof(dram_sdc_reg_addr[0]))) {
 		*sdc = dram_sdc_reg_addr[dram_id];
 		*phy = dram_phy_reg_addr[dram_id];
 	} else {
@@ -97,21 +88,14 @@ void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy
 	}
 }
 
-
-// ***********************************************************************
-// * FUNC      : wait_loop
-// * PARAM     : wait_counter
-// * PURPOSE   : to wait the number of counter times
-// ***********************************************************************
 void wait_loop(unsigned int wait_counter)
 {
-	unsigned int    i   =   0   ;
+	unsigned int i;
 
 	for (i = 0 ; i < wait_counter ; i++) {
 		__asm__("nop");
 	}
-
-} // end - wait_loop
+}
 
 
 
@@ -122,18 +106,18 @@ void wait_loop(unsigned int wait_counter)
 // ***********************************************************************
 void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 {
-	unsigned int SDC_BASE_GRP       = 0 ;
-	unsigned int PHY_BASE_GRP       = 0 ;
-	unsigned int temp_a             = 0 ;
-	unsigned int temp_b             = 0 ;
-	unsigned int temp_c             = 0 ;
-	unsigned int only_dump_PSD      = 0 ;
-	unsigned int RDQS_IPRD_TAP_NO         = 0 ;
+	unsigned int SDC_BASE_GRP       = 0;
+	unsigned int PHY_BASE_GRP       = 0;
+	unsigned int temp_a             = 0;
+	unsigned int temp_b             = 0;
+	unsigned int temp_c             = 0;
+	unsigned int only_dump_PSD      = 0;
+	unsigned int RDQS_IPRD_TAP_NO         = 0;
 
 	if (dram_id == 0) {
-		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-0 delay line status -----\n\n") ;
+		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-0 delay line status -----\n\n");
 	} else {
-		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-1 delay line status -----\n\n") ;
+		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-1 delay line status -----\n\n");
 	}
 
 	// -------------------------------------------------------
@@ -142,13 +126,13 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	// DUMP SSCPLL Speed
-	prn_string("DPCU_DT_INFO : \t********** DRAM SPEED **********\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DRAM SPEED **********\n");
 	temp_a = (SP_REG(PHY_BASE_GRP, 12) >> 0) & 0x3F;
 	prn_string("  SSCPLL Setting =");
 	prn_byte(temp_a);
 
 	// DUMP SDCTRL parameter
-	prn_string("DPCU_DT_INFO : \t********** SDCTRL Setting **********\n") ;
+	prn_string("DPCU_DT_INFO : \t********** SDCTRL Setting **********\n");
 	temp_a = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
 	temp_b = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
 	temp_c = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
@@ -162,7 +146,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_string("  \n\n");
 
 	// DUMP CK0BD
-	prn_string("DPCU_DT_INFO : \t********** DDRPHY Setting **********\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DDRPHY Setting **********\n");
 	temp_a = (SP_REG(PHY_BASE_GRP, 17) >> 16) & 0x3F;
 	temp_b = (SP_REG(PHY_BASE_GRP, 17) >>  8) & 0x3F;
 	temp_c = (SP_REG(PHY_BASE_GRP, 17) >>  0) & 0x3F;
@@ -178,8 +162,8 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	// DUMP INIT & Training flag
 	temp_a = SP_REG(PHY_BASE_GRP, 2) & 0x03;
 	temp_b = temp_a & 0x01;
-	temp_c = (temp_a >> 1) & 0x01 ;
-	prn_string("DPCU_DT_INFO : \t********** DUMP APHY INIT flag **********\n") ;
+	temp_c = (temp_a >> 1) & 0x01;
+	prn_string("DPCU_DT_INFO : \t********** DUMP APHY INIT flag **********\n");
 	prn_string("  Init  done flag =");
 	prn_decimal(temp_b);
 	prn_string("(0 : means don't init, 1 : means init  done) \n");
@@ -189,7 +173,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 	// initial error
 	if (temp_c == 1) {
-		prn_string("DPCU_DT_INFO : \t********** DUMP APHY INIT error information **********\n") ;
+		prn_string("DPCU_DT_INFO : \t********** DUMP APHY INIT error information **********\n");
 		temp_a = (SP_REG(PHY_BASE_GRP, 2) >>  8) & 0x01;
 		temp_b = (SP_REG(PHY_BASE_GRP, 2) >>  9) & 0x01;
 		prn_string("\tCTCAL_ERR flag =");
@@ -210,7 +194,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	temp_a = SP_REG(PHY_BASE_GRP + 1, 0) & 0x01;
 	temp_b = (SP_REG(PHY_BASE_GRP + 1, 0) >> 8) & 0x3F;
 
-	prn_string("DPCU_DT_INFO : \t********** DUMP Training flag **********\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DUMP Training flag **********\n");
 	prn_string("  Training  done flag =   ");
 	prn_decimal(temp_a);
 	prn_string("(0:don't train,     1 : means training  done) \n");
@@ -220,7 +204,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 	// training error
 	if (temp_b != 0) {
-		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX0 training error information **********\n") ;
+		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX0 training error information **********\n");
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 2) >> 8) & 0x01;
 		temp_b = (SP_REG(PHY_BASE_GRP + 2, 2) >> 9) & 0x01;
 		prn_string("\tWL_ERR flag =");
@@ -261,7 +245,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_b);
 		prn_string("\n");
 
-		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX1 training error information **********\n") ;
+		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX1 training error information **********\n");
 		temp_a = (SP_REG(PHY_BASE_GRP + 3, 2) >> 8) & 0x01;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 2) >> 9) & 0x01;
 		prn_string("\tWL_ERR flag =");
@@ -304,8 +288,8 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	}
 
 	// DUMP IPRD register
-	prn_string("DPCU_DT_INFO : \t********** DUMP initial DDR period **********\n") ;
-	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DUMP initial DDR period **********\n");
+	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 3) >> 0) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 3) >> 0) & 0xFF;
@@ -313,7 +297,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   WL_IPRD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 3) >> 8) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 3) >> 8) & 0xFF;
@@ -321,7 +305,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   RG_IPRD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 3) >> 16) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 3) >> 16) & 0xFF;
@@ -329,7 +313,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : RDQS_IPRD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	if (temp_a > temp_b) {
 		RDQS_IPRD_TAP_NO = temp_b;
@@ -343,11 +327,11 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : WDQS_IPRD =");
 	prn_byte(temp_b);
-	prn_string("\n\n") ;
+	prn_string("\n\n");
 
 	// DUMP PSD register
-	prn_string("DPCU_DT_INFO : \t********** DUMP Training PSD status **********\n") ;
-	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DUMP Training PSD status **********\n");
+	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 4) >> 0) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 4) >> 0) & 0xFF;
@@ -355,7 +339,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   WL_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 4) >> 8) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 4) >> 8) & 0xFF;
@@ -363,7 +347,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   WL_SEL =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 6) >> 0) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 6) >> 0) & 0xFF;
@@ -371,7 +355,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : REYE_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 7) >> 0) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 7) >> 0) & 0xFF;
@@ -379,7 +363,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : WEYE_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 14) >> 0) & 0x1F;
@@ -387,7 +371,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   RG_RSL =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 14) >> 8) & 0x03;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 14) >> 8) & 0x03;
@@ -395,7 +379,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   RG_PHA =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 14) >> 16) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 14) >> 16) & 0xFF;
@@ -403,10 +387,10 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 :   RG_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n\n") ;
+	prn_string("\n\n");
 
-	prn_string("DPCU_DT_INFO : \t********** DUMP RG L-side & R-side status **********\n") ;
-	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DUMP RG L-side & R-side status **********\n");
+	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 15) >> 0) & 0x1F;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 15) >> 0) & 0x1F;
@@ -414,7 +398,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : L_SIDE_RSL =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	data_byte_0_RDQSG_left_total_tap = temp_a * RDQS_IPRD_TAP_NO;
 	data_byte_1_RDQSG_left_total_tap = temp_b * RDQS_IPRD_TAP_NO;
@@ -425,7 +409,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : L_SIDE_PHA =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	data_byte_0_RDQSG_left_total_tap = (temp_a * RDQS_IPRD_TAP_NO / 2) + data_byte_0_RDQSG_left_total_tap;
 	data_byte_1_RDQSG_left_total_tap = (temp_b * RDQS_IPRD_TAP_NO / 2) + data_byte_1_RDQSG_left_total_tap;
@@ -436,7 +420,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : L_SIDE_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	data_byte_0_RDQSG_left_total_tap = temp_a + data_byte_0_RDQSG_left_total_tap;
 	data_byte_1_RDQSG_left_total_tap = temp_b + data_byte_1_RDQSG_left_total_tap;
@@ -447,7 +431,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : R_SIDE_RSL =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	data_byte_0_RDQSG_right_total_tap = temp_a * RDQS_IPRD_TAP_NO;
 	data_byte_1_RDQSG_right_total_tap = temp_b * RDQS_IPRD_TAP_NO;
@@ -458,7 +442,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : R_SIDE_PHA =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	data_byte_0_RDQSG_right_total_tap = (temp_a * RDQS_IPRD_TAP_NO / 2) + data_byte_0_RDQSG_right_total_tap;
 	data_byte_1_RDQSG_right_total_tap = (temp_b * RDQS_IPRD_TAP_NO / 2) + data_byte_1_RDQSG_right_total_tap;
@@ -469,13 +453,13 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : R_SIDE_PSD =");
 	prn_byte(temp_b);
-	prn_string("\n\n") ;
+	prn_string("\n\n");
 
 	data_byte_0_RDQSG_right_total_tap = temp_a + data_byte_0_RDQSG_right_total_tap;
 	data_byte_1_RDQSG_right_total_tap = temp_b + data_byte_1_RDQSG_right_total_tap;
 
-	prn_string("DPCU_DT_INFO : \t********** DUMP R/W EYE status **********\n") ;
-	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+	prn_string("DPCU_DT_INFO : \t********** DUMP R/W EYE status **********\n");
+	prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 16) >> 0) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 16) >> 0) & 0xFF;
@@ -483,7 +467,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : REYE_MIN =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 16) >> 8) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 16) >> 8) & 0xFF;
@@ -491,7 +475,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : REYE_MAX =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 16) >> 16) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 16) >> 16) & 0xFF;
@@ -499,7 +483,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : WEYE_MIN =");
 	prn_byte(temp_b);
-	prn_string("\n") ;
+	prn_string("\n");
 
 	temp_a = (SP_REG(PHY_BASE_GRP + 2, 16) >> 24) & 0xFF;
 	temp_b = (SP_REG(PHY_BASE_GRP + 3, 16) >> 24) & 0xFF;
@@ -507,11 +491,11 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_byte(temp_a);
 	prn_string("\tDX1 : WEYE_MAX =");
 	prn_byte(temp_b);
-	prn_string("\n\n") ;
+	prn_string("\n\n");
 
 	if (!only_dump_PSD) {
-		prn_string("DPCU_DT_INFO : \t********** DUMP REYE BDD status **********\n") ;
-		prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+		prn_string("DPCU_DT_INFO : \t********** DUMP REYE BDD status **********\n");
+		prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 11) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 11) >> 0) & 0x3F;
@@ -519,7 +503,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQS_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 12) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 12) >> 0) & 0x3F;
@@ -527,7 +511,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ0_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 12) >> 8) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 12) >> 8) & 0x3F;
@@ -535,7 +519,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ1_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 12) >> 16) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 12) >> 16) & 0x3F;
@@ -543,7 +527,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ2_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 12) >> 24) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 12) >> 24) & 0x3F;
@@ -551,7 +535,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ3_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 13) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 13) >> 0) & 0x3F;
@@ -559,7 +543,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ4_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 13) >> 8) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 13) >> 8) & 0x3F;
@@ -567,7 +551,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ5_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 13) >> 16) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 13) >> 16) & 0x3F;
@@ -575,7 +559,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ6_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 13) >> 24) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 13) >> 24) & 0x3F;
@@ -583,10 +567,10 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : RDQ7_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n\n") ;
+		prn_string("\n\n");
 
-		prn_string("DPCU_DT_INFO : \t********** DUMP WEYE BDD status **********\n") ;
-		prn_string("\t[DATx8-0]\t\t[DATx8-1]\n") ;
+		prn_string("DPCU_DT_INFO : \t********** DUMP WEYE BDD status **********\n");
+		prn_string("\t[DATx8-0]\t\t[DATx8-1]\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 8) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 8) >> 0) & 0x3F;
@@ -594,7 +578,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :     WDM_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 8) >> 8) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 8) >> 8) & 0x3F;
@@ -602,7 +586,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQS_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 8) >> 16) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 8) >> 16) & 0x3F;
@@ -610,7 +594,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 : WDQS_OE_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 8) >> 24) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 8) >> 24) & 0x3F;
@@ -618,7 +602,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :  WDQ_OE_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 9) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 9) >> 0) & 0x3F;
@@ -626,7 +610,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ0_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 9) >> 8) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 9) >> 8) & 0x3F;
@@ -634,7 +618,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ1_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 9) >> 16) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 9) >> 16) & 0x3F;
@@ -642,7 +626,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ2_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 9) >> 24) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 9) >> 24) & 0x3F;
@@ -650,7 +634,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ3_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 10) >> 0) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 10) >> 0) & 0x3F;
@@ -658,7 +642,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ4_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 10) >> 8) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 10) >> 8) & 0x3F;
@@ -666,7 +650,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ5_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 10) >> 16) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 10) >> 16) & 0x3F;
@@ -674,7 +658,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ6_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n") ;
+		prn_string("\n");
 
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 10) >> 24) & 0x3F;
 		temp_b = (SP_REG(PHY_BASE_GRP + 3, 10) >> 24) & 0x3F;
@@ -682,12 +666,12 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 		prn_byte(temp_a);
 		prn_string("\tDX1 :    WDQ7_BDD =");
 		prn_byte(temp_b);
-		prn_string("\n\n") ;
+		prn_string("\n\n");
 	}
 
-	prn_string("\t-----------------------------------------------------\n\n") ;
+	prn_string("\t-----------------------------------------------------\n\n");
 	// finish
-	prn_string("DPCU_INFO : ----- DPCU dump done -----\n\n") ;
+	prn_string("DPCU_INFO : ----- DPCU dump done -----\n\n");
 } // end function => DPCU_DT_RESULT_DUMP
 
 
@@ -699,13 +683,13 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 void assert_sdc_phy_reset(unsigned int dram_id)
 {
 #ifdef PLATFORM_PENTAGRAM
-// #error "TBD"
+	// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	if (dram_id == 0) {
 		SP_REG(0, 17) |= (
-						 (1 << 14) | // SDCTRL0_RESET
-						 (1 << 16)   // DDR_PHY0_RESET
-					 );
+					 (1 << 14) | // SDCTRL0_RESET
+					 (1 << 16)   // DDR_PHY0_RESET
+				 );
 	}
 #endif
 } // end function => assert_sdc_phy_reset
@@ -718,12 +702,12 @@ void assert_sdc_phy_reset(unsigned int dram_id)
 void release_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
-// #error "TBD"
+	// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(0, 17) &= ~(
-					 (1 << 14) | // SDCTRL0_RESET
-					 (1 << 16)   // DDR_PHY0_RESET
-				 );
+				 (1 << 14) | // SDCTRL0_RESET
+				 (1 << 16)   // DDR_PHY0_RESET
+			 );
 #endif
 } // end of release_sdc_phy_reset
 
@@ -734,10 +718,10 @@ void release_sdc_phy_reset(void)
 // ***********************************************************************
 void do_system_reset_flow(unsigned int dram_id)
 {
-	assert_sdc_phy_reset(dram_id) ;
-	wait_loop(1000) ;
-	release_sdc_phy_reset() ;
-} // end of do_system_reset_flow
+	assert_sdc_phy_reset(dram_id);
+	wait_loop(1000);
+	release_sdc_phy_reset();
+}
 
 void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 {
@@ -773,7 +757,6 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 	unsigned int test_size_word = test_size >> 2;
 	const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
 	const int num_pattern = sizeof(pattern) / sizeof(pattern[0]);
-	unsigned int idx_pattern = 0;
 
 	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
 
@@ -828,7 +811,7 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 		}
 	}
 
-	return ret ;
+	return ret;
 }
 
 #define MEMORY_RW_FLAG_DBG	(1 << 0)
@@ -877,10 +860,9 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 			   unsigned int SW_WRDATA_MASK, unsigned int SW_WRDATA1_HIGH, unsigned int SW_WRDATA1_LOW,
 			   unsigned int SW_WRDATA0_HIGH, unsigned int SW_WRDATA0_LOW, unsigned int CMD_TRIGGER)
 {
-	unsigned int        temp            ;
-	unsigned int        loop_x          ;
+	unsigned int        temp;
 	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0      ;
+			    PHY_BASE_GRP = 0;
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 
@@ -915,7 +897,7 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 int dram_booting_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0  ;
+			    PHY_BASE_GRP = 0;
 	unsigned int        wait_flag      = 0;	 // min
 	unsigned int        aphy_select1_value = 0;
 	unsigned int        aphy_select2_value = 0;
@@ -941,8 +923,7 @@ int dram_booting_flow(unsigned int dram_id)
 #ifdef SDRAM_FPGA
 	// There are no APHY circuit in FPGA platform, so bypass this flow
 #else
-	if (0 == gResetMPLL)
-		do_system_reset_flow(dram_id);
+	do_system_reset_flow(dram_id);
 	dbg_stamp(0xA000);
 
 #ifdef PLATFORM_PENTAGRAM
@@ -950,7 +931,7 @@ int dram_booting_flow(unsigned int dram_id)
 #endif
 	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_DPCU);
 	// set MPLL_DIV to operation freq.
-	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(gMPLL_DIV) ;
+	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(n_MPLL_DIV);
 	// set MPLL_DIV to operation freq.
 	SP_REG(PHY_BASE_GRP + 0, 3) = DPCU_INIT_TIMMER;
 	// Set DDRIO CFG
@@ -974,7 +955,7 @@ int dram_booting_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1 | AI_INIT_START(n_AI_INIT_START_EN);
 
 	// wait aphy init done
-	wait_flag   =   0   ;
+	wait_flag   =   0;
 	do {
 		wait_flag   =   SP_REG(PHY_BASE_GRP + 0, 2) & 0x00000001;
 	} while ((wait_flag == 0));
@@ -989,7 +970,7 @@ int dram_booting_flow(unsigned int dram_id)
 	// enable APHY_INIT start
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT2 | AI_INIT_START(n_AI_INIT_START_EN);
 	// wait aphy init done
-	wait_flag   =   0   ;
+	wait_flag   =   0;
 	do {
 		wait_flag   =   SP_REG(PHY_BASE_GRP + 0, 2) & 0x00000001;
 	} while ((wait_flag == 0));
@@ -1006,7 +987,7 @@ int dram_booting_flow(unsigned int dram_id)
 		prn_string("<<< leave dram_booting_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
-		return 0 ;
+		return 0;
 	}
 #endif
 	prn_string("<<< leave dram_booting_flow for DRAM");
@@ -1027,10 +1008,8 @@ int dram_booting_flow(unsigned int dram_id)
 int dram_training_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0,
-			    waiting_status_counter = 0;
+			    PHY_BASE_GRP = 0;
 	unsigned int        temp_1, temp_2;
-	int i = 0;
 	unsigned int        wait_flag      = 0;	 // min
 
 	prn_string(">>> enter dram_training_flow for DRAM");
@@ -1058,7 +1037,7 @@ int dram_training_flow(unsigned int dram_id)
 		return WAIT_FLAG_FAIL;
 	}
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
-		;
+;
 		prn_string("<<< 2 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
@@ -1074,20 +1053,20 @@ int dram_training_flow(unsigned int dram_id)
 		prn_decimal(rgst_value);
 		prn_string("\n");
 		SP_REG(PHY_BASE_GRP + 0, 17) = (((DPCU_ACK0BD + (ckobd_re_training_number * 4)) << 16) | ((DPCU_AC0BD + (ckobd_re_training_number * 4)) << 8) | ((DPCU_CK0BD +
-							(ckobd_re_training_number * 4)) << 0));
+						(ckobd_re_training_number * 4)) << 0));
 #else
 
 		// rgst_value = (gCK+(ckobd_re_training_number*4));
 		// prn_string("\tSet CK0BD value to : "); prn_decimal(rgst_value); prn_string("\n");
 		SP_REG(PHY_BASE_GRP + 0, 17) = (((gACK + (ckobd_re_training_number * 4)) << 16) | ((gAC + (ckobd_re_training_number * 4)) << 8) | ((gCK +
-							(ckobd_re_training_number * 4)) << 0));
+						(ckobd_re_training_number * 4)) << 0));
 #endif
 	} else if (ckobd_training_flag == 2) {
 		temp_1 = 0x30 + (ckobd_re_training_number * 4);
 		SP_REG(PHY_BASE_GRP + 0, 17) = \
-						       (((gACK + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >> 16) & 0x3F)) << 16) | \
-							((gAC  + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >>  8) & 0x3F)) <<  8) | \
-							((gCK  + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >>  0) & 0x3F)) <<  0));
+					       (((gACK + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >> 16) & 0x3F)) << 16) | \
+						((gAC  + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >>  8) & 0x3F)) <<  8) | \
+						((gCK  + temp_1 + ((SP_REG(PHY_BASE_GRP + 0, 17) >>  0) & 0x3F)) <<  0));
 	}
 
 	else {
@@ -1097,7 +1076,7 @@ int dram_training_flow(unsigned int dram_id)
 		SP_REG(PHY_BASE_GRP + 0, 17) = DPCU_CMD_BDD_SETTING;
 	}
 
-	dbg_stamp(0xA001) ;
+	dbg_stamp(0xA001);
 
 	// release SerDes' reset
 	SP_REG(PHY_BASE_GRP + 0, 8) = (SP_REG(PHY_BASE_GRP + 0, 8) & 0xFFFFFFF8) | 0x00000007;
@@ -1118,17 +1097,17 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP + 1, 26) = (CI_MRS_3_VAL_SET << 16) | (CI_MRS_2_VAL_SET << 0);
 
 #ifdef CSIM_ASIC
-	dbg_stamp(0xA002) ;
+	dbg_stamp(0xA002);
 	// csim simulation only, for YES_QUICK_SIM and DPCU_FAST (speedup csim flow)
 	// RGST_CI_RST_B_HIGH & RGST_CKE_HIGH
-	// SP_REG(PHY_BASE_GRP+1, 15)  =   0x00F000FF      ;
+	// SP_REG(PHY_BASE_GRP+1, 15)  =   0x00F000FF;
 	// RGST_CI_RST_B_LOW
-	// SP_REG(PHY_BASE_GRP+1, 16)  =   0x00000FF0      ;
+	// SP_REG(PHY_BASE_GRP+1, 16)  =   0x00000FF0;
 #else
 	// IC - Real initial flow (ASIC & FPGA)
 #endif
 
-	dbg_stamp(0xA003) ;
+	dbg_stamp(0xA003);
 
 #ifdef PLATFORM_PENTAGRAM
 	SP_REG(PHY_BASE_GRP + 0, 12) = (SP_REG(PHY_BASE_GRP + 0, 12) & 0xFFF3FFFF) | 0x000C0000;
@@ -1144,12 +1123,10 @@ int dram_training_flow(unsigned int dram_id)
 	// prn_string("\tbefore GRP((PHY_BASE_GRP+1),10) = "); prn_dword(SP_REG(PHY_BASE_GRP+1, 10)); prn_string("\n");
 	SP_REG(PHY_BASE_GRP + 1, 10) = (SP_REG(PHY_BASE_GRP + 1, 10) & 0xFFFFFFEF) | 0x00000010;
 
-	waiting_status_counter = 0;
-
 	// wait CMD_ISSUE flag
 #endif // endif - SDRAM_FPGA
 
-	dbg_stamp(0xA004) ;
+	dbg_stamp(0xA004);
 
 	// -------------------------------------------------------
 	// 2. SDCTRL RGST setting => a002
@@ -1162,7 +1139,7 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(SDC_BASE_GRP + 7, 5) = (SP_REG(SDC_BASE_GRP + 7, 5) & ~(1 << 1));
 #endif
 	// #ifdef L3C_SIZE_64KB
-	//   SP_REG(SDC_BASE_GRP+7, 1) =   0x0010                      ;
+	//   SP_REG(SDC_BASE_GRP+7, 1) =   0x0010;
 	// #endif
 	SP_REG(SDC_BASE_GRP - 1, 1) = MCPP_BKLEN_CFG_VAL;
 	SP_REG(SDC_BASE_GRP - 1, 7) = MCPP_LIFE_VAL;
@@ -1214,90 +1191,90 @@ int dram_training_flow(unsigned int dram_id)
 	// DDR3: MRS2 -> MRS3 -> MRS1 -> MRS0
 
 #ifdef PLATFORM_PENTAGRAM
-	UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_1);
-	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_1);
-	UMCTL2_REG(0x000) = UMCTL2_0;
-	UMCTL2_REG(0x010) = UMCTL2_10;
-	UMCTL2_REG(0x014) = UMCTL2_14;
-	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_2);
-	UMCTL2_REG(0x034) = UMCTL2_34;
-	UMCTL2_REG(0x038) = UMCTL2_38;
-	UMCTL2_REG(0x050) = UMCTL2_50;
-	UMCTL2_REG(0x060) = UMCTL2_60;
-	UMCTL2_REG(0x064) = UMCTL2_64;
-	UMCTL2_REG(0x0c0) = UMCTL2_C0;
-	UMCTL2_REG(0x0d0) = UMCTL2_D0;
-	UMCTL2_REG(0x0d4) = UMCTL2_D4;
-	UMCTL2_REG(0x0dc) = UMCTL2_DC;
-	UMCTL2_REG(0x0e0) = UMCTL2_E0;
-	UMCTL2_REG(0x0e4) = UMCTL2_E4;
-	UMCTL2_REG(0x0f0) = UMCTL2_F0;
-	UMCTL2_REG(0x100) = UMCTL2_100;
-	UMCTL2_REG(0x104) = UMCTL2_104;
-	UMCTL2_REG(0x108) = UMCTL2_108;
-	UMCTL2_REG(0x10c) = UMCTL2_10C;
-	UMCTL2_REG(0x110) = UMCTL2_110;
-	UMCTL2_REG(0x114) = UMCTL2_114;
-	UMCTL2_REG(0x120) = UMCTL2_120;
-	UMCTL2_REG(0x13c) = UMCTL2_13C;
-	UMCTL2_REG(0x180) = UMCTL2_180;
-	UMCTL2_REG(0x184) = UMCTL2_184;
-	UMCTL2_REG(0x190) = UMCTL2_190;
-	UMCTL2_REG(0x194) = UMCTL2_194;
-	UMCTL2_REG(0x198) = UMCTL2_198;
-	UMCTL2_REG(0x1a0) = UMCTL2_1A0;
-	UMCTL2_REG(0x1a4) = UMCTL2_1A4;
-	UMCTL2_REG(0x1a8) = UMCTL2_1A8;
-	UMCTL2_REG(0x1b0) = UMCTL2_1B0(UMCTL2_1B0_1);
-	UMCTL2_REG(0x1b4) = UMCTL2_1B4;
-	UMCTL2_REG(0x1c4) = UMCTL2_1C4;
-	UMCTL2_REG(0x204) = UMCTL2_204;
-	UMCTL2_REG(0x208) = UMCTL2_208;
-	UMCTL2_REG(0x20c) = UMCTL2_20C;
-	UMCTL2_REG(0x210) = UMCTL2_210;
-	UMCTL2_REG(0x214) = UMCTL2_214;
-	UMCTL2_REG(0x218) = UMCTL2_218;
-	UMCTL2_REG(0x224) = UMCTL2_224;
-	UMCTL2_REG(0x228) = UMCTL2_228;
-	UMCTL2_REG(0x22c) = UMCTL2_22C;
-	UMCTL2_REG(0x240) = UMCTL2_240;
-	UMCTL2_REG(0x244) = UMCTL2_244;
-	UMCTL2_REG(0x250) = UMCTL2_250;
-	UMCTL2_REG(0x254) = UMCTL2_254;
-	UMCTL2_REG(0x25c) = UMCTL2_25C;
-	UMCTL2_REG(0x264) = UMCTL2_264;
-	UMCTL2_REG(0x26c) = UMCTL2_26C;
-	UMCTL2_REG(0x300) = UMCTL2_300;
-	UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_2);
-	UMCTL2_REG(0x30c) = UMCTL2_30C;
-	UMCTL2_REG(0x320) = UMCTL2_320(UMCTL2_320_1);
-	UMCTL2_REG(0x36c) = UMCTL2_36C;
-	UMCTL2_REG(0x490) = UMCTL2_490;
-	UMCTL2_REG(0x400) = UMCTL2_400;
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_1);
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_2);
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_2);
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_3);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_1);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_2);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_2);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_3);
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_2);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_3);
-	UMCTL2_REG(0x404) = UMCTL2_404(UMCTL2_404_1);
-	UMCTL2_REG(0x408) = UMCTL2_408(UMCTL2_408_4);
+	UMCTL2_REG(0x0304) = UMCTL2_304(UMCTL2_304_1);
+	UMCTL2_REG(0x0030) = UMCTL2_30(UMCTL2_30_1);
+	UMCTL2_REG(0x0000) = UMCTL2_0;
+	UMCTL2_REG(0x0010) = UMCTL2_10;
+	UMCTL2_REG(0x0014) = UMCTL2_14;
+	UMCTL2_REG(0x0030) = UMCTL2_30(UMCTL2_30_2);
+	UMCTL2_REG(0x0034) = UMCTL2_34;
+	UMCTL2_REG(0x0038) = UMCTL2_38;
+	UMCTL2_REG(0x0050) = UMCTL2_50;
+	UMCTL2_REG(0x0060) = UMCTL2_60;
+	UMCTL2_REG(0x0064) = UMCTL2_64;
+	UMCTL2_REG(0x00C0) = UMCTL2_C0;
+	UMCTL2_REG(0x00D0) = UMCTL2_D0;
+	UMCTL2_REG(0x00D4) = UMCTL2_D4;
+	UMCTL2_REG(0x00DC) = UMCTL2_DC;
+	UMCTL2_REG(0x00E0) = UMCTL2_E0;
+	UMCTL2_REG(0x00E4) = UMCTL2_E4;
+	UMCTL2_REG(0x00F0) = UMCTL2_F0;
+	UMCTL2_REG(0x0100) = UMCTL2_100;
+	UMCTL2_REG(0x0104) = UMCTL2_104;
+	UMCTL2_REG(0x0108) = UMCTL2_108;
+	UMCTL2_REG(0x010C) = UMCTL2_10C;
+	UMCTL2_REG(0x0110) = UMCTL2_110;
+	UMCTL2_REG(0x0114) = UMCTL2_114;
+	UMCTL2_REG(0x0120) = UMCTL2_120;
+	UMCTL2_REG(0x013C) = UMCTL2_13C;
+	UMCTL2_REG(0x0180) = UMCTL2_180;
+	UMCTL2_REG(0x0184) = UMCTL2_184;
+	UMCTL2_REG(0x0190) = UMCTL2_190;
+	UMCTL2_REG(0x0194) = UMCTL2_194;
+	UMCTL2_REG(0x0198) = UMCTL2_198;
+	UMCTL2_REG(0x01A0) = UMCTL2_1A0;
+	UMCTL2_REG(0x01A4) = UMCTL2_1A4;
+	UMCTL2_REG(0x01A8) = UMCTL2_1A8;
+	UMCTL2_REG(0x01B0) = UMCTL2_1B0(UMCTL2_1B0_1);
+	UMCTL2_REG(0x01B4) = UMCTL2_1B4;
+	UMCTL2_REG(0x01C4) = UMCTL2_1C4;
+	UMCTL2_REG(0x0204) = UMCTL2_204;
+	UMCTL2_REG(0x0208) = UMCTL2_208;
+	UMCTL2_REG(0x020C) = UMCTL2_20C;
+	UMCTL2_REG(0x0210) = UMCTL2_210;
+	UMCTL2_REG(0x0214) = UMCTL2_214;
+	UMCTL2_REG(0x0218) = UMCTL2_218;
+	UMCTL2_REG(0x0224) = UMCTL2_224;
+	UMCTL2_REG(0x0228) = UMCTL2_228;
+	UMCTL2_REG(0x022C) = UMCTL2_22C;
+	UMCTL2_REG(0x0240) = UMCTL2_240;
+	UMCTL2_REG(0x0244) = UMCTL2_244;
+	UMCTL2_REG(0x0250) = UMCTL2_250;
+	UMCTL2_REG(0x0254) = UMCTL2_254;
+	UMCTL2_REG(0x025C) = UMCTL2_25C;
+	UMCTL2_REG(0x0264) = UMCTL2_264;
+	UMCTL2_REG(0x026C) = UMCTL2_26C;
+	UMCTL2_REG(0x0300) = UMCTL2_300;
+	UMCTL2_REG(0x0304) = UMCTL2_304(UMCTL2_304_2);
+	UMCTL2_REG(0x030C) = UMCTL2_30C;
+	UMCTL2_REG(0x0320) = UMCTL2_320(UMCTL2_320_1);
+	UMCTL2_REG(0x036C) = UMCTL2_36C;
+	UMCTL2_REG(0x0490) = UMCTL2_490;
+	UMCTL2_REG(0x0400) = UMCTL2_400;
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_1);
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_2);
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_2);
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_3);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_1);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_2);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_2);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_3);
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_2);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_3);
+	UMCTL2_REG(0x0404) = UMCTL2_404(UMCTL2_404_1);
+	UMCTL2_REG(0x0408) = UMCTL2_408(UMCTL2_408_4);
 	wait_loop(5);
-	UMCTL2_REG(0x304) = UMCTL2_304(UMCTL2_304_2);
-	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_2);
-	UMCTL2_REG(0x030) = UMCTL2_30(UMCTL2_30_2);
-	UMCTL2_REG(0x320) = UMCTL2_320(UMCTL2_320_2);
-	UMCTL2_REG(0x1b0) = UMCTL2_1B0(UMCTL2_1B0_2);
+	UMCTL2_REG(0x0304) = UMCTL2_304(UMCTL2_304_2);
+	UMCTL2_REG(0x0030) = UMCTL2_30(UMCTL2_30_2);
+	UMCTL2_REG(0x0030) = UMCTL2_30(UMCTL2_30_2);
+	UMCTL2_REG(0x0320) = UMCTL2_320(UMCTL2_320_2);
+	UMCTL2_REG(0x01B0) = UMCTL2_1B0(UMCTL2_1B0_2);
 	wait_loop(5);
 	wait_loop(5);
-	UMCTL2_REG(0x1b0) = UMCTL2_1B0(UMCTL2_1B0_3);
-	UMCTL2_REG(0x320) = UMCTL2_320(UMCTL2_320_1);
+	UMCTL2_REG(0x01B0) = UMCTL2_1B0(UMCTL2_1B0_3);
+	UMCTL2_REG(0x0320) = UMCTL2_320(UMCTL2_320_1);
 	do {
-		wait_flag = UMCTL2_REG(0x324) & 0x00000001;
+		wait_flag = UMCTL2_REG(0x0324) & 0x00000001;
 	} while ((wait_flag == 0));
 #endif
 
@@ -1348,7 +1325,7 @@ int dram_training_flow(unsigned int dram_id)
 
 #endif
 
-	dbg_stamp(0xA002) ;
+	dbg_stamp(0xA002);
 
 	// -------------------------------------------------------
 	// 1. DPCU data training => a003
@@ -1456,7 +1433,7 @@ int dram_training_flow(unsigned int dram_id)
 	// step b issue CMD ISSUE ODT on command
 	// dram_id, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
 	DPCU_CMD_ISSUE_SW_CMD(dram_id, 0x08, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
-	wait_flag = 0   ;
+	wait_flag = 0;
 	do {
 		wait_loop(1000);
 		wait_flag   = (SP_REG(PHY_BASE_GRP + 1, 10) >> 17) & 0x01;
@@ -1519,9 +1496,9 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP + 1, 1) = DPCU_DT_GO;
 
 	// wait_dpcu_1st_training
-	wait_flag = 0   ;
+	wait_flag = 0;
 	do {
-		wait_loop(1000)   ;
+		wait_loop(1000);
 		wait_flag   =   SP_REG(PHY_BASE_GRP + 1, 0) & 0x01;
 		// prn_string("111 training SP_REG(PHY_BASE_GRP+1, 0)="); prn_dword(SP_REG(PHY_BASE_GRP+1, 0)); prn_string("\n");
 	} while ((wait_flag == 0));
@@ -1532,11 +1509,11 @@ int dram_training_flow(unsigned int dram_id)
 	if (rgst_value != 0x00) {
 		// dpcu training failed
 		SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
-		dbg_stamp(0xDEADA003) ;
+		dbg_stamp(0xDEADA003);
 		prn_string("<<< 4 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
-		return 0 ;
+		return 0;
 	} // end- if check dt result
 
 	// step-3: dpcu_2nd_training - trigger RDQSG training
@@ -1547,7 +1524,7 @@ int dram_training_flow(unsigned int dram_id)
 	// prn_string("DPCU mid 2sec Training Status G37.0: 0x"); prn_dword(rgst_value); prn_string("!!\n");
 
 	// wait_dpcu_2nd_training
-	wait_flag = 0   ;
+	wait_flag = 0;
 	do {
 		wait_flag   = (SP_REG(PHY_BASE_GRP + 1, 0) & 0x01);
 		// prn_string("222 training SP_REG(PHY_BASE_GRP+1, 0)="); prn_dword(SP_REG(PHY_BASE_GRP+1, 0)); prn_string("\n");
@@ -1559,11 +1536,11 @@ int dram_training_flow(unsigned int dram_id)
 	if (rgst_value != 0x00) {
 		// dpcu training failed
 		SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
-		dbg_stamp(0xDEADA003)   ;
+		dbg_stamp(0xDEADA003);
 		prn_string("<<< 5 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
-		return 0 ;
+		return 0;
 	} // end- if check dt result
 
 	// move switch SDCTRL path before dump
@@ -1593,7 +1570,7 @@ int dram_training_flow(unsigned int dram_id)
 		prn_string("<<< 7 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
-		return 0 ;
+		return 0;
 	} // end- if RG_PSD is too big or small
 
 	temp_2 = (SP_REG(PHY_BASE_GRP + 3, 3) >> 8) & 0xFF; // DX1_RG_IPRD
@@ -1608,7 +1585,7 @@ int dram_training_flow(unsigned int dram_id)
 		prn_string("<<< 7 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
-		return 0 ;
+		return 0;
 	} // end- if RG_PSD is too big or small
 
 	// step-4: switch path to SDCTRL
@@ -1643,13 +1620,13 @@ int dram_training_flow(unsigned int dram_id)
 int dram_init(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0  ;
-	unsigned int        temp_1         = 0 ;
-	unsigned int        temp_2         = 0 ;
-	unsigned int        temp_3         = 0 ;
+			    PHY_BASE_GRP = 0;
+	unsigned int        temp_1         = 0;
+	unsigned int        temp_2         = 0;
+	unsigned int        temp_3         = 0;
 	unsigned int        package_256_flag;  // this flag only using in dram_id == 1
 	unsigned int        max_init_fail_cnt = 15;
-	unsigned int        loop_time       ;
+	unsigned int        loop_time;
 	unsigned int        ret = 0;
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
@@ -1686,7 +1663,7 @@ DRAM_BOOT_FLOW_AGAIN:
 			if ((dram_id == 1) && (aphy_select_value == 0x0D)) {
 				// case 1, we think this is 216 pin package, and don't need to dump initial error message
 				// only check PZQ, CTCAL, DDL error flag
-				package_256_flag = 0 ;
+				package_256_flag = 0;
 				// prn_string("is this 216 package !?\n");
 			} else {
 				// case 2 or case 3, we dump the initial error flag
@@ -1708,7 +1685,7 @@ DRAM_BOOT_FLOW_AGAIN:
 				prn_string("\tPZQ_ERR flag =");
 				prn_decimal(temp_2);
 				prn_string("\n");
-				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error information end **********\n") ;
+				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error information end **********\n");
 				goto DRAM_BOOT_FLOW_AGAIN;
 			}
 		} else {
@@ -1758,26 +1735,26 @@ DRAM_BOOT_FLOW_AGAIN:
 
 			prn_string("DPCU_INFO : \t********** DUMP init & training error info @ loop_time = ");
 			prn_decimal(loop_time);
-			prn_string(" ***\n") ;
+			prn_string(" ***\n");
 			DPCU_DT_RESULT_DUMP(dram_id);
 		} else {
 			// training pass
 			// double check RSL result for SDCTRL setting
 			rgst_value = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F;
-			// prn_string("\tDX0 :   RG_RSL ="); prn_byte(temp_1); prn_string("\tDX1 :   RG_RSL ="); prn_byte(temp_2); prn_string("\n") ;
+			// prn_string("\tDX0 :   RG_RSL ="); prn_byte(temp_1); prn_string("\tDX1 :   RG_RSL ="); prn_byte(temp_2); prn_string("\n");
 			if (rgst_value == 1) {
 				// modify SDCTRL STR_DQS_IN if RSL ==1 (STR_DQS_IN -1)
 				temp_1 = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
 				temp_2 = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
 				temp_3 = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
-				temp_2 = temp_2 - 1 ;
+				temp_2 = temp_2 - 1;
 				SP_REG(SDC_BASE_GRP, 11) = (temp_1 << 25) | (temp_2 << 20) | (temp_3 << 8);
 			} else if (rgst_value == 3) {
 				// modify SDCTRL STR_DQS_IN if RSL ==1 (STR_DQS_IN +1)
 				temp_1 = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
 				temp_2 = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
 				temp_3 = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
-				temp_2 = temp_2 + 1 ;
+				temp_2 = temp_2 + 1;
 				SP_REG(SDC_BASE_GRP, 11) = (temp_1 << 25) | (temp_2 << 20) | (temp_3 << 8);
 			}
 			int i = 0;
@@ -1813,698 +1790,63 @@ DRAM_BOOT_FLOW_AGAIN:
 
 	prn_string("DRAM-");
 	prn_decimal(dram_id);
-	prn_string("initial done !!!!\n\n") ;
+	prn_string("initial done !!!!\n\n");
 
-#ifdef SW_REFINE_DT_RESULT
-	dram_refine_flow( dram_id );
-#endif
 	return SUCCESS;
 } // end dram_init
-
-
-#ifdef SW_REFINE_DT_RESULT
-
-/**
-**FOR 8388 , DDR3-1600 ONLY
-**/
-// ***********************************************************************
-// * FUNC      : trim_WDM
-// * PARAM     : void
-// * PURPOSE   : refine DPCU traing WDM result for DRAM0/DRAM1
-// ***********************************************************************
-// #define DBG_DM
-void trim_WDM(unsigned int PHY_REG_BASE)
-{
-	unsigned int trim_count = 0;
-	unsigned int ori_wdm, new_wdm = 0;
-	unsigned int wdq_iprd = 0;
-	unsigned int i = 0;
-	unsigned int offset_psd = 0;
-	unsigned int psd = 0;
-	unsigned int right_psd = 0;
-	const unsigned int MAX_PSD = 100;
-	rgst_value = SP_REG(PHY_REG_BASE, 8) & ~(0x3F);
-
-#ifdef DBG_DM
-	prn_string("\t DX");
-	prn_decimal(PHY_REG_BASE - 52);
-	prn_string(":\n");
-#endif
-
-	// Get IPRD
-	wdq_iprd = ((SP_REG(PHY_REG_BASE, 3) >> 24) & 0xFF);  // WDQ_IPRD
-#ifdef DBG_DM
-	prn_string("\t DX");
-	prn_decimal(PHY_REG_BASE - 52);
-	prn_string(" IPRD = ");
-	prn_byte(wdq_iprd);
-	prn_string("\n");
-#endif
-
-	// Cal each PSD pico second
-	psd = IPRD_VALUE / wdq_iprd;
-
-#ifdef DBG_DM
-	prn_string("\t DX");
-	prn_decimal(PHY_REG_BASE - 52);
-	prn_string(" 1 PSD PICO = ");
-	prn_decimal(psd);
-	prn_string("\n");
-#endif
-
-	// FIND FAILED EDGE
-	ori_wdm = SP_REG(PHY_REG_BASE, 8) & 0x3F;
-	do {
-		new_wdm = ori_wdm + (++trim_count);
-		SP_REG(PHY_REG_BASE, 8) = rgst_value | new_wdm;
-		// prn_string("\t WDM TRIM COUNT ="); prn_decimal(trim_count); prn_string("\n");
-	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
-
-	// CAL OFFSET PSD
-	new_wdm = ori_wdm;
-	right_psd = SAFE_MARGIN_VALUE - (psd * trim_count);
-	if (right_psd > 0xff) {
-		SP_REG(PHY_REG_BASE, 8) = rgst_value | ori_wdm;
-	} else {
-#ifdef DBG_DM
-		prn_string("\t 265<-ORI = ");
-		prn_decimal(right_psd);
-		prn_string(" PICO\n");
-#endif
-		for (offset_psd = 0; offset_psd < MAX_PSD; offset_psd++) {
-			if ((psd * offset_psd) > right_psd) {
-				offset_psd--;
-#ifdef DBG_DM
-				prn_string("\t DX");
-				prn_decimal(PHY_REG_BASE - 52);
-				prn_string(" OFFSET_PSD = ");
-				prn_byte(offset_psd);
-				prn_string("\n");
-#endif
-				if (ori_wdm >= offset_psd)
-					new_wdm = ori_wdm - offset_psd;
-				else {
-#ifdef DBG_DM
-					prn_string("\t DX");
-					prn_decimal(PHY_REG_BASE - 52);
-					prn_string(" WARNING!!! ori_wdm < offset_psd, force set wdm = 0\n");
-					prn_string(" OFFSET_PSD = ");
-					prn_byte(ori_wdm);
-					prn_string("\n");
-#endif
-					new_wdm = 0;
-				}
-				break;
-			}
-		}
-#ifdef DBG_DM
-		prn_string("\t DX");
-		prn_decimal(PHY_REG_BASE - 52);
-		prn_string(" ORI_BDD_WDM =");
-		prn_byte(ori_wdm);
-		prn_string("\n");
-		prn_string("\t DX");
-		prn_decimal(PHY_REG_BASE - 52);
-		prn_string(" NEW_BDD_WDM =");
-		prn_byte(new_wdm);
-		prn_string("\n");
-#endif
-		SP_REG(PHY_REG_BASE, 8) = rgst_value | new_wdm;
-	}
-}
-
-// ***********************************************************************
-// * FUNC      : dram_refine_flow
-// * PARAM     : int
-// * PURPOSE   : refine DPCU traing result for DRAM0/DRAM1
-// ***********************************************************************
-int dram_refine_flow(unsigned int dram_id)
-{
-	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0  ;
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-	// refine WDM
-	trim_WDM(PHY_BASE_GRP + 2);
-	trim_WDM(PHY_BASE_GRP + 3);
-
-	return PASS;
-}
-#endif
 
 #if (defined(DRAMSCAN) || defined(SISCOPE))
 
 #define FAE_DEBUG
 // #define DEBUG_BDD
-#ifdef SW_REFINE_DT_RESULT
-unsigned int get_unit_pico(unsigned int PHY_REG_BASE)
+
+void ddr_clk_info(void)
 {
-	unsigned int wdq_iprd = 0;
-	unsigned int pico = 0;
-	const unsigned int MAX_PSD = 100;
-
-	// Get IPRD
-	wdq_iprd = ((SP_REG(PHY_REG_BASE, 3) >> 24) & 0xFF);
-#ifdef DEBUG_BDD
-	prn_string("\tDX");
-	prn_decimal(PHY_REG_BASE - 52);
-	prn_string(" IPRD = ");
-	prn_byte(wdq_iprd);
-	prn_string("\n");
-#endif
-
-	// Cal each PSD pico second
-	for (pico = 1; pico < MAX_PSD; pico++) {
-		if ((pico * wdq_iprd) > IPRD_VALUE) {
-			pico--;
-			break;
-		}
-	}
-
-	return pico;
+	const int clk = ((SP_REG(50, 12) & 0x7F) * 27) >> 1;
+	prn_string("DDR CLOCK: ");
+	prn_decimal(clk);
+	prn_string(" MHz\n");
 }
-#endif
-
-int dram_test_bdd(unsigned int group, unsigned int regs, unsigned int shift_bit, int trim)
-{
-	unsigned int trim_count = 0;
-	unsigned int ori_bdd_value = 0;
-	unsigned int new_bdd_value = 0;
-	int i;
-
-	// BACKUP ORIGINAL REGS VALUE WITHOUT TARGET BDD
-	rgst_value = SP_REG(group, regs) & (~(0x3F << shift_bit));
-
-	// GET TARGET VALUE
-	ori_bdd_value = (SP_REG(group, regs) >> shift_bit) & 0x3F;
-
-#ifdef DEBUG_BDD
-	prn_string("\n");
-	prn_string("\t GROUP =");
-	prn_dword(group);
-	prn_string("\t REGS =");
-	prn_dword(regs);
-	prn_string(", shift_bit =");
-	prn_dword(shift_bit);
-	prn_string("\n");
-	prn_string("\t ORI_BDD =");
-	prn_dword(SP_REG(group, regs);
-		  prn_string("\t ORI_BDD(NO_TARGET_BDD) ="); prn_dword(rgst_value);
-		  prn_string("\t TARGET_BDD ="); prn_dword(ori_bdd_value);
-#endif
-
-		  // FIND FAILED EDGE
-	do {
-		trim_count++;
-		new_bdd_value = ori_bdd_value + (trim_count * trim);
-		if (new_bdd_value > 0x3F) {
-#ifdef FAE_DEBUG
-			prn_string("pass");
-			prn_string(",");
-			prn_string("pass");
-			prn_string(",");
-#endif
-			break;
-		}
-		SP_REG(group, regs) = rgst_value | (new_bdd_value << shift_bit);
-		// prn_string("\t TRIM COUNT ="); prn_decimal(trim_count); prn_string("\n");
-	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
-	trim_count--;
-
-#ifdef DEBUG_BDD
-	prn_string(" TOTAL TRIM ="); prn_decimal(trim_count); prn_string("\n");
-#endif
-
-	SP_REG(group, regs) = rgst_value | (ori_bdd_value << shift_bit);
-
-
-				      return trim_count;
-}
-
-
-int dram_test_addr(int trim)
-{
-	unsigned int trim_count = 0;
-	unsigned int ck_value = 0;
-	unsigned int ac_value = 0;
-	unsigned int ack_value = 0;
-	unsigned int ori_ddl_value = 0;
-	const unsigned int group = 50;
-	const unsigned int regs = 17;
-	int i;
-
-	// BACKUP ORIGINAL REGS VALUE
-	ori_ddl_value = SP_REG(group, regs);
-
-	// GET TARGET VALUE
-	ck_value = (SP_REG(group, regs) >>  0) & 0x3F;
-	ac_value = (SP_REG(group, regs) >>  8) & 0x3F;
-	ack_value = (SP_REG(group, regs) >> 16) & 0x3F;
-#ifdef DEBUG_BDD
-	prn_string("\nCK =");
-	prn_dword(ck_value);
-	prn_string("AC =");
-	prn_dword(ac_value);
-	prn_string("ACK =");
-	prn_dword(ack_value);
-#endif
-
-	// FIND FAILED EDGE
-	do {
-		trim_count++;
-		ac_value += trim;
-		ack_value += trim;
-		if (ac_value > 0x3F || ack_value > 0x3F) {
-#ifdef FAE_DEBUG
-			prn_string("pass");
-			prn_string(",");
-			prn_string("pass");
-			prn_string(",");
-#endif
-			break;
-		}
-		SP_REG(group, regs) = (ck_value << 0) | (ac_value << 8) | (ack_value << 16);
-#ifdef DEBUG_BDD
-		prn_string(" DDL VALUE =");
-		prn_dword(SP_REG(group, regs);
-#endif
-	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
-	trim_count--;
-
-#ifdef DEBUG_BDD
-	prn_string(" TOTAL TRIM =");
-	prn_decimal(trim_count);
-	prn_string("\n");
-#endif
-
-	SP_REG(group, regs) = ori_ddl_value;
-
-	return trim_count;
-}
-
-void dram_shift_bdd(unsigned int group, unsigned int reg, unsigned int shift, unsigned int psd)
-{
-	unsigned int tmp = 0;
-#ifdef DEBUG_BDD
-	prn_string("\tBEFORE:");
-	prn_dword(SP_REG(group, reg);
-#endif
-
-		  tmp = (SP_REG(group, reg) >> shift) & 0x3F;
-#ifdef DEBUG_BDD
-		  prn_string("\tORI:"); prn_byte(tmp); prn_string("\n");
-#endif
-		  tmp += psd;
-		  tmp &= 0x3F;
-#ifdef DEBUG_BDD
-		  prn_string("\tNEW:"); prn_byte(tmp); prn_string("\n");
-#endif
-		  SP_REG(group, reg) &= ~(0x3F << shift);
-		  SP_REG(group, reg) |= (tmp << shift);
-
-#ifdef DEBUG_BDD
-		  prn_string("\tAFTER:"); prn_dword(SP_REG(group, reg); prn_string("\n");
-#endif
-}
-
-	  void dump_ddr_eye_result(int window, char *msg)
-{
-	prn_string(msg);
-	prn_decimal(window);
-	prn_string(" pico second\n");
-}
-
-#ifndef SAFE_MARGIN_VALUE
-int dram_test_flow(unsigned int dram_id)
-{
-	return 1;
-}
-#else
-int dram_test_flow(unsigned int dram_id)
-{
-	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0  ;
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-	unsigned int i = 0, j = 0, g_max = 0, r_max = 0, tmp = 0, trim_count = 0;
-	unsigned int GROUPS[2] = {PHY_BASE_GRP + 2, PHY_BASE_GRP + 3};
-	unsigned int DX_PICO_PSD[2] = {0};
-	unsigned int DX_SHIFT_PSD[2] = {0};
-	unsigned int SHIFT_ADDR_PSD[2] = {0};
-	unsigned int pico = 0, bdd = 0;
-	unsigned int BDD_LEFT_RESULT[2][19] = {0};
-	unsigned int BDD_RIGHT_RESULT[2][19] = {0};
-	const int FOUND_LEFT_EDGE = 1;
-	const int FOUND_RIGHT_EDGE = -1;
-	static const unsigned int REGS[][2] = {
-		// reg, shift_bit, offset_psd
-		{11,  0}, // RDQS_BDD,0
-		{12,  0}, // RDQ0_BDD,1
-		{12,  8}, // RDQ1_BDD,2
-		{12, 16}, // RDQ2_BDD,3
-		{12, 24}, // RDQ3_BDD,4
-		{13,  0}, // RDQ4_BDD,5
-		{13,  8}, // RDQ5_BDD,6
-		{13, 16}, // RDQ6_BDD,7
-		{13, 24}, // RDQ7_BDD,8
-		{ 8,  0}, // WDM_BDD,9
-		{ 8,  8}, // WDQS_BDD,10
-		// { 8, 16},// WDQS_OE_BDD
-		{ 9,  0}, // WDQ0_BDD
-		{ 9,  8}, // WDQ1_BDD
-		{ 9, 16}, // WDQ2_BDD
-		{ 9, 24}, // WDQ3_BDD
-		{10,  0}, // WDQ4_BDD
-		{10,  8}, // WDQ5_BDD
-		{10, 16}, // WDQ6_BDD
-		{10, 24}, // WDQ7_BDD
-	};
-
-	const static char *bdd_name[19] = {
-		"RDQS_BDD",
-		"RDQ0_BDD",
-		"RDQ1_BDD",
-		"RDQ2_BDD",
-		"RDQ3_BDD",
-		"RDQ4_BDD",
-		"RDQ5_BDD",
-		"RDQ6_BDD",
-		"RDQ7_BDD",
-		"WDM_BDD ",
-		"WDQS_BDD",
-		"WDQ0_BDD",
-		"WDQ1_BDD",
-		"WDQ2_BDD",
-		"WDQ3_BDD",
-		"WDQ4_BDD",
-		"WDQ5_BDD",
-		"WDQ6_BDD",
-		"WDQ7_BDD"
-	};
-
-
-	g_max = sizeof(GROUPS) >> 3;
-	r_max = sizeof(REGS) >> 3;
-
-	// CHECK APHY INIT RESULT
-	i = (SP_REG(PHY_BASE_GRP, 2) >> 1) & 0x01;
-	if (i == 1) {
-		prn_string("<|> \tAPHY INIT ERROR...IC or DDR need to rework!\n");
-		DPCU_DT_RESULT_DUMP(0);
-		return FAIL;
-	}
-
-	// CHECK DT INIT RESULT
-	// prn_string("\n");
-	i = (SP_REG(PHY_BASE_GRP + 1, 0) >> 8) & 0x3F;
-	if (i != 0) {
-		prn_string("<|> \tDT   INIT ERROR...IC or DDR need to rework!\n");
-		DPCU_DT_RESULT_DUMP(0);
-		return FAIL;
-	}
-
-
-#ifdef SW_REFINE_DT_RESULT
-	// CAL 1 PSD = ? PICO
-	for (i = 0; i <= g_max; i++) {
-		pico = get_unit_pico(GROUPS[i]);
-		DX_PICO_PSD[i] = pico;
-#ifdef FAE_DEBUG
-		prn_string("<|> \tDX");
-		prn_decimal(i);
-		prn_string(" 1 PSD = ");
-		prn_byte(DX_PICO_PSD[i]);
-		prn_string(" PICO\n");
-#endif
-	}
-#endif
-
-
-	// test +
-#ifdef FAE_DEBUG
-	prn_string("\n\nFIND DQS/DQ SETUP TIME\n");
-#endif
-
-	for (i = 0; i <= g_max; i++) {
-		for (j = 0; j < r_max; j++) {
-#ifdef FAE_DEBUG
-			prn_string("<|> \t");
-			prn_string(" DX");
-			prn_decimal(i);
-			prn_string(bdd_name[j]);
-			prn_string(" SETUP TIME,");
-#endif
-			trim_count = dram_test_bdd(GROUPS[i], REGS[j][0], REGS[j][1], FOUND_LEFT_EDGE);
-			BDD_LEFT_RESULT[i][j] = trim_count;
-#ifdef FAE_DEBUG
-			prn_decimal(trim_count * DX_PICO_PSD[i]);
-			prn_string(" pico;\n");
-#endif
-		}
-	}
-
-	// shift +
-	unsigned int psd = 0;
-	const unsigned int MAX_PSD = 100;
-
-#ifdef FAE_DEBUG
-	// prn_string("\n\n SHIFT:"); prn_decimal(SAFE_MARGIN_VALUE); prn_string("\n");
-#endif
-	for (i = 0; i <= g_max; i++) {
-		for (psd = 1; psd < MAX_PSD; psd++) {
-			if ((psd * DX_PICO_PSD[i]) >= SAFE_MARGIN_VALUE) {
-				psd--;
-				DX_SHIFT_PSD[i] = psd;
-				break;
-			}
-		}
-
-#ifdef FAE_DEBUG
-		prn_string("<|> \t DX");
-		prn_decimal(i);
-		prn_string(" SHIFT +");
-		prn_decimal(psd * pico);
-		prn_string(" PICO;\n");
-#endif
-		for (j = 0; j < r_max; j++) {
-#ifdef DEBUG_BDD
-			prn_string("\tBEFORE:");
-			prn_dword(SP_REG(GROUPS[i], REGS[j][0]));
-#endif
-
-			tmp = (SP_REG(GROUPS[i], REGS[j][0]) >> REGS[j][1]) & 0x3F;
-#ifdef DEBUG_BDD
-			prn_string("\tORI:");
-			prn_byte(tmp);
-			prn_string("\n");
-#endif
-			tmp += DX_SHIFT_PSD[i];
-#ifdef DEBUG_BDD
-			prn_string("\tNEW:");
-			prn_byte(tmp);
-			prn_string("\n");
-#endif
-			SP_REG(GROUPS[i], REGS[j][0]) &= ~(0x3F << REGS[j][1]);
-			SP_REG(GROUPS[i], REGS[j][0]) |= (tmp << REGS[j][1]);
-
-#ifdef DEBUG_BDD
-			prn_string("\tAFTER:");
-			prn_dword(SP_REG(GROUPS[i], REGS[j][0]); prn_string("\n");
-#endif
-		}
-	}
-
-
-	// test -
-#ifdef FAE_DEBUG
-	prn_string("\n\nFIND DQS/DQ HOLD TIME:\n");
-#endif
-	for (i = 0; i <= g_max; i++) {
-		for (j = 0; j < r_max; j++) {
-#ifdef FAE_DEBUG
-			prn_string("<|> \t");
-			prn_string(" DX");
-			prn_decimal(i);
-			prn_string(bdd_name[j]);
-			prn_string(" HOLD TIME,");
-#endif
-			trim_count = dram_test_bdd(GROUPS[i], REGS[j][0], REGS[j][1], FOUND_RIGHT_EDGE);
-			BDD_RIGHT_RESULT[i][j] = trim_count;
-#ifdef FAE_DEBUG
-			prn_decimal(trim_count * DX_PICO_PSD[i]);
-			prn_string(" pico;\n");
-#endif
-		}
-	}
-
-
-	// shift -
-	for (i = 0; i <= g_max; i++) {
-#ifdef FAE_DEBUG
-		prn_string("<|> \t DX");
-		prn_decimal(i);
-		prn_string(" SHIFT -");
-		prn_decimal(DX_SHIFT_PSD[i]*pico);
-		prn_string(" PICO;\n");
-#endif
-		for (j = 0; j < r_max; j++) {
-#ifdef DEBUG_BDD
-			prn_string("\tBEFORE:");
-			prn_dword(SP_REG(GROUPS[i], REGS[j][0]);
-#endif
-
-				  tmp = (SP_REG(GROUPS[i], REGS[j][0]) >> REGS[j][1]) & 0x3F;
-#ifdef DEBUG_BDD
-				  prn_string("\tORI:"); prn_byte(tmp); prn_string("\n");
-#endif
-				  tmp -= DX_SHIFT_PSD[i];
-#ifdef DEBUG_BDD
-				  prn_string("\tNEW:"); prn_byte(tmp); prn_string("\n");
-#endif
-				  SP_REG(GROUPS[i], REGS[j][0]) &= ~(0x3F << REGS[j][1]);
-				  SP_REG(GROUPS[i], REGS[j][0]) |= (tmp << REGS[j][1]);
-
-#ifdef DEBUG_BDD
-				  prn_string("\tAFTER:"); prn_dword(SP_REG(GROUPS[i], REGS[j][0]); prn_string("\n");
-#endif
-		}
-	}
-
-	SHIFT_ADDR_PSD[0] = dram_test_addr(1);
-#ifdef FAE_DEBUG
-	prn_string("FIND AC/ACK SETUP TIME:\n");
-	prn_string("<|> \t ");
-	prn_decimal(SHIFT_ADDR_PSD[0]*pico);
-	prn_string(" PICO;\n");
-#endif
-
-	// test report
-#ifdef FAE_DEBUG
-	prn_string("\n");
-	prn_string("BDD WINDOW REPORT:\n");
-#endif
-	const unsigned int bdd_left_margin 		=	85;
-	const unsigned int bdd_right_margin		=	95;
-	const unsigned int addr_left_margin		=	245;
-	const unsigned int addr_right_margin	=	170;
-	int dump_debug = 0;
-	int isAllPassed = 1;
-
-	// check addr
-	psd = SHIFT_ADDR_PSD[0] * pico;
-	prn_string("\nCHECK ADDRESS WINDOW:\n"); // prn_decimal(psd); prn_string(" pico\n");
-	dump_ddr_eye_result(psd, "\tADDRESS COMMAND: ");
-	if (addr_left_margin > psd) {
-		isAllPassed = 0;
-	}
-	// check R/W window
-	const unsigned char DX_NAME[][5] = {"LOW", "HIGH"};
-	for (i = 0; i <= g_max; i++) {
-		prn_string("CHECK ");
-		prn_string(DX_NAME[i]);
-		prn_string(" BYTE:\n");
-		// check DX0 read setup time
-		psd = BDD_RIGHT_RESULT[i][0] * DX_PICO_PSD[i];
-		// prn_string("RS_WIN="); prn_decimal(psd); prn_string("\n");
-		dump_ddr_eye_result(psd, "\tREAD SETUP TIME: ");
-		if (bdd_left_margin > psd) {
-			isAllPassed = 0;
-		}
-
-		// check DX1 read hole time
-		psd = BDD_LEFT_RESULT[i][0] * DX_PICO_PSD[i];
-		// prn_string("RH_WIN="); prn_decimal(psd); prn_string("\n");
-		dump_ddr_eye_result(psd, "\tREAD HOLD TIME: ");
-		if (bdd_left_margin > psd) {
-			isAllPassed = 0;
-		}
-
-		// check DX0 write setup time
-		psd = BDD_RIGHT_RESULT[i][10] * DX_PICO_PSD[i];
-		// prn_string("WS_WIN="); prn_decimal(psd); prn_string("\n");
-		dump_ddr_eye_result(psd, "\tWRITE SETUP TIME: ");
-		if (bdd_left_margin > psd) {
-			isAllPassed = 0;
-		}
-
-		// check DX1 write hold time
-		psd = BDD_LEFT_RESULT[i][10] * DX_PICO_PSD[i];
-		dump_ddr_eye_result(psd, "\tWRITE HOLD TIME: ");
-		if (bdd_left_margin > psd) {
-			isAllPassed = 0;
-		}
-	}
-
-	if (1 == isAllPassed)
-		prn_string("[STATUS] GREAT!! DRAM WINDOW ALL PASSED!!\n");
-	else
-		prn_string("[STATUS] WARNING!! DRAM MARGIN NOT ENOUGH!!\n");
-
-	return isAllPassed;
-}
-#endif
 
 static int silent_dram_init(void)
 {
+	u32 mpb;
+
 	mpb = mp;
 	mp = 1;
-	int ret = dram_init(0) ;
-#ifndef DRAMSCAN
-#ifdef SW_REFINE_DT_RESULT
-	if (flag_SiScope == 0) {
-		dram_refine_flow(0);
-	}
-#endif
-#endif
+	int ret = dram_init(0);
 	mp = mpb;
 	return ret;
 }
 
-// #define DBG_SHOW_DRAMINIT_MSG
-// ***********************************************************************
-// * FUNC      : DRAM_SCAN
-// * PARAM     : dram_id
-// * PURPOSE   : do the DRAM_SCAN to findout the best parameters of
-//               SDCTRL and DDR_PHY
-// * RGST field: SDCTRL System Timing
-//     [30:25] : Read Data Path delay 1 cycles
-//     [24:20] : DQS IN delay cycle number =
-//     [19:16] : SUB_INTERNAK_RL = 0
-//     [11: 8] : WL_CNT
-// ***********************************************************************
-void DRAM_SCAN(unsigned int dram_id)
+void dram_scan(unsigned int dram_id)
 {
-	unsigned int        idx                 ;
-	int	    ret                 ;
-	unsigned int        rec_idx             ;
-	unsigned int        rgst_value          ;
+	unsigned int idx;
+	int ret;
+	unsigned int rec_idx = 0;
+	unsigned int SDC_BASE_GRP, PHY_BASE_GRP;
+	int mpb;
 
-	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0      ;
+	unsigned int sdc_str_dqs_in;
+	unsigned int sdc_ext_cl_cnt;
+	unsigned int sdc_int_wl_cnt;
 
-	unsigned int        sdc_str_dqs_in      ;   // sdctrl - internal STR_DQS_IN
-	unsigned int        sdc_ext_cl_cnt      ;   // sdctrl - internal EXTRA_CL_CNT
-	unsigned int        sdc_int_wl_cnt      ;   // sdctrl - internal WL_CNT
+	unsigned int cpu_test_result;
+	unsigned int trim_test_result;
 
-	unsigned int        cpu_test_result     ;   // cpu simple write/read result
-	unsigned int        trim_test_result    ;   // trimmer random write/read result
+	unsigned int scan_pass_param[30];
+	unsigned int scan_pass_acack[30];
 
-	unsigned int        scan_pass_param[30] ;   // record max 20 parameters
-	unsigned int        scan_pass_acack[30] ;   // record max 20 parameters
+	unsigned int start_sdc_str_dqs_in;
+
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
-	for (rec_idx = 0 ; rec_idx < 30 ; rec_idx++) {
-		// reset record array
-		scan_pass_param[rec_idx] = 0 ;
-		scan_pass_acack[rec_idx] = 0 ;
-	}
+	memset((UINT8 *)scan_pass_param, 0, sizeof(scan_pass_param));
+	memset((UINT8 *)scan_pass_acack, 0, sizeof(scan_pass_acack));
 
-	int mpb = 0;
-	rec_idx = 0 ;
-	unsigned int start_sdc_str_dqs_in = 0;
 #ifdef MPEG_DRAM_DDR_1333
 	start_sdc_str_dqs_in = 14;
 #elif defined MPEG_DRAM_DDR_1600
@@ -2515,23 +1857,13 @@ void DRAM_SCAN(unsigned int dram_id)
 #ifdef PLATFORM_GEMINI
 #error "Now DRAM SCAN only support 1333/1600/1866, you should add other data rate parameters"
 #elif defined(PLATFORM_PENTAGRAM)
-/* Different implementation */
+	/* Different implementation */
 #endif
 #endif
 
-	// -------------------------------------------------------
-	// 1. for loop to findout str_dqs_in & ext_cl_cnt
-	// -------------------------------------------------------
-	// for( sdc_str_dqs_in=14 ; sdc_str_dqs_in<=18 ; sdc_str_dqs_in++ ){
 	for (sdc_str_dqs_in = start_sdc_str_dqs_in ; sdc_str_dqs_in <= start_sdc_str_dqs_in ; sdc_str_dqs_in++) {
-		// for( sdc_str_dqs_in=17 ; sdc_str_dqs_in<=17 ; sdc_str_dqs_in++ ){
-
 		for (sdc_ext_cl_cnt = 20 ; sdc_ext_cl_cnt <= 30 ; sdc_ext_cl_cnt++) {
-			// for( sdc_ext_cl_cnt=24 ; sdc_ext_cl_cnt<=25 ; sdc_ext_cl_cnt++ ){
-
 			for (sdc_int_wl_cnt = 8 ; sdc_int_wl_cnt <= 10 ; sdc_int_wl_cnt++) {
-				// for( sdc_int_wl_cnt=10 ; sdc_int_wl_cnt<=10 ; sdc_int_wl_cnt++ ){
-
 #ifndef DBG_SHOW_DRAMINIT_MSG
 				// mp = 1; // hide msg
 #endif
@@ -2569,17 +1901,17 @@ void DRAM_SCAN(unsigned int dram_id)
 				}
 
 				// clean dram content of test region and test result
-				cpu_test_result     = 0 ;
-				trim_test_result    = 0 ;
-				dram_fill_zero(TEST_LEN_0, dram_id) ;
+				cpu_test_result     = 0;
+				trim_test_result    = 0;
+				dram_fill_zero(TEST_LEN_0, dram_id);
 
 				// test-1 : simple CPU W/R test
-				cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) ;
+				cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
 
 				if (0 == cpu_test_result) {
 					// test-2 : random trimmer test (after cpu W/R test)
 					for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
-						trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100) ;
+						trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
 						// check trimmer test result
 						if (trim_test_result) {
 							if (idx == SCAN_TRIM_LEN) {
@@ -2588,8 +1920,7 @@ void DRAM_SCAN(unsigned int dram_id)
 								prn_string("\tSCAN=> Test Pass\n");
 								scan_pass_param[rec_idx] = SP_REG(SDC_BASE_GRP, 11);
 								scan_pass_acack[rec_idx] = SP_REG(PHY_BASE_GRP + 0, 17);
-								dram_test_flow(0);
-								rec_idx += 1 ;
+								rec_idx += 1;
 								mp = mpb;
 							}
 						} else {
@@ -2638,7 +1969,7 @@ void DRAM_SCAN(unsigned int dram_id)
 	} // end for - idx
 	prn_string("==================================================================================\n");
 	mp = mpb;
-} // end of DRAM_SCAN
+}
 
 void run_SiScope(void)
 {
@@ -2646,23 +1977,10 @@ void run_SiScope(void)
 	gAC = DPCU_AC0BD;
 	gACK = DPCU_ACK0BD;
 	gCK = DPCU_CK0BD;
-	// for(gAC=0; gAC<=0; gAC++)
-	// for(gACK=0; gACK<=0; gACK++)
-	// for(gCK=0; gCK<=15; gCK++)
-	{
-#if 0
-		mp = 0;
-		prn_string("\n\n##################################################################################\n");
-		prn_string("AC=");
-		prn_decimal(gAC);
-		prn_string("; ACK=");
-		prn_decimal(gACK);
-		prn_string("; CK=");
-		prn_decimal(gCK);
-		prn_string(";\n");
-#endif
-		DRAM_SCAN(0);
-	}
+
+	dram_scan(0);
+	ddr_clk_info();
+
 	prn_string("\n\n==================================run_SiScope END================================================\n");
 	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
 	gSTR_DQS_IN = SD0_STR_DQS_IN;
@@ -2684,21 +2002,6 @@ int getSquare(int base, int square)
 	return value;
 }
 
-int get_ddr_data_rate()
-{
-	return ((SP_REG(50, 12) & 0x7F) * 27);
-}
-
-void dump_now_ddr_clk_info()
-{
-	const int dataRate = get_ddr_data_rate();
-	prn_string("<|> Now DDR CLOCK is ");
-	prn_decimal(dataRate >> 1);
-	prn_string(" MHz(");
-	prn_decimal(dataRate);
-	prn_string("MT/s)\n");
-}
-
 int get_int(int len, int start, char *str)
 {
 	int i = 0, rate = 0;
@@ -2709,123 +2012,6 @@ int get_int(int len, int start, char *str)
 	return rate;
 }
 
-void check_stress_test_with_increase_freq()
-{
-	char input = '\0';
-	int i = 0, rate = 0;
-	int ret = 0;
-	int flag = 0;
-
-	do {
-		prn_string("\n*Would you like to test incrementing or decrementing ddr freq?(y/n)\n");
-		prn_string("\t[y]: do test with incrementing freq\n");
-		prn_string("\t[n]: do test without incrementing freq\n");
-		input = sp_getChar();
-		if ('y' == input || 'Y' == input) {
-			prn_string("*please input percent of incrementing or decrementing ddr freq:\n");
-			unsigned char percent[5] = {0};
-			int len = sp_getString(percent);
-			rate = get_int(len, 0, percent);
-			prn_string("you input ");
-			prn_decimal(rate);
-			prn_string(" %\n");
-			const int dataRate = get_ddr_data_rate();
-			int increaseFreq = dataRate * rate / 100;
-			int offsetMPLL = (increaseFreq / 27) + 1;
-			int minMPLL = n_MPLL_DIV - offsetMPLL;
-			int maxMPLL = n_MPLL_DIV + offsetMPLL;
-			for (i = minMPLL; i <= maxMPLL; i++) {
-				gMPLL_DIV = i;
-				silent_dram_init();
-				dump_now_ddr_clk_info();
-				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
-				while (0 > ret) {;}
-			}
-
-#if 0   /* keep testing max. frequency forever */
-			gMPLL_DIV = maxMPLL;
-			silent_dram_init();
-			dump_now_ddr_clk_info();
-			while (1) {
-				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
-				while (0 > ret) {;}
-			}
-#endif
-#if 0   /* keep testing min. frequency forever */
-			gMPLL_DIV = minMPLL;
-			silent_dram_init();
-			dump_now_ddr_clk_info();
-			while (1) {
-				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
-				while (0 > ret) {;}
-			}
-#endif
-#if 1   /* keep testing max. and min. frequencies forever */
-			while (1) {
-				gMPLL_DIV = minMPLL;
-				silent_dram_init();
-				dump_now_ddr_clk_info();
-				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
-				while (0 > ret) {;}
-				gMPLL_DIV = maxMPLL;
-				silent_dram_init();
-				dump_now_ddr_clk_info();
-				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
-				while (0 > ret) {;}
-			}
-#endif
-
-			// restore
-			gMPLL_DIV = n_MPLL_DIV;
-			silent_dram_init();
-		} else if ('n' == input || 'N' == input) {
-			prn_string("\n*Loop Test?(y/n)\n");
-			input = sp_getChar();
-			if ('y' == input || 'Y' == input)
-				flag |= MEMORY_RW_FLAG_LOOP;
-
-			prn_string("\n*Exit, when test failed?(y/n)\n");
-			input = sp_getChar();
-			if ('y' == input || 'Y' == input)
-				flag |= MEMORY_RW_FLAG_EXIT;
-
-			dump_now_ddr_clk_info();
-			ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | flag);
-		}
-	} while (0);
-}
-
-void check_stress_test()
-{
-	char input = '\0';
-	do {
-
-		prn_string("\n\n*Would you like to run stress test?(y/n)\n");
-		input = sp_getChar();
-		if ('y' == input || 'Y' == input) {
-			check_stress_test_with_increase_freq();
-		} else if ('n' == input || 'N' == input) {
-			break;
-		}
-	} while (1);
-}
-
-void check_ddr_eye_window()
-{
-	char input = '\0';
-	do {
-		prn_string("\n\n*Would you like to run DDR EYE WINDOW ANALYSIS?(y/n)\n");
-		input = sp_getChar();
-		if ('y' == input || 'Y' == input) {
-			prn_string("\n\n===============DDR EYE ANALYSIS START=================\n");
-			dram_test_flow(0);
-			prn_string("\n\n===============DDR EYE ANALYSIS DO====================\n");
-		} else if ('n' == input || 'N' == input) {
-			break;
-		}
-	} while (0);
-}
-
 void check_run_siscope()
 {
 	char input = '\0';
@@ -2833,9 +2019,7 @@ void check_run_siscope()
 		prn_string("\n\n*Would you like to run SISCOPE?(y/n)\n");
 		input = sp_getChar();
 		if ('y' == input || 'Y' == input) {
-			flag_SiScope = 1;
 			run_SiScope();
-			flag_SiScope = 0;
 		} else if ('n' == input || 'N' == input) {
 			break;
 		}
@@ -2845,7 +2029,6 @@ void check_run_siscope()
 
 int dram_init_main()
 {
-	int ret, i;
 	unsigned int temp_value = 0;
 
 	// init params
@@ -2856,7 +2039,6 @@ int dram_init_main()
 	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
 	gSTR_DQS_IN = SD0_STR_DQS_IN;
 	gWL_CNT = WL_CNT;
-	gMPLL_DIV = n_MPLL_DIV;
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
@@ -2868,22 +2050,14 @@ int dram_init_main()
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 
 #ifdef PLATFORM_PENTAGRAM
-// #error "TBD"
+	// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
 	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
 #endif
 
-	silent_dram_init();
-	// dump DDR INDO
-	dump_now_ddr_clk_info();
-	prn_string("<|> Now DDR SIZE is 2Gb\n");
-
-	// start test
 	do {
 		check_run_siscope();
-		check_stress_test();
-		check_ddr_eye_window();
 	} while (1);
 	while (1) {;}
 #endif
