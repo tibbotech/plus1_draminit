@@ -1,39 +1,18 @@
+/*
+ * C code entry: dram_init_main();
+ */
+
 #include <types.h>
 #include <common.h>
 #include <config.h>
 #include <dram_param.h>
 
-/*
- * Flow
- * ------------------------
- * start.S
- * dram_init_main()                    - c code entry
- *     dram_init(0)                    - init dram 0
- *       1. dram_booting_flow()        - ddr phy init
- *             do_system_reset_flow()
- *       2. dram_training_flow()       - ddr phy training
- *             DPCU_CMD_ISSUE_SW_CMD()
- *       3. SDCTRL_TRIMMER_TEST_()     - run trimmer test to verify dram init ok
- *
- * DPCU_DT_RESULT_DUMP()              - print/dump dpcu info
- */
-
-// #define SUPPORT_DRAM1   // dram 1
-
-// ***********************************************************************
-// Setting DRAM_INIT_DEBUG to 1 causes the system to print
-// debug messages or not. If set to 0 all DRAM_INIT messages will be suppressed instead.
-// Dumping all debug messages to UART will cause booting speed to slowdown
-// ***********************************************************************
-// #define DRAMINIT_BIN_REL_DATE "draminit.bin release date 2016/12/01:2300\n"
-#define DRAMINIT_BIN_REL_DATE "\n\nDRAM STRESS TEST TOOL, release date 2017/12/18:1700\n"
-
 // #define DRAM_INIT_DEBUG 0 // defined in Makefile: please use "make debug"
 
-#ifdef          CSIM_ASIC
-#define ASIC_CSIM
-#elif defined   CSIM_FPGA
-#define SDRAM_FPGA
+#ifdef	CSIM_ASIC
+#define	ASIC_CSIM
+#elif	defined(CSIM_FPGA)
+#define	SDRAM_FPGA
 #else
 #error Please define => simulation type
 #endif
@@ -52,97 +31,70 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 #define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
 #endif
 
-// DRAM 0/1 size is 2Byte width
-#define DRAM0_BASE_ADDR     0x00000000
-#define DRAM1_BASE_ADDR     0x10000000
+#define TEST_LEN_0		(4 << 10)
 
-#define DRAM_0_SDC_REG_BASE     33
-#define DRAM_0_PHY_REG_BASE     50
-#define DRAM_1_SDC_REG_BASE     46
-#define DRAM_1_PHY_REG_BASE     49
-
-#ifdef SDRAM0_SIZE_2Gb
-#define TEST_LEN                (256 << 20) // 0x10000000 // 256MB
+#ifdef SDRAM0_SIZE_256Mb
+#define TEST_LEN_ALL		(32 << 20)
+#elif defined(SDRAM0_SIZE_512Mb)
+#define TEST_LEN_ALL		(64 << 20)
 #elif defined(SDRAM0_SIZE_1Gb)
-#define TEST_LEN                (128 << 20)
+#define TEST_LEN_ALL		(128 << 20)
+#elif defined(SDRAM0_SIZE_2Gb)
+#define TEST_LEN_ALL		(256 << 20)
+#elif defined(SDRAM0_SIZE_4Gb)
+#define TEST_LEN_ALL		(512 << 20)
+#elif defined(SDRAM0_SIZE_8Gb)
+#define TEST_LEN_ALL		(1024 << 20)
 #else
-#error Please assign TEST_LEN
+#error Please assign TEST_LEN_ALL
 #endif
 
-#define SCAN_TRIM_LEN           5
+#define SDRAM0_SIZE		TEST_LEN_ALL
+#define SDRAM1_SIZE		SDRAM0_SIZE
+static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
+static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
 
+#define DRAM_0_SDC_REG_BASE	33
+#define DRAM_0_PHY_REG_BASE	50
+#define DRAM_1_SDC_REG_BASE	0	/* N/A */
+#define DRAM_1_PHY_REG_BASE	0	/* N/A */
 
-// call external function
-// extern void RID_PASS(void);
-// extern void RID_FAIL(void);
+#define SCAN_TRIM_LEN		5
 
-// --- internal function declaration ---
-int dram_booting_flow(unsigned int DRAM_ID)        ;
-int dram_training_flow(unsigned int DRAM_ID)        ;
-void select_SDC_PHY_GRP(unsigned int DRAM_ID, unsigned int *sdc, unsigned int *phy);
+static unsigned int rgst_value = 0;
+static unsigned int aphy_select_value = 0;
+static unsigned int ckobd_training_flag = 0;
+static unsigned int ckobd_re_training_number = 0;
 
-#ifdef SW_REFINE_DT_RESULT
-void DRAM_WRITE_CLEAN(unsigned int, unsigned int)    ;
-int DRAM_RW_CHECK(unsigned int value, unsigned int answer, int debug);
-int DRAM_SEQUENTIAL_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug);
-int DRAM_RANDOM_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug);
-int DRAM_INVERT_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug);
-int do_stress_test(unsigned int test_len, int isDebug, int loop, int exit);
-int dram_refine_flow(unsigned int DRAM_ID);
-void trim_WDM(unsigned int PHY_REG_BASE);
-#endif
-
-#if (defined(DRAMSCAN) || defined(SISCOPE))
-void check_ddr_eye_window();
-void check_stress_test();
-void check_run_siscope();
-void dump_now_ddr_clk_info();
-int getSquare(int base, int square);
-int silent_dram_init();
-unsigned int get_unit_pico(unsigned int PHY_REG_BASE);
-void DRAM_SCAN(unsigned int)                  ;
-int dram_test_flow(unsigned int)                  ;
-#endif
-
-unsigned int        rgst_value     = 0;
-unsigned int        aphy_select_value     = 0;
-unsigned int        ckobd_training_flag      = 0;
-unsigned int        ckobd_re_training_number = 0;
-
-unsigned int        data_byte_0_RDQSG_left_total_tap     = 0;
-unsigned int        data_byte_0_RDQSG_right_total_tap    = 0;
-unsigned int        data_byte_1_RDQSG_left_total_tap     = 0;
-unsigned int        data_byte_1_RDQSG_right_total_tap    = 0;
-unsigned int 		gAC 			=	 0;
-unsigned int 		gACK			=	 0;
-unsigned int 		gCK				=	 0;
-unsigned int 		gEXTRA_CL_CNT	=	 0;
-unsigned int 		gSTR_DQS_IN		=	 0;
-unsigned int 		gWL_CNT			=	 0;
-unsigned int 		gMPLL_DIV		=	 0;
-unsigned char       gResetMPLL      =    0;
-unsigned char       gSiScopeDebug   =    0;
+static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
+static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
+static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
+static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
+static unsigned int gAC = 0;
+static unsigned int gACK = 0;
+static unsigned int gCK = 0;
+static unsigned int gEXTRA_CL_CNT = 0;
+static unsigned int gSTR_DQS_IN = 0;
+static unsigned int gWL_CNT = 0;
+static unsigned int gMPLL_DIV = 0;
+static unsigned char gResetMPLL = 0;
+static unsigned char gSiScopeDebug = 0;
+static unsigned int flag_SiScope = 0;
+static u32 mpb;
 u32 mp;
-u32 mpb;
-unsigned int flag_SiScope = 0;
 
-void select_SDC_PHY_GRP(unsigned int DRAM_ID, unsigned int *sdc, unsigned int *phy)
+void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy)
 {
-	// -------------------------------------------------------
-	// 0. SDCTRL / DDR_PHY RGST GRP selection
-	// -------------------------------------------------------
-	switch (DRAM_ID) {
-	case 0: {
-		*sdc    =   DRAM_0_SDC_REG_BASE     ;
-		*phy    =   DRAM_0_PHY_REG_BASE     ;
-		break;
+	const unsigned int dram_sdc_reg_addr[] = {DRAM_0_SDC_REG_BASE, DRAM_1_SDC_REG_BASE};
+	const unsigned int dram_phy_reg_addr[] = {DRAM_0_PHY_REG_BASE, DRAM_1_PHY_REG_BASE};
+
+	if (dram_id < (sizeof(dram_sdc_reg_addr)/sizeof(dram_sdc_reg_addr[0]))) {
+		*sdc = dram_sdc_reg_addr[dram_id];
+		*phy = dram_phy_reg_addr[dram_id];
+	} else {
+		prn_string("Err: get_sdc_phy_addr, invalid dram_id\n");
+		while (1);
 	}
-	case 1: {
-		*sdc    =   DRAM_1_SDC_REG_BASE     ;
-		*phy    =   DRAM_1_PHY_REG_BASE     ;
-		break;
-	}
-	} // end switch
 }
 
 
@@ -165,10 +117,10 @@ void wait_loop(unsigned int wait_counter)
 
 // ***********************************************************************
 // * FUNC      : DPCU_DT_RESULT_DUMP
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : Dump DPCU Training information
 // ***********************************************************************
-void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
+void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 {
 	unsigned int SDC_BASE_GRP       = 0 ;
 	unsigned int PHY_BASE_GRP       = 0 ;
@@ -178,7 +130,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 	unsigned int only_dump_PSD      = 0 ;
 	unsigned int RDQS_IPRD_TAP_NO         = 0 ;
 
-	if (DRAM_ID == 0) {
+	if (dram_id == 0) {
 		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-0 delay line status -----\n\n") ;
 	} else {
 		prn_string("DPCU_DT_INFO : ----- DUMP DRAM-1 delay line status -----\n\n") ;
@@ -187,7 +139,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 	// -------------------------------------------------------
 	// 0. DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	// DUMP SSCPLL Speed
 	prn_string("DPCU_DT_INFO : \t********** DRAM SPEED **********\n") ;
@@ -741,15 +693,15 @@ void DPCU_DT_RESULT_DUMP(unsigned int DRAM_ID)
 
 // ***********************************************************************
 // * FUNC      : ASSERT_SDC_PHY_RESET
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : assert reset
 // ***********************************************************************
-void assert_sdc_phy_reset(unsigned int DRAM_ID)
+void assert_sdc_phy_reset(unsigned int dram_id)
 {
 #ifdef PLATFORM_PENTAGRAM
 // #error "TBD"
 #elif defined(PLATFORM_GEMINI)
-	if (DRAM_ID == 0) {
+	if (dram_id == 0) {
 		SP_REG(0, 17) |= (
 						 (1 << 14) | // SDCTRL0_RESET
 						 (1 << 16)   // DDR_PHY0_RESET
@@ -777,250 +729,151 @@ void release_sdc_phy_reset(void)
 
 // ***********************************************************************
 // * FUNC      : do_system_reset_flow
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : do SDC & PHY reset flow
 // ***********************************************************************
-void do_system_reset_flow(unsigned int DRAM_ID)
+void do_system_reset_flow(unsigned int dram_id)
 {
-	assert_sdc_phy_reset(DRAM_ID) ;
+	assert_sdc_phy_reset(dram_id) ;
 	wait_loop(1000) ;
 	release_sdc_phy_reset() ;
 } // end of do_system_reset_flow
 
+void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
+{
+	int idx;
+	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[dram_id]);
+
+	for (idx = 0 ; idx < (test_size / sizeof(unsigned int)) ; idx++) {
+		ram[idx] = 0;
+	}
+}
+
+int memory_rw_check(unsigned int value, unsigned int answer, int debug)
+{
+	int ret = 0;
+
+	if (value != answer) {
+		if (debug) {
+			prn_string("\tvalue: ");
+			prn_dword0(value);
+			prn_string(", expected: ");
+			prn_dword0(answer);
+			prn_string("\n");
+		}
+		ret = -1;
+	}
+	return ret;
+}
+
+int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
+{
+	int ret = 0;
+	unsigned int i;
+	unsigned int test_size_word = test_size >> 2;
+	const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
+	const int num_pattern = sizeof(pattern) / sizeof(pattern[0]);
+	unsigned int idx_pattern = 0;
+
+	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
+
+	// TODO: Use CBDMA.
+
+	dram_fill_zero(test_size, 0);
+
+	if (debug) {
+		prn_string("\t memory_rw_test(");
+	}
+	switch (test_case) {
+	case 0:
+		if (debug) {
+			prn_string("seq)");
+		}
+		for (i = 0 ; i < test_size_word ; i++) {
+			ram[i] = i;
+		}
+		break;
+	default:
+		if (debug) {
+			prn_string("random)");
+		}
+		for (i = 0 ; i < test_size_word ; i++) {
+			ram[i] = pattern[i % num_pattern];
+		}
+		break;
+	}
+
+	for (i = 0 ; i < test_size_word ; i++) {
+		switch (test_case) {
+		case 0:
+			ret = memory_rw_check(ram[i], i, debug);
+			break;
+		default:
+			ret = memory_rw_check(ram[i], pattern[i % num_pattern], debug);
+			break;
+		}
+
+		if (ret < 0) {
+			if (debug) {
+				prn_string(" fails\n");
+			}
+			ret = -1;
+			break;
+		}
+	}
+
+	if (ret == 0) {
+		if (debug) {
+			prn_string(" pass\n");
+		}
+	}
+
+	return ret ;
+}
+
+#define MEMORY_RW_FLAG_DBG	(1 << 0)
+#define MEMORY_RW_FLAG_LOOP	(1 << 1)
+#define MEMORY_RW_FLAG_EXIT	(1 << 2)
+int memory_rw_test(unsigned int test_len, int flag)
+{
+	int ret;
+	int is_dbg = flag & MEMORY_RW_FLAG_DBG;
+	int exit = flag & MEMORY_RW_FLAG_EXIT;
+	int test_case = 0;
+
+	do {
+		do {
+			ret = memory_rw_test_cases(test_case, test_len, is_dbg);
+			if ((ret < 0) && exit) {
+				return ret;
+			}
+			test_case++;
+			test_case %= 2;
+		} while (test_case != 0);
+	} while (flag & MEMORY_RW_FLAG_LOOP);
+
+	return 0;
+}
+
 // ***********************************************************************
 // * FUNC      : SDCTRL_TRIMMER_TEST
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : trigger SDC.trimmer 4 modes to do random DRAM access test
 // ***********************************************************************
-int SDCTRL_TRIMMER_TEST_(unsigned int DRAM_ID, unsigned int start_addr, unsigned int TEST_DATA_LENGTH)
+int SDCTRL_TRIMMER_TEST(unsigned int dram_id, unsigned int start_addr, unsigned int TEST_DATA_LENGTH)
 {
-	// CBDMA
-	// #define CBDMA0
-	// #define DEBUG
-	// #define DEBUG_ERROR
-#ifdef DEBUG
-	prn_string("\n[DRAM_SCAN] Trimmer-test by CBDMA !!!\n");
-#endif
-	volatile unsigned int *dram = 0;
-	unsigned int dram_value = 0;
+	// H/W trimmer has beem removed.
+	// Just run memory test.
 
-#ifdef CBDMA0
-	volatile unsigned int *sram = (volatile unsigned int *)0x9E800040; // CBDMA0
-	unsigned int DMA_GROUP = 26;
-	unsigned int CBDMA_SRAM_SIZE = TEST_DATA_LENGTH;
-#else
-	volatile unsigned int *sram = (volatile unsigned int *)0x9E820000; // CBDMA1
-	unsigned int DMA_GROUP = 27;
-	unsigned int CBDMA_SRAM_SIZE = TEST_DATA_LENGTH;
-#endif
-	unsigned int CURRENT_PROCESS_ADDR = 0;
-	unsigned int MAX_LOOP_TIMES = 100;
-	unsigned int watting_status_counter = 0;
-	unsigned int temp = 0;
-	unsigned int i = 0, j = 0, loop_time = 0;
-	unsigned int WAIT_TIMEOUT = 50000;
-	unsigned int DATA_BYTE = 4;
-	int isPassed = 1;
-	unsigned int DATA_PATTERN[7] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
-	unsigned int DATA_PATTERN_INDEX = 0;
-	const unsigned int DATA_PATTERNS = sizeof(DATA_PATTERN) >> 2;
-
-
-	// step1. SET DRAM ADDRESS
-	if (0 == DRAM_ID) {
-		dram = (volatile unsigned int *)(DRAM0_BASE_ADDR);
-	} else {
-		dram = (volatile unsigned int *)(DRAM1_BASE_ADDR);
-	}
-
-
-	for (loop_time = 0; loop_time < MAX_LOOP_TIMES; loop_time++) {
-		// SET DRAM START ADDDRESS
-		CURRENT_PROCESS_ADDR = (start_addr >> 2) + (loop_time * TEST_DATA_LENGTH);
-
-		// step2. SET SRAM VALUE & CLEAR DRAM DATA
-		// DEBUG
-#ifdef DEBUG
-		prn_string("SET SRAM VALUE & CLEAR DRAM DATA:\n");
-#endif
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			sram[i] = DATA_PATTERN[i % DATA_PATTERNS];
-			dram[CURRENT_PROCESS_ADDR + i] = 0;
-#ifdef DEBUG
-			prn_string("sram[");
-			prn_dword(i);
-			prn_string("]");
-			prn_string("=");
-			prn_dword(sram[i]);
-			prn_string("\n");
-#endif
-		}
-
-		// DEBUG
-#ifdef DEBUG
-		prn_string("before write DRAM Data by CBDMA:\n");
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			prn_string("dram[");
-			prn_dword(CURRENT_PROCESS_ADDR + i);
-			prn_string("]");
-			prn_string("=");
-			prn_dword(dram[CURRENT_PROCESS_ADDR + i]);
-			prn_string("\n");
-		}
-#endif
-
-
-		// step3. WRITE SRAM DATA TO DRAM
-		SP_REG(DMA_GROUP, 2) = TEST_DATA_LENGTH * DATA_BYTE; // data length
-#ifdef CBDMA0
-		SP_REG(DMA_GROUP, 3) = 0x00000040; // set data start addr from SRAM
-#else
-		SP_REG(DMA_GROUP, 3) = 0x00000000; // set data start addr from SRAM
-#endif
-		SP_REG(DMA_GROUP, 4) = &dram[CURRENT_PROCESS_ADDR]; // set data end addr to dram
-		SP_REG(DMA_GROUP, 8) = 0x000000FF; // set sdram size
-		SP_REG(DMA_GROUP, 1) = 0x00000101; // write data from internal sram to main memory
-
-		while (watting_status_counter < WAIT_TIMEOUT) {
-			temp = SP_REG(DMA_GROUP, 1) >> 8;
-			if (0 == temp) {
-				break;
-			}
-			watting_status_counter++;
-		}
-
-		if (watting_status_counter >= WAIT_TIMEOUT) {
-#ifdef DEBUG_ERROR
-			prn_string("CBDMA write to dram failed !!!\n");
-#endif
-			isPassed = 0;
-			break;
-		}
-
-
-		// DEBUG
-#ifdef DEBUG
-		prn_string("after write DRAM data by CBDMA:\n");
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			prn_string("dram[");
-			prn_dword(CURRENT_PROCESS_ADDR + i);
-			prn_string("]");
-			prn_string("=");
-			prn_dword(dram[CURRENT_PROCESS_ADDR + i]);
-			prn_string("\n");
-		}
-#endif
-
-		// step4. CLEAR SRAM DATA
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			sram[i] = 0;
-		}
-		// DEBUG
-#ifdef DEBUG
-		prn_string("CLEAR SRAM DATA:\n");
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			prn_string("sram[");
-			prn_dword(i);
-			prn_string("]");
-			prn_string("=");
-			prn_dword(sram[i]);
-			prn_string("\n");
-		}
-#endif
-
-
-		// step5. READ DATA FROM DRAM TO SRAM
-		watting_status_counter = 0;
-		SP_REG(DMA_GROUP, 2) = TEST_DATA_LENGTH * DATA_BYTE; // data length
-		SP_REG(DMA_GROUP, 3) = &dram[CURRENT_PROCESS_ADDR]; // set data start addr from DRAM
-#ifdef CBDMA0
-		SP_REG(DMA_GROUP, 4) = 0x00000040; // set data end addr to SRAM
-#else
-		SP_REG(DMA_GROUP, 4) = 0x00000000; // set data end addr to SRAM
-#endif
-		SP_REG(DMA_GROUP, 8) = 0x000000FF; // set sdram size
-		SP_REG(DMA_GROUP, 1) = 0x00000102; // read data from main memory to internal sram
-		while (watting_status_counter < WAIT_TIMEOUT) {
-			temp = SP_REG(DMA_GROUP, 1) >> 8;
-			if (0 == temp) {
-				break;
-			}
-			watting_status_counter++;
-		}
-		if (watting_status_counter >= WAIT_TIMEOUT) {
-#ifdef DEBUG_ERROR
-			prn_string("CBDMA read from dram failed !!!\n");
-#endif
-			isPassed = 0;
-			break;
-		}
-
-		// STEP6. VERIFY SRAM DATA
-#ifdef DEBUG
-		prn_string("VERIFY SRAM DATA:\n");
-#endif
-		for (i = 0 ; i < TEST_DATA_LENGTH ; i++) {
-#ifdef DEBUG
-			prn_string("sram[");
-			prn_dword(i);
-			prn_string("]:");
-			prn_dword(sram[i]);
-			prn_string("\n");
-#endif
-			if (DATA_PATTERN[i % DATA_PATTERNS] != sram[i]) {
-#ifdef DEBUG_ERROR
-				prn_string("VERIFY SRAM DATA FAILED!!\n");
-				prn_string("CURRENT_PROCESS_ADDR=");
-				prn_dword(CURRENT_PROCESS_ADDR);
-				prn_string("\nsram[");
-				prn_dword(i);
-				prn_string("]:");
-				prn_dword(sram[i]);
-				prn_string(", correct will be ");
-				prn_dword(DATA_PATTERN[i % DATA_PATTERNS]);
-				prn_string("\n");
-#endif
-				isPassed = 0;
-				break;
-			}
-		}
-
-		// step7. CLEAR SRAM & DRAM DATA
-		for (i = 0; i < TEST_DATA_LENGTH; i++) {
-			sram[i] = 0;
-			dram[CURRENT_PROCESS_ADDR + i] = 0;
-		}
-
-		// step8. CHECK RESULT
-		if (isPassed) {
-#ifdef DEBUG
-			prn_string("TRIM BY CBDMA PASSED\n\n");
-#endif
-		} else {
-#ifdef DEBUG
-			prn_string("TRIM BY CBDMA FAILED\n\n");
-#endif
-			break;
-		}
-
-	} // end for
-
-
-	// step9. CLEAR SRAM & DRAM DATA
-	for (i = 0; i < TEST_DATA_LENGTH; i++) {
-		sram[i] = 0;
-		dram[CURRENT_PROCESS_ADDR + i] = 0;
-	}
-	return isPassed;
-} // end function => SDCTRL_TRIMMER_TEST
-
+	return ((memory_rw_test(TEST_DATA_LENGTH, MEMORY_RW_FLAG_EXIT) < 0) ? 0 : 1);
+}
 
 // ***********************************************************************
 // * FUNC      : DPCU_CMD_ISSUE_SW_CMD
 // * PARAM     : CMD, RANK,BANK,ADDR, DATA_MASK, DATA, TRIGGER
 // * PURPOSE   : using CMD ISSUE issue
 // ***********************************************************************
-void DPCU_CMD_ISSUE_SW_CMD(unsigned int DRAM_ID, unsigned int CMD, unsigned int RANK, unsigned int BANK, unsigned int ADDR,
+void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int RANK, unsigned int BANK, unsigned int ADDR,
 			   unsigned int SW_WRDATA_MASK, unsigned int SW_WRDATA1_HIGH, unsigned int SW_WRDATA1_LOW,
 			   unsigned int SW_WRDATA0_HIGH, unsigned int SW_WRDATA0_LOW, unsigned int CMD_TRIGGER)
 {
@@ -1028,7 +881,7 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int DRAM_ID, unsigned int CMD, unsigned int 
 	unsigned int        loop_x          ;
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0      ;
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 
 	temp = SP_REG(PHY_BASE_GRP + 1, 27) & 0xF0000000;
@@ -1055,11 +908,11 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int DRAM_ID, unsigned int CMD, unsigned int 
 
 // ***********************************************************************
 // * FUNC      : dram_booting_flow
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : to do the following sequences
 // *           : (1). DDR_APHY initial sequence (CTCAL->SSCPLL->PZQ)
 // ***********************************************************************
-int dram_booting_flow(unsigned int DRAM_ID)
+int dram_booting_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0  ;
@@ -1067,12 +920,12 @@ int dram_booting_flow(unsigned int DRAM_ID)
 	unsigned int        aphy_select1_value = 0;
 	unsigned int        aphy_select2_value = 0;
 	prn_string(">>> enter dram_booting_flow for DRAM");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("\n");
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	// -------------------------------------------------------
 	// 0. Set DRAM-0 size in CBUS( CBUS to MBUS Bridge address decode/mapping ) , soft-configure-reg 13
@@ -1089,7 +942,7 @@ int dram_booting_flow(unsigned int DRAM_ID)
 	// There are no APHY circuit in FPGA platform, so bypass this flow
 #else
 	if (0 == gResetMPLL)
-		do_system_reset_flow(DRAM_ID);
+		do_system_reset_flow(dram_id);
 	dbg_stamp(0xA000);
 
 #ifdef PLATFORM_PENTAGRAM
@@ -1151,27 +1004,27 @@ int dram_booting_flow(unsigned int DRAM_ID)
 
 	if (rgst_value != 0) {
 		prn_string("<<< leave dram_booting_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0 ;
 	}
 #endif
 	prn_string("<<< leave dram_booting_flow for DRAM");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("\n");
 	return 1;
 } // end of dram_booting_flow
 
 // ***********************************************************************
 // * FUNC      : dram_training_flow
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : to do the following sequences
 // *           : (1). DPCU DRAM inital setting
 // *           : (2). SDCTRL RGST setting
 // *           : (3). DRAM initial setting by SDCTRL
 // *           : (5). DDR_DPHY+APHY data training
 // ***********************************************************************
-int dram_training_flow(unsigned int DRAM_ID)
+int dram_training_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0,
@@ -1181,12 +1034,12 @@ int dram_training_flow(unsigned int DRAM_ID)
 	unsigned int        wait_flag      = 0;	 // min
 
 	prn_string(">>> enter dram_training_flow for DRAM");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("\n");
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 #ifdef SDRAM_FPGA
 	// There are no APHY circuit in FPGA platform, so bypass this flow
@@ -1200,14 +1053,14 @@ int dram_training_flow(unsigned int DRAM_ID)
 	// prn_string("\tGRP(PHY_BASE_GRP+1, 10) = "); prn_dword(SP_REG(PHY_BASE_GRP+1, 10)); prn_string("\n");
 	if (SP_REG(PHY_BASE_GRP, 0) == 0x00) {
 		prn_string("<<< 1 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return WAIT_FLAG_FAIL;
 	}
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
 		;
 		prn_string("<<< 2 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return WAIT_FLAG_FAIL;
 	}
@@ -1284,7 +1137,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 	// trigger CMD_ISSUE DRAM_INIT sequence
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
 		prn_string("<<< 3 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return WAIT_FLAG_FAIL;
 	}
@@ -1317,14 +1170,14 @@ int dram_training_flow(unsigned int DRAM_ID)
 	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_REG_DIS_VAL;
 	SP_REG(SDC_BASE_GRP + 0, 9) = AREF_INTVAL(nAREF_INTVAL); // ASIC DIFF
 
-	if (DRAM_ID == 1) {
+	if (dram_id == 1) {
 		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM1_SIZE_TYPE_VAL; // ASIC DIFF
 	} else {
 		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM0_SIZE_TYPE_VAL; // ASIC DIFF
 	}
 	SP_REG(SDC_BASE_GRP + 0, 6) = SD_SYS_MISC;
 	SP_REG(SDC_BASE_GRP + 0, 7) = 0;
-	if (DRAM_ID == 1) {
+	if (dram_id == 1) {
 		SP_REG(SDC_BASE_GRP + 0, 11) = SCAN_SD1_ACC_LATENCY;
 	} else {
 		SP_REG(SDC_BASE_GRP + 0, 11) = ((gEXTRA_CL_CNT << 25) | (gSTR_DQS_IN << 20) | (gWL_CNT << 8));
@@ -1598,11 +1451,11 @@ int dram_training_flow(unsigned int DRAM_ID)
 	// prn_string("(SP_REG(PHY_BASE_GRP+1, 11); prn_dword((SP_REG(PHY_BASE_GRP+1, 11); prn_string("!!\n");
 
 	// step b issue CMD ISSUE IC ODT on command
-	// DRAM_ID, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
-	DPCU_CMD_ISSUE_SW_CMD(DRAM_ID, 0x08, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
+	// dram_id, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
+	DPCU_CMD_ISSUE_SW_CMD(dram_id, 0x08, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
 	// step b issue CMD ISSUE ODT on command
-	// DRAM_ID, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
-	DPCU_CMD_ISSUE_SW_CMD(DRAM_ID, 0x08, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
+	// dram_id, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
+	DPCU_CMD_ISSUE_SW_CMD(dram_id, 0x08, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
 	wait_flag = 0   ;
 	do {
 		wait_loop(1000);
@@ -1681,7 +1534,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 		SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
 		dbg_stamp(0xDEADA003) ;
 		prn_string("<<< 4 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0 ;
 	} // end- if check dt result
@@ -1708,14 +1561,14 @@ int dram_training_flow(unsigned int DRAM_ID)
 		SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
 		dbg_stamp(0xDEADA003)   ;
 		prn_string("<<< 5 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0 ;
 	} // end- if check dt result
 
 	// move switch SDCTRL path before dump
 	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
-	DPCU_DT_RESULT_DUMP(DRAM_ID); // SET_RDQS_IPRD_TAP_NO(DRAM_ID);
+	DPCU_DT_RESULT_DUMP(dram_id); // SET_RDQS_IPRD_TAP_NO(dram_id);
 
 	// Ellison : 20140815 : Check RDQSG Eye boundary result of Each byte correct or not !? ( Left-side < Right-side)
 	if ((data_byte_0_RDQSG_left_total_tap >= data_byte_0_RDQSG_right_total_tap) ||
@@ -1723,7 +1576,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 		SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
 		prn_string("\tRDQSG Training result : Left side boundary > Right side boundary !!!\n");
 		prn_string("<<< 6 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0;
 	}
@@ -1738,7 +1591,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 	if ((rgst_value + temp_1) >= (temp_2 << 1) || rgst_value < temp_1) {
 		// prn_string( "RG_PSD is too big or small\n");
 		prn_string("<<< 7 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0 ;
 	} // end- if RG_PSD is too big or small
@@ -1753,7 +1606,7 @@ int dram_training_flow(unsigned int DRAM_ID)
 		// dpcu training WL_PSD is too big
 		// prn_string( "RG_PSD is too big or small\n");
 		prn_string("<<< 7 leave dram_training_flow for DRAM");
-		prn_decimal(DRAM_ID);
+		prn_decimal(dram_id);
 		prn_string("\n");
 		return 0 ;
 	} // end- if RG_PSD is too big or small
@@ -1773,35 +1626,35 @@ int dram_training_flow(unsigned int DRAM_ID)
 	rgst_value = SP_REG(SDC_BASE_GRP + 0, 18);
 
 	prn_string("<<< leave 8 dram_training_flow for DRAM");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("\n");
 	return 1;
 } // end of dram_training_flow
 
 // ***********************************************************************
 // * FUNC      : dram_init
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : to do the following sequences
 // *           : (1). DDR_APHY initial sequence (CTCAL->SSCPLL->PZQ)
 // *           : (2). SDCTRL RGST setting
 // *           : (3). DRAM initial setting by SDCTRL
 // *           : (4). DDR_DPHY+APHY data training
 // ***********************************************************************
-int dram_init(unsigned int DRAM_ID)
+int dram_init(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0  ;
 	unsigned int        temp_1         = 0 ;
 	unsigned int        temp_2         = 0 ;
 	unsigned int        temp_3         = 0 ;
-	unsigned int        package_256_flag;  // this flag only using in DRAM_ID == 1
+	unsigned int        package_256_flag;  // this flag only using in dram_id == 1
 	unsigned int        max_init_fail_cnt = 15;
 	unsigned int        loop_time       ;
 	unsigned int        ret = 0;
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	loop_time = 0;
 	// ckobd_training_flag = 0;
@@ -1812,25 +1665,25 @@ int dram_init(unsigned int DRAM_ID)
 	for (loop_time = 0; loop_time < max_init_fail_cnt; loop_time++) {
 		ckobd_re_training_number = loop_time;
 		// ckobd_training_flag = 1;
-		package_256_flag = 1; // this flag only using in DRAM_ID == 1
+		package_256_flag = 1; // this flag only using in dram_id == 1
 
 		// dram_bootint_flow pass return 1, error return 0;
 		// 20140727 mazar : do not add any action if we encounter APHY INIT ERR, just dump error flag
 DRAM_BOOT_FLOW_AGAIN:
-		if (!dram_booting_flow(DRAM_ID)) {
+		if (!dram_booting_flow(dram_id)) {
 			// error check flow
-			// 1. DRAM_ID = 1 and all initial error flag are asserted (note)
+			// 1. dram_id = 1 and all initial error flag are asserted (note)
 			// => we consider this is 216 package, so package_256_flag = 0;
 			// note : SSCPLL isn't assert, so check PZQ, CTCAL, DDL error flag
 			// and pass all DRAM 1 training flow
-			// 2. DRAM_ID = 1 and not all initial error flag are asserted => we consider this is 256 package, so package_256_flag = 1;
+			// 2. dram_id = 1 and not all initial error flag are asserted => we consider this is 256 package, so package_256_flag = 1;
 			// and print the error message
-			// 3. DRAM_ID = 0, print the error message
+			// 3. dram_id = 0, print the error message
 			prn_string("DPCU_INFO : \t********** DUMP APHY INIT************************\n");
 			prn_string("aphy_select_value =");
 			prn_dword(aphy_select_value);
 			temp_3 = (SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x0F;
-			if ((DRAM_ID == 1) && (aphy_select_value == 0x0D)) {
+			if ((dram_id == 1) && (aphy_select_value == 0x0D)) {
 				// case 1, we think this is 216 pin package, and don't need to dump initial error message
 				// only check PZQ, CTCAL, DDL error flag
 				package_256_flag = 0 ;
@@ -1859,11 +1712,11 @@ DRAM_BOOT_FLOW_AGAIN:
 				goto DRAM_BOOT_FLOW_AGAIN;
 			}
 		} else {
-			// prn_string("DRAM-"); prn_decimal(DRAM_ID); prn_string("booting PASS @ loop_time =");
+			// prn_string("DRAM-"); prn_decimal(dram_id); prn_string("booting PASS @ loop_time =");
 			// prn_decimal(loop_time); prn_string("!!\n");
 		}
-		prn_string("(DRAM_ID)=");
-		prn_decimal(DRAM_ID);
+		prn_string("(dram_id)=");
+		prn_decimal(dram_id);
 		prn_string("!!\n");
 		prn_string("(package_256_flag)=");
 		prn_decimal(package_256_flag);
@@ -1883,8 +1736,8 @@ DRAM_BOOT_FLOW_AGAIN:
 		//                                             1 : do training flow
 		// 20140727 mazar :  do not add any action if we encounter APHY Training ERR, just dump error flag
 		temp_3 = (SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x01;
-		if (((DRAM_ID == 1) && (package_256_flag == 0)) || (temp_3 == 1)) {
-			// case 1 : (DRAM_ID==1) && (package_256_flag ==0 ) : we think this is 216 package, so don't do data training
+		if (((dram_id == 1) && (package_256_flag == 0)) || (temp_3 == 1)) {
+			// case 1 : (dram_id==1) && (package_256_flag ==0 ) : we think this is 216 package, so don't do data training
 			// case 2 : (temp_3 == 1)                           : because SSCPLL isn't assert error flag, we consider CTCAL error flag
 			// as SSCPLL error flag, so don't do data training too
 			return PACKAGE_216; // break for_loop if encounter case1 or case2
@@ -1893,20 +1746,20 @@ DRAM_BOOT_FLOW_AGAIN:
 		prn_string("GRP(PHY_BASE_GRP, 9) =  ");
 		prn_dword(SP_REG(PHY_BASE_GRP, 9));
 		prn_string("\n ");
-		ret = dram_training_flow(DRAM_ID);
+		ret = dram_training_flow(dram_id);
 
 		if (ret == WAIT_FLAG_FAIL) {
 			prn_string("wait flag or register G(37,10) fail!!!!\n");
 			// goto DRAM_BOOT_FLOW_AGAIN;
 			return FAIL;
 		} else if (ret == 0) {
-			// (DRAM_ID=0) or (DRAM_ID=1 and package_256_flag==1) => do training flow
+			// (dram_id=0) or (dram_id=1 and package_256_flag==1) => do training flow
 			// dump error message
 
 			prn_string("DPCU_INFO : \t********** DUMP init & training error info @ loop_time = ");
 			prn_decimal(loop_time);
 			prn_string(" ***\n") ;
-			DPCU_DT_RESULT_DUMP(DRAM_ID);
+			DPCU_DT_RESULT_DUMP(dram_id);
 		} else {
 			// training pass
 			// double check RSL result for SDCTRL setting
@@ -1938,7 +1791,7 @@ DRAM_BOOT_FLOW_AGAIN:
 #endif
 			const unsigned int TEST_COUNT = sizeof(TEST_ADDRESS) >> 2;
 			for (i = 0; i < TEST_COUNT; i++) {
-				if (SDCTRL_TRIMMER_TEST_(DRAM_ID, TEST_ADDRESS[i], 0x0100) != 0)
+				if (SDCTRL_TRIMMER_TEST(dram_id, TEST_ADDRESS[i], 0x0100) != 0)
 					pass_count++;
 			}
 
@@ -1951,209 +1804,25 @@ DRAM_BOOT_FLOW_AGAIN:
 		}
 		if (loop_time + 1 == max_init_fail_cnt) { // robert fix
 			prn_string("DRAM-");
-			prn_decimal(DRAM_ID);
+			prn_decimal(dram_id);
 			prn_string("initial failed\n\n");
-			// RID_FAIL();
 			// while(1); // robert: return fail rather than hang
 			return FAIL;
 		} // all loop training fail
 	} // end of for loop :: loop_time for initial & training time control
 
 	prn_string("DRAM-");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("initial done !!!!\n\n") ;
-	// dram_refine_flow( DRAM_ID );
+
+#ifdef SW_REFINE_DT_RESULT
+	dram_refine_flow( dram_id );
+#endif
 	return SUCCESS;
 } // end dram_init
 
 
 #ifdef SW_REFINE_DT_RESULT
-// ***********************************************************************
-// * FUNC      : DRAM_WRITE_CLEAN
-// * PARAM     : DRAM_ID
-// * PURPOSE   : clean dram content of test region
-// ***********************************************************************
-void DRAM_WRITE_CLEAN(unsigned int DRAM_TEST_SIZE, unsigned int DRAM_ID)
-{
-	unsigned int cpu_wr_index = 0 ;
-
-	volatile unsigned int *ram_0 = (volatile unsigned int *)DRAM0_BASE_ADDR;
-	volatile unsigned int *ram_1 = (volatile unsigned int *)DRAM1_BASE_ADDR;
-
-	for (cpu_wr_index = 0 ; cpu_wr_index < DRAM_TEST_SIZE ; cpu_wr_index++) {
-		if (DRAM_ID == 0) {
-			ram_0[cpu_wr_index] = 0 ;
-		} else {
-			ram_1[cpu_wr_index] = 0 ;
-		}
-	} // end for
-
-
-} // end function => DRAM_WRITE_CLEAN
-
-int DRAM_RW_CHECK(unsigned int value, unsigned int answer, int debug)
-{
-	int ret = 0;
-
-	if (value != answer) {
-		if (debug) {
-			prn_string("\t\tvalue=");
-			prn_dword0(value);
-			prn_string(" correct will be ");
-			prn_dword0(answer);
-			prn_string("\n");
-		}
-		ret = -1;
-	}
-	return ret;
-
-} // end - DRAM_ACC_TEST
-
-int DRAM_SEQUENTIAL_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug)
-{
-	int             ret = 0 ;
-	unsigned int    i = 0   ;
-	unsigned int    dram_test_len = DRAM_TEST_SIZE >> 2; // 1 addr = 4 bytes
-	volatile unsigned int *ram = (volatile unsigned int *)DRAM0_BASE_ADDR;
-	if (debug)
-		prn_string("\tDO DRAM SEQUENTIAL RW TEST START\n");
-
-	// write clean
-	DRAM_WRITE_CLEAN(dram_test_len, 0);
-
-	// write value
-	for (i = 0 ; i < dram_test_len ; i++) {
-		ram[i] = i;
-	}
-
-	// read fata from DRAM
-	for (i = 0 ; i < dram_test_len ; i++) {
-		ret = DRAM_RW_CHECK(ram[i], i, debug);
-		if (0 > ret) {
-			if (debug)
-				prn_string("\tDRAM SEQUENTIAL RW TEST FAIL !!!\n");
-			ret = -1;
-			break;
-		}
-	} // end for
-
-	if (0 == ret) {
-		if (debug)
-			prn_string("\tDO DRAM SEQUENTIAL RW TEST PASS\n\n");
-	}
-
-	return ret ;
-
-} // end - DRAM_SEQUENTIAL_RW_TEST
-
-int DRAM_RANDOM_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug)
-{
-	int             ret = 0 ;
-	unsigned int    i = 0   ;
-	unsigned int    dram_test_len = DRAM_TEST_SIZE >> 2; // 1 addr = 4 bytes
-	volatile unsigned int *ram = (volatile unsigned int *)DRAM0_BASE_ADDR;
-	const unsigned int DATA_PATTERN[7] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
-	unsigned int DATA_PATTERN_INDEX = 0;
-	const unsigned int DATA_PATTERNS = sizeof(DATA_PATTERN) >> 2;
-	if (debug)
-		prn_string("\tDO DRAM RANDOM RW TEST START\n");
-
-	// write clean
-	DRAM_WRITE_CLEAN(dram_test_len, 0);
-
-	// write value
-	for (i = 0 ; i < dram_test_len ; i++) {
-		ram[i] = DATA_PATTERN[i % DATA_PATTERNS];
-	}
-
-	// read fata from DRAM
-	for (i = 0 ; i < dram_test_len ; i++) {
-		ret = DRAM_RW_CHECK(ram[i], DATA_PATTERN[i % DATA_PATTERNS], debug);
-		if (0 > ret) {
-			if (debug)
-				prn_string("\tDRAM RANDOM RW TEST FAIL !!!\n");
-			ret = -1;
-			break;
-		}
-	} // end for
-
-	if (0 == ret) {
-		if (debug)
-			prn_string("\tDO DRAM RANDOM RW TEST PASS\n\n");
-	}
-
-	return ret ;
-} // end - DRAM_RANDOM_RW_TEST
-
-int DRAM_INVERT_RW_TEST(unsigned int DRAM_TEST_SIZE, int debug)
-{
-	int             ret = 0 ;
-	unsigned int    i = 0   ;
-	unsigned int    dram_test_len = DRAM_TEST_SIZE >> 2; // 1 addr = 4 bytes
-	volatile unsigned int *ram = (volatile unsigned int *)DRAM0_BASE_ADDR;
-	if (debug)
-		prn_string("\tDO DRAM_INVERT_RW_TEST START\n");
-
-
-	// write clean
-	DRAM_WRITE_CLEAN(dram_test_len, 0);
-
-	// write then read test
-	for (i = 0 ; i < dram_test_len ; i++) {
-		// write 0 test
-		ram[i] = 0x00000000;
-		ret = DRAM_RW_CHECK(ram[i], 0x00000000, debug);
-		if (0 > ret) {
-			if (debug)
-				prn_string("\tDRAM INVERT RW 0x00000000 TEST FAIL !!!\n");
-			ret = -1;
-			break;
-		}
-
-		// write 1 test
-		ram[i] = 0xFFFFFFFF;
-		ret = DRAM_RW_CHECK(ram[i], 0xFFFFFFFF, debug);
-		if (0 > ret) {
-			if (debug)
-				prn_string("\tDRAM INVERT RW 0xFFFFFFFF TEST FAIL !!!\n");
-			ret = -1;
-			break;
-		}
-	}
-
-	if (0 == ret) {
-		if (debug)
-			prn_string("\tDO DRAM INVERT RW TEST PASS\n\n");
-	}
-
-	return ret ;
-} // end - DRAM_INVERT_RW_TEST
-
-int do_stress_test(unsigned int test_len, int isDebug, int loop, int exit)
-{
-	int ret = 0;
-	do {
-		// 1) sequence test ddr R/W
-		ret = DRAM_SEQUENTIAL_RW_TEST(test_len, isDebug);
-		// while(0 > ret){;}
-		if (0 > ret && exit)
-			return ret;
-
-		// 2) random test ddr R/W
-		ret = DRAM_RANDOM_RW_TEST(test_len, isDebug);
-		// while(0 > ret){;}
-		if (0 > ret && exit)
-			return ret;
-
-		// 3) invert test ddr R/W
-		ret = DRAM_INVERT_RW_TEST(test_len, isDebug);
-		// while(0 > ret){;}
-		if (0 > ret && exit)
-			return ret;
-	} while (loop);
-
-	return 0;
-}
 
 /**
 **FOR 8388 , DDR3-1600 ONLY
@@ -2209,8 +1878,7 @@ void trim_WDM(unsigned int PHY_REG_BASE)
 		new_wdm = ori_wdm + (++trim_count);
 		SP_REG(PHY_REG_BASE, 8) = rgst_value | new_wdm;
 		// prn_string("\t WDM TRIM COUNT ="); prn_decimal(trim_count); prn_string("\n");
-	} while (0 == do_stress_test(0x1000, 0, 0, 1));
-	// }while( SDCTRL_TRIMMER_TEST_(0, 0, 1) );
+	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
 
 	// CAL OFFSET PSD
 	new_wdm = ori_wdm;
@@ -2270,11 +1938,11 @@ void trim_WDM(unsigned int PHY_REG_BASE)
 // * PARAM     : int
 // * PURPOSE   : refine DPCU traing result for DRAM0/DRAM1
 // ***********************************************************************
-int dram_refine_flow(unsigned int DRAM_ID)
+int dram_refine_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0  ;
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	// refine WDM
 	trim_WDM(PHY_BASE_GRP + 2);
@@ -2288,6 +1956,7 @@ int dram_refine_flow(unsigned int DRAM_ID)
 
 #define FAE_DEBUG
 // #define DEBUG_BDD
+#ifdef SW_REFINE_DT_RESULT
 unsigned int get_unit_pico(unsigned int PHY_REG_BASE)
 {
 	unsigned int wdq_iprd = 0;
@@ -2314,6 +1983,7 @@ unsigned int get_unit_pico(unsigned int PHY_REG_BASE)
 
 	return pico;
 }
+#endif
 
 int dram_test_bdd(unsigned int group, unsigned int regs, unsigned int shift_bit, int trim)
 {
@@ -2358,7 +2028,7 @@ int dram_test_bdd(unsigned int group, unsigned int regs, unsigned int shift_bit,
 		}
 		SP_REG(group, regs) = rgst_value | (new_bdd_value << shift_bit);
 		// prn_string("\t TRIM COUNT ="); prn_decimal(trim_count); prn_string("\n");
-	} while (0 == do_stress_test(0x1000, 0, 0, 1));
+	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
 	trim_count--;
 
 #ifdef DEBUG_BDD
@@ -2418,7 +2088,7 @@ int dram_test_addr(int trim)
 		prn_string(" DDL VALUE =");
 		prn_dword(SP_REG(group, regs);
 #endif
-	} while (0 == do_stress_test(0x1000, 0, 0, 1));
+	} while (memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) == 0);
 	trim_count--;
 
 #ifdef DEBUG_BDD
@@ -2464,11 +2134,17 @@ void dram_shift_bdd(unsigned int group, unsigned int reg, unsigned int shift, un
 	prn_string(" pico second\n");
 }
 
-int dram_test_flow(unsigned int DRAM_ID)
+#ifndef SAFE_MARGIN_VALUE
+int dram_test_flow(unsigned int dram_id)
+{
+	return 1;
+}
+#else
+int dram_test_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0  ;
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	unsigned int i = 0, j = 0, g_max = 0, r_max = 0, tmp = 0, trim_count = 0;
 	unsigned int GROUPS[2] = {PHY_BASE_GRP + 2, PHY_BASE_GRP + 3};
@@ -2548,6 +2224,7 @@ int dram_test_flow(unsigned int DRAM_ID)
 	}
 
 
+#ifdef SW_REFINE_DT_RESULT
 	// CAL 1 PSD = ? PICO
 	for (i = 0; i <= g_max; i++) {
 		pico = get_unit_pico(GROUPS[i]);
@@ -2560,6 +2237,7 @@ int dram_test_flow(unsigned int DRAM_ID)
 		prn_string(" PICO\n");
 #endif
 	}
+#endif
 
 
 	// test +
@@ -2764,12 +2442,28 @@ int dram_test_flow(unsigned int DRAM_ID)
 
 	return isAllPassed;
 }
+#endif
 
+static int silent_dram_init(void)
+{
+	mpb = mp;
+	mp = 1;
+	int ret = dram_init(0) ;
+#ifndef DRAMSCAN
+#ifdef SW_REFINE_DT_RESULT
+	if (flag_SiScope == 0) {
+		dram_refine_flow(0);
+	}
+#endif
+#endif
+	mp = mpb;
+	return ret;
+}
 
 // #define DBG_SHOW_DRAMINIT_MSG
 // ***********************************************************************
 // * FUNC      : DRAM_SCAN
-// * PARAM     : DRAM_ID
+// * PARAM     : dram_id
 // * PURPOSE   : do the DRAM_SCAN to findout the best parameters of
 //               SDCTRL and DDR_PHY
 // * RGST field: SDCTRL System Timing
@@ -2778,7 +2472,7 @@ int dram_test_flow(unsigned int DRAM_ID)
 //     [19:16] : SUB_INTERNAK_RL = 0
 //     [11: 8] : WL_CNT
 // ***********************************************************************
-void DRAM_SCAN(unsigned int DRAM_ID)
+void DRAM_SCAN(unsigned int dram_id)
 {
 	unsigned int        idx                 ;
 	int	    ret                 ;
@@ -2800,7 +2494,7 @@ void DRAM_SCAN(unsigned int DRAM_ID)
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	select_SDC_PHY_GRP(DRAM_ID, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	for (rec_idx = 0 ; rec_idx < 30 ; rec_idx++) {
 		// reset record array
@@ -2808,8 +2502,6 @@ void DRAM_SCAN(unsigned int DRAM_ID)
 		scan_pass_acack[rec_idx] = 0 ;
 	}
 
-	// Ellison test
-	// RID_PASS();
 	int mpb = 0;
 	rec_idx = 0 ;
 	unsigned int start_sdc_str_dqs_in = 0;
@@ -2820,7 +2512,11 @@ void DRAM_SCAN(unsigned int DRAM_ID)
 #elif defined MPEG_DRAM_DDR_1866
 	start_sdc_str_dqs_in = 17;
 #else
+#ifdef PLATFORM_GEMINI
 #error "Now DRAM SCAN only support 1333/1600/1866, you should add other data rate parameters"
+#elif defined(PLATFORM_PENTAGRAM)
+/* Different implementation */
+#endif
 #endif
 
 	// -------------------------------------------------------
@@ -2875,15 +2571,15 @@ void DRAM_SCAN(unsigned int DRAM_ID)
 				// clean dram content of test region and test result
 				cpu_test_result     = 0 ;
 				trim_test_result    = 0 ;
-				DRAM_WRITE_CLEAN(0x1000, DRAM_ID) ;
+				dram_fill_zero(TEST_LEN_0, dram_id) ;
 
 				// test-1 : simple CPU W/R test
-				cpu_test_result = do_stress_test(0x1000, 0, 0, 1) ;
+				cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT) ;
 
 				if (0 == cpu_test_result) {
 					// test-2 : random trimmer test (after cpu W/R test)
 					for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
-						trim_test_result = SDCTRL_TRIMMER_TEST_(DRAM_ID, DRAM0_BASE_ADDR, 0x0100) ;
+						trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100) ;
 						// check trimmer test result
 						if (trim_test_result) {
 							if (idx == SCAN_TRIM_LEN) {
@@ -2916,7 +2612,7 @@ void DRAM_SCAN(unsigned int DRAM_ID)
 	mp = 0;
 	prn_string("\n\n==================================================================================\n");
 	prn_string("DUMP DRAM-");
-	prn_decimal(DRAM_ID);
+	prn_decimal(dram_id);
 	prn_string("parameters:\n");
 	for (idx = 0 ; idx < rec_idx ; idx++) {
 		if (scan_pass_param[idx] != 0) {
@@ -2974,22 +2670,6 @@ void run_SiScope(void)
 	silent_dram_init();
 }
 
-int silent_dram_init()
-{
-	mpb = mp;
-	mp = 1;
-	int ret = dram_init(0) ;
-#ifndef DRAMSCAN
-#ifdef SW_REFINE_DT_RESULT
-	if (flag_SiScope == 0) {
-		dram_refine_flow(0);
-	}
-#endif
-#endif
-	mp = mpb;
-	return ret;
-}
-
 int getSquare(int base, int square)
 {
 	int value = 1;
@@ -3034,8 +2714,7 @@ void check_stress_test_with_increase_freq()
 	char input = '\0';
 	int i = 0, rate = 0;
 	int ret = 0;
-	int loop = 0;
-	int exit = 0;
+	int flag = 0;
 
 	do {
 		prn_string("\n*Would you like to test incrementing or decrementing ddr freq?(y/n)\n");
@@ -3059,7 +2738,7 @@ void check_stress_test_with_increase_freq()
 				gMPLL_DIV = i;
 				silent_dram_init();
 				dump_now_ddr_clk_info();
-				ret = do_stress_test(TEST_LEN, 1, 0, 1);
+				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
 				while (0 > ret) {;}
 			}
 
@@ -3068,7 +2747,7 @@ void check_stress_test_with_increase_freq()
 			silent_dram_init();
 			dump_now_ddr_clk_info();
 			while (1) {
-				ret = do_stress_test(TEST_LEN, 1, 0, 1);
+				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
 				while (0 > ret) {;}
 			}
 #endif
@@ -3077,7 +2756,7 @@ void check_stress_test_with_increase_freq()
 			silent_dram_init();
 			dump_now_ddr_clk_info();
 			while (1) {
-				ret = do_stress_test(TEST_LEN, 1, 0, 1);
+				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
 				while (0 > ret) {;}
 			}
 #endif
@@ -3086,12 +2765,12 @@ void check_stress_test_with_increase_freq()
 				gMPLL_DIV = minMPLL;
 				silent_dram_init();
 				dump_now_ddr_clk_info();
-				ret = do_stress_test(TEST_LEN, 1, 0, 1);
+				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
 				while (0 > ret) {;}
 				gMPLL_DIV = maxMPLL;
 				silent_dram_init();
 				dump_now_ddr_clk_info();
-				ret = do_stress_test(TEST_LEN, 1, 0, 1);
+				ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | MEMORY_RW_FLAG_EXIT);
 				while (0 > ret) {;}
 			}
 #endif
@@ -3103,15 +2782,15 @@ void check_stress_test_with_increase_freq()
 			prn_string("\n*Loop Test?(y/n)\n");
 			input = sp_getChar();
 			if ('y' == input || 'Y' == input)
-				loop = 1;
+				flag |= MEMORY_RW_FLAG_LOOP;
 
 			prn_string("\n*Exit, when test failed?(y/n)\n");
 			input = sp_getChar();
 			if ('y' == input || 'Y' == input)
-				exit = 1;
+				flag |= MEMORY_RW_FLAG_EXIT;
 
 			dump_now_ddr_clk_info();
-			ret = do_stress_test(TEST_LEN, 1, loop, exit);
+			ret = memory_rw_test(TEST_LEN_ALL, MEMORY_RW_FLAG_DBG | flag);
 		}
 	} while (0);
 }
@@ -3164,14 +2843,9 @@ void check_run_siscope()
 }
 #endif	/* (defined(DRAMSCAN) || defined(SISCOPE)) */
 
-// ***********************************************************************
-// * FUNC      : dram_init_main
-// * PARAM     : void
-// * PURPOSE   : to call dram_init function for DRAM0/DRAM1
-// ***********************************************************************
 int dram_init_main()
 {
-	int ret, i;	 // for DRAM-1
+	int ret, i;
 	unsigned int temp_value = 0;
 
 	// init params
@@ -3184,17 +2858,17 @@ int dram_init_main()
 	gWL_CNT = WL_CNT;
 	gMPLL_DIV = n_MPLL_DIV;
 
-	// do init
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
 	mp = 0;
+	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 #endif
 	dram_init(0);
 #else
-	prn_string("Built at " __DATE__ " " __TIME__);
+	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 
 #ifdef PLATFORM_PENTAGRAM
-#error "TBD"
+// #error "TBD"
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
 	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
@@ -3202,7 +2876,6 @@ int dram_init_main()
 
 	silent_dram_init();
 	// dump DDR INDO
-	prn_string(DRAMINIT_BIN_REL_DATE);
 	dump_now_ddr_clk_info();
 	prn_string("<|> Now DDR SIZE is 2Gb\n");
 
@@ -3261,73 +2934,13 @@ int dram_init_main()
 	SP_REG(DRAM_0_PHY_REG_BASE + 3, 19) = rgst_value;
 #endif
 
-
-#ifdef SUPPORT_DRAM1
-	with_dram_b_package_flag = 1;
-	// DRAM-1 initial process
-	for (i = 0; i < 10; i++) {
-		ret = dram_init(1) ;
-		if (ret == PACKAGE_216) {
-			// case 1, we think this is 216 pin package, and don't need to dump initial error message
-			// only check PZQ, CTCAL, DDL error flag
-			with_dram_b_package_flag = 0 ;
-			return PACKAGE_216_PIN;
-		} else if (ret == FAIL) {
-			prn_string("do something...  for GRP(49, 0) or GRP(50, 10)\n");
-			prn_string("for loop @ i =  ");
-			prn_dword(i);
-			prn_string("\n ");
-			SP_REG(0, 16) = SP_REG(0, 16) | (1 << 15) | (1 << 17);
-			wait_loop(10000);
-			prn_string("GRP((16, 0) =  ");
-			prn_dword(SP_REG(16, 0));
-			prn_string("\n ");
-
-			SP_REG(0, 16) = SP_REG(0, 16) & (~(1 << 15) | (1 << 17));
-			wait_loop(10000);
-			prn_string("GRP((16, 0) =  ");
-			prn_dword(SP_REG(16, 0); prn_string("\n ");
-		} else if (ret == SUCCESS) {
-			DPCU_DT_RESULT_DUMP(1);
-			break;
-		} else {
-			prn_string("dram_init(1) no this case ..... what happen??\n");
-		}
-	}
-#endif
-
-#ifdef SDRAM_MPLL_ENABLE
-
-#ifdef DDR_PLL_00
-	unsigned int DPCU_RI_MPLL_SSCEN = 1;
-	unsigned int DPCU_RI_MPLL_SP = 0;
-	unsigned int DPCU_RI_MPLL_DIV_S  = 14;
-#elif defined DDR_PLL_01
-	unsigned int DPCU_RI_MPLL_SSCEN = 1;
-	unsigned int DPCU_RI_MPLL_SP = 1;
-	unsigned int DPCU_RI_MPLL_DIV_S  = 8;
-#elif defined DDR_PLL_10
-	unsigned int DPCU_RI_MPLL_SSCEN = 1;
-	unsigned int DPCU_RI_MPLL_SP = 2;
-	unsigned int DPCU_RI_MPLL_DIV_S  = 4;
-#elif defined DDR_PLL_11
-	unsigned int DPCU_RI_MPLL_SSCEN = 1;
-	unsigned int DPCU_RI_MPLL_SP = 3;
-	unsigned int DPCU_RI_MPLL_DIV_S  = 4;
-#else
-	unsigned int DPCU_RI_MPLL_SSCEN = 0;
-	unsigned int DPCU_RI_MPLL_SP = 0;
-	unsigned int DPCU_RI_MPLL_DIV_S  = 0;
-#endif
-
+#ifdef SSC_ENABLE
 	SP_REG(DRAM_0_PHY_REG_BASE, 12) = SP_REG(DRAM_0_PHY_REG_BASE, 12) & ~(0x60000F00);
-	SP_REG(DRAM_0_PHY_REG_BASE, 12) = SP_REG(DRAM_0_PHY_REG_BASE, 12) | (DPCU_RI_MPLL_DIV_S << 8) | (DPCU_RI_MPLL_SP << 29);
-	SP_REG(DRAM_0_PHY_REG_BASE, 11) = SP_REG(DRAM_0_PHY_REG_BASE, 11) | (DPCU_RI_MPLL_SSCEN << 2);
+	SP_REG(DRAM_0_PHY_REG_BASE, 12) = SP_REG(DRAM_0_PHY_REG_BASE, 12) | (DPCU_RI_MPLL_DIV_S << 8) | (SSC_RATE << 29);
+	SP_REG(DRAM_0_PHY_REG_BASE, 11) = SP_REG(DRAM_0_PHY_REG_BASE, 11) | (1 << 2);
 	prn_string("DDR PLL SETTING:");
-	prn_dword(DPCU_RI_MPLL_SP);
+	prn_dword(SSC_RATE);
 	prn_string("\n ");
 #endif
-
-	// pll_init_setting();
 	return 1;
 }

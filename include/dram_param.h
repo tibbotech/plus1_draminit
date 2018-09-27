@@ -81,7 +81,7 @@
 #define IPRD_VALUE 625
 #endif
 
-// PLL SETTING
+// Spread Spectrum Clock (SSC)
 // ======================================================||
 // ||   SP   |       CLK    |    DIV     |      RATE     ||
 // ------------------------------------------------------||
@@ -93,14 +93,20 @@
 // ------------------------------------------------------||
 // ||   11   |   1333/1600  |    3/4     |   2.04%/1.59% ||
 // ======================================================||
-// #define SDRAM_MPLL_ENABLE
-#ifdef SDRAM_MPLL_ENABLE
-// #define DDR_PLL_00
-// #define DDR_PLL_01
-// #define DDR_PLL_10
-#define DDR_PLL_11
-#endif
+// #define SSC_ENABLE
+#ifdef SSC_ENABLE
+#define SSC_RATE	3	/* 2 bits, 0 - 3 */
 
+#if (SSC_RATE == 0)
+#define DPCU_RI_MPLL_DIV_S	14
+#elif (SSC_RATE == 1)
+#define DPCU_RI_MPLL_DIV_S	8
+#elif (SSC_RATE == 2)
+#define DPCU_RI_MPLL_DIV_S	4
+#elif (SSC_RATE == 3)
+#define DPCU_RI_MPLL_DIV_S	4
+#endif
+#endif	/* SSC_ENABLE */
 
 #define DRAM_SRT_EXTENDED
 

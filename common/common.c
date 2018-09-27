@@ -91,6 +91,21 @@ void *memset(UINT8 *s1, int c, int n)
 }
 
 // ----------------------------------------------------------------------------
+void *memcpy(UINT8 *dest, UINT8 *src, int n)
+{
+	UINT8 *src_end = (UINT8 *)((unsigned long)(src) + n);
+	UINT8 *to = (UINT8 *)(dest);
+
+	while (src != src_end) {
+		*to = *src;
+		to++;
+		src++;
+	}
+
+	return (void *)(dest);
+}
+
+// ----------------------------------------------------------------------------
 void u32Tostring(unsigned int num, char *string)
 {
 	char *str = string;
