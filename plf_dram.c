@@ -71,7 +71,15 @@ static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
 static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
 static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
 static unsigned int gAC, gACK, gCK;
+
+#ifdef PLATFORM_GEMINI
 static unsigned int gEXTRA_CL_CNT, gSTR_DQS_IN, gWL_CNT;
+#elif defined(PLATFORM_PENTAGRAM)
+#if (defined(DRAMSCAN) || defined(SISCOPE))
+static unsigned int scan_val_190;
+#endif
+#endif
+
 u32 mp;
 
 void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy)
@@ -675,41 +683,25 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 } // end function => DPCU_DT_RESULT_DUMP
 
 
-// ***********************************************************************
-// * FUNC      : ASSERT_SDC_PHY_RESET
-// * PARAM     : dram_id
-// * PURPOSE   : assert reset
-// ***********************************************************************
-void assert_sdc_phy_reset(unsigned int dram_id)
+void assert_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
-	// #error "TBD"
+	SP_REG(0, 21) |= 1 << 14;	// PHY
+	SP_REG(0, 22) |= 1 << 0;	// SDCTRL0
 #elif defined(PLATFORM_GEMINI)
-	if (dram_id == 0) {
-		SP_REG(0, 17) |= (
-					 (1 << 14) | // SDCTRL0_RESET
-					 (1 << 16)   // DDR_PHY0_RESET
-				 );
-	}
+	SP_REG(0, 17) |= (1 << 14) | (1 << 16);		// SDCTRL0_RESET, DDR_PHY0_RESET
 #endif
-} // end function => assert_sdc_phy_reset
+}
 
-// ***********************************************************************
-// * FUNC      : release_sdc_phy_reset
-// * PARAM     : void
-// * PURPOSE   : release reset
-// ***********************************************************************
 void release_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
-	// #error "TBD"
+	SP_REG(0, 21) &= ~(1 << 14);	// PHY
+	SP_REG(0, 22) &= ~(1 << 0);	// SDCTRL0
 #elif defined(PLATFORM_GEMINI)
-	SP_REG(0, 17) &= ~(
-				 (1 << 14) | // SDCTRL0_RESET
-				 (1 << 16)   // DDR_PHY0_RESET
-			 );
+	SP_REG(0, 17) &= ~((1 << 14) | (1 << 16));	// SDCTRL0_RESET, DDR_PHY0_RESET
 #endif
-} // end of release_sdc_phy_reset
+}
 
 // ***********************************************************************
 // * FUNC      : do_system_reset_flow
@@ -718,7 +710,7 @@ void release_sdc_phy_reset(void)
 // ***********************************************************************
 void do_system_reset_flow(unsigned int dram_id)
 {
-	assert_sdc_phy_reset(dram_id);
+	assert_sdc_phy_reset();
 	wait_loop(1000);
 	release_sdc_phy_reset();
 }
@@ -1219,7 +1211,11 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x013C) = UMCTL2_13C;
 	UMCTL2_REG(0x0180) = UMCTL2_180;
 	UMCTL2_REG(0x0184) = UMCTL2_184;
+#if (defined(DRAMSCAN) || defined(SISCOPE))
+	UMCTL2_REG(0x0190) = scan_val_190;
+#else
 	UMCTL2_REG(0x0190) = UMCTL2_190;
+#endif
 	UMCTL2_REG(0x0194) = UMCTL2_194;
 	UMCTL2_REG(0x0198) = UMCTL2_198;
 	UMCTL2_REG(0x01A0) = UMCTL2_1A0;
@@ -1819,6 +1815,7 @@ static int silent_dram_init(void)
 	return ret;
 }
 
+#ifdef PLATFORM_GEMINI
 void dram_scan(unsigned int dram_id)
 {
 	unsigned int idx;
@@ -1970,6 +1967,108 @@ void dram_scan(unsigned int dram_id)
 	prn_string("==================================================================================\n");
 	mp = mpb;
 }
+#elif defined(PLATFORM_PENTAGRAM)
+void dram_scan(unsigned int dram_id)
+{
+
+	unsigned int dft_tphy_wrdata, dfi_t_rddata_en;
+
+	unsigned int idx;
+	int ret;
+	unsigned int rec_idx = 0;
+	unsigned int SDC_BASE_GRP, PHY_BASE_GRP;
+	int mpb;
+
+	unsigned int cpu_test_result;
+	unsigned int trim_test_result;
+
+	unsigned int scan_pass_param[30];
+	unsigned int scan_pass_acack[30];
+
+	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
+
+	memset((UINT8 *)scan_pass_param, 0, sizeof(scan_pass_param));
+	memset((UINT8 *)scan_pass_acack, 0, sizeof(scan_pass_acack));
+
+
+
+	for (dfi_t_rddata_en = 0; dfi_t_rddata_en < (1 << 7); dfi_t_rddata_en++) {
+		for (dft_tphy_wrdata = 0; dft_tphy_wrdata < (1 << 7); dft_tphy_wrdata++) {
+			// UMCTL2_REG(0x190),
+			//	[22:16] dfi_t_rddata_en
+			//	[14: 8] dft_tphy_wrdata
+			scan_val_190 = UMCTL2_190 & (~((0x7F << 16) | (0x7F << 8)));
+			scan_val_190 |= (dfi_t_rddata_en << 16) | (dft_tphy_wrdata << 8);
+
+			ckobd_training_flag = 1;
+			ret = silent_dram_init();
+			mpb = mp;
+			mp = 0;
+			prn_string("\nSCAN=>");
+			prn_string("  dfi_t_rddata_en: ");
+			prn_decimal(dfi_t_rddata_en);
+			prn_string("  dft_tphy_wrdata: ");
+			prn_decimal(dft_tphy_wrdata);
+			prn_string("\n");
+			mp = mpb;
+			if (ret != SUCCESS) {
+				continue;
+			}
+
+			dram_fill_zero(TEST_LEN_0, dram_id);
+			cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
+			if (cpu_test_result == 0) {
+				for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
+					trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
+					if (trim_test_result) {
+						if (idx == SCAN_TRIM_LEN) {
+							mpb = mp;
+							mp = 0;
+							prn_string("\tSCAN=> Test Pass\n");
+							scan_pass_param[rec_idx] = UMCTL2_REG(0x0190);
+							scan_pass_acack[rec_idx] = SP_REG(PHY_BASE_GRP + 0, 17);
+							rec_idx++;
+							mp = mpb;
+						}
+					} else {
+						prn_string("\tSCAN=> Test Fail\n");
+						break;
+					}
+				}
+			} else {
+				prn_string("\tSCAN=> Test Fail\n");
+			}
+		}
+	}
+
+	mpb = mp;
+	mp = 0;
+	prn_string("\n\n==================================================================================\n");
+	prn_string("DUMP DRAM-");
+	prn_decimal(dram_id);
+	prn_string("parameters:\n");
+	for (idx = 0 ; idx < rec_idx ; idx++) {
+		if (scan_pass_param[idx] != 0) {
+			prn_string("SCAN=> [");
+			prn_decimal(idx);
+			prn_string("]");
+			prn_string(" ; dfi_t_rddata_en = ");
+			prn_decimal((scan_pass_param[idx] >> 16) & 0x7F);
+			prn_string(" ; dft_tphy_wrdata = ");
+			prn_decimal((scan_pass_param[idx] >> 8) & 0x7F);
+			prn_string("; AC=");
+			prn_decimal((scan_pass_acack[idx] >> 8) & 0x3F);
+			prn_string("; ACK=");
+			prn_decimal((scan_pass_acack[idx] >> 16) & 0x3F);
+			prn_string("; CK=");
+			prn_decimal((scan_pass_acack[idx] >> 0) & 0x3F);
+			prn_string(";\n");
+		}
+	}
+	prn_string("==================================================================================\n");
+	mp = mpb;
+}
+#endif
 
 void run_SiScope(void)
 {
@@ -1982,9 +2081,13 @@ void run_SiScope(void)
 	ddr_clk_info();
 
 	prn_string("\n\n==================================run_SiScope END================================================\n");
+#ifdef PLATFORM_GEMINI
 	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
 	gSTR_DQS_IN = SD0_STR_DQS_IN;
 	gWL_CNT = WL_CNT;
+#elif defined(PLATFORM_PENTAGRAM)
+	scan_val_190 = UMCTL2_190;
+#endif
 	silent_dram_init();
 }
 
@@ -2036,9 +2139,13 @@ int dram_init_main()
 	gAC = DPCU_AC0BD;
 	gACK = DPCU_ACK0BD;
 	gCK = DPCU_CK0BD;
+#ifdef PLATFORM_GEMINI
 	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
 	gSTR_DQS_IN = SD0_STR_DQS_IN;
 	gWL_CNT = WL_CNT;
+#elif defined(PLATFORM_PENTAGRAM)
+	// TBD
+#endif
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
@@ -2050,7 +2157,7 @@ int dram_init_main()
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 
 #ifdef PLATFORM_PENTAGRAM
-	// #error "TBD"
+	// TBD
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
 	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
