@@ -139,6 +139,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_string("  SSCPLL Setting =");
 	prn_byte(temp_a);
 
+#ifdef PLATFORM_GEMINI
 	// DUMP SDCTRL parameter
 	prn_string("DPCU_DT_INFO : \t********** SDCTRL Setting **********\n");
 	temp_a = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
@@ -152,6 +153,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	prn_string("  INT_WL_CNT=");
 	prn_decimal(temp_c);
 	prn_string("  \n\n");
+#endif
 
 	// DUMP CK0BD
 	prn_string("DPCU_DT_INFO : \t********** DDRPHY Setting **********\n");
@@ -212,6 +214,7 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 	// training error
 	if (temp_b != 0) {
+
 		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX0 training error information **********\n");
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 2) >> 8) & 0x01;
 		temp_b = (SP_REG(PHY_BASE_GRP + 2, 2) >> 9) & 0x01;
@@ -1314,7 +1317,7 @@ int dram_training_flow(unsigned int dram_id)
 #ifdef DRAM_ZQ_CFG
 	// ZQCL setting
 #ifdef PLATFORM_PENTAGRAM
-	// SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
+	// TBD
 #elif defined(PLATFORM_GEMINI)
 	SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
 #endif
@@ -1590,6 +1593,7 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP+0, 0) =   DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL); */
 #endif // SDRAM_FPGA
 
+#ifdef PLATFORM_GEMINI
 	dbg_stamp(0xA003); // phy-training done !!!
 	// issue PREA & enable AREF after training
 	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
@@ -1597,6 +1601,7 @@ int dram_training_flow(unsigned int dram_id)
 	// SDRAM power initial task completed:
 	SP_REG(SDC_BASE_GRP + 0, 18) = 0x0002;
 	rgst_value = SP_REG(SDC_BASE_GRP + 0, 18);
+#endif
 
 	prn_string("<<< leave 8 dram_training_flow for DRAM");
 	prn_decimal(dram_id);
@@ -1734,6 +1739,7 @@ DRAM_BOOT_FLOW_AGAIN:
 			prn_string(" ***\n");
 			DPCU_DT_RESULT_DUMP(dram_id);
 		} else {
+#ifdef PLATFORM_GEMINI
 			// training pass
 			// double check RSL result for SDCTRL setting
 			rgst_value = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F;
@@ -1753,6 +1759,7 @@ DRAM_BOOT_FLOW_AGAIN:
 				temp_2 = temp_2 + 1;
 				SP_REG(SDC_BASE_GRP, 11) = (temp_1 << 25) | (temp_2 << 20) | (temp_3 << 8);
 			}
+#endif
 			int i = 0;
 			int pass_count = 0;
 #if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb)
