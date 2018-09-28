@@ -281,8 +281,8 @@
 // DDR3-800 ~ DDR3-1333
 // #define SD0_STR_DQS_IN      13  // 1066 direct PCB
 // #define SD0_EXTRA_CL_CNT    20  // 1066 direct PCB
-#define SD0_STR_DQS_IN      14    // 1066 socket
-#define SD0_EXTRA_CL_CNT    23    // 1066 socket
+#define SD0_STR_DQS_IN      12    // 1066 socket
+#define SD0_EXTRA_CL_CNT    21    // 1066 socket
 // #define SD0_STR_DQS_IN      9
 // #define SD0_EXTRA_CL_CNT    16
 
@@ -533,7 +533,7 @@
 
 #if defined(MPEG_DRAM_16BIT)
 #define nSD_DATA_BUS_WIDTH  1   // 1: X16bit in DRAM I/F
-#define nDATA_LIM_WORD      128  // SDCTRL/MBUS System Configure
+#define nDATA_LIM_WORD      96  // SDCTRL/MBUS System Configure
 
 #elif defined(MPEG_DRAM_8BIT)
 #define nSD_DATA_BUS_WIDTH  0   // 0: X8bit in DRAM I/F
@@ -657,7 +657,7 @@
 // #define MRS_CWL_CNT     7   // 7T  --  Cas Write Latency
 // #endif
 
-#define MRS_CWL_CNT     7   // 7T  --  Cas Write Latency
+#define MRS_CWL_CNT     6   // Cas Write Latency
 // #define MRS_CWL_CNT     8   // 8T  --  Cas Write Latency
 
 #elif defined SDRAM_SPEED_800
@@ -722,21 +722,21 @@
 // DDR3 setting
 #ifdef SDRAM_SPEED_400_to_667
 // DDR3-800 ~ DDR3-1333
-#define n_tRP   ( 10 + DRAM_PARAMETER_OFFSET)   // 10T -- Prechage to Active
-#define n_tRCD  ( 9 + DRAM_PARAMETER_OFFSET)   // 10T -- Active-CMD to read/write
-#define n_tRC   ( 33 + DRAM_PARAMETER_OFFSET)   // 34T -- Active-CMD to Active-CMD (Same bank)
-#define n_tRAS  ( 24 + DRAM_PARAMETER_OFFSET)   // 25T -- Active-CMD to precharge-CMD (Same bank)
+#define n_tRP   ( 8 + DRAM_PARAMETER_OFFSET)   // Prechage to Active
+#define n_tRCD  ( 8 + DRAM_PARAMETER_OFFSET)   // Active-CMD to read/write
+#define n_tRC   ( 28 + DRAM_PARAMETER_OFFSET)   // Active-CMD to Active-CMD (Same bank)
+#define n_tRAS  ( 20 + DRAM_PARAMETER_OFFSET)   // Active-CMD to precharge-CMD (Same bank)
 #define n_tCCD  ( 4  + DRAM_PARAMETER_OFFSET)   // 4T  -- CAS to CAS (read to read / Write to write)
-#define nRTP    ( 5  + DRAM_PARAMETER_OFFSET)   // 5T  -- Read to precharge :
+#define nRTP    ( 4  + DRAM_PARAMETER_OFFSET)   // Read to precharge :
 //    -- ddr3 is read to prechrage, nRTP = tRTP
 #define n_tRTW  ( 9  + DRAM_PARAMETER_OFFSET)   // 9T  -- BL=8 Read to write trun around cycle number
 //    -- 10+4+2-7 (CL+CCD+2-CWL)
-#define n_tWTR  ( 5  + DRAM_PARAMETER_OFFSET)   // 5T  -- DRAM internal dealy Write command to read command delay
+#define n_tWTR  ( 4  + DRAM_PARAMETER_OFFSET)   // DRAM internal dealy Write command to read command delay
 #define n_tMRD  ( 4  + DRAM_PARAMETER_OFFSET)   // 4T  -- DRAM's MRS-CMD to MRS/EMRS-CMD
 #define n_tMOD  ( 12 + DRAM_PARAMETER_OFFSET)   // 12T -- DRAM's MRS-CMD to non-MRS/EMRS-CMD
-#define n_tRRD  ( 6  + DRAM_PARAMETER_OFFSET)   // 6T  -- Active-CMD to Active-CMD (Diff. bank) ; P.S, depend on DR3-1066
-#define n_tFAW  ( 30 + DRAM_PARAMETER_OFFSET)   // 30T --
-#define n_tWR   ( 10 + DRAM_PARAMETER_OFFSET)   // 10T -- Write recovery time
+#define n_tRRD  ( 4  + DRAM_PARAMETER_OFFSET)   //  Active-CMD to Active-CMD (Diff. bank) ; P.S, depend on DR3-1066
+#define n_tFAW  ( 26 + DRAM_PARAMETER_OFFSET)
+#define n_tWR   ( 8 + DRAM_PARAMETER_OFFSET)   // Write recovery time
 #define MRS_WR_GEN2                             // TWR => for MRS-0 issue, there are 3-ways to encode WR
 //    => define GEN3 : n_tWR == 16
 //    => define GEN2 : n_tWR == 10/12/14
@@ -841,13 +841,13 @@
 #else   // DDR3
 // auto refresh BW ~2.64%
 #ifdef SDRAM_SIZE_1Gb
-#define n_tRFC  (74  + DRAM_PARAMETER_OFFSET)   // 74T  -- Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
+#define n_tRFC  (59  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
 #elif defined SDRAM_SIZE_2Gb
-#define n_tRFC  (107  + DRAM_PARAMETER_OFFSET)  // 107T -- Refresh-CMD to Active/Refresh-CMD DDR3 -2Gb 160ns
+#define n_tRFC  (86  + DRAM_PARAMETER_OFFSET)  // Refresh-CMD to Active/Refresh-CMD DDR3 -2Gb 160ns
 #elif defined SDRAM_SIZE_4Gb
-#define n_tRFC  (174 + DRAM_PARAMETER_OFFSET)   // 174T -- Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
+#define n_tRFC  (139 + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
 #elif defined SDRAM_SIZE_8Gb
-#define n_tRFC  (234 + DRAM_PARAMETER_OFFSET)   // 234T -- Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns
+#define n_tRFC  (187 + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -8Gb 350ns
 #else
 #error  Please defined DDR3 n_tRFC ...
 #endif
