@@ -27,6 +27,7 @@ LDFLAGS = -T autogen.ld
 LDFLAGS += -L $(shell dirname `$(CROSS)gcc -print-libgcc-file-name`) -lgcc
 
 CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
+# CFLAGS = -O1 -Wall -g -nostdlib -fno-builtin -Iinclude
 ifeq ($(DRAM_INIT),1)
 CFLAGS += -mthumb -mthumb-interwork
 endif

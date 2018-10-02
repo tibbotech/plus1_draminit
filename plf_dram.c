@@ -743,6 +743,7 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 
 	dram_fill_zero(test_size, 0);
 
+	// debug = 1;
 	if (debug) {
 		prn_string("\t memory_rw_test(");
 	}
@@ -757,7 +758,7 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 		break;
 	default:
 		if (debug) {
-			prn_string("random)");
+			prn_string("patterns)");
 		}
 		for (i = 0 ; i < test_size_word ; i++) {
 			ram[i] = pattern[i % num_pattern];
@@ -943,7 +944,6 @@ int dram_booting_flow(unsigned int dram_id)
 
 	aphy_select1_value = rgst_value;
 	// Disable DDR IO PAD Retention flag
-	rgst_value = SP_REG(8, 0);
 	// setting AI CFG
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT2;
 	// enable APHY_INIT start
@@ -953,6 +953,7 @@ int dram_booting_flow(unsigned int dram_id)
 	do {
 		wait_flag   =   SP_REG(PHY_BASE_GRP + 0, 2) & 0x00000001;
 	} while ((wait_flag == 0));
+
 	rgst_value = (SP_REG(PHY_BASE_GRP + 0, 2) >> 8) & 0x0F;
 
 	aphy_select2_value = rgst_value;
@@ -1385,6 +1386,8 @@ int dram_training_flow(unsigned int dram_id)
 	rgst_value = SP_REG(PHY_BASE_GRP + 1, 1);
 	prn_string("\trefresh period = ");
 	prn_dword(rgst_value);
+
+	SP_REG(PHY_BASE_GRP + 1, 10) |= 1 << 20;
 	SP_REG(PHY_BASE_GRP + 1, 1) = DPCU_DT_GO;
 
 	// wait_dpcu_1st_training
@@ -1609,6 +1612,7 @@ DRAM_BOOT_FLOW_AGAIN:
 		prn_string("\n ");
 		ret = dram_training_flow(dram_id);
 
+
 		if (ret == WAIT_FLAG_FAIL) {
 			prn_string("wait flag or register G(37,10) fail!!!!\n");
 			// goto DRAM_BOOT_FLOW_AGAIN;
@@ -1711,8 +1715,8 @@ void dram_scan(unsigned int dram_id)
 
 
 
-	for (dfi_t_rddata_en = 0; dfi_t_rddata_en < (1 << 7); dfi_t_rddata_en++) {
-		for (dft_tphy_wrdata = 0; dft_tphy_wrdata < (1 << 7); dft_tphy_wrdata++) {
+	for (dft_tphy_wrdata = (UMCTL2_190_5 - 0); dft_tphy_wrdata <= (UMCTL2_190_5 + 0); dft_tphy_wrdata++) {
+		for (dfi_t_rddata_en = (UMCTL2_190_3 - 0); dfi_t_rddata_en <= (UMCTL2_190_3 + 0); dfi_t_rddata_en++) {
 			// UMCTL2_REG(0x190),
 			//	[22:16] dfi_t_rddata_en
 			//	[14: 8] dft_tphy_wrdata

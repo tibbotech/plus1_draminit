@@ -652,8 +652,8 @@
 #define n_tWTR  ( 4  + DRAM_PARAMETER_OFFSET)   // DRAM internal dealy Write command to read command delay
 #define n_tMRD  ( 4  + DRAM_PARAMETER_OFFSET)   // 4T  -- DRAM's MRS-CMD to MRS/EMRS-CMD
 #define n_tMOD  ( 12 + DRAM_PARAMETER_OFFSET)   // 12T -- DRAM's MRS-CMD to non-MRS/EMRS-CMD
-#define n_tRRD  ( 4  + DRAM_PARAMETER_OFFSET)   //  Active-CMD to Active-CMD (Diff. bank) ; P.S, depend on DR3-1066
-#define n_tFAW  ( 26 + DRAM_PARAMETER_OFFSET)
+#define n_tRRD  ( 6  + DRAM_PARAMETER_OFFSET)   //  Active-CMD to Active-CMD (Diff. bank) ; P.S, depend on DR3-1066
+#define n_tFAW  ( 27 + DRAM_PARAMETER_OFFSET)
 #define n_tWR   ( 8 + DRAM_PARAMETER_OFFSET)   // Write recovery time
 #define MRS_WR_GEN2                             // TWR => for MRS-0 issue, there are 3-ways to encode WR
 //    => define GEN3 : n_tWR == 16
@@ -1259,7 +1259,7 @@
 #define MRS_WRITE_RECOVERY    ((n_tWR - 6) <<  9)
 
 #elif defined(SDRAM_SPEED_400_to_667)
-#define MRS_WRITE_RECOVERY    ((n_tWR - 5) <<  9)
+#define MRS_WRITE_RECOVERY    ((n_tWR - 4) <<  9)
 
 #else
 #define MRS_WRITE_RECOVERY    ((n_tWR - 4) <<  9)
@@ -1348,7 +1348,7 @@
 // -------------------------------------------
 // DDR3 SDRAM EMRS(2) Register Setting
 // -------------------------------------------
-#define SDCTRL_MRS_RTT_WR   (0 << 9) // 0 : Disable DDR3 Dynamic ODT , 1 : Dynamic ODT , Rtt(WR)= 60Ohm , 2 : Dynamic ODT , Rtt(WR)= 120Ohm ,
+#define SDCTRL_MRS_RTT_WR   (2 << 9) // 0 : Disable DDR3 Dynamic ODT , 1 : Dynamic ODT , Rtt(WR)= 60Ohm , 2 : Dynamic ODT , Rtt(WR)= 120Ohm ,
 #define SDCTRL_MRS_SRT      (0 << 7)
 #define SDCTRL_MRS_SRT_EXT  (1 << 7)
 #define SDCTRL_MRS_ASR      (0 << 6)
@@ -1498,7 +1498,7 @@
 #define DPCU_DDR3_MODE          (1<<5)
 
 #ifdef PLATFORM_PENTAGRAM
-#define DPCU_GLB_DEF            0x0430AA00
+#define DPCU_GLB_DEF            0x0431AA00
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
@@ -1593,11 +1593,11 @@
 
 #endif
 
-#define DPCU_AI_CFG0_SELECT1    AI_PZQ_INIT_BYPASS  (n_PZQ_INIT_BYPASS)     | \
+#define DPCU_AI_CFG0_SELECT1    AI_PZQ_INIT_BYPASS  (n_PZQ_INIT_NO_BYPASS)     | \
 	AI_DDL_INIT_BYPASS  (n_DDL_INIT_NO_BYPASS)  | \
 	AI_MPLL_INIT_BYPASS (n_MPLL_INIT_NO_BYPASS) | \
 	AI_CTCAL_INIT_BYPASS(n_CTCAL_INIT_NO_BYPASS)| \
-	AI_PZQ_INIT_EN      (n_PZQ_INIT_DIS)        | \
+	AI_PZQ_INIT_EN      (n_PZQ_INIT_EN)         | \
 	AI_DDL_INIT_EN      (n_DDL_INIT_EN )        | \
 	AI_MPLL_INIT_EN     (n_MPLL_INIT_EN  )      | \
 	AI_CTCAL_INIT_EN    (n_CTCAL_INIT_EN  )     | \
@@ -1633,14 +1633,18 @@
 #elif defined   MPEG_DRAM_DDR_1333
 #define n_MPLL_DIV  0x31
 #elif defined   MPEG_DRAM_DDR_1066
-#define n_MPLL_DIV  0x27
+// #define n_MPLL_DIV  0x27		// 0x27 * 27 = 1053
+// #define n_MPLL_DIV  0x24		// 0x24 * 27 = 972
+// #define n_MPLL_DIV  0x23		// 0x24 * 27 = 945
+#define n_MPLL_DIV  0x22		// 0x22 * 27 = 918
+// #define n_MPLL_DIV  0x21		// 0x22 * 27 = 891
 #else
 // DDR-800
 #define n_MPLL_DIV  0x1D
 #endif
 
 #ifdef PLATFORM_PENTAGRAM
-#define MPLL_CFG1_DEF   0x00415600
+#define MPLL_CFG1_DEF   0x004d5600
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
@@ -1665,7 +1669,7 @@
 #define         PZQ_CK_SEL(n)               ((n) << 10)
 
 // this value is for internal PZQ resitor selection (collect value need wait APHY owner get from APHY macro test mode)
-#define         n_PZQ_ZQ_RES_SEL            0x01
+#define         n_PZQ_ZQ_RES_SEL            0xc0
 #define         PZQ_ZQ_RES_SEL(n)           ((n) << 17)
 #define         DPCU_RI_PZQ_RES_SEL_SRC(n)  ((n) << 16)
 #ifdef TRIM_INTERNAL_PZQ_FROM_DPCU
@@ -1680,6 +1684,7 @@
 	PZQ_ZQ_RES_SEL(n_PZQ_ZQ_RES_SEL) | \
 	PZQ_CK_SEL(n_PZQ_CK_SEL_EN) | \
 	PZQ_REGI_ZQ_INTR(n_PZQ_ZQ_INTR_DIS)
+
 
 
 // SSTL impedance setting
@@ -2159,6 +2164,9 @@
 
         #define UMCTL2_190_1    3
         #define UMCTL2_190_2    1
+#if 1
+#define UMCTL2_190_3    10
+#else
         #ifdef NO_QUICK_SIM
                 #ifdef  POST_SIM
                         #define UMCTL2_190_3    10
@@ -2168,6 +2176,8 @@
         #else
                 #define UMCTL2_190_3    9
         #endif
+#endif
+
         #define UMCTL2_190_4    1
         #define UMCTL2_190_5    1
         #define UMCTL2_190_6    5

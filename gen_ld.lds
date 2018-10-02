@@ -10,10 +10,10 @@ MEMORY
 	sram   : ORIGIN = 0x9e808c00, LENGTH = 1K + 512    /* borrow xboot sect_buf */
 #elif defined DRAMSCAN
 	public : ORIGIN = 0x98000000, LENGTH = 1M
-	sram   : ORIGIN = 0x9e800000, LENGTH = 60K
+	sram   : ORIGIN = 0x9e800000, LENGTH = 38K
 #elif defined SISCOPE
-	public : ORIGIN = 0x9e800000, LENGTH = 56K
-	sram   : ORIGIN = 0x9e80e000, LENGTH = 4K
+	public : ORIGIN = 0x9e800000, LENGTH = 38K
+	sram   : ORIGIN = 0x9e809800, LENGTH = 2K
 #endif
 }
 
@@ -45,6 +45,6 @@ SECTIONS
 	} > sram
 
 #if defined(DRAMSCAN) || defined(SISCOPE)
-	_sp_start = 0x9e810000 ;
+	_sp_start = 0x9e80a000 ;
 #endif
 }
