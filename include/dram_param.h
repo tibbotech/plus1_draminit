@@ -27,7 +27,7 @@
 #ifdef PLATFORM_PENTAGRAM
 #define MPEG_DRAM_DDR_1066
 #elif defined(PLATFORM_GEMINI)
-#define MPEG_DRAM_DDR_1600
+#error "Last git-commit that support PLATFORM_GEMINI: d1154b9d77bd3d6786ffbdab5e126614085a39ea"
 #endif
 
 #ifdef PLATFORM_PENTAGRAM
@@ -35,35 +35,7 @@
 #define SDRAM0_SIZE_2Gb
 #define SDRAM1_SIZE_2Gb
 #elif defined(PLATFORM_GEMINI)
-#ifndef CONFIG_USE_DRAM_CFG
-// #define SDRAM0_SIZE_256Mb
-// #define SDRAM0_SIZE_512Mb
-// #define SDRAM0_SIZE_1Gb
-#define SDRAM0_SIZE_2Gb
-// #define SDRAM0_SIZE_4Gb
-// #define SDRAM0_SIZE_8Gb
-
-// #define SDRAM1_SIZE_0
-// #define SDRAM1_SIZE_256Mb
-// #define SDRAM1_SIZE_512Mb
-// #define SDRAM1_SIZE_1Gb
-#define SDRAM1_SIZE_2Gb
-// #define SDRAM1_SIZE_4Gb
-// #define SDRAM1_SIZE_8Gb
-#else
-#ifdef CONFIG_DRAM0_SIZE_1Gb
-#define SDRAM0_SIZE_1Gb
-#define SDRAM1_SIZE_1Gb
-#elif defined CONFIG_DRAM0_SIZE_2Gb
-#define SDRAM0_SIZE_2Gb
-#define SDRAM1_SIZE_2Gb
-#elif defined CONFIG_DRAM0_SIZE_4Gb
-#define SDRAM0_SIZE_4Gb
-#define SDRAM1_SIZE_4Gb
-#else
-#error USE DRAM CONFIG..BUT DRAM SIZE NOT SUPPORT.
-#endif
-#endif
+// Not support
 #endif
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
@@ -406,61 +378,7 @@
 #endif
 
 #elif defined(PLATFORM_GEMINI)
-#ifdef MPEG_DRAM_16BIT
-#ifdef SDRAM0_SIZE_256Mb
-#define nROW0_WIDTH      12
-#define nCOL0_WIDTH       8
-#define nBANK0_WIDTH      1
-#elif defined SDRAM0_SIZE_512Mb
-#define nROW0_WIDTH      12
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      1
-#elif defined SDRAM0_SIZE_1Gb
-#define nROW0_WIDTH      12
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_2Gb
-#define nROW0_WIDTH      13
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_4Gb
-#define nROW0_WIDTH      14
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_8Gb
-#define nROW0_WIDTH      15
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#else
-#error  Please define => DRAM-0 IC_USE_DRAM_SIZE...
-#endif
-#elif defined (MPEG_DRAM_8BIT) // iam X8 => MPEG_DRAM_8BIT
-#ifdef SDRAM0_SIZE_256Mb
-#define nROW0_WIDTH      12
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      1
-#elif defined SDRAM0_SIZE_512Mb
-#define nROW0_WIDTH      13
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      1
-#elif defined SDRAM0_SIZE_1Gb
-#define nROW0_WIDTH      13
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_2Gb
-#define nROW0_WIDTH      14
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_4Gb
-#define nROW0_WIDTH      15
-#define nCOL0_WIDTH       9
-#define nBANK0_WIDTH      2
-#elif defined SDRAM0_SIZE_8Gb
-#error  NO support, please recheck
-#else
-#error  Please define => DRAM-0 IC_USE_DRAM_SIZE...
-#endif
-#endif
+// Not support
 #endif
 
 
@@ -1582,7 +1500,7 @@
 #ifdef PLATFORM_PENTAGRAM
 #define DPCU_GLB_DEF            0x0430AA00
 #elif defined(PLATFORM_GEMINI)
-#define DPCU_GLB_DEF            0x0000AA00
+// Not support
 #endif
 
 
@@ -1724,8 +1642,7 @@
 #ifdef PLATFORM_PENTAGRAM
 #define MPLL_CFG1_DEF   0x00415600
 #elif defined(PLATFORM_GEMINI)
-#define MPLL_CFG1_DEF   0x00455600
-// #define MPLL_CFG1_DEF   0x00365700
+// Not support
 #endif
 
 #define MPLL_DIV(n)     ((n)<<0)

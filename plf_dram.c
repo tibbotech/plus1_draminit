@@ -73,7 +73,7 @@ static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
 static unsigned int gAC, gACK, gCK;
 
 #ifdef PLATFORM_GEMINI
-static unsigned int gEXTRA_CL_CNT, gSTR_DQS_IN, gWL_CNT;
+// Not support
 #elif defined(PLATFORM_PENTAGRAM)
 #if (defined(DRAMSCAN) || defined(SISCOPE))
 static unsigned int scan_val_190;
@@ -138,22 +138,6 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 	temp_a = (SP_REG(PHY_BASE_GRP, 12) >> 0) & 0x3F;
 	prn_string("  SSCPLL Setting =");
 	prn_byte(temp_a);
-
-#ifdef PLATFORM_GEMINI
-	// DUMP SDCTRL parameter
-	prn_string("DPCU_DT_INFO : \t********** SDCTRL Setting **********\n");
-	temp_a = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
-	temp_b = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
-	temp_c = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
-
-	prn_string("  STR_DQS_IN=");
-	prn_decimal(temp_b);
-	prn_string("  EXT_CL_CNT=");
-	prn_decimal(temp_a);
-	prn_string("  INT_WL_CNT=");
-	prn_decimal(temp_c);
-	prn_string("  \n\n");
-#endif
 
 	// DUMP CK0BD
 	prn_string("DPCU_DT_INFO : \t********** DDRPHY Setting **********\n");
@@ -692,7 +676,7 @@ void assert_sdc_phy_reset(void)
 	SP_REG(0, 21) |= 1 << 14;	// PHY
 	SP_REG(0, 22) |= 1 << 0;	// SDCTRL0
 #elif defined(PLATFORM_GEMINI)
-	SP_REG(0, 17) |= (1 << 14) | (1 << 16);		// SDCTRL0_RESET, DDR_PHY0_RESET
+	// Not support
 #endif
 }
 
@@ -702,7 +686,7 @@ void release_sdc_phy_reset(void)
 	SP_REG(0, 21) &= ~(1 << 14);	// PHY
 	SP_REG(0, 22) &= ~(1 << 0);	// SDCTRL0
 #elif defined(PLATFORM_GEMINI)
-	SP_REG(0, 17) &= ~((1 << 14) | (1 << 16));	// SDCTRL0_RESET, DDR_PHY0_RESET
+	// Not support
 #endif
 }
 
@@ -1126,60 +1110,6 @@ int dram_training_flow(unsigned int dram_id)
 	// -------------------------------------------------------
 	// 2. SDCTRL RGST setting => a002
 	// -------------------------------------------------------
-#ifdef PLATFORM_GEMINI
-#ifdef DISABLE_L3_CACHE
-	SP_REG(24, 0) = SP_REG(24, 0) & (~(3 << 12));
-#endif
-#ifdef DISABLE_L3_ACCESS_DRAM_TO_MBUS
-	SP_REG(SDC_BASE_GRP + 7, 5) = (SP_REG(SDC_BASE_GRP + 7, 5) & ~(1 << 1));
-#endif
-	// #ifdef L3C_SIZE_64KB
-	//   SP_REG(SDC_BASE_GRP+7, 1) =   0x0010;
-	// #endif
-	SP_REG(SDC_BASE_GRP - 1, 1) = MCPP_BKLEN_CFG_VAL;
-	SP_REG(SDC_BASE_GRP - 1, 7) = MCPP_LIFE_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 3) = DATA_NO_LIM_CFG_VAL; // ASIC ONLY
-	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_REG_DIS_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 9) = AREF_INTVAL(nAREF_INTVAL); // ASIC DIFF
-
-	if (dram_id == 1) {
-		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM1_SIZE_TYPE_VAL; // ASIC DIFF
-	} else {
-		SP_REG(SDC_BASE_GRP + 0, 5) = SDRAM0_SIZE_TYPE_VAL; // ASIC DIFF
-	}
-	SP_REG(SDC_BASE_GRP + 0, 6) = SD_SYS_MISC;
-	SP_REG(SDC_BASE_GRP + 0, 7) = 0;
-	if (dram_id == 1) {
-		SP_REG(SDC_BASE_GRP + 0, 11) = SCAN_SD1_ACC_LATENCY;
-	} else {
-		SP_REG(SDC_BASE_GRP + 0, 11) = ((gEXTRA_CL_CNT << 25) | (gSTR_DQS_IN << 20) | (gWL_CNT << 8));
-	}
-	SP_REG(SDC_BASE_GRP + 0, 12) = SD_PAR_INTERVAL_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 13) = SD_PAR_TIMING0_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 14) = SD_PAR_TIMING1_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 15) = SD_PAR_TIMING2_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 16) = SD_PAR_TIMING3_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 19) = ODT_SIGNAL_TIMING_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 27) = ZQCL_CFG_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 28) = ZQCS_CFG_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 29) = SCPP_CFG_VAL;
-	// -------------------------------------------------------
-	// 3. SDCTRL-0 initial task sequence
-	// -------------------------------------------------------
-	// switch DFI path to SDCTRL
-	SP_REG(SDC_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL);
-	// assert SDCTRL's DDR3_RST & DDR3_CKE register
-	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_DISABLE;
-	wait_loop(10)   ;   // wait for DRAM RST
-
-	// release SDCTRL's DDR3_RST & DDR3_CKE register
-	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_EN;
-	wait_loop(5)   ;    // wait for RST high
-
-	SP_REG(SDC_BASE_GRP + 0, 31) = DDR3_RST_CKE_EN;
-	wait_loop(5)   ;    // wait for CKE high
-#endif
-
 	// DRAM MRS SETTING
 	// DDR2: PREA -> MRS2 -> MRS3 -> MRS1 ->
 	//       MRS0(DLL_RESET0) -> MRS0(DLL_RESET1) -> MRS1(OCD DFLT) -> MRS1(OCD EXIT)
@@ -1277,49 +1207,12 @@ int dram_training_flow(unsigned int dram_id)
 	} while ((wait_flag == 0));
 #endif
 
-#if defined(MPEG_DRAM_TYPE_DDR2) && defined(PLATFORM_GEMINI)
-	// PREA
-	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
-#endif
-
-#ifdef PLATFORM_GEMINI
-	// MRS_MODE2
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE2_VAL_SET;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-	// MRS_MODE3
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE3_VAL_SET;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-	// MRS_MODE1
-	// OCD Exit & DLL_ENABLE
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-
-	// MRS_MODE0
-	// SDRAM DLL Reset
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-#endif
-
-#if defined(MPEG_DRAM_TYPE_DDR2) && defined(PLATFORM_GEMINI)
-	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_CMD_TRIG_VAL;
-	// Write_recovery_6T , SDRAM DLL Without Reset
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE0_VAL_SET_1;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-	// OCD Default
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET_1;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-	// OCD Exit
-	SP_REG(SDC_BASE_GRP + 0, 17) = MRS_MODE1_VAL_SET;
-	SP_REG(SDC_BASE_GRP + 0, 8) = MRS_CMD_TRIG_VAL;
-#endif
 #ifdef DRAM_ZQ_CFG
 	// ZQCL setting
 #ifdef PLATFORM_PENTAGRAM
 	// TBD
 #elif defined(PLATFORM_GEMINI)
-	SP_REG(SDC_BASE_GRP + 0, 8) = ZQCL_CMD_TRIG_VAL;
+	// Not support
 #endif
 
 #endif
@@ -1593,16 +1486,6 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP+0, 0) =   DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL); */
 #endif // SDRAM_FPGA
 
-#ifdef PLATFORM_GEMINI
-	dbg_stamp(0xA003); // phy-training done !!!
-	// issue PREA & enable AREF after training
-	SP_REG(SDC_BASE_GRP + 0, 8) = PREA_CMD_TRIG_VAL;
-	SP_REG(SDC_BASE_GRP + 0, 8) = AREF_REG_EN_VAL;
-	// SDRAM power initial task completed:
-	SP_REG(SDC_BASE_GRP + 0, 18) = 0x0002;
-	rgst_value = SP_REG(SDC_BASE_GRP + 0, 18);
-#endif
-
 	prn_string("<<< leave 8 dram_training_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -1739,27 +1622,6 @@ DRAM_BOOT_FLOW_AGAIN:
 			prn_string(" ***\n");
 			DPCU_DT_RESULT_DUMP(dram_id);
 		} else {
-#ifdef PLATFORM_GEMINI
-			// training pass
-			// double check RSL result for SDCTRL setting
-			rgst_value = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F;
-			// prn_string("\tDX0 :   RG_RSL ="); prn_byte(temp_1); prn_string("\tDX1 :   RG_RSL ="); prn_byte(temp_2); prn_string("\n");
-			if (rgst_value == 1) {
-				// modify SDCTRL STR_DQS_IN if RSL ==1 (STR_DQS_IN -1)
-				temp_1 = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
-				temp_2 = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
-				temp_3 = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
-				temp_2 = temp_2 - 1;
-				SP_REG(SDC_BASE_GRP, 11) = (temp_1 << 25) | (temp_2 << 20) | (temp_3 << 8);
-			} else if (rgst_value == 3) {
-				// modify SDCTRL STR_DQS_IN if RSL ==1 (STR_DQS_IN +1)
-				temp_1 = (SP_REG(SDC_BASE_GRP, 11) >> 25) & 0x3F;
-				temp_2 = (SP_REG(SDC_BASE_GRP, 11) >> 20) & 0x1F;
-				temp_3 = (SP_REG(SDC_BASE_GRP, 11) >>  8) & 0x0F;
-				temp_2 = temp_2 + 1;
-				SP_REG(SDC_BASE_GRP, 11) = (temp_1 << 25) | (temp_2 << 20) | (temp_3 << 8);
-			}
-#endif
 			int i = 0;
 			int pass_count = 0;
 #if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb)
@@ -1823,157 +1685,7 @@ static int silent_dram_init(void)
 }
 
 #ifdef PLATFORM_GEMINI
-void dram_scan(unsigned int dram_id)
-{
-	unsigned int idx;
-	int ret;
-	unsigned int rec_idx = 0;
-	unsigned int SDC_BASE_GRP, PHY_BASE_GRP;
-	int mpb;
-
-	unsigned int sdc_str_dqs_in;
-	unsigned int sdc_ext_cl_cnt;
-	unsigned int sdc_int_wl_cnt;
-
-	unsigned int cpu_test_result;
-	unsigned int trim_test_result;
-
-	unsigned int scan_pass_param[30];
-	unsigned int scan_pass_acack[30];
-
-	unsigned int start_sdc_str_dqs_in;
-
-	// -------------------------------------------------------
-	// 0. SDCTRL / DDR_PHY RGST GRP selection
-	// -------------------------------------------------------
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-	memset((UINT8 *)scan_pass_param, 0, sizeof(scan_pass_param));
-	memset((UINT8 *)scan_pass_acack, 0, sizeof(scan_pass_acack));
-
-#ifdef MPEG_DRAM_DDR_1333
-	start_sdc_str_dqs_in = 14;
-#elif defined MPEG_DRAM_DDR_1600
-	start_sdc_str_dqs_in = 15;
-#elif defined MPEG_DRAM_DDR_1866
-	start_sdc_str_dqs_in = 17;
-#else
-#ifdef PLATFORM_GEMINI
-#error "Now DRAM SCAN only support 1333/1600/1866, you should add other data rate parameters"
-#elif defined(PLATFORM_PENTAGRAM)
-	/* Different implementation */
-#endif
-#endif
-
-	for (sdc_str_dqs_in = start_sdc_str_dqs_in ; sdc_str_dqs_in <= start_sdc_str_dqs_in ; sdc_str_dqs_in++) {
-		for (sdc_ext_cl_cnt = 20 ; sdc_ext_cl_cnt <= 30 ; sdc_ext_cl_cnt++) {
-			for (sdc_int_wl_cnt = 8 ; sdc_int_wl_cnt <= 10 ; sdc_int_wl_cnt++) {
-#ifndef DBG_SHOW_DRAMINIT_MSG
-				// mp = 1; // hide msg
-#endif
-				gEXTRA_CL_CNT = sdc_ext_cl_cnt;
-				gSTR_DQS_IN = sdc_str_dqs_in;
-				gWL_CNT = sdc_int_wl_cnt;
-				ckobd_training_flag = 1;
-				ret = silent_dram_init();
-				mpb = mp;
-				mp = 0;
-				prn_string("\nSCAN=>");
-				prn_string("  STR_DQS_IN=");
-				prn_decimal(sdc_str_dqs_in);
-				prn_string("  EXT_CL_CNT=");
-				prn_decimal(sdc_ext_cl_cnt);
-				prn_string("  INT_WL_CNT=");
-				prn_decimal(sdc_int_wl_cnt);
-				prn_string("\n");
-				mp = mpb;
-				if (ret == SUCCESS) {
-#ifdef DBG_SHOW_DRAMINIT_MSG
-					prn_string("\n/======================DRAM PARAMS START======================\\\n");
-					prn_string("\nSCAN=>");
-					prn_string("  STR_DQS_IN=");
-					prn_decimal(sdc_str_dqs_in);
-					prn_string("  EXT_CL_CNT=");
-					prn_decimal(sdc_ext_cl_cnt);
-					prn_string("  INT_WL_CNT=");
-					prn_decimal(sdc_int_wl_cnt);
-					prn_string("\n");
-					prn_string("\n\\======================DRAM PARAMS END======================/\n");
-#endif
-				} else {
-					continue;
-				}
-
-				// clean dram content of test region and test result
-				cpu_test_result     = 0;
-				trim_test_result    = 0;
-				dram_fill_zero(TEST_LEN_0, dram_id);
-
-				// test-1 : simple CPU W/R test
-				cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
-
-				if (0 == cpu_test_result) {
-					// test-2 : random trimmer test (after cpu W/R test)
-					for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
-						trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
-						// check trimmer test result
-						if (trim_test_result) {
-							if (idx == SCAN_TRIM_LEN) {
-								mpb = mp;
-								mp = 0;
-								prn_string("\tSCAN=> Test Pass\n");
-								scan_pass_param[rec_idx] = SP_REG(SDC_BASE_GRP, 11);
-								scan_pass_acack[rec_idx] = SP_REG(PHY_BASE_GRP + 0, 17);
-								rec_idx += 1;
-								mp = mpb;
-							}
-						} else {
-							prn_string("\tSCAN=> Test Fail\n");
-							break;
-						} // end if - trim_test_result
-					} // end for - trimmer test loop
-
-				} else {
-					prn_string("\tSCAN=> Test Fail\n");
-				} // end if - cpu_test_restult
-			} // end for - sdc_int_wl_cnt
-		} // end for - sdc_ext_cl_cnt
-	} // end for - str_dqs_in
-
-	// -------------------------------------------------------
-	// 2. dump final pass parameters
-	// -------------------------------------------------------
-	mpb = mp;
-	mp = 0;
-	prn_string("\n\n==================================================================================\n");
-	prn_string("DUMP DRAM-");
-	prn_decimal(dram_id);
-	prn_string("parameters:\n");
-	for (idx = 0 ; idx < rec_idx ; idx++) {
-		if (scan_pass_param[idx] != 0) {
-
-			// print out parameters
-			prn_string("SCAN=> [");
-			prn_decimal(idx);
-			prn_string("]");
-			prn_string(" ; STR_DQS_IN = ");
-			prn_decimal((scan_pass_param[idx] >> 20) & 0x1F);
-			prn_string(" ; EXT_CL_CNT = ");
-			prn_decimal((scan_pass_param[idx] >> 25) & 0x3F);
-			prn_string(" ; INT_WL_CNT = ");
-			prn_decimal((scan_pass_param[idx] >> 8) & 0x0F);
-			prn_string("; AC=");
-			prn_decimal((scan_pass_acack[idx] >> 8) & 0x3F);
-			prn_string("; ACK=");
-			prn_decimal((scan_pass_acack[idx] >> 16) & 0x3F);
-			prn_string("; CK=");
-			prn_decimal((scan_pass_acack[idx] >> 0) & 0x3F);
-			prn_string(";\n");
-		}
-	} // end for - idx
-	prn_string("==================================================================================\n");
-	mp = mpb;
-}
+// Not support
 #elif defined(PLATFORM_PENTAGRAM)
 void dram_scan(unsigned int dram_id)
 {
@@ -2089,9 +1801,7 @@ void run_SiScope(void)
 
 	prn_string("\n\n==================================run_SiScope END================================================\n");
 #ifdef PLATFORM_GEMINI
-	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
-	gSTR_DQS_IN = SD0_STR_DQS_IN;
-	gWL_CNT = WL_CNT;
+	// Not support
 #elif defined(PLATFORM_PENTAGRAM)
 	scan_val_190 = UMCTL2_190;
 #endif
@@ -2147,9 +1857,7 @@ int dram_init_main()
 	gACK = DPCU_ACK0BD;
 	gCK = DPCU_CK0BD;
 #ifdef PLATFORM_GEMINI
-	gEXTRA_CL_CNT = SD0_EXTRA_CL_CNT;
-	gSTR_DQS_IN = SD0_STR_DQS_IN;
-	gWL_CNT = WL_CNT;
+	// Not support
 #elif defined(PLATFORM_PENTAGRAM)
 	// TBD
 #endif
@@ -2166,8 +1874,7 @@ int dram_init_main()
 #ifdef PLATFORM_PENTAGRAM
 	// TBD
 #elif defined(PLATFORM_GEMINI)
-	SP_REG(8, 0) |= 0x0001;			// Keep IOP in reset
-	SP_REG(0, 17) |= (1 << 3) | (1 << 13);	// Keep DSP and ARM926 in reset
+	// Not support
 #endif
 
 	do {
