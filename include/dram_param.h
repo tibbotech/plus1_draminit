@@ -32,8 +32,8 @@
 
 #ifdef PLATFORM_PENTAGRAM
 #define MPEG_DRAM0_16BIT
-#define SDRAM0_SIZE_2Gb
-#define SDRAM1_SIZE_2Gb
+#define SDRAM0_SIZE_4Gb
+#define SDRAM1_SIZE_4Gb
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
