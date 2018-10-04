@@ -4,7 +4,14 @@ ENTRY(_start)
 
 MEMORY
 {
-#ifdef DRAM_INIT
+#ifdef DRAM_INIT_DEBUG
+	/* Following settings are just for passing linking when building draminit */
+	/* For debug mode, draminit must be linked to xboot because its size is over 7KB */
+	/* If (sizeof(XBOOT) + sizeof(draminit)) is still too large, some functions in XBOOT or draminit must be removed */
+	header : ORIGIN = 0x9e800000, LENGTH = 64
+	public : ORIGIN = 0x9e800040, LENGTH = 38K -64
+	sram   : ORIGIN = 0x9e809800, LENGTH = 2K
+#elif defined DRAM_INIT
 	header : ORIGIN = 0x9e807000, LENGTH = 64
 	public : ORIGIN = 0x9e807040, LENGTH = 7K - 64
 	sram   : ORIGIN = 0x9e808c00, LENGTH = 1K + 512    /* borrow xboot sect_buf */

@@ -99,7 +99,7 @@ $(TARGET): $(OBJS)
 ifeq ($(MK_DRAM_INIT),1)
 	gcc -E -x c -DDRAM_INIT gen_ld.lds | grep -v '^#' > autogen.ld
 else ifeq ($(MK_DEBUG),1)
-	gcc -E -x c -DDRAM_INIT gen_ld.lds | grep -v '^#' > autogen.ld
+	gcc -E -x c -DDRAM_INIT_DEBUG gen_ld.lds | grep -v '^#' > autogen.ld
 else ifeq ($(MK_SISCOPE),1)
 	gcc -E -x c -DSISCOPE   gen_ld.lds | grep -v '^#' > autogen.ld
 else ifeq ($(MK_SCAN),1)
