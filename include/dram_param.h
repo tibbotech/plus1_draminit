@@ -1633,10 +1633,12 @@
 #elif defined   MPEG_DRAM_DDR_1333
 #define n_MPLL_DIV  0x31
 #elif defined   MPEG_DRAM_DDR_1066
-// #define n_MPLL_DIV  0x27		// 0x27 * 27 = 1053
+#define n_MPLL_DIV  0x27		// 0x27 * 27 = 1053
+// #define n_MPLL_DIV  0x26		// 0x26 * 27 = 1026
+// #define n_MPLL_DIV  0x25		// 0x25 * 27 = 999
 // #define n_MPLL_DIV  0x24		// 0x24 * 27 = 972
 // #define n_MPLL_DIV  0x23		// 0x24 * 27 = 945
-#define n_MPLL_DIV  0x22		// 0x22 * 27 = 918
+// #define n_MPLL_DIV  0x22		// 0x22 * 27 = 918
 // #define n_MPLL_DIV  0x21		// 0x22 * 27 = 891
 #else
 // DDR-800
