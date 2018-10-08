@@ -889,13 +889,12 @@ int dram_booting_flow(unsigned int dram_id)
 	// -------------------------------------------------------
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
-	// -------------------------------------------------------
-	// 0. Set DRAM-0 size in CBUS( CBUS to MBUS Bridge address decode/mapping ) , soft-configure-reg 13
-	// DRAM-0 size : Group-1, reg-13 : bit[22:21] = 0 => 128Mb , 1=>256MB, 2=>512MB, 3=>1GB
-	// DRAM-1 size : Group-1, reg-13 : bit[24:23] = 0 => 128Mb , 1=>256MB, 2=>512MB, 3=>1GB
-	// -------------------------------------------------------
-	SP_REG(1, 13) = SP_REG(1, 13) & (~(15 << 21));
-	SP_REG(1, 13) = SP_REG(1, 13) | ((MO_SDRAM_A_SIZE << 21)) | ((MO_SDRAM_B_SIZE << 23));
+#ifdef PLATFORM_PENTAGRAM
+	// CBUS-MBUS Bridge setting
+	SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
+#elif defined(PLATFORM_GEMINI)
+	// Not support
+#endif
 
 	// -------------------------------------------------------
 	// 1. DPCU_APHY_INIT setting => a001
