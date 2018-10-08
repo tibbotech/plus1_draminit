@@ -905,9 +905,6 @@ int dram_booting_flow(unsigned int dram_id)
 	do_system_reset_flow(dram_id);
 	dbg_stamp(0xA000);
 
-#ifdef PLATFORM_PENTAGRAM
-	SP_REG(0, 21) = ((SP_REG(0, 21) | 0x04000000) | 0x00000400) & 0xFFFFFBFF;
-#endif
 	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_DPCU);
 	// set MPLL_DIV to operation freq.
 	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(n_MPLL_DIV);
