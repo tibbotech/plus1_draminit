@@ -1085,10 +1085,6 @@ int dram_training_flow(unsigned int dram_id)
 
 	dbg_stamp(0xA003);
 
-#ifdef PLATFORM_PENTAGRAM
-	SP_REG(PHY_BASE_GRP + 0, 12) = (SP_REG(PHY_BASE_GRP + 0, 12) & 0xFFF3FFFF) | 0x000C0000;
-#endif
-
 	// trigger CMD_ISSUE DRAM_INIT sequence
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
 		prn_string("<<< 3 leave dram_training_flow for DRAM");

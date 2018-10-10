@@ -1646,7 +1646,7 @@
 #endif
 
 #ifdef PLATFORM_PENTAGRAM
-#define MPLL_CFG1_DEF   0x004d5600
+#define MPLL_CFG1_DEF   0x00495600
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
@@ -1671,7 +1671,7 @@
 #define         PZQ_CK_SEL(n)               ((n) << 10)
 
 // this value is for internal PZQ resitor selection (collect value need wait APHY owner get from APHY macro test mode)
-#define         n_PZQ_ZQ_RES_SEL            0xc0
+#define         n_PZQ_ZQ_RES_SEL            0x9a
 #define         PZQ_ZQ_RES_SEL(n)           ((n) << 17)
 #define         DPCU_RI_PZQ_RES_SEL_SRC(n)  ((n) << 16)
 #ifdef TRIM_INTERNAL_PZQ_FROM_DPCU
