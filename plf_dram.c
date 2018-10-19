@@ -1365,7 +1365,7 @@ int dram_training_flow(unsigned int dram_id)
 #endif
 
 #ifdef PLATFORM_PENTAGRAM
-	SP_REG(PHY_BASE_GRP + 1, 5) = (SP_REG(PHY_BASE_GRP + 1, 5) & 0xFFFFFFF6) | 0x00000009;
+	SP_REG(PHY_BASE_GRP + 1, 5) = (SP_REG(PHY_BASE_GRP + 1, 5) & 0xFFFFFF76) | 0x00000009;
 	SP_REG(PHY_BASE_GRP + 1, 6) = (SP_REG(PHY_BASE_GRP + 1, 6) & 0xFFFFFF00) | 0x0000000B;
 #elif defined(PLATFORM_GEMINI)
 #endif
