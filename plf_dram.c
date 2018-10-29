@@ -1385,6 +1385,10 @@ int dram_training_flow(unsigned int dram_id)
 	// wait_dpcu_1st_training
 	wait_flag = 0;
 	do {
+		UMCTL2_REG(0x0190) = UMCTL2_REG(0x0190) & 0xFF80FFFF;
+		rgst_value = ( SP_REG(PHY_BASE_GRP + 1, 6) >> 27 );
+		UMCTL2_REG(0x0190) = UMCTL2_REG(0x0190) | (( n_tCL + rgst_value ) << 16 );
+
 		wait_loop(1000);
 		wait_flag   =   SP_REG(PHY_BASE_GRP + 1, 0) & 0x01;
 		// prn_string("111 training SP_REG(PHY_BASE_GRP+1, 0)="); prn_dword(SP_REG(PHY_BASE_GRP+1, 0)); prn_string("\n");
