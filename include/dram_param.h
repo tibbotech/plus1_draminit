@@ -1498,7 +1498,11 @@
 #define DPCU_DDR3_MODE          (1<<5)
 
 #ifdef PLATFORM_PENTAGRAM
+#if 1
 #define DPCU_GLB_DEF            0x0431AA00
+#else	/* for external DRAM */
+#define DPCU_GLB_DEF            0x0031AA00
+#endif
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
