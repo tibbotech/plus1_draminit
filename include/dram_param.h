@@ -722,7 +722,7 @@
 // auto refresh BW ~17.94%
 #elif defined SDRAM_SPEED_333_to_400
 #define nAREF_ACC      0
-#define nAREF_INTVAL   39
+#define nAREF_INTVAL   64
 // auto refresh period ~7.78us (333MHz)
 
 // tRFC follow SPEED 400 => period = 2.5ns

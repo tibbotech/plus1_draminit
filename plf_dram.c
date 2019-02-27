@@ -82,6 +82,17 @@ static unsigned int scan_val_190;
 
 u32 mp;
 
+#define CHIP_WARM_RESET
+#define SDRAM_WATCHDOG
+#ifdef SDRAM_WATCHDOG
+#define WATCHDOG_CMD_CNT_WR_UNLOCK  0xAB00
+#define WATCHDOG_CMD_CNT_WR_LOCK    0xAB01
+#define WATCHDOG_CMD_CNT_WR_MAX     0xDEAF
+#define WATCHDOG_CMD_PAUSE          0x3877
+#define WATCHDOG_CMD_RESUME         0x4A4B
+#define WATCHDOG_CMD_INTR_CLR       0x7482
+#endif
+
 void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy)
 {
 	const unsigned int dram_sdc_reg_addr[] = {DRAM_0_SDC_REG_BASE, DRAM_1_SDC_REG_BASE};
@@ -1850,6 +1861,9 @@ void check_run_siscope()
 int dram_init_main()
 {
 	unsigned int temp_value = 0;
+#ifdef CHIP_WARM_RESET
+    unsigned int cnt;
+#endif
 
 	// init params
 	ckobd_training_flag = 1;
@@ -1861,13 +1875,47 @@ int dram_init_main()
 #elif defined(PLATFORM_PENTAGRAM)
 	// TBD
 #endif
-
+#ifdef CHIP_WARM_RESET
+    if (((SP_REG(98, 1) & 0x20) == 0) && ((SP_REG(98, 2) &0x01) == 0)){
+		SP_REG(98, 1) |= (1 << 5); // G98.01[5] = 1(default = 0)
+		SP_REG(98, 2) |= (1 << 0); // G98.03[0] = 1(default = 0)
+		/* System reset */
+		SP_REG(0, 21) = 0x00010001; //G0.21[16] = 1; G0, 21[0] = 1
+    }else{
+		SP_REG(98, 1) &= ~(1 << 5); // restore G98.01[5] = 0(default = 0)
+		SP_REG(98, 2) &= ~(1 << 0); // restore G98.03[0] = 0(default = 0)
+    }
+	/* Monitor Chip temperature */
+	SP_REG(5, 0) = 0xFFFF3101;
+	SP_REG(5, 1) = 0xFFFF0000;
+	SP_REG(5, 2) = 0xFFFF4007;
+	SP_REG(5, 3) = 0xFFFF0022;
+	for (cnt = 0; cnt < 0x400000; cnt++){
+        temp_value = SP_REG(5, 12);
+		if (temp_value <= 1530){ // 1530 is experimental value
+		    break;
+		}
+	}
+#endif
+#ifdef SDRAM_WATCHDOG
+    SP_REG(4, 29) = (0x00120000 | ((1 << 4) | (1 << 1)));
+    /* STC Watch dog control */
+	SP_REG(12, 12) = WATCHDOG_CMD_PAUSE;
+	SP_REG(12, 12) = WATCHDOG_CMD_CNT_WR_UNLOCK;
+	SP_REG(12, 13) = 0x1000; // time count
+	SP_REG(12, 12) = WATCHDOG_CMD_RESUME;
+#endif
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
 	mp = 0;
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 #endif
 	dram_init(0);
+
+#ifdef SDRAM_WATCHDOG
+    SP_REG(4, 29) = 0x00120000; // Stop watch dog feature
+#endif
+
 #else
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 
