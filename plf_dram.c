@@ -1024,7 +1024,6 @@ int dram_training_flow(unsigned int dram_id)
 		return WAIT_FLAG_FAIL;
 	}
 	if (SP_REG(PHY_BASE_GRP + 1, 10) == 0x00) {
-;
 		prn_string("<<< 2 leave dram_training_flow for DRAM");
 		prn_decimal(dram_id);
 		prn_string("\n");
@@ -1428,6 +1427,11 @@ int dram_training_flow(unsigned int dram_id)
 	// wait_dpcu_2nd_training
 	wait_flag = 0;
 	do {
+		UMCTL2_REG(0x0190) = UMCTL2_REG(0x0190) & 0xFF80FFFF;
+		rgst_value = ( SP_REG(PHY_BASE_GRP + 1, 6) >> 27 );
+		UMCTL2_REG(0x0190) = UMCTL2_REG(0x0190) | (( n_tCL + rgst_value ) << 16 );
+
+		wait_loop(1000);		
 		wait_flag   = (SP_REG(PHY_BASE_GRP + 1, 0) & 0x01);
 		// prn_string("222 training SP_REG(PHY_BASE_GRP+1, 0)="); prn_dword(SP_REG(PHY_BASE_GRP+1, 0)); prn_string("\n");
 	} while ((wait_flag == 0));
@@ -1701,7 +1705,7 @@ static int silent_dram_init(void)
 void dram_scan(unsigned int dram_id)
 {
 
-	unsigned int dft_tphy_wrdata, dfi_t_rddata_en;
+	unsigned int dfi_tphy_wrdata, dfi_t_rddata_en;
 
 	unsigned int idx;
 	int ret;
@@ -1722,13 +1726,13 @@ void dram_scan(unsigned int dram_id)
 
 
 
-	for (dft_tphy_wrdata = (UMCTL2_190_5 - 0); dft_tphy_wrdata <= (UMCTL2_190_5 + 0); dft_tphy_wrdata++) {
+	for (dfi_tphy_wrdata = (UMCTL2_190_5 - 0); dfi_tphy_wrdata <= (UMCTL2_190_5 + 0); dfi_tphy_wrdata++) {
 		for (dfi_t_rddata_en = (UMCTL2_190_3 - 0); dfi_t_rddata_en <= (UMCTL2_190_3 + 0); dfi_t_rddata_en++) {
 			// UMCTL2_REG(0x190),
 			//	[22:16] dfi_t_rddata_en
-			//	[14: 8] dft_tphy_wrdata
+			//	[14: 8] dfi_tphy_wrdata
 			scan_val_190 = UMCTL2_190 & (~((0x7F << 16) | (0x7F << 8)));
-			scan_val_190 |= (dfi_t_rddata_en << 16) | (dft_tphy_wrdata << 8);
+			scan_val_190 |= (dfi_t_rddata_en << 16) | (dfi_tphy_wrdata << 8);
 
 			ckobd_training_flag = 1;
 			ret = silent_dram_init();
@@ -1737,8 +1741,8 @@ void dram_scan(unsigned int dram_id)
 			prn_string("\nSCAN=>");
 			prn_string("  dfi_t_rddata_en: ");
 			prn_decimal(dfi_t_rddata_en);
-			prn_string("  dft_tphy_wrdata: ");
-			prn_decimal(dft_tphy_wrdata);
+			prn_string("  dfi_tphy_wrdata: ");
+			prn_decimal(dfi_tphy_wrdata);
 			prn_string("\n");
 			mp = mpb;
 			if (ret != SUCCESS) {
@@ -1784,7 +1788,7 @@ void dram_scan(unsigned int dram_id)
 			prn_string("]");
 			prn_string(" ; dfi_t_rddata_en = ");
 			prn_decimal((scan_pass_param[idx] >> 16) & 0x7F);
-			prn_string(" ; dft_tphy_wrdata = ");
+			prn_string(" ; dfi_tphy_wrdata = ");
 			prn_decimal((scan_pass_param[idx] >> 8) & 0x7F);
 			prn_string("; AC=");
 			prn_decimal((scan_pass_acack[idx] >> 8) & 0x3F);
@@ -1875,6 +1879,8 @@ int dram_init_main()
 #elif defined(PLATFORM_PENTAGRAM)
 	// TBD
 #endif
+
+#if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef CHIP_WARM_RESET
     if (((SP_REG(98, 1) & 0x20) == 0) && ((SP_REG(98, 2) &0x01) == 0)){
 		SP_REG(98, 1) |= (1 << 5); // G98.01[5] = 1(default = 0)
@@ -1905,7 +1911,6 @@ int dram_init_main()
 	SP_REG(12, 13) = 0x1000; // time count
 	SP_REG(12, 12) = WATCHDOG_CMD_RESUME;
 #endif
-#if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
 	mp = 0;
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
