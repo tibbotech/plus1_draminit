@@ -32,8 +32,13 @@
 
 #ifdef PLATFORM_PENTAGRAM
 #define MPEG_DRAM0_16BIT
+#if 1
 #define SDRAM0_SIZE_4Gb
 #define SDRAM1_SIZE_4Gb
+#else
+#define SDRAM0_SIZE_1Gb
+#define SDRAM1_SIZE_1Gb
+#endif
 #elif defined(PLATFORM_GEMINI)
 // Not support
 #endif
@@ -1829,11 +1834,11 @@
 
 
 // #define DT_AREF_EN          (1<<7)
-// #define DT_AREF_PRD         (4000<<8)
-
+#ifdef SDRAM0_SIZE_4Gb
 #define DT_AREF_PRD         (1400<<8)  // take TRFC value // [str] decrease training auto refresh interval
-// from 4000 << 8 to 1400 << 8
-
+#else
+#define DT_AREF_PRD         (1560<<8)  // take TRFC value // [str] decrease training auto refresh interval
+#endif
 
 #define DPCU_DT_CFG0        DT_AREF_PRD                     | \
 	DT_RD_EYE(n_R_EYE_DIS)          | \
