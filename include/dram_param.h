@@ -774,7 +774,10 @@
 #else
 #error  Please defined DDR3 n_tRFC ...
 #endif
-
+#ifdef CONFIG_DRAM_SIZE_USE_OTP
+#define n_tRFC_1Gb  (59  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
+#define n_tRFC_4Gb  (139 + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
+#endif
 #endif
 
 #elif defined SDRAM_SPEED_800
@@ -1839,7 +1842,10 @@
 #else
 #define DT_AREF_PRD         (1560<<8)  // take TRFC value // [str] decrease training auto refresh interval
 #endif
-
+#ifdef CONFIG_DRAM_SIZE_USE_OTP
+#define DT_AREF_PRD_4Gb     (1400<<8)  // take TRFC value // [str] decrease training auto refresh interval
+#define DT_AREF_PRD_1Gb     (1560<<8)  // take TRFC value // [str] decrease training auto refresh interval
+#endif
 #define DPCU_DT_CFG0        DT_AREF_PRD                     | \
 	DT_RD_EYE(n_R_EYE_DIS)          | \
 	DT_WR_EYE(n_W_EYE_DIS)          | \
@@ -2825,7 +2831,22 @@
                                  (UMCTL2_218_4) << 16 |\
                                  (UMCTL2_218_5) <<  8 |\
                                  (UMCTL2_218_6) <<  0 )
+#ifdef CONFIG_DRAM_SIZE_USE_OTP
+        #define UMCTL2_218_1Gb   ((UMCTL2_218_7) << 31 |\
+                                 (UMCTL2_218_8) << 29 |\
+                                 (15) << 24 |\
+                                 (15) << 16 |\
+                                 (15) <<  8 |\
+                                 (nBANK_WIDTH + nCOL_WIDTH - 4) <<  0 )
 
+        #define UMCTL2_218_4Gb   ((UMCTL2_218_7) << 31 |\
+                                 (UMCTL2_218_8) << 29 |\
+                                 (15) << 24 |\
+                                 (nBANK_WIDTH + nCOL_WIDTH - 4) << 16 |\
+                                 (nBANK_WIDTH + nCOL_WIDTH - 4) <<  8 |\
+                                 (nBANK_WIDTH + nCOL_WIDTH - 4) <<  0 )
+
+#endif
         #define UMCTL2_224      ((UMCTL2_224_1) << 24 |\
                                  (UMCTL2_224_2) << 16 |\
                                  (UMCTL2_224_3) <<  8 |\
