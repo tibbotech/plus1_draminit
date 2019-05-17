@@ -1986,7 +1986,16 @@
                                  (UMCTL2_64_2)  << 16 |\
                                  (UMCTL2_64_3)  << 15 |\
                                  (UMCTL2_64_4)  <<  0 )
-
+#ifdef CONFIG_DRAM_SIZE_USE_OTP
+        #define UMCTL2_64_1Gb    ((UMCTL2_64_1)  << 31 |\
+                                 (UMCTL2_64_2)  << 16 |\
+                                 (UMCTL2_64_3)  << 15 |\
+                                 ((n_tRFC_1Gb + 1) >> 1)  <<  0 )
+        #define UMCTL2_64_4Gb    ((UMCTL2_64_1)  << 31 |\
+                                 (UMCTL2_64_2)  << 16 |\
+                                 (UMCTL2_64_3)  << 15 |\
+                                 ((n_tRFC_4Gb + 1) >> 1)  <<  0 )
+#endif
         #define UMCTL2_C0_1     0
         #define UMCTL2_C0_2     0
         #define UMCTL2_C0_3     0

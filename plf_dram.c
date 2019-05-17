@@ -1152,9 +1152,9 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x0060) = UMCTL2_60;
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
     if (DRAM_SIZE_FLAG == DRAM_SIZE_1GB) {
-		UMCTL2_REG(0x0064) = (UMCTL2_REG(0x0064) & (~0x3FF)) | ((n_tRFC_1Gb + 1) >> 1);
+		UMCTL2_REG(0x0064) = UMCTL2_64_1Gb;
     } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4GB) {
-		UMCTL2_REG(0x0064) = (UMCTL2_REG(0x0064) & (~0x3FF)) | ((n_tRFC_4Gb + 1) >> 1);
+		UMCTL2_REG(0x0064) = UMCTL2_64_4Gb;
     } else {
 		UMCTL2_REG(0x0064) = UMCTL2_64;
     }
