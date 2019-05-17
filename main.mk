@@ -4,7 +4,14 @@ PROJECT_ROOT = $(shell cd ../../ && pwd)
 COMMON_DIR = common
 LIB = lib
 BIN = bin
-CROSS ?= $(PROJECT_ROOT)/build/tools/armv5-eabi--glibc--stable/bin/armv5-glibc-linux-
+
+# Toolchain path
+ifneq ($(CROSS),)
+CC = $(CROSS)gcc
+CPP = $(CROSS)cpp
+OBJCOPY = $(CROSS)objcopy
+OBJDUMP = $(CROSS)objdump
+endif
 
 ifeq ($(MK_DRAM_INIT),1)
 	TARGET = draminit
@@ -24,7 +31,7 @@ else ifeq ($(MK_SCAN),1)
 endif
 
 LDFLAGS = -T autogen.ld
-LDFLAGS += -L $(shell dirname `$(CROSS)gcc -print-libgcc-file-name`) -lgcc
+LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
 
 CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
 # CFLAGS = -O1 -Wall -g -nostdlib -fno-builtin -Iinclude
@@ -107,9 +114,9 @@ else ifeq ($(MK_SCAN),1)
 	gcc -E -x c -DDRAMSCAN  gen_ld.lds | grep -v '^#' > autogen.ld
 endif
 	@mkdir -p $(BIN)
-	$(CROSS)gcc $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
-	$(CROSS)objcopy -O binary -S $(BIN)/$(TARGET) $(BIN)/$(TARGET).bin
-	$(CROSS)objdump -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
+	$(OBJCOPY) -O binary -S $(BIN)/$(TARGET) $(BIN)/$(TARGET).bin
+	$(OBJDUMP) -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
 ifeq ($(DRAM_INIT),1)
 	@# Add image header
 	@bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(BIN)/$(TARGET).bin $(BIN)/$(TARGET).img
@@ -123,10 +130,10 @@ ifeq ($(DRAM_INIT),1)
 endif
 
 %.o: %.S
-	$(CROSS)gcc $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.o: %.c
-	$(CROSS)gcc $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY: clean
 clean:
