@@ -748,7 +748,7 @@ int memory_rw_check(unsigned int value, unsigned int answer, int debug)
 	return ret;
 }
 
-int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
+int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int test_size, int debug)
 {
 	int ret = 0;
 	unsigned int i;
@@ -756,7 +756,8 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 	const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
 	const int num_pattern = sizeof(pattern) / sizeof(pattern[0]);
 
-	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
+//	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
+	volatile unsigned int *ram = (volatile unsigned int *)(start_addr);
 
 	// TODO: Use CBDMA.
 
@@ -816,7 +817,7 @@ int memory_rw_test_cases(int test_case, unsigned int test_size, int debug)
 #define MEMORY_RW_FLAG_DBG	(1 << 0)
 #define MEMORY_RW_FLAG_LOOP	(1 << 1)
 #define MEMORY_RW_FLAG_EXIT	(1 << 2)
-int memory_rw_test(unsigned int test_len, int flag)
+int memory_rw_test(unsigned int start_addr, unsigned int test_len, int flag)
 {
 	int ret;
 	int is_dbg = flag & MEMORY_RW_FLAG_DBG;
@@ -825,7 +826,7 @@ int memory_rw_test(unsigned int test_len, int flag)
 
 	do {
 		do {
-			ret = memory_rw_test_cases(test_case, test_len, is_dbg);
+			ret = memory_rw_test_cases(test_case, start_addr, test_len, is_dbg);
 			if ((ret < 0) && exit) {
 				return ret;
 			}
@@ -847,7 +848,7 @@ int SDCTRL_TRIMMER_TEST(unsigned int dram_id, unsigned int start_addr, unsigned 
 	// H/W trimmer has beem removed.
 	// Just run memory test.
 
-	return ((memory_rw_test(TEST_DATA_LENGTH, MEMORY_RW_FLAG_EXIT) < 0) ? 0 : 1);
+	return ((memory_rw_test(start_addr, TEST_DATA_LENGTH, MEMORY_RW_FLAG_EXIT) < 0) ? 0 : 1);
 }
 
 // ***********************************************************************
@@ -1465,7 +1466,7 @@ int dram_training_flow(unsigned int dram_id)
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_1Gb;
     } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4GB) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_4Gb;
-    } 
+    }
 #endif
 	wait_loop(10000)   ;   // wait for clear DPCU DT done
 
@@ -1479,7 +1480,7 @@ int dram_training_flow(unsigned int dram_id)
 		rgst_value = ( SP_REG(PHY_BASE_GRP + 1, 6) >> 27 );
 		UMCTL2_REG(0x0190) = UMCTL2_REG(0x0190) | (( n_tCL + rgst_value ) << 16 );
 
-		wait_loop(1000);		
+		wait_loop(1000);
 		wait_flag   = (SP_REG(PHY_BASE_GRP + 1, 0) & 0x01);
 		// prn_string("222 training SP_REG(PHY_BASE_GRP+1, 0)="); prn_dword(SP_REG(PHY_BASE_GRP+1, 0)); prn_string("\n");
 	} while ((wait_flag == 0));
@@ -1690,7 +1691,8 @@ DRAM_BOOT_FLOW_AGAIN:
 #if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
 #elif defined(SDRAM0_SIZE_1Gb)
-			unsigned int TEST_ADDRESS[3] = {0x00000000, 32 << 20, 64 << 20};
+			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
+//			unsigned int TEST_ADDRESS[3] = {0x00000000, 34 << 20, 64 << 20};
 #else
 #error Please assign TEST_ADDRESS[]
 #endif
@@ -1798,7 +1800,7 @@ void dram_scan(unsigned int dram_id)
 			}
 
 			dram_fill_zero(TEST_LEN_0, dram_id);
-			cpu_test_result = memory_rw_test(TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
+			cpu_test_result = memory_rw_test(dram_base_addr[0], TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
 			if (cpu_test_result == 0) {
 				for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
 					trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
