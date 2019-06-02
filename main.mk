@@ -1,6 +1,6 @@
 include Makefile.in
 
-PROJECT_ROOT = $(shell cd ../../ && pwd)
+PROJECT_ROOT = $(shell cd ../xboot/ && pwd)
 COMMON_DIR = common
 LIB = lib
 BIN = bin
