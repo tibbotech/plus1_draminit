@@ -32,6 +32,7 @@ endif
 
 LDFLAGS = -T autogen.ld
 LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
+LDFLAGS += -Wl,--build-id=none
 
 CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
 # CFLAGS = -O1 -Wall -g -nostdlib -fno-builtin -Iinclude
