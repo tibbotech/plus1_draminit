@@ -39,6 +39,7 @@ CFLAGS = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
 ifeq ($(DRAM_INIT),1)
 CFLAGS += -mthumb -mthumb-interwork
 endif
+CFLAGS += -fno-PIC -fno-PIE
 
 # Get DRAM configuration from ../../.config or Makefile.in
 USE_DRAM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG")
