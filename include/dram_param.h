@@ -36,6 +36,8 @@
 #define SDRAM0_SIZE_4Gb
 #define SDRAM1_SIZE_4Gb
 #else
+#define SDRAM0_SIZE_512Mb
+#define SDRAM1_SIZE_512Mb
 #define SDRAM0_SIZE_1Gb
 #define SDRAM1_SIZE_1Gb
 #endif
@@ -317,12 +319,12 @@
 	#define	UMCTL2_CA_NO_8
 	#define	UMCTL2_BA_NO_1
   #elif defined SDRAM0_SIZE_512Mb
-    #define nROW_WIDTH      12
+    #define nROW_WIDTH      11
     #define nCOL_WIDTH       9
-    #define nBANK_WIDTH      1
-	#define	UMCTL2_RA_NO_12
+    #define nBANK_WIDTH      2
+	#define	UMCTL2_RA_NO_11
 	#define	UMCTL2_CA_NO_9
-	#define	UMCTL2_BA_NO_1
+	#define	UMCTL2_BA_NO_2
   #elif defined SDRAM0_SIZE_1Gb
     #define nROW_WIDTH      12
     #define nCOL_WIDTH       9
@@ -763,7 +765,9 @@
 
 #else   // DDR3
 // auto refresh BW ~2.64%
-#ifdef SDRAM_SIZE_1Gb
+#ifdef SDRAM_SIZE_512Mb
+#define n_tRFC  (48  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
+#elif defined SDRAM_SIZE_1Gb
 #define n_tRFC  (59  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
 #elif defined SDRAM_SIZE_2Gb
 #define n_tRFC  (86  + DRAM_PARAMETER_OFFSET)  // Refresh-CMD to Active/Refresh-CMD DDR3 -2Gb 160ns
@@ -775,8 +779,9 @@
 #error  Please defined DDR3 n_tRFC ...
 #endif
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-#define n_tRFC_1Gb  (59  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
-#define n_tRFC_4Gb  (139 + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
+#define n_tRFC_512Mb  (48  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
+#define n_tRFC_1Gb    (59  + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -1Gb 110ns
+#define n_tRFC_4Gb    (139 + DRAM_PARAMETER_OFFSET)   // Refresh-CMD to Active/Refresh-CMD DDR3 -4Gb 260ns
 #endif
 #endif
 
@@ -1845,6 +1850,7 @@
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
 #define DT_AREF_PRD_4Gb     (1400<<8)  // take TRFC value // [str] decrease training auto refresh interval
 #define DT_AREF_PRD_1Gb     (1560<<8)  // take TRFC value // [str] decrease training auto refresh interval
+#define DT_AREF_PRD_512Mb   (1560<<8)  // take TRFC value // [str] decrease training auto refresh interval
 #endif
 #define DPCU_DT_CFG0        DT_AREF_PRD                     | \
 	DT_RD_EYE(n_R_EYE_DIS)          | \
@@ -1987,6 +1993,10 @@
                                  (UMCTL2_64_3)  << 15 |\
                                  (UMCTL2_64_4)  <<  0 )
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
+        #define UMCTL2_64_512Mb  ((UMCTL2_64_1)  << 31 |\
+                                 (UMCTL2_64_2)  << 16 |\
+                                 (UMCTL2_64_3)  << 15 |\
+                                 ((n_tRFC_512Mb+ 1) >> 1)  <<  0 )
         #define UMCTL2_64_1Gb    ((UMCTL2_64_1)  << 31 |\
                                  (UMCTL2_64_2)  << 16 |\
                                  (UMCTL2_64_3)  << 15 |\
@@ -2841,6 +2851,12 @@
                                  (UMCTL2_218_5) <<  8 |\
                                  (UMCTL2_218_6) <<  0 )
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
+        #define UMCTL2_218_512Mb ((UMCTL2_218_7) << 31 |\
+                                 (UMCTL2_218_8) << 29 |\
+                                 (15) << 24 |\
+                                 (15) << 16 |\
+                                 (15) <<  8 |\
+                                 (15) <<  0 )
         #define UMCTL2_218_1Gb   ((UMCTL2_218_7) << 31 |\
                                  (UMCTL2_218_8) << 29 |\
                                  (15) << 24 |\

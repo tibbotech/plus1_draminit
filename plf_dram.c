@@ -74,10 +74,10 @@ static unsigned int gAC, gACK, gCK;
 
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
 static unsigned int DRAM_SIZE_FLAG;
-#define DRAM_SIZE_512MB  0x0
-#define DRAM_SIZE_1GB    0x1
-#define DRAM_SIZE_2GB    0x2
-#define DRAM_SIZE_4GB    0x3
+#define DRAM_SIZE_512Mb  0x0
+#define DRAM_SIZE_1Gb    0x1
+#define DRAM_SIZE_2Gb    0x2
+#define DRAM_SIZE_4Gb    0x3
 #endif
 
 #ifdef PLATFORM_GEMINI
@@ -912,11 +912,12 @@ int dram_booting_flow(unsigned int dram_id)
 #ifdef PLATFORM_PENTAGRAM
 	// CBUS-MBUS Bridge setting
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (((SP_REG(350,7) >> 16) & 0x3) == 0x1) {
-		DRAM_SIZE_FLAG = DRAM_SIZE_1GB;
+	DRAM_SIZE_FLAG = ((SP_REG(350,7) >> 16) & 0x3);
+    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
 		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
-    } else if (((SP_REG(350,7) >> 16) & 0x3) == 0x3) {
-		DRAM_SIZE_FLAG = DRAM_SIZE_4GB;
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
+		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		SP_REG(5, 6) = (0x000f << 16)  | (2 << 2) | (2 << 0);
     } else {
 		DRAM_SIZE_FLAG = 0xFF;
@@ -1152,9 +1153,11 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x0050) = UMCTL2_50;
 	UMCTL2_REG(0x0060) = UMCTL2_60;
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_1GB) {
+    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+		UMCTL2_REG(0x0064) = UMCTL2_64_512Mb;
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		UMCTL2_REG(0x0064) = UMCTL2_64_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4GB) {
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		UMCTL2_REG(0x0064) = UMCTL2_64_4Gb;
     } else {
 		UMCTL2_REG(0x0064) = UMCTL2_64;
@@ -1198,9 +1201,11 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x0210) = UMCTL2_210;
 	UMCTL2_REG(0x0214) = UMCTL2_214;
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_1GB) {
+    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+		UMCTL2_REG(0x0218) = UMCTL2_218_512Mb;
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		UMCTL2_REG(0x0218) = UMCTL2_218_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4GB) {
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		UMCTL2_REG(0x0218) = UMCTL2_218_4Gb;
     } else {
 		UMCTL2_REG(0x0218) = UMCTL2_218;
@@ -1462,9 +1467,11 @@ int dram_training_flow(unsigned int dram_id)
 	// step-3: dpcu_2nd_training - trigger RDQSG training
 	SP_REG(PHY_BASE_GRP + 1, 1) = DPCU_DT_CFG0 | DT_RG(n_RG_EN) | DPCU_TRAIN_START(n_DT_START);
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_1GB) {
+    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_512Mb;
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4GB) {
+    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_4Gb;
     }
 #endif
@@ -1692,7 +1699,8 @@ DRAM_BOOT_FLOW_AGAIN:
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
 #elif defined(SDRAM0_SIZE_1Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
-//			unsigned int TEST_ADDRESS[3] = {0x00000000, 34 << 20, 64 << 20};
+#elif defined(SDRAM0_SIZE_512Mb)
+			unsigned int TEST_ADDRESS[3] = {0x00000000, 16 << 20, 32 << 20};
 #else
 #error Please assign TEST_ADDRESS[]
 #endif
