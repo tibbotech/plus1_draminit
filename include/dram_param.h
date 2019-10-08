@@ -1894,7 +1894,7 @@
 #define n_RDQSG_TYPE    0x01
 #define n_DESKEW_TYPE   0x02
 #define n_EYE_TYPE      0x03
-#define DT_PAT_TYPE_SEL(n)   ((n) << 28)
+#define DT_PAT_TYPE_SEL(n)   ((n) << 27)
 
 #define DT_PAT0_DESKEW_3_0 0x11112222
 #define DT_PAT0_DESKEW_7_4 0xAAAABBBB
