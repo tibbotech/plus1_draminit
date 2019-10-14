@@ -1550,10 +1550,32 @@ int dram_training_flow(unsigned int dram_id)
 		return 0;
 	} // end- if RG_PSD is too big or small
 
-	// step-4: switch path to SDCTRL
-	/* move this setting before DPCU_DT_RESULT_DUMP, it will switch DFI path to SDCTRL.
-	 * That is, auto refresh will be releaseed, and dump cost time. We need auto refresh earlier.
-	SP_REG(PHY_BASE_GRP+0, 0) =   DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_SDCTRL); */
+// DDR training results confirm flow
+	temp_1 = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F; // DX0_RG_RSL
+	temp_2 = (SP_REG(PHY_BASE_GRP + 3, 14) >> 0) & 0x1F; // DX1_RG_RSL
+	if (temp_1 != temp_2) {
+		prn_string("\t DX0_RG_RSL = "); prn_dword(temp_1);
+		prn_string("\t DX1_RG_RSL = "); prn_dword(temp_2);
+		prn_string("\n\n");
+		prn_string("<<< 7 leave dram_training_flow for DRAM");
+		prn_decimal(dram_id);
+		prn_string("\n");
+		return 0;
+	} else {
+		temp_1 = (SP_REG(PHY_BASE_GRP + 2, 14) >> 8) & 0x3; // DX0_RG_PHA
+		temp_2 = (SP_REG(PHY_BASE_GRP + 3, 14) >> 8) & 0x3; // DX1_RG_PHA
+		if (temp_1 != temp_2) {
+			prn_string("\t DX0_RG_PHA = "); prn_dword(temp_1);
+			prn_string("\t DX1_RG_PHA = "); prn_dword(temp_2);
+			prn_string("\n\n");
+			prn_string("<<< 7 leave dram_training_flow for DRAM");
+			prn_decimal(dram_id);
+			prn_string("\n");
+			return 0;
+		}
+	}
+
+
 #endif // SDRAM_FPGA
 
 	prn_string("<<< leave 8 dram_training_flow for DRAM");
