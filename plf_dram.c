@@ -1597,8 +1597,6 @@ int dram_init(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0;
-	unsigned int        temp_1         = 0;
-	unsigned int        temp_2         = 0;
 	unsigned int        temp_3         = 0;
 	unsigned int        package_256_flag;  // this flag only using in dram_id == 1
 	unsigned int        max_init_fail_cnt = 15;
@@ -1647,19 +1645,15 @@ DRAM_BOOT_FLOW_AGAIN:
 				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error infor @ loop_time = ");
 				prn_decimal(loop_time);
 				prn_string(" ***\n");
-				temp_1 = (SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x01;
-				temp_2 = (SP_REG(PHY_BASE_GRP, 2) >> 9) & 0x01;
 				prn_string("\tCTCAL_ERR flag =");
-				prn_decimal(temp_1);
+				prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x01));
 				prn_string("\tSSCPLL_ERR flag =");
-				prn_decimal(temp_2);
+				prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 9) & 0x01));
 				prn_string("\n");
-				temp_1 = (SP_REG(PHY_BASE_GRP, 2) >> 10) & 0x01;
-				temp_2 = (SP_REG(PHY_BASE_GRP, 2) >> 11) & 0x01;
 				prn_string("\tDDL_ERR flag =");
-				prn_decimal(temp_1);
+				prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 10) & 0x01));
 				prn_string("\tPZQ_ERR flag =");
-				prn_decimal(temp_2);
+				prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 11) & 0x01));
 				prn_string("\n");
 				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error information end **********\n");
 				goto DRAM_BOOT_FLOW_AGAIN;
