@@ -28,7 +28,7 @@ SECTIONS
 {
 	.text :
 	{
-		start.o (.text)
+		arch/arm/start.o (.text)
 		*(.rodata)
 		*(.text)
 		*(.text.*)
