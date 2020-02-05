@@ -14,7 +14,9 @@ RADDR=$5
 
 ####################
 # check if mkimage is available?
-MKIMAGE=./tools/mkimage   # Only our mkimage supports quickboot
+if [ -z "${MKIMAGE}" ]; then
+  MKIMAGE=./tools/mkimage   # Only our mkimage supports quickboot
+fi;
 TYPE=quickboot
 
 function usage()
