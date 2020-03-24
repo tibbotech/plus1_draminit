@@ -2,3 +2,6 @@
 *.bak
 *.o
 *.d
+autogen.ld
+bin/
+
