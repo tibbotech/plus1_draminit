@@ -52,7 +52,7 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 #define SDRAM0_SIZE		TEST_LEN_ALL
 #define SDRAM1_SIZE		SDRAM0_SIZE
 static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
-static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
+//static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
 
 #define DRAM_0_SDC_REG_BASE	33
 #define DRAM_0_PHY_REG_BASE	50
@@ -724,7 +724,7 @@ void do_system_reset_flow(unsigned int dram_id)
 void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 {
 	int idx;
-	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[dram_id]);
+	volatile unsigned int *ram = (volatile unsigned int *)ADDRESS_CONVERT(dram_base_addr[dram_id]);
 
 	for (idx = 0 ; idx < (test_size / sizeof(unsigned int)) ; idx++) {
 		ram[idx] = 0;
@@ -748,16 +748,15 @@ int memory_rw_check(unsigned int value, unsigned int answer, int debug)
 	return ret;
 }
 
+const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
 int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int test_size, int debug)
 {
 	int ret = 0;
 	unsigned int i;
 	unsigned int test_size_word = test_size >> 2;
-	const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
 	const int num_pattern = sizeof(pattern) / sizeof(pattern[0]);
-
 //	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
-	volatile unsigned int *ram = (volatile unsigned int *)(start_addr);
+	volatile unsigned int *ram = (volatile unsigned int *)ADDRESS_CONVERT(start_addr);
 
 	// TODO: Use CBDMA.
 

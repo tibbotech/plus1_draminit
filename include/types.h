@@ -78,5 +78,11 @@ extern void *memset(UINT8 *s1, int c, int n);
 #define NULL    ((void *)0)
 #endif
 
+#if __riscv_xlen == 64
+#define ADDRESS_CONVERT(addr)	((u64)addr)
+#else
+#define ADDRESS_CONVERT(addr)	(addr)
+#endif
+
 #endif // __TYPES_H__
 

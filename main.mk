@@ -34,10 +34,19 @@ LDFLAGS = -T autogen.ld
 LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
 LDFLAGS += -Wl,--build-id=none
 
-CFLAGS  = -Os -Wall -g -march=armv5te -nostdlib -fno-builtin -Iinclude
+CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude
+ifeq ($(ARCH),arm)
+CFLAGS	+= -march=armv5te
+else
+CFLAGS	+= -march=rv64gc -mabi=lp64d -mcmodel=medany -msave-restore
+endif
+SRC_LD	:= arch/$(ARCH)/gen_ld.lds
+START_S	:= arch/$(ARCH)/start.S
 # CFLAGS = -O1 -Wall -g -nostdlib -fno-builtin -Iinclude
 ifeq ($(DRAM_INIT),1)
-CFLAGS += -mthumb -mthumb-interwork
+ifeq ($(ARCH),arm)
+	CFLAGS += -mthumb -mthumb-interwork
+endif
 endif
 CFLAGS += -fno-pie -fno-PIE -fno-pic -fno-PIC
 CFLAGS += -fno-partial-inlining
@@ -93,7 +102,7 @@ ifeq ($(SISCOPE),1)
 endif
 
 # Boot up
-ASOURCES = start.S
+ASOURCES = $(START_S)
 CSOURCES = plf_dram.c
 
 # common
@@ -111,13 +120,13 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 ifeq ($(MK_DRAM_INIT),1)
-	$(CC) -E -x c -DDRAM_INIT gen_ld.lds | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAM_INIT $(SRC_LD) | grep -v '^#' > autogen.ld
 else ifeq ($(MK_DEBUG),1)
-	$(CC) -E -x c -DDRAM_INIT_DEBUG gen_ld.lds | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAM_INIT_DEBUG $(SRC_LD) | grep -v '^#' > autogen.ld
 else ifeq ($(MK_SISCOPE),1)
-	$(CC) -E -x c -DSISCOPE   gen_ld.lds | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DSISCOPE   $(SRC_LD) | grep -v '^#' > autogen.ld
 else ifeq ($(MK_SCAN),1)
-	$(CC) -E -x c -DDRAMSCAN  gen_ld.lds | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAMSCAN  $(SRC_LD) | grep -v '^#' > autogen.ld
 endif
 	@mkdir -p $(BIN)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
