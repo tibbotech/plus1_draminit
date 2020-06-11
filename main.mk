@@ -134,7 +134,7 @@ endif
 	$(OBJDUMP) -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
 ifeq ($(DRAM_INIT),1)
 	@# Add image header
-	@bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(BIN)/$(TARGET).bin $(BIN)/$(TARGET).img
+	@bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(BIN)/$(TARGET).bin $(BIN)/$(TARGET).img $(ARCH)
 	@sz=`du -sb bin/$(TARGET).img|cut -f1` ; \
          printf "draminit size = %d (hex %x)\n" $$sz $$sz
 	@if echo $(CFLAGS) | grep -q "DRAM_INIT_DEBUG=1" ;then \
