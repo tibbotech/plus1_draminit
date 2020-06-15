@@ -23,13 +23,11 @@ struct sp_registers {
 static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers *)(RF_GRP(0, 0));
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
 
-#ifdef PLATFORM_PENTAGRAM
 struct umctl2_regs {
 	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
 };
 static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_regs *)(UMCTL2_REG_Base);
 #define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
-#endif
 
 #define TEST_LEN_0		(4 << 10)
 
@@ -80,12 +78,8 @@ static unsigned int DRAM_SIZE_FLAG;
 #define DRAM_SIZE_4Gb    0x3
 #endif
 
-#ifdef PLATFORM_GEMINI
-// Not support
-#elif defined(PLATFORM_PENTAGRAM)
 #if (defined(DRAMSCAN) || defined(SISCOPE))
 static unsigned int scan_val_190;
-#endif
 #endif
 
 u32 mp;
@@ -691,21 +685,17 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 void assert_sdc_phy_reset(void)
 {
-#ifdef PLATFORM_PENTAGRAM
+#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
 	SP_REG(0, 21) |= 1 << 14;	// PHY
 	SP_REG(0, 22) |= 1 << 0;	// SDCTRL0
-#elif defined(PLATFORM_GEMINI)
-	// Not support
 #endif
 }
 
 void release_sdc_phy_reset(void)
 {
-#ifdef PLATFORM_PENTAGRAM
+#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
 	SP_REG(0, 21) &= ~(1 << 14);	// PHY
 	SP_REG(0, 22) &= ~(1 << 0);	// SDCTRL0
-#elif defined(PLATFORM_GEMINI)
-	// Not support
 #endif
 }
 
@@ -925,8 +915,8 @@ int dram_booting_flow(unsigned int dram_id)
 #else
 		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
 #endif
-#elif defined(PLATFORM_GEMINI)
-	// Not support
+#elif defined(PLATFORM_I143)
+		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
 #endif
 
 	// -------------------------------------------------------
@@ -956,7 +946,7 @@ int dram_booting_flow(unsigned int dram_id)
 	// setting PZQ CFG1
 	SP_REG(PHY_BASE_GRP + 0, 19) = DPCU_PZQ_CFG1;
 	// setting AI CFG
-#ifdef PLATFORM_PENTAGRAM
+#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
 	SP_REG(PHY_BASE_GRP + 0, 14) = (SP_REG(PHY_BASE_GRP + 0, 14) & 0xFFFDFFFF) | 0x00020000;
 #endif
 	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1;
@@ -988,7 +978,7 @@ int dram_booting_flow(unsigned int dram_id)
 	aphy_select2_value = rgst_value;
 	aphy_select_value = (aphy_select1_value | aphy_select2_value);
 
-#ifdef PLATFORM_PENTAGRAM
+#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
 	SP_REG(PHY_BASE_GRP + 0, 0) = SP_REG(PHY_BASE_GRP + 0, 0) & 0xFFFFFFBF;
 #endif
 
@@ -1140,7 +1130,6 @@ int dram_training_flow(unsigned int dram_id)
 	//       MRS0(DLL_RESET0) -> MRS0(DLL_RESET1) -> MRS1(OCD DFLT) -> MRS1(OCD EXIT)
 	// DDR3: MRS2 -> MRS3 -> MRS1 -> MRS0
 
-#ifdef PLATFORM_PENTAGRAM
 	UMCTL2_REG(0x0304) = UMCTL2_304(UMCTL2_304_1);
 	UMCTL2_REG(0x0030) = UMCTL2_30(UMCTL2_30_1);
 	UMCTL2_REG(0x0000) = UMCTL2_0;
@@ -1254,7 +1243,7 @@ int dram_training_flow(unsigned int dram_id)
 	do {
 		wait_flag = UMCTL2_REG(0x0324) & 0x00000001;
 	} while ((wait_flag == 0));
-#endif
+
 
 #ifdef DRAM_ZQ_CFG
 	// ZQCL setting
@@ -1420,10 +1409,9 @@ int dram_training_flow(unsigned int dram_id)
 	SP_REG(PHY_BASE_GRP + 1, 5) = rgst_value | DT_RG_LINEAR(n_DT_RG_LINEAR_EN);
 #endif
 
-#ifdef PLATFORM_PENTAGRAM
+#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
 	SP_REG(PHY_BASE_GRP + 1, 5) = (SP_REG(PHY_BASE_GRP + 1, 5) & 0xFFFFFFF6) | 0x00000009;
 	SP_REG(PHY_BASE_GRP + 1, 6) = (SP_REG(PHY_BASE_GRP + 1, 6) & 0xFFFFFF00) | 0x0000000B;
-#elif defined(PLATFORM_GEMINI)
 #endif
 
 	// refresh period
@@ -1710,7 +1698,7 @@ DRAM_BOOT_FLOW_AGAIN:
 		} else {
 			int i = 0;
 			int pass_count = 0;
-#if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb)
+#if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb) || defined(SDRAM0_SIZE_8Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
 #elif defined(SDRAM0_SIZE_1Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
@@ -1772,9 +1760,6 @@ static int silent_dram_init(void)
 	return ret;
 }
 
-#ifdef PLATFORM_GEMINI
-// Not support
-#elif defined(PLATFORM_PENTAGRAM)
 void dram_scan(unsigned int dram_id)
 {
 
@@ -1875,7 +1860,6 @@ void dram_scan(unsigned int dram_id)
 	prn_string("==================================================================================\n");
 	mp = mpb;
 }
-#endif
 
 void run_SiScope(void)
 {
@@ -1888,11 +1872,7 @@ void run_SiScope(void)
 	ddr_clk_info();
 
 	prn_string("\n\n==================================run_SiScope END================================================\n");
-#ifdef PLATFORM_GEMINI
-	// Not support
-#elif defined(PLATFORM_PENTAGRAM)
 	scan_val_190 = UMCTL2_190;
-#endif
 	silent_dram_init();
 }
 
@@ -1947,11 +1927,6 @@ int dram_init_main()
 	gAC = DPCU_AC0BD;
 	gACK = DPCU_ACK0BD;
 	gCK = DPCU_CK0BD;
-#ifdef PLATFORM_GEMINI
-	// Not support
-#elif defined(PLATFORM_PENTAGRAM)
-	// TBD
-#endif
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef CHIP_WARM_RESET
@@ -1996,12 +1971,6 @@ int dram_init_main()
 
 #else
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
-
-#ifdef PLATFORM_PENTAGRAM
-	// TBD
-#elif defined(PLATFORM_GEMINI)
-	// Not support
-#endif
 
 	do {
 		check_run_siscope();

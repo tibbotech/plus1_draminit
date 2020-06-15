@@ -12,7 +12,6 @@ CPP = $(CROSS)cpp
 OBJCOPY = $(CROSS)objcopy
 OBJDUMP = $(CROSS)objdump
 endif
-
 ifeq ($(MK_DRAM_INIT),1)
 	TARGET = draminit
 	DRAM_INIT = 1
@@ -53,6 +52,13 @@ CFLAGS += -fno-partial-inlining
 CFLAGS += -fno-jump-tables
 CFLAGS += -fdata-sections -ffunction-sections
 LDFLAGS += -Wl,--gc-sections
+
+# Get Platform configuration from xboot/.config
+PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_I143")
+ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_I143=y)
+CC = $(CROSS)gcc
+CFLAGS += -DCONFIG_PLATFORM_I143
+endif
 
 # Get DRAM configuration from ../../.config or Makefile.in
 USE_DRAM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG")

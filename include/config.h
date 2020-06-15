@@ -4,4 +4,8 @@
 #define UMCTL2_REG_Base		0x9C107000
 
 // #define PLATFORM_GEMINI
+#ifdef CONFIG_PLATFORM_I143
+#define PLATFORM_I143
+#else
 #define PLATFORM_PENTAGRAM
+#endif

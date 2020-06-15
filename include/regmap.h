@@ -5,8 +5,8 @@
 
 #ifdef PLATFORM_PENTAGRAM
 #include <regmap_pentagram.h>
-#elif defined(PLATFORM_GEMINI)
-#include <regmap_gemini.h>
+#elif defined(PLATFORM_I143)
+#include <regmap_i143.h>
 #else
 #error "NO PLATFORM_XXXX defined."
 #endif
