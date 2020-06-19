@@ -685,17 +685,23 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 void assert_sdc_phy_reset(void)
 {
-#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
-	SP_REG(0, 21) |= 1 << 14;	// PHY
-	SP_REG(0, 22) |= 1 << 0;	// SDCTRL0
+#ifdef PLATFORM_PENTAGRAM
+	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
+#elif defined(PLATFORM_I143)
+	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
 #endif
 }
 
 void release_sdc_phy_reset(void)
 {
-#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
-	SP_REG(0, 21) &= ~(1 << 14);	// PHY
-	SP_REG(0, 22) &= ~(1 << 0);	// SDCTRL0
+#ifdef PLATFORM_PENTAGRAM
+	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
+#elif defined(PLATFORM_I143)
+	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
 #endif
 }
 
