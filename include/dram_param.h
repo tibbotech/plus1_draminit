@@ -169,8 +169,9 @@
 // =============================================================================
 // SDRAM_CFG_STEP_1: System Setting/Mode/Configuration
 // =============================================================================
-
+#ifdef PLATFORM_PENTAGRAM
 #define USING_INTERNAL_PZQ_CAL
+#endif
 // #define TRIM_INTERNAL_PZQ_FROM_DPCU
 #define DPCU_TRAINING_ODT_ON
 // #define DPCU_TRAINING_MANUAL_PAT
