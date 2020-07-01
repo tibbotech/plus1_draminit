@@ -1683,7 +1683,8 @@
 #ifdef PLATFORM_PENTAGRAM
 #define MPLL_CFG1_DEF   0x00495600
 #elif defined(PLATFORM_I143)
-#define MPLL_CFG1_DEF   0x00415600
+//#define MPLL_CFG1_DEF   0x00415600
+#define MPLL_CFG1_DEF   0x00455600
 #endif
 
 #define MPLL_DIV(n)     ((n)<<0)
@@ -1762,10 +1763,20 @@
 // #define  n_DPCU_PZQ_OVRD_DATA     ((0x01 << 15) | (0x01 << 10) | (0x0F << 5) | (0x0F << 0))
 #define  DPCU_PZQ_OVRD_DATA(n)   ((n) << 9)
 
+#ifdef PLATFORM_I143
+#define  n_DPCU_SEL_EXTERNAL_VREF     0x01
+#define  n_DPCU_SEL_INTERNAL_VREF     0x00
+#define  DPCU_RI_VREF_MUX(n)     ((n) <<  29)
+
+#define DPCU_PZQ_CFG1  DPCU_RI_VREF_MUX(n_DPCU_RI_SEL_EXTERNAL_VREF)    | \
+	DPCU_PZQ_OVRD_DATA(n_DPCU_PZQ_OVRD_DATA)    | \
+	DPCU_PZQ_OVRD_ST(n_DPCU_PZQ_OVRD_DIS)       | \
+	DPCU_PZQ_ZPROG
+#else
 #define DPCU_PZQ_CFG1  DPCU_PZQ_OVRD_DATA(n_DPCU_PZQ_OVRD_DATA)    | \
 	DPCU_PZQ_OVRD_ST(n_DPCU_PZQ_OVRD_DIS)       | \
 	DPCU_PZQ_ZPROG
-
+#endif
 
 // -------------------------------------------------------
 // DDRIO setting - G50.21
