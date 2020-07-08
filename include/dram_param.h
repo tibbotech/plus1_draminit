@@ -494,7 +494,7 @@
 #define n_tCL           8              // 8T -- Case latency (set to mrs)  , 800 and 1066 ok
 // #define n_tCL           11              // 11T -- Case latency (set to mrs)
 #elif defined(SDRAM_SPEED_667)
-#define n_tCL           8
+#define n_tCL           9
 #elif defined(SDRAM_SPEED_800)
 #define n_tCL           11              // 11T -- Case latency (set to mrs)
 
@@ -535,8 +535,11 @@
 // #else
 // #define MRS_CWL_CNT     7   // 7T  --  Cas Write Latency
 // #endif
-
+#ifdef PLATFORM_PENTAGRAM
 #define MRS_CWL_CNT     6   // Cas Write Latency
+#else
+#define MRS_CWL_CNT     7   // Cas Write Latency
+#endif
 #elif defined SDRAM_SPEED_667
 #define MRS_CWL_CNT     7
 // #define MRS_CWL_CNT     8   // 8T  --  Cas Write Latency
@@ -741,7 +744,7 @@
 #define nAREF_ACC      0
 #ifdef PLATFORM_PENTAGRAM
 #define nAREF_INTVAL   39 // [str] decrase normal auto refresh interval
-#elif #ifdef PLATFORM_I143
+#elif defined(PLATFORM_I143)
 #define nAREF_INTVAL   47 // [str] decrase normal auto refresh interval
 #endif
 #ifdef MPEG_DRAM_TYPE_DDR2
@@ -1532,7 +1535,7 @@
 #define DPCU_GLB_DEF            0x0031AA00
 #endif
 #elif defined(PLATFORM_I143)
-#if 1
+#if 0
 #define DPCU_GLB_DEF            0x0430AA00
 #else	/* for external DRAM */
 #define DPCU_GLB_DEF            0x0030AA00

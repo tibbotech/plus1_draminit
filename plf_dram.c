@@ -49,7 +49,11 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 
 #define SDRAM0_SIZE		TEST_LEN_ALL
 #define SDRAM1_SIZE		SDRAM0_SIZE
+#ifdef PLATFORM_PENTAGRAM
 static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
+#else
+static const unsigned int dram_base_addr[] = {0x200000000, SDRAM0_SIZE};
+#endif
 //static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
 
 #define DRAM_0_SDC_REG_BASE	33
@@ -83,8 +87,9 @@ static unsigned int scan_val_190;
 #endif
 
 u32 mp;
-
+#ifdef PLATFORM_PENTAGRAM
 #define CHIP_WARM_RESET
+#endif
 #define SDRAM_WATCHDOG
 #ifdef SDRAM_WATCHDOG
 #define WATCHDOG_CMD_CNT_WR_UNLOCK  0xAB00
@@ -1706,7 +1711,11 @@ DRAM_BOOT_FLOW_AGAIN:
 			int i = 0;
 			int pass_count = 0;
 #if defined(SDRAM0_SIZE_2Gb) || defined(SDRAM0_SIZE_4Gb) || defined(SDRAM0_SIZE_8Gb)
+#ifdef PLATFORM_PENTAGRAM
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
+#else
+			unsigned int TEST_ADDRESS[3] = {0x20000000, 0x28000000, 0x2C800000};
+#endif
 #elif defined(SDRAM0_SIZE_1Gb)
 			unsigned int TEST_ADDRESS[3] = {0x00000000, 0x08000000, 0x0C800000};
 #elif defined(SDRAM0_SIZE_512Mb)
