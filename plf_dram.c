@@ -762,7 +762,7 @@ int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int te
 
 	// TODO: Use CBDMA.
 
-	dram_fill_zero(test_size, 0);
+	//dram_fill_zero(test_size, 0);
 
 	// debug = 1;
 	if (debug) {
