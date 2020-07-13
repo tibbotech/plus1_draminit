@@ -52,7 +52,7 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 #ifdef PLATFORM_PENTAGRAM
 static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
 #else
-static const unsigned int dram_base_addr[] = {0x200000000, SDRAM0_SIZE};
+static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
 #endif
 //static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
 
