@@ -118,7 +118,7 @@ void wait_loop(unsigned int wait_counter)
 {
 	unsigned int i;
 
-	for (i = 0 ; i < wait_counter ; i++) {
+	for (i = 0; i < wait_counter; i++) {
 		__asm__("nop");
 	}
 }
@@ -216,7 +216,6 @@ void DPCU_DT_RESULT_DUMP(unsigned int dram_id)
 
 	// training error
 	if (temp_b != 0) {
-
 		prn_string("DPCU_DT_INFO : \t********** DUMP APHY DX0 training error information **********\n");
 		temp_a = (SP_REG(PHY_BASE_GRP + 2, 2) >> 8) & 0x01;
 		temp_b = (SP_REG(PHY_BASE_GRP + 2, 2) >> 9) & 0x01;
@@ -728,7 +727,7 @@ void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 	int idx;
 	volatile unsigned int *ram = (volatile unsigned int *)ADDRESS_CONVERT(dram_base_addr[dram_id]);
 
-	for (idx = 0 ; idx < (test_size / sizeof(unsigned int)) ; idx++) {
+	for (idx = 0; idx < (test_size / sizeof(unsigned int)); idx++) {
 		ram[idx] = 0;
 	}
 }
@@ -773,7 +772,7 @@ int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int te
 		if (debug) {
 			prn_string("seq)");
 		}
-		for (i = 0 ; i < test_size_word ; i++) {
+		for (i = 0; i < test_size_word; i++) {
 			ram[i] = i;
 		}
 		break;
@@ -781,13 +780,13 @@ int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int te
 		if (debug) {
 			prn_string("patterns)");
 		}
-		for (i = 0 ; i < test_size_word ; i++) {
+		for (i = 0; i < test_size_word; i++) {
 			ram[i] = pattern[i % num_pattern];
 		}
 		break;
 	}
 
-	for (i = 0 ; i < test_size_word ; i++) {
+	for (i = 0; i < test_size_word; i++) {
 		switch (test_case) {
 		case 0:
 			ret = memory_rw_check(ram[i], i, debug);
@@ -866,9 +865,8 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 			    PHY_BASE_GRP = 0;
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
-
 	temp = SP_REG(PHY_BASE_GRP + 1, 27) & 0xF0000000;
-	// fill cmd , RANK, BANK, ADDR infor
+	// fill cmd, RANK, BANK, ADDR infor
 	SP_REG(PHY_BASE_GRP + 1, 27) = temp | (CMD << 24) | (RANK << 20) | (BANK << 16) | (ADDR);
 	// fill WRdata mask
 	SP_REG(PHY_BASE_GRP + 2, 21) = SW_WRDATA_MASK & 0xFF;
@@ -914,21 +912,21 @@ int dram_booting_flow(unsigned int dram_id)
 	// CBUS-MBUS Bridge setting
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
 	DRAM_SIZE_FLAG = ((SP_REG(350,7) >> 16) & 0x3);
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+	if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
 		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		SP_REG(5, 6) = (0x000f << 16)  | (2 << 2) | (2 << 0);
-    } else {
+	} else {
 		DRAM_SIZE_FLAG = 0xFF;
 		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
-    }
+	}
 #else
-		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
+	SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
 #endif
 #elif defined(PLATFORM_I143)
-		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
+	SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
 #endif
 
 	// -------------------------------------------------------
@@ -1153,15 +1151,15 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x0050) = UMCTL2_50;
 	UMCTL2_REG(0x0060) = UMCTL2_60;
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+	if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
 		UMCTL2_REG(0x0064) = UMCTL2_64_512Mb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		UMCTL2_REG(0x0064) = UMCTL2_64_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		UMCTL2_REG(0x0064) = UMCTL2_64_4Gb;
-    } else {
+	} else {
 		UMCTL2_REG(0x0064) = UMCTL2_64;
-    }
+	}
 #else
 	UMCTL2_REG(0x0064) = UMCTL2_64;
 #endif
@@ -1201,15 +1199,15 @@ int dram_training_flow(unsigned int dram_id)
 	UMCTL2_REG(0x0210) = UMCTL2_210;
 	UMCTL2_REG(0x0214) = UMCTL2_214;
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+	if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
 		UMCTL2_REG(0x0218) = UMCTL2_218_512Mb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		UMCTL2_REG(0x0218) = UMCTL2_218_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		UMCTL2_REG(0x0218) = UMCTL2_218_4Gb;
-    } else {
+	} else {
 		UMCTL2_REG(0x0218) = UMCTL2_218;
-    }
+	}
 #else
 	UMCTL2_REG(0x0218) = UMCTL2_218;
 #endif
@@ -1370,10 +1368,10 @@ int dram_training_flow(unsigned int dram_id)
 	// prn_string("(SP_REG(PHY_BASE_GRP+1, 11); prn_dword((SP_REG(PHY_BASE_GRP+1, 11); prn_string("!!\n");
 
 	// step b issue CMD ISSUE IC ODT on command
-	// dram_id, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
+	// dram_id, CMD, RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
 	DPCU_CMD_ISSUE_SW_CMD(dram_id, 0x08, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
 	// step b issue CMD ISSUE ODT on command
-	// dram_id, CMD , RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
+	// dram_id, CMD, RANK, BANK, ADDR, DM, DATA1_HIGH, DATA1_LOW, DATA0_HIGH, DATA0_LOW, TRIGGER
 	DPCU_CMD_ISSUE_SW_CMD(dram_id, 0x08, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);  // COMMIT and TIGGER // ODT ON SPECIAL COMMAND
 	wait_flag = 0;
 	do {
@@ -1466,15 +1464,15 @@ int dram_training_flow(unsigned int dram_id)
 	// step-3: dpcu_2nd_training - trigger RDQSG training
 	SP_REG(PHY_BASE_GRP + 1, 1) = DPCU_DT_CFG0 | DT_RG(n_RG_EN) | DPCU_TRAIN_START(n_DT_START);
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
-    if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
+	if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_512Mb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_1Gb;
-    } else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
+	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
 		SP_REG(PHY_BASE_GRP + 1, 1) = (SP_REG(PHY_BASE_GRP + 1, 1) & 0xFF8000FF) | DT_AREF_PRD_4Gb;
-    }
+	}
 #endif
-	wait_loop(10000)   ;   // wait for clear DPCU DT done
+	wait_loop(10000);   // wait for clear DPCU DT done
 
 	// rgst_value = SP_REG(PHY_BASE_GRP+1, 0);
 	// prn_string("DPCU mid 2sec Training Status G37.0: 0x"); prn_dword(rgst_value); prn_string("!!\n");
@@ -1549,7 +1547,7 @@ int dram_training_flow(unsigned int dram_id)
 		return 0;
 	} // end- if RG_PSD is too big or small
 
-// DDR training results confirm flow
+	// DDR training results confirm flow
 	temp_1 = (SP_REG(PHY_BASE_GRP + 2, 14) >> 0) & 0x1F; // DX0_RG_RSL
 	temp_2 = (SP_REG(PHY_BASE_GRP + 3, 14) >> 0) & 0x1F; // DX1_RG_RSL
 	if (temp_1 != temp_2) {
@@ -1573,8 +1571,6 @@ int dram_training_flow(unsigned int dram_id)
 			return 0;
 		}
 	}
-
-
 #endif // SDRAM_FPGA
 
 	prn_string("<<< leave 8 dram_training_flow for DRAM");
@@ -1609,7 +1605,6 @@ int dram_init(unsigned int dram_id)
 	loop_time = 0;
 	// ckobd_training_flag = 0;
 	ckobd_re_training_number = 0;
-
 
 	// 20140728 mazar : add max_init_fail_cnt for sometime training fail
 	for (loop_time = 0; loop_time < max_init_fail_cnt; loop_time++) {
@@ -1677,8 +1672,8 @@ DRAM_BOOT_FLOW_AGAIN:
 
 		// dram_training_flow pass return 1, error return 0;
 		// 20140727 mazar : training flow chart
-		// check DRAM ID , 0 : do training,
-		//                 1 : check package_256_flag, 0 : pass training flow
+		// check DRAM ID, 0 : do training,
+		//                1 : check package_256_flag, 0 : pass training flow
 		//                                             1 : do training flow
 		// 20140727 mazar :  do not add any action if we encounter APHY Training ERR, just dump error flag
 		temp_3 = (SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x01;
@@ -1740,7 +1735,7 @@ DRAM_BOOT_FLOW_AGAIN:
 			prn_string("DRAM-");
 			prn_decimal(dram_id);
 			prn_string("initial failed\n\n");
-			// while(1); // robert: return fail rather than hang
+			// while (1); // robert: return fail rather than hang
 			return FAIL;
 		} // all loop training fail
 	} // end of for loop :: loop_time for initial & training time control
@@ -1760,6 +1755,7 @@ DRAM_BOOT_FLOW_AGAIN:
 void ddr_clk_info(void)
 {
 	const int clk = ((SP_REG(50, 12) & 0x7F) * 27) >> 1;
+
 	prn_string("DDR CLOCK: ");
 	prn_decimal(clk);
 	prn_string(" MHz\n");
@@ -1778,7 +1774,6 @@ static int silent_dram_init(void)
 
 void dram_scan(unsigned int dram_id)
 {
-
 	unsigned int dfi_tphy_wrdata, dfi_t_rddata_en;
 
 	unsigned int idx;
@@ -1797,8 +1792,6 @@ void dram_scan(unsigned int dram_id)
 
 	memset((UINT8 *)scan_pass_param, 0, sizeof(scan_pass_param));
 	memset((UINT8 *)scan_pass_acack, 0, sizeof(scan_pass_acack));
-
-
 
 	for (dfi_tphy_wrdata = (UMCTL2_190_5 - 0); dfi_tphy_wrdata <= (UMCTL2_190_5 + 0); dfi_tphy_wrdata++) {
 		for (dfi_t_rddata_en = (UMCTL2_190_3 - 0); dfi_t_rddata_en <= (UMCTL2_190_3 + 0); dfi_t_rddata_en++) {
@@ -1826,7 +1819,7 @@ void dram_scan(unsigned int dram_id)
 			dram_fill_zero(TEST_LEN_0, dram_id);
 			cpu_test_result = memory_rw_test(dram_base_addr[0], TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
 			if (cpu_test_result == 0) {
-				for (idx = 0 ; idx <= SCAN_TRIM_LEN ; idx++) {
+				for (idx = 0; idx <= SCAN_TRIM_LEN; idx++) {
 					trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
 					if (trim_test_result) {
 						if (idx == SCAN_TRIM_LEN) {
@@ -1855,7 +1848,7 @@ void dram_scan(unsigned int dram_id)
 	prn_string("DUMP DRAM-");
 	prn_decimal(dram_id);
 	prn_string("parameters:\n");
-	for (idx = 0 ; idx < rec_idx ; idx++) {
+	for (idx = 0; idx < rec_idx; idx++) {
 		if (scan_pass_param[idx] != 0) {
 			prn_string("SCAN=> [");
 			prn_decimal(idx);
@@ -1896,6 +1889,7 @@ int getSquare(int base, int square)
 {
 	int value = 1;
 	int i = 0;
+
 	if (0 >= square) {
 		// not support minus square
 		value  = 1;
@@ -1910,6 +1904,7 @@ int get_int(int len, int start, char *str)
 {
 	int i = 0, rate = 0;
 	int square = 0;
+
 	for (i = len - 1; i >= start; --i) {
 		rate = rate + ((str[i] - 48) * getSquare(10, square++));
 	}
@@ -1919,6 +1914,7 @@ int get_int(int len, int start, char *str)
 void check_run_siscope()
 {
 	char input = '\0';
+
 	do {
 		prn_string("\n\n*Would you like to run SISCOPE?(y/n)\n");
 		input = sp_getChar();
@@ -1935,7 +1931,7 @@ int dram_init_main()
 {
 	unsigned int temp_value = 0;
 #ifdef CHIP_WARM_RESET
-    unsigned int cnt;
+	unsigned int cnt;
 #endif
 
 	// init params
@@ -1946,30 +1942,30 @@ int dram_init_main()
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef CHIP_WARM_RESET
-    if (((SP_REG(98, 1) & 0x20) == 0) && ((SP_REG(98, 2) &0x01) == 0)){
+	if (((SP_REG(98, 1) & 0x20) == 0) && ((SP_REG(98, 2) &0x01) == 0)) {
 		SP_REG(98, 1) |= (1 << 5); // G98.01[5] = 1(default = 0)
 		SP_REG(98, 2) |= (1 << 0); // G98.03[0] = 1(default = 0)
 		/* System reset */
 		SP_REG(0, 21) = 0x00010001; //G0.21[16] = 1; G0, 21[0] = 1
-    }else{
+	} else {
 		SP_REG(98, 1) &= ~(1 << 5); // restore G98.01[5] = 0(default = 0)
 		SP_REG(98, 2) &= ~(1 << 0); // restore G98.03[0] = 0(default = 0)
-    }
+	}
 	/* Monitor Chip temperature */
 	SP_REG(5, 0) = 0xFFFF3101;
 	SP_REG(5, 1) = 0xFFFF0000;
 	SP_REG(5, 2) = 0xFFFF4007;
 	SP_REG(5, 3) = 0xFFFF0022;
-	for (cnt = 0; cnt < 0x400000; cnt++){
-        temp_value = SP_REG(5, 12);
-		if (temp_value <= 1530){ // 1530 is experimental value
-		    break;
+	for (cnt = 0; cnt < 0x400000; cnt++) {
+		temp_value = SP_REG(5, 12);
+		if (temp_value <= 1530) { // 1530 is experimental value
+			break;
 		}
 	}
 #endif
 #ifdef SDRAM_WATCHDOG
-    SP_REG(4, 29) = (0x00120000 | ((1 << 4) | (1 << 1)));
-    /* STC Watch dog control */
+	SP_REG(4, 29) = (0x00120000 | ((1 << 4) | (1 << 1)));
+	/* STC Watch dog control */
 	SP_REG(12, 12) = WATCHDOG_CMD_PAUSE;
 	SP_REG(12, 12) = WATCHDOG_CMD_CNT_WR_UNLOCK;
 	SP_REG(12, 13) = 0x1000; // time count
