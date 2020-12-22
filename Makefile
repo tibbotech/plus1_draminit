@@ -2,7 +2,7 @@
 
 all: dram_init
 
-dram_init: clean
+dram_init:
 	make -f main.mk MK_DRAM_INIT=1
 
 debug: clean

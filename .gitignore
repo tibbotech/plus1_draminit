@@ -4,4 +4,4 @@
 *.d
 autogen.ld
 bin/
-
+.depend

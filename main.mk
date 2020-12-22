@@ -65,7 +65,7 @@ USE_DRAM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG"
 DRAM0_SIZE := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_DRAM0_SIZE_CFG")
 
 CFLAGS += -D$(SIM_TYPE)\
-          -D$(QUICK_SIM)_QUICK_SIM
+	  -D$(QUICK_SIM)_QUICK_SIM
 
 # Following parameters are defined in include/dram_param.h already:
 # CFLAGS += -DMPEG_DRAM_TYPE_$(MPEG_DRAM_TYPE) \
@@ -75,7 +75,7 @@ CFLAGS += -D$(SIM_TYPE)\
 ifneq (${USE_DRAM_CFG},CONFIG_USE_DRAM_CFG=y)
 # from Makefile.in
 CFLAGS += -DSDRAM0_SIZE_$(MPEG_DRAM0_SIZE) \
-          -DSDRAM1_SIZE_$(MPEG_DRAM1_SIZE)
+	  -DSDRAM1_SIZE_$(MPEG_DRAM1_SIZE)
 else
 # CONFIG_USE_DRAM_CFG=y, => from ../../.config
 CFLAGS += -DCONFIG_USE_DRAM_CFG
@@ -142,12 +142,12 @@ ifeq ($(DRAM_INIT),1)
 	@# Add image header
 	@bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(BIN)/$(TARGET).bin $(BIN)/$(TARGET).img $(ARCH)
 	@sz=`du -sb bin/$(TARGET).img|cut -f1` ; \
-         printf "draminit size = %d (hex %x)\n" $$sz $$sz
+	printf "draminit size = %d (hex %x)\n" $$sz $$sz
 	@if echo $(CFLAGS) | grep -q "DRAM_INIT_DEBUG=1" ;then \
 		echo ">> Debug version is built" ; \
-	 else \
+	else \
 		echo ">> Release verson is built" ; \
-	 fi
+	fi
 endif
 
 %.o: %.S
@@ -155,6 +155,12 @@ endif
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Dependency
+.depend: $(ASOURCES) $(CSOURCES)
+	@rm -f .depend >/dev/null
+	@$(CC) $(CFLAGS) -MM $^ >> ./.depend
+sinclude .depend
 
 .PHONY: clean
 clean:
