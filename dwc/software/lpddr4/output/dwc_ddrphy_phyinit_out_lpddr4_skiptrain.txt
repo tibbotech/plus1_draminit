@@ -1,0 +1,1269 @@
+// [dwc_ddrphy_phyinit_main] Start of dwc_ddrphy_phyinit_main()
+// [dwc_ddrphy_phyinit_sequence] Start of dwc_ddrphy_phyinit_sequence()
+// [dwc_ddrphy_phyinit_initStruct] Start of dwc_ddrphy_phyinit_initStruct()
+// [dwc_ddrphy_phyinit_initStruct] End of dwc_ddrphy_phyinit_initStruct()
+// [dwc_ddrphy_phyinit_setDefault] Start of dwc_ddrphy_phyinit_setDefault()
+// [dwc_ddrphy_phyinit_setDefault] End of dwc_ddrphy_phyinit_setDefault()
+
+
+// //##############################################################
+// 
+// // dwc_ddrphy_phyinit_userCustom_overrideUserInput is a user-editable function.
+// //
+// // See PhyInit App Note for detailed description and function usage
+//
+// //##############################################################
+
+dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
+// 
+//  [dwc_ddrphy_phyinit_userCustom_overrideUserInput] End of dwc_ddrphy_phyinit_userCustom_overrideUserInput()
+//[dwc_ddrphy_phyinit_calcMb] Start of dwc_ddrphy_phyinit_calcMb()
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].Pstate to 0x0
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].DRAMFreq to 0xc80
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PllBypassEn to 0x0
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].DfiFreqRatio to 0x2
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PhyOdtImpedance to 0x0
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PhyDrvImpedance to 0x0
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].BPZNResVal to 0x0
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].EnabledDQsChA to 0x10
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChA to 0x1
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].EnabledDQsChB to 0x10
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChB to 0x1
+//[dwc_ddrphy_phyinit_calcMb] End of dwc_ddrphy_phyinit_calcMb()
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // Printing Runtime input values
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] runtimeConfig.skip_training = 1
+// // [phyinit_print_dat] runtimeConfig.Train2D       = 0
+// // [phyinit_print_dat] runtimeConfig.debug         = 1
+// // [phyinit_print_dat] runtimeConfig.RetEn         = 0
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // Printing values in user input structure
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] userInputBasic.Frequency[0] = 1600
+// // [phyinit_print_dat] userInputBasic.Frequency[1] = 1067
+// // [phyinit_print_dat] userInputBasic.Frequency[2] = 933
+// // [phyinit_print_dat] userInputBasic.Frequency[3] = 800
+// // [phyinit_print_dat] userInputBasic.NumRank_dfi0 = 1
+// // [phyinit_print_dat] userInputBasic.ReadDBIEnable[0] = 0
+// // [phyinit_print_dat] userInputBasic.ReadDBIEnable[1] = 0
+// // [phyinit_print_dat] userInputBasic.ReadDBIEnable[2] = 0
+// // [phyinit_print_dat] userInputBasic.ReadDBIEnable[3] = 0
+// // [phyinit_print_dat] userInputBasic.Lp4xMode = 0
+// // [phyinit_print_dat] userInputBasic.DimmType = 4
+// // [phyinit_print_dat] userInputBasic.DfiMode = 0
+// // [phyinit_print_dat] userInputBasic.DramType = 2
+// // [phyinit_print_dat] userInputBasic.HardMacroVer = 3
+// // [phyinit_print_dat] userInputBasic.DfiFreqRatio[0] = 1
+// // [phyinit_print_dat] userInputBasic.DfiFreqRatio[1] = 1
+// // [phyinit_print_dat] userInputBasic.DfiFreqRatio[2] = 1
+// // [phyinit_print_dat] userInputBasic.DfiFreqRatio[3] = 1
+// // [phyinit_print_dat] userInputBasic.NumAnib = 6
+// // [phyinit_print_dat] userInputBasic.NumDbyte = 4
+// // [phyinit_print_dat] userInputBasic.DramDataWidth = 16
+// // [phyinit_print_dat] userInputBasic.PllBypass[0] = 0
+// // [phyinit_print_dat] userInputBasic.PllBypass[1] = 0
+// // [phyinit_print_dat] userInputBasic.PllBypass[2] = 0
+// // [phyinit_print_dat] userInputBasic.PllBypass[3] = 0
+// // [phyinit_print_dat] userInputBasic.Dfi1Exists = 1
+// // [phyinit_print_dat] userInputBasic.Train2D = 0
+// // [phyinit_print_dat] userInputBasic.NumRank_dfi1 = 1
+// // [phyinit_print_dat] userInputBasic.NumActiveDbyteDfi0 = 2
+// // [phyinit_print_dat] userInputBasic.NumPStates = 1
+// // [phyinit_print_dat] userInputBasic.NumActiveDbyteDfi1 = 2
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseAC = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[0] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[1] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[2] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[3] = 15
+// // [phyinit_print_dat] userInputAdvanced.Lp4WLS[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WLS[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WLS[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WLS[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[0] = 60
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[1] = 60
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[2] = 60
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[3] = 60
+// // [phyinit_print_dat] userInputAdvanced.DramByteSwap = 0
+// // [phyinit_print_dat] userInputAdvanced.CalInterval = 9
+// // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4PostambleExt[0] = 1
+// // [phyinit_print_dat] userInputAdvanced.Lp4PostambleExt[1] = 1
+// // [phyinit_print_dat] userInputAdvanced.Lp4PostambleExt[2] = 1
+// // [phyinit_print_dat] userInputAdvanced.Lp4PostambleExt[3] = 1
+// // [phyinit_print_dat] userInputAdvanced.CalOnce = 0
+// // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.WDQSExt = 0
+// // [phyinit_print_dat] userInputAdvanced.RxEnBackOff = 1
+// // [phyinit_print_dat] userInputAdvanced.Lp4LowPowerDrv = 0
+// // [phyinit_print_dat] userInputAdvanced.TrainSequenceCtrl = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WL[0] = 5
+// // [phyinit_print_dat] userInputAdvanced.Lp4WL[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WL[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4WL[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[0] = 10
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[1] = 10
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[2] = 10
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[3] = 10
+// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[0] = 5
+// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.MemAlertPUImp = 5
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[0] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[1] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[2] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[3] = 15
+// // [phyinit_print_dat] userInputAdvanced.DisableRetraining = 0
+// // [phyinit_print_dat] userInputAdvanced.MemAlertVrefLevel = 41
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiRd[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiRd[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiRd[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiRd[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RxPreambleMode[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RxPreambleMode[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RxPreambleMode[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RxPreambleMode[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.DisDynAdrTri[0] = 1
+// // [phyinit_print_dat] userInputAdvanced.DisDynAdrTri[1] = 1
+// // [phyinit_print_dat] userInputAdvanced.DisDynAdrTri[2] = 1
+// // [phyinit_print_dat] userInputAdvanced.DisDynAdrTri[3] = 1
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.SnpsUmctlOpt = 0
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[0] = 60
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[1] = 60
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[2] = 60
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[3] = 60
+// // [phyinit_print_dat] userInputAdvanced.PhyInitSequenceNum = 0
+// // [phyinit_print_dat] userInputAdvanced.DisablePhyUpdate = 0
+// // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.MemAlertEn = 0
+// // [phyinit_print_dat] userInputAdvanced.MemAlertSyncBypass = 0
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[0] = 5
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[1] = 5
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[2] = 5
+// // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[3] = 5
+// // [phyinit_print_dat] userInputAdvanced.DisableUnusedAddrLns = 0
+// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 20
+// // [phyinit_print_dat] userInputAdvanced.ExtCalResVal = 0
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallAC = 15
+// // [phyinit_print_dat] userInputAdvanced.EnableHighClkSkewFix = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RL[0] = 5
+// // [phyinit_print_dat] userInputAdvanced.Lp4RL[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RL[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Lp4RL[3] = 0
+// // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[0] = 0
+// // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[1] = 0
+// // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[2] = 0
+// // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[3] = 0
+// // [phyinit_print_dat] userInputSim.tDQS2DQ    = 0
+// // [phyinit_print_dat] userInputSim.tDQSCK     = 0
+// // [phyinit_print_dat] userInputSim.tSTAOFF[0] = 0
+// // [phyinit_print_dat] userInputSim.tSTAOFF[1] = 0
+// // [phyinit_print_dat] userInputSim.tSTAOFF[2] = 0
+// // [phyinit_print_dat] userInputSim.tSTAOFF[3] = 0
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // Printing values of 1D message block input/inout fields, PState=0
+// // [phyinit_print_dat] // 
+// // [phyinit_print_dat] // ####################################################
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved00 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MsgMisc = 0x6
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Pstate = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PllBypassEn = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].DRAMFreq = 0xc80
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].DfiFreqRatio = 0x2
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].BPZNResVal = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyOdtImpedance = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyDrvImpedance = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyVref = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Lp4Misc = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved0E = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].SequenceCtrl = 0x131f
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].HdtCtrl = 0xff
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].DFIMRLMargin = 0x2
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].UseBroadcastMR = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Lp4Quickboot = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved1A = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CATrainOpt = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].X8Mode = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Share2DVrefResult = 0x1
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyConfigOverride = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChA = 0x10
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChA = 0x1
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A0 = 0x54
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A0 = 0x2d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A0 = 0x64
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A0 = 0x4d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x28
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x4f
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A0 = 0x4
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_A0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A1 = 0x54
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A1 = 0x2d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A1 = 0x64
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A1 = 0x4d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x28
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x4f
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A1 = 0x4
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_A1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CATerminatingRankChA = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChB = 0x10
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChB = 0x1
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B0 = 0x54
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B0 = 0x2d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B0 = 0x64
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B0 = 0x4d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x28
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x4f
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B0 = 0x4
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_B0 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B1 = 0x54
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B1 = 0x2d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B1 = 0x64
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B1 = 0x4d
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x28
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x4f
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B1 = 0x4
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_B1 = 0x0
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CATerminatingRankChB = 0x0
+
+
+// //##############################################################
+// //
+// // Step (A) : Bring up VDD, VDDQ, and VAA 
+// //
+// // See PhyInit App Note for detailed description and function usage
+// //
+// //############################################################## 
+
+
+dwc_ddrphy_phyinit_userCustom_A_bringupPower ();
+
+// [dwc_ddrphy_phyinit_userCustom_A_bringupPower] End of dwc_ddrphy_phyinit_userCustom_A_bringupPower()
+// [dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy] Start of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()
+// 
+// 
+// //##############################################################
+// //
+// // Step (B) Start Clocks and Reset the PHY 
+// //
+// // See PhyInit App Note for detailed description and function usage
+// //
+// //##############################################################
+// 
+// 
+dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy ();
+
+// [dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy] End of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()
+// 
+
+// //##############################################################
+// //
+// // Step (C) Initialize PHY Configuration 
+// //
+// // Load the required PHY configuration registers for the appropriate mode and memory configuration
+// //
+// //##############################################################
+// 
+
+// // [phyinit_C_initPhyConfig] Start of dwc_ddrphy_phyinit_C_initPhyConfig()
+// 
+// //##############################################################
+// // TxPreDrvMode[2] = userInputBasic.Lp4xMode 
+// //##############################################################
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreDrvMode to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreP to 0xf
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreN to 0xf
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h1005f,16'h1ff); // DWC_DDRPHYA_DBYTE0_TxSlewRate_b0_p0
+dwc_ddrphy_apb_wr(32'h1015f,16'h1ff); // DWC_DDRPHYA_DBYTE0_TxSlewRate_b1_p0
+dwc_ddrphy_apb_wr(32'h1105f,16'h1ff); // DWC_DDRPHYA_DBYTE1_TxSlewRate_b0_p0
+dwc_ddrphy_apb_wr(32'h1115f,16'h1ff); // DWC_DDRPHYA_DBYTE1_TxSlewRate_b1_p0
+dwc_ddrphy_apb_wr(32'h1205f,16'h1ff); // DWC_DDRPHYA_DBYTE2_TxSlewRate_b0_p0
+dwc_ddrphy_apb_wr(32'h1215f,16'h1ff); // DWC_DDRPHYA_DBYTE2_TxSlewRate_b1_p0
+dwc_ddrphy_apb_wr(32'h1305f,16'h1ff); // DWC_DDRPHYA_DBYTE3_TxSlewRate_b0_p0
+dwc_ddrphy_apb_wr(32'h1315f,16'h1ff); // DWC_DDRPHYA_DBYTE3_TxSlewRate_b1_p0
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=0
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=0
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=0
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h55,16'h1ff); // DWC_DDRPHYA_ANIB0_ATxSlewRate
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=1
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=1
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=1
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h1055,16'h1ff); // DWC_DDRPHYA_ANIB1_ATxSlewRate
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=2
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=2
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=2
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h2055,16'h1ff); // DWC_DDRPHYA_ANIB2_ATxSlewRate
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=3
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=3
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=3
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h3055,16'h1ff); // DWC_DDRPHYA_ANIB3_ATxSlewRate
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=4
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=4
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=4
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h4055,16'h1ff); // DWC_DDRPHYA_ANIB4_ATxSlewRate
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=5
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=5
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=5
+// // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
+// // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
+
+dwc_ddrphy_apb_wr(32'h5055,16'h1ff); // DWC_DDRPHYA_ANIB5_ATxSlewRate
+dwc_ddrphy_apb_wr(32'h200c5,16'h19); // DWC_DDRPHYA_MASTER0_PllCtrl2_p0
+// // [phyinit_C_initPhyConfig] Pstate=0,  Memclk=1600MHz, Programming PllCtrl2 to 19 based on DfiClk frequency = 800.
+// 
+// //##############################################################
+// //
+// // Program ARdPtrInitVal based on Frequency and PLL Bypass inputs
+// // The values programmed here assume ideal properties of DfiClk
+// // and Pclk including:
+// // - DfiClk skew
+// // - DfiClk jitter
+// // - DfiClk PVT variations
+// // - Pclk skew
+// // - Pclk jitter
+// //
+// // PLL Bypassed mode:
+// //     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 2-6
+// //     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6
+// //
+// // PLL Enabled mode:
+// //     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6
+// //     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-6
+// //
+// //##############################################################
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming ARdPtrInitVal to 0x2
+dwc_ddrphy_apb_wr(32'h2002e,16'h2); // DWC_DDRPHYA_MASTER0_ARdPtrInitVal_p0
+// 
+// //##############################################################
+// // Seq0BGPR4       = 0: Make ProcOdtAlwaysOn = 0 and ProcOdtAlwaysOff = 0 
+// //##############################################################
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOff  to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOn   to 0x0
+dwc_ddrphy_apb_wr(32'h90204,16'h0); // DWC_DDRPHYA_INITENG0_Seq0BGPR4_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::TwoTckRxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::TwoTckTxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::PositionDfeInit to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4PostambleExt to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl to 0xe3
+dwc_ddrphy_apb_wr(32'h20024,16'he3); // DWC_DDRPHYA_MASTER0_DqsPreambleControl_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DbyteDllModeCntrl to 0x2
+dwc_ddrphy_apb_wr(32'h2003a,16'h2); // DWC_DDRPHYA_MASTER0_DbyteDllModeCntrl
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DllLockParam to 0x212
+dwc_ddrphy_apb_wr(32'h2007d,16'h212); // DWC_DDRPHYA_MASTER0_DllLockParam_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DllGainCtl to 0x61
+dwc_ddrphy_apb_wr(32'h2007c,16'h61); // DWC_DDRPHYA_MASTER0_DllGainCtl_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming ProcOdtTimeCtl to 0x3
+dwc_ddrphy_apb_wr(32'h20056,16'h3); // DWC_DDRPHYA_MASTER0_ProcOdtTimeCtl_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxOdtDrvStren::ODTStrenP to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxOdtDrvStren::ODTStrenN to 0x18
+dwc_ddrphy_apb_wr(32'h1004d,16'h600); // DWC_DDRPHYA_DBYTE0_TxOdtDrvStren_b0_p0
+dwc_ddrphy_apb_wr(32'h1014d,16'h600); // DWC_DDRPHYA_DBYTE0_TxOdtDrvStren_b1_p0
+dwc_ddrphy_apb_wr(32'h1104d,16'h600); // DWC_DDRPHYA_DBYTE1_TxOdtDrvStren_b0_p0
+dwc_ddrphy_apb_wr(32'h1114d,16'h600); // DWC_DDRPHYA_DBYTE1_TxOdtDrvStren_b1_p0
+dwc_ddrphy_apb_wr(32'h1204d,16'h600); // DWC_DDRPHYA_DBYTE2_TxOdtDrvStren_b0_p0
+dwc_ddrphy_apb_wr(32'h1214d,16'h600); // DWC_DDRPHYA_DBYTE2_TxOdtDrvStren_b1_p0
+dwc_ddrphy_apb_wr(32'h1304d,16'h600); // DWC_DDRPHYA_DBYTE3_TxOdtDrvStren_b0_p0
+dwc_ddrphy_apb_wr(32'h1314d,16'h600); // DWC_DDRPHYA_DBYTE3_TxOdtDrvStren_b1_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x18
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x18
+dwc_ddrphy_apb_wr(32'h10049,16'h618); // DWC_DDRPHYA_DBYTE0_TxImpedanceCtrl1_b0_p0
+dwc_ddrphy_apb_wr(32'h10149,16'h618); // DWC_DDRPHYA_DBYTE0_TxImpedanceCtrl1_b1_p0
+dwc_ddrphy_apb_wr(32'h11049,16'h618); // DWC_DDRPHYA_DBYTE1_TxImpedanceCtrl1_b0_p0
+dwc_ddrphy_apb_wr(32'h11149,16'h618); // DWC_DDRPHYA_DBYTE1_TxImpedanceCtrl1_b1_p0
+dwc_ddrphy_apb_wr(32'h12049,16'h618); // DWC_DDRPHYA_DBYTE2_TxImpedanceCtrl1_b0_p0
+dwc_ddrphy_apb_wr(32'h12149,16'h618); // DWC_DDRPHYA_DBYTE2_TxImpedanceCtrl1_b1_p0
+dwc_ddrphy_apb_wr(32'h13049,16'h618); // DWC_DDRPHYA_DBYTE3_TxImpedanceCtrl1_b0_p0
+dwc_ddrphy_apb_wr(32'h13149,16'h618); // DWC_DDRPHYA_DBYTE3_TxImpedanceCtrl1_b1_p0
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x1f
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x1f
+dwc_ddrphy_apb_wr(32'h43,16'h3ff); // DWC_DDRPHYA_ANIB0_ATxImpedance
+dwc_ddrphy_apb_wr(32'h1043,16'h3ff); // DWC_DDRPHYA_ANIB1_ATxImpedance
+dwc_ddrphy_apb_wr(32'h2043,16'h3ff); // DWC_DDRPHYA_ANIB2_ATxImpedance
+dwc_ddrphy_apb_wr(32'h3043,16'h3ff); // DWC_DDRPHYA_ANIB3_ATxImpedance
+dwc_ddrphy_apb_wr(32'h4043,16'h3ff); // DWC_DDRPHYA_ANIB4_ATxImpedance
+dwc_ddrphy_apb_wr(32'h5043,16'h3ff); // DWC_DDRPHYA_ANIB5_ATxImpedance
+// // [phyinit_C_initPhyConfig] Programming DfiMode to 0x3
+dwc_ddrphy_apb_wr(32'h20018,16'h3); // DWC_DDRPHYA_MASTER0_DfiMode
+// // [phyinit_C_initPhyConfig] Programming DfiCAMode to 0x4
+dwc_ddrphy_apb_wr(32'h20075,16'h4); // DWC_DDRPHYA_MASTER0_DfiCAMode
+// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPd50 to 0x0
+// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPu50 to 0x0
+dwc_ddrphy_apb_wr(32'h20050,16'h0); // DWC_DDRPHYA_MASTER0_CalDrvStr0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming CalUclkInfo::CalUClkTicksPer1uS to 0x320
+dwc_ddrphy_apb_wr(32'h20008,16'h320); // DWC_DDRPHYA_MASTER0_CalUclkInfo_p0
+// // [phyinit_C_initPhyConfig] Programming CalRate::CalInterval to 0x9
+// // [phyinit_C_initPhyConfig] Programming CalRate::CalOnce to 0x0
+dwc_ddrphy_apb_wr(32'h20088,16'h9); // DWC_DDRPHYA_MASTER0_CalRate
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInSel to 0x4
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInDAC to 0x20
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal to 0x104
+dwc_ddrphy_apb_wr(32'h200b2,16'h104); // DWC_DDRPHYA_MASTER0_VrefInGlobal_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl::MajorModeDbyte to 0x2
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl to 0x5a1
+dwc_ddrphy_apb_wr(32'h10043,16'h5a1); // DWC_DDRPHYA_DBYTE0_DqDqsRcvCntrl_b0_p0
+dwc_ddrphy_apb_wr(32'h10143,16'h5a1); // DWC_DDRPHYA_DBYTE0_DqDqsRcvCntrl_b1_p0
+dwc_ddrphy_apb_wr(32'h11043,16'h5a1); // DWC_DDRPHYA_DBYTE1_DqDqsRcvCntrl_b0_p0
+dwc_ddrphy_apb_wr(32'h11143,16'h5a1); // DWC_DDRPHYA_DBYTE1_DqDqsRcvCntrl_b1_p0
+dwc_ddrphy_apb_wr(32'h12043,16'h5a1); // DWC_DDRPHYA_DBYTE2_DqDqsRcvCntrl_b0_p0
+dwc_ddrphy_apb_wr(32'h12143,16'h5a1); // DWC_DDRPHYA_DBYTE2_DqDqsRcvCntrl_b1_p0
+dwc_ddrphy_apb_wr(32'h13043,16'h5a1); // DWC_DDRPHYA_DBYTE3_DqDqsRcvCntrl_b0_p0
+dwc_ddrphy_apb_wr(32'h13143,16'h5a1); // DWC_DDRPHYA_DBYTE3_DqDqsRcvCntrl_b1_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DfiFreqRatio_p0 to 0x1
+dwc_ddrphy_apb_wr(32'h200fa,16'h1); // DWC_DDRPHYA_MASTER0_DfiFreqRatio_p0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TristateModeCA::DisDynAdrTri_p0 to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TristateModeCA::DDR2TMode_p0 to 0x0
+dwc_ddrphy_apb_wr(32'h20019,16'h1); // DWC_DDRPHYA_MASTER0_TristateModeCA_p0
+// // [phyinit_C_initPhyConfig] Programming DfiFreqXlat*
+dwc_ddrphy_apb_wr(32'h200f0,16'h0); // DWC_DDRPHYA_MASTER0_DfiFreqXlat0
+dwc_ddrphy_apb_wr(32'h200f1,16'h0); // DWC_DDRPHYA_MASTER0_DfiFreqXlat1
+dwc_ddrphy_apb_wr(32'h200f2,16'h4444); // DWC_DDRPHYA_MASTER0_DfiFreqXlat2
+dwc_ddrphy_apb_wr(32'h200f3,16'h8888); // DWC_DDRPHYA_MASTER0_DfiFreqXlat3
+dwc_ddrphy_apb_wr(32'h200f4,16'h5555); // DWC_DDRPHYA_MASTER0_DfiFreqXlat4
+dwc_ddrphy_apb_wr(32'h200f5,16'h0); // DWC_DDRPHYA_MASTER0_DfiFreqXlat5
+dwc_ddrphy_apb_wr(32'h200f6,16'h0); // DWC_DDRPHYA_MASTER0_DfiFreqXlat6
+dwc_ddrphy_apb_wr(32'h200f7,16'hf000); // DWC_DDRPHYA_MASTER0_DfiFreqXlat7
+// // [phyinit_C_initPhyConfig] Disabling Lane 8 Receiver to save power.0
+dwc_ddrphy_apb_wr(32'h1004a,16'h500); // DWC_DDRPHYA_DBYTE0_DqDqsRcvCntrl1
+// // [phyinit_C_initPhyConfig] Disabling Lane 8 Receiver to save power.1
+dwc_ddrphy_apb_wr(32'h1104a,16'h500); // DWC_DDRPHYA_DBYTE1_DqDqsRcvCntrl1
+// // [phyinit_C_initPhyConfig] Disabling Lane 8 Receiver to save power.2
+dwc_ddrphy_apb_wr(32'h1204a,16'h500); // DWC_DDRPHYA_DBYTE2_DqDqsRcvCntrl1
+// // [phyinit_C_initPhyConfig] Disabling Lane 8 Receiver to save power.3
+dwc_ddrphy_apb_wr(32'h1304a,16'h500); // DWC_DDRPHYA_DBYTE3_DqDqsRcvCntrl1
+// // [phyinit_C_initPhyConfig] Programming MasterX4Config::X4TG to 0x0
+dwc_ddrphy_apb_wr(32'h20025,16'h0); // DWC_DDRPHYA_MASTER0_MasterX4Config
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DMIPinPresent::RdDbiEnabled to 0x0
+dwc_ddrphy_apb_wr(32'h2002d,16'h0); // DWC_DDRPHYA_MASTER0_DMIPinPresent_p0
+dwc_ddrphy_apb_wr(32'h2002c,16'h0); // DWC_DDRPHYA_MASTER0_Acx4AnibDis
+// // [phyinit_C_initPhyConfig] End of dwc_ddrphy_phyinit_C_initPhyConfig()
+// 
+// 
+// //##############################################################
+// //
+// // dwc_ddrphy_phyihunit_userCustom_customPreTrain is a user-editable function.
+// //
+// // See PhyInit App Note for detailed description and function usage
+// //
+// //##############################################################
+// 
+// // [phyinit_userCustom_customPreTrain] Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()
+// // [phyinit_userCustom_customPreTrain] End of dwc_ddrphy_phyinit_userCustom_customPreTrain()
+
+
+// //##############################################################
+// //
+// // Training firmware is *NOT* executed. This function replaces these steps
+// // in the PHY Initialization sequence:
+// //
+// //  (E) Set the PHY input clocks to the desired frequency 
+// //  (F) Write the Message Block parameters for the training firmware 
+// //  (G) Execute the Training Firmware 
+// //  (H) Read the Message Block results
+// //
+// //##############################################################
+
+
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Start of dwc_ddrphy_phyinit_progCsrSkipTrain()
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] NumRank_total = 2
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] PHY_Rx_Fifo_Dly = 1450
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] PHY_Tx_Insertion_Dly = 200
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] PHY_Rx_Insertion_Dly = 200
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming DFIMRL to 0x4
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming HwtMRL to 0x4
+dwc_ddrphy_apb_wr(32'h10020,16'h4); // DWC_DDRPHYA_DBYTE0_DFIMRL_p0
+dwc_ddrphy_apb_wr(32'h11020,16'h4); // DWC_DDRPHYA_DBYTE1_DFIMRL_p0
+dwc_ddrphy_apb_wr(32'h12020,16'h4); // DWC_DDRPHYA_DBYTE2_DFIMRL_p0
+dwc_ddrphy_apb_wr(32'h13020,16'h4); // DWC_DDRPHYA_DBYTE3_DFIMRL_p0
+dwc_ddrphy_apb_wr(32'h20020,16'h4); // DWC_DDRPHYA_MASTER0_HwtMRL_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming TxDqsDlyTg0 to 0x100
+dwc_ddrphy_apb_wr(32'h100d0,16'h100); // DWC_DDRPHYA_DBYTE0_TxDqsDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h101d0,16'h100); // DWC_DDRPHYA_DBYTE0_TxDqsDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h110d0,16'h100); // DWC_DDRPHYA_DBYTE1_TxDqsDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h111d0,16'h100); // DWC_DDRPHYA_DBYTE1_TxDqsDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h120d0,16'h100); // DWC_DDRPHYA_DBYTE2_TxDqsDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h121d0,16'h100); // DWC_DDRPHYA_DBYTE2_TxDqsDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h130d0,16'h100); // DWC_DDRPHYA_DBYTE3_TxDqsDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h131d0,16'h100); // DWC_DDRPHYA_DBYTE3_TxDqsDlyTg0_u1_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming TxDqDlyTg0 to 0x10
+dwc_ddrphy_apb_wr(32'h100c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r0_p0
+dwc_ddrphy_apb_wr(32'h101c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r1_p0
+dwc_ddrphy_apb_wr(32'h102c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r2_p0
+dwc_ddrphy_apb_wr(32'h103c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r3_p0
+dwc_ddrphy_apb_wr(32'h104c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r4_p0
+dwc_ddrphy_apb_wr(32'h105c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r5_p0
+dwc_ddrphy_apb_wr(32'h106c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r6_p0
+dwc_ddrphy_apb_wr(32'h107c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r7_p0
+dwc_ddrphy_apb_wr(32'h108c0,16'h10); // DWC_DDRPHYA_DBYTE0_TxDqDlyTg0_r8_p0
+dwc_ddrphy_apb_wr(32'h110c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r0_p0
+dwc_ddrphy_apb_wr(32'h111c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r1_p0
+dwc_ddrphy_apb_wr(32'h112c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r2_p0
+dwc_ddrphy_apb_wr(32'h113c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r3_p0
+dwc_ddrphy_apb_wr(32'h114c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r4_p0
+dwc_ddrphy_apb_wr(32'h115c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r5_p0
+dwc_ddrphy_apb_wr(32'h116c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r6_p0
+dwc_ddrphy_apb_wr(32'h117c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r7_p0
+dwc_ddrphy_apb_wr(32'h118c0,16'h10); // DWC_DDRPHYA_DBYTE1_TxDqDlyTg0_r8_p0
+dwc_ddrphy_apb_wr(32'h120c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r0_p0
+dwc_ddrphy_apb_wr(32'h121c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r1_p0
+dwc_ddrphy_apb_wr(32'h122c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r2_p0
+dwc_ddrphy_apb_wr(32'h123c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r3_p0
+dwc_ddrphy_apb_wr(32'h124c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r4_p0
+dwc_ddrphy_apb_wr(32'h125c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r5_p0
+dwc_ddrphy_apb_wr(32'h126c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r6_p0
+dwc_ddrphy_apb_wr(32'h127c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r7_p0
+dwc_ddrphy_apb_wr(32'h128c0,16'h10); // DWC_DDRPHYA_DBYTE2_TxDqDlyTg0_r8_p0
+dwc_ddrphy_apb_wr(32'h130c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r0_p0
+dwc_ddrphy_apb_wr(32'h131c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r1_p0
+dwc_ddrphy_apb_wr(32'h132c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r2_p0
+dwc_ddrphy_apb_wr(32'h133c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r3_p0
+dwc_ddrphy_apb_wr(32'h134c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r4_p0
+dwc_ddrphy_apb_wr(32'h135c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r5_p0
+dwc_ddrphy_apb_wr(32'h136c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r6_p0
+dwc_ddrphy_apb_wr(32'h137c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r7_p0
+dwc_ddrphy_apb_wr(32'h138c0,16'h10); // DWC_DDRPHYA_DBYTE3_TxDqDlyTg0_r8_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming RxEnDly_10to6=4, Rxendly_5to0=24
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming RxEnDlyTg0 to 0x118
+dwc_ddrphy_apb_wr(32'h10080,16'h118); // DWC_DDRPHYA_DBYTE0_RxEnDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h10180,16'h118); // DWC_DDRPHYA_DBYTE0_RxEnDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h11080,16'h118); // DWC_DDRPHYA_DBYTE1_RxEnDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h11180,16'h118); // DWC_DDRPHYA_DBYTE1_RxEnDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h12080,16'h118); // DWC_DDRPHYA_DBYTE2_RxEnDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h12180,16'h118); // DWC_DDRPHYA_DBYTE2_RxEnDlyTg0_u1_p0
+dwc_ddrphy_apb_wr(32'h13080,16'h118); // DWC_DDRPHYA_DBYTE3_RxEnDlyTg0_u0_p0
+dwc_ddrphy_apb_wr(32'h13180,16'h118); // DWC_DDRPHYA_DBYTE3_RxEnDlyTg0_u1_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Programming PIE RL=28 WL=14
+dwc_ddrphy_apb_wr(32'h90201,16'h1a00); // DWC_DDRPHYA_INITENG0_Seq0BGPR1_p0
+dwc_ddrphy_apb_wr(32'h90202,16'hc); // DWC_DDRPHYA_INITENG0_Seq0BGPR2_p0
+dwc_ddrphy_apb_wr(32'h90203,16'h2600); // DWC_DDRPHYA_INITENG0_Seq0BGPR3_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming HwtLpCsEnA to 0x1
+dwc_ddrphy_apb_wr(32'h20072,16'h1); // DWC_DDRPHYA_MASTER0_HwtLpCsEnA
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming HwtLpCsEnB to 0x1
+dwc_ddrphy_apb_wr(32'h20073,16'h1); // DWC_DDRPHYA_MASTER0_HwtLpCsEnB
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming PptDqsCntInvTrnTg0 to 0x0
+dwc_ddrphy_apb_wr(32'h100ae,16'h0); // DWC_DDRPHYA_DBYTE0_PptDqsCntInvTrnTg0_p0
+dwc_ddrphy_apb_wr(32'h110ae,16'h0); // DWC_DDRPHYA_DBYTE1_PptDqsCntInvTrnTg0_p0
+dwc_ddrphy_apb_wr(32'h120ae,16'h0); // DWC_DDRPHYA_DBYTE2_PptDqsCntInvTrnTg0_p0
+dwc_ddrphy_apb_wr(32'h130ae,16'h0); // DWC_DDRPHYA_DBYTE3_PptDqsCntInvTrnTg0_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming PptDqsCntInvTrnTg1 to 0x0
+dwc_ddrphy_apb_wr(32'h100af,16'h0); // DWC_DDRPHYA_DBYTE0_PptDqsCntInvTrnTg1_p0
+dwc_ddrphy_apb_wr(32'h110af,16'h0); // DWC_DDRPHYA_DBYTE1_PptDqsCntInvTrnTg1_p0
+dwc_ddrphy_apb_wr(32'h120af,16'h0); // DWC_DDRPHYA_DBYTE2_PptDqsCntInvTrnTg1_p0
+dwc_ddrphy_apb_wr(32'h130af,16'h0); // DWC_DDRPHYA_DBYTE3_PptDqsCntInvTrnTg1_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming PptCtlStatic CSR
+dwc_ddrphy_apb_wr(32'h100aa,16'h501); // DWC_DDRPHYA_DBYTE0_PptCtlStatic
+dwc_ddrphy_apb_wr(32'h110aa,16'h50d); // DWC_DDRPHYA_DBYTE1_PptCtlStatic
+dwc_ddrphy_apb_wr(32'h120aa,16'h501); // DWC_DDRPHYA_DBYTE2_PptCtlStatic
+dwc_ddrphy_apb_wr(32'h130aa,16'h50d); // DWC_DDRPHYA_DBYTE3_PptCtlStatic
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming HwtCAMode to 0x34
+dwc_ddrphy_apb_wr(32'h20077,16'h34); // DWC_DDRPHYA_MASTER0_HwtCAMode
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming DllGainCtl::DllGainIV=0x4, DllGainTV=0x5
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming DllGainCtl to 0x54
+dwc_ddrphy_apb_wr(32'h2007c,16'h54); // DWC_DDRPHYA_MASTER0_DllGainCtl_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming DllLockParam::LcdlSeed0 to 63 
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Pstate=0, Memclk=1600MHz, Programming DllLockParam to 0x3f2
+dwc_ddrphy_apb_wr(32'h2007d,16'h3f2); // DWC_DDRPHYA_MASTER0_DllLockParam_p0
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming AcsmCtrl23 to 0x10f
+dwc_ddrphy_apb_wr(32'h400c0,16'h10f); // DWC_DDRPHYA_ACSM0_AcsmCtrl23
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming PllCtrl3::PllDacValIn to 0x10
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming PllCtrl3::PllForceCal to 0x1
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming PllCtrl3::PllMaxRange to 0x1f
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Programming PllCtrl3 to 0x61f0
+dwc_ddrphy_apb_wr(32'h200cb,16'h61f0); // DWC_DDRPHYA_MASTER0_PllCtrl3
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] Special skipTraining configuration to Prevernt DRAM Commands on the first dfi status interface handshake.
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] In order to see this behavior, the frist dfi_freq should be in the range of 0x0f < dfi_freq_sel[4:0] < 0x14.
+dwc_ddrphy_apb_wr(32'h90028,16'h0); // DWC_DDRPHYA_INITENG0_PhyInLP3
+// [dwc_ddrphy_phyinit_progCsrSkipTrain] End of dwc_ddrphy_phyinit_progCsrSkipTrain()
+// // [phyinit_I_loadPIEImage] Start of dwc_ddrphy_phyinit_I_loadPIEImage()
+// 
+// 
+// //##############################################################
+// //
+// // (I) Load PHY Init Engine Image 
+// // 
+// // Load the PHY Initialization Engine memory with the provided initialization sequence.
+// // See PhyInit App Note for detailed description and function usage
+// // 
+// // For LPDDR3/LPDDR4, this sequence will include the necessary retraining code.
+// // 
+// //##############################################################
+// 
+// 
+// // Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0. 
+// // This allows the memory controller unrestricted access to the configuration CSRs. 
+dwc_ddrphy_apb_wr(32'hd0000,16'h0); // DWC_DDRPHYA_APBONLY0_MicroContMuxSel
+// // [phyinit_I_loadPIEImage] Programming PIE Production Code
+dwc_ddrphy_apb_wr(32'h90000,16'h10); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b0s0
+dwc_ddrphy_apb_wr(32'h90001,16'h400); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b0s1
+dwc_ddrphy_apb_wr(32'h90002,16'h10e); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b0s2
+dwc_ddrphy_apb_wr(32'h90003,16'h0); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b1s0
+dwc_ddrphy_apb_wr(32'h90004,16'h0); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b1s1
+dwc_ddrphy_apb_wr(32'h90005,16'h8); // DWC_DDRPHYA_INITENG0_PreSequenceReg0b1s2
+dwc_ddrphy_apb_wr(32'h90029,16'hb); // DWC_DDRPHYA_INITENG0_SequenceReg0b0s0
+dwc_ddrphy_apb_wr(32'h9002a,16'h480); // DWC_DDRPHYA_INITENG0_SequenceReg0b0s1
+dwc_ddrphy_apb_wr(32'h9002b,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b0s2
+dwc_ddrphy_apb_wr(32'h9002c,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b1s0
+dwc_ddrphy_apb_wr(32'h9002d,16'h448); // DWC_DDRPHYA_INITENG0_SequenceReg0b1s1
+dwc_ddrphy_apb_wr(32'h9002e,16'h139); // DWC_DDRPHYA_INITENG0_SequenceReg0b1s2
+dwc_ddrphy_apb_wr(32'h9002f,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b2s0
+dwc_ddrphy_apb_wr(32'h90030,16'h478); // DWC_DDRPHYA_INITENG0_SequenceReg0b2s1
+dwc_ddrphy_apb_wr(32'h90031,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b2s2
+dwc_ddrphy_apb_wr(32'h90032,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b3s0
+dwc_ddrphy_apb_wr(32'h90033,16'he8); // DWC_DDRPHYA_INITENG0_SequenceReg0b3s1
+dwc_ddrphy_apb_wr(32'h90034,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b3s2
+dwc_ddrphy_apb_wr(32'h90035,16'h2); // DWC_DDRPHYA_INITENG0_SequenceReg0b4s0
+dwc_ddrphy_apb_wr(32'h90036,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b4s1
+dwc_ddrphy_apb_wr(32'h90037,16'h139); // DWC_DDRPHYA_INITENG0_SequenceReg0b4s2
+dwc_ddrphy_apb_wr(32'h90038,16'hb); // DWC_DDRPHYA_INITENG0_SequenceReg0b5s0
+dwc_ddrphy_apb_wr(32'h90039,16'h7c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b5s1
+dwc_ddrphy_apb_wr(32'h9003a,16'h139); // DWC_DDRPHYA_INITENG0_SequenceReg0b5s2
+dwc_ddrphy_apb_wr(32'h9003b,16'h44); // DWC_DDRPHYA_INITENG0_SequenceReg0b6s0
+dwc_ddrphy_apb_wr(32'h9003c,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b6s1
+dwc_ddrphy_apb_wr(32'h9003d,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b6s2
+dwc_ddrphy_apb_wr(32'h9003e,16'h14f); // DWC_DDRPHYA_INITENG0_SequenceReg0b7s0
+dwc_ddrphy_apb_wr(32'h9003f,16'h630); // DWC_DDRPHYA_INITENG0_SequenceReg0b7s1
+dwc_ddrphy_apb_wr(32'h90040,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b7s2
+dwc_ddrphy_apb_wr(32'h90041,16'h47); // DWC_DDRPHYA_INITENG0_SequenceReg0b8s0
+dwc_ddrphy_apb_wr(32'h90042,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b8s1
+dwc_ddrphy_apb_wr(32'h90043,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b8s2
+dwc_ddrphy_apb_wr(32'h90044,16'h4f); // DWC_DDRPHYA_INITENG0_SequenceReg0b9s0
+dwc_ddrphy_apb_wr(32'h90045,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b9s1
+dwc_ddrphy_apb_wr(32'h90046,16'h179); // DWC_DDRPHYA_INITENG0_SequenceReg0b9s2
+dwc_ddrphy_apb_wr(32'h90047,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b10s0
+dwc_ddrphy_apb_wr(32'h90048,16'he0); // DWC_DDRPHYA_INITENG0_SequenceReg0b10s1
+dwc_ddrphy_apb_wr(32'h90049,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b10s2
+dwc_ddrphy_apb_wr(32'h9004a,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b11s0
+dwc_ddrphy_apb_wr(32'h9004b,16'h7c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b11s1
+dwc_ddrphy_apb_wr(32'h9004c,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b11s2
+dwc_ddrphy_apb_wr(32'h9004d,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b12s0
+dwc_ddrphy_apb_wr(32'h9004e,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b12s1
+dwc_ddrphy_apb_wr(32'h9004f,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b12s2
+dwc_ddrphy_apb_wr(32'h90050,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b13s0
+dwc_ddrphy_apb_wr(32'h90051,16'h45a); // DWC_DDRPHYA_INITENG0_SequenceReg0b13s1
+dwc_ddrphy_apb_wr(32'h90052,16'h9); // DWC_DDRPHYA_INITENG0_SequenceReg0b13s2
+dwc_ddrphy_apb_wr(32'h90053,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b14s0
+dwc_ddrphy_apb_wr(32'h90054,16'h448); // DWC_DDRPHYA_INITENG0_SequenceReg0b14s1
+dwc_ddrphy_apb_wr(32'h90055,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b14s2
+dwc_ddrphy_apb_wr(32'h90056,16'h40); // DWC_DDRPHYA_INITENG0_SequenceReg0b15s0
+dwc_ddrphy_apb_wr(32'h90057,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b15s1
+dwc_ddrphy_apb_wr(32'h90058,16'h179); // DWC_DDRPHYA_INITENG0_SequenceReg0b15s2
+dwc_ddrphy_apb_wr(32'h90059,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b16s0
+dwc_ddrphy_apb_wr(32'h9005a,16'h618); // DWC_DDRPHYA_INITENG0_SequenceReg0b16s1
+dwc_ddrphy_apb_wr(32'h9005b,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b16s2
+dwc_ddrphy_apb_wr(32'h9005c,16'h40c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b17s0
+dwc_ddrphy_apb_wr(32'h9005d,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b17s1
+dwc_ddrphy_apb_wr(32'h9005e,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b17s2
+dwc_ddrphy_apb_wr(32'h9005f,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b18s0
+dwc_ddrphy_apb_wr(32'h90060,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b18s1
+dwc_ddrphy_apb_wr(32'h90061,16'h48); // DWC_DDRPHYA_INITENG0_SequenceReg0b18s2
+dwc_ddrphy_apb_wr(32'h90062,16'h4040); // DWC_DDRPHYA_INITENG0_SequenceReg0b19s0
+dwc_ddrphy_apb_wr(32'h90063,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b19s1
+dwc_ddrphy_apb_wr(32'h90064,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b19s2
+dwc_ddrphy_apb_wr(32'h90065,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b20s0
+dwc_ddrphy_apb_wr(32'h90066,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b20s1
+dwc_ddrphy_apb_wr(32'h90067,16'h48); // DWC_DDRPHYA_INITENG0_SequenceReg0b20s2
+dwc_ddrphy_apb_wr(32'h90068,16'h40); // DWC_DDRPHYA_INITENG0_SequenceReg0b21s0
+dwc_ddrphy_apb_wr(32'h90069,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b21s1
+dwc_ddrphy_apb_wr(32'h9006a,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b21s2
+dwc_ddrphy_apb_wr(32'h9006b,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b22s0
+dwc_ddrphy_apb_wr(32'h9006c,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b22s1
+dwc_ddrphy_apb_wr(32'h9006d,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b22s2
+dwc_ddrphy_apb_wr(32'h9006e,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b23s0
+dwc_ddrphy_apb_wr(32'h9006f,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b23s1
+dwc_ddrphy_apb_wr(32'h90070,16'h78); // DWC_DDRPHYA_INITENG0_SequenceReg0b23s2
+dwc_ddrphy_apb_wr(32'h90071,16'h549); // DWC_DDRPHYA_INITENG0_SequenceReg0b24s0
+dwc_ddrphy_apb_wr(32'h90072,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b24s1
+dwc_ddrphy_apb_wr(32'h90073,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b24s2
+dwc_ddrphy_apb_wr(32'h90074,16'hd49); // DWC_DDRPHYA_INITENG0_SequenceReg0b25s0
+dwc_ddrphy_apb_wr(32'h90075,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b25s1
+dwc_ddrphy_apb_wr(32'h90076,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b25s2
+dwc_ddrphy_apb_wr(32'h90077,16'h94a); // DWC_DDRPHYA_INITENG0_SequenceReg0b26s0
+dwc_ddrphy_apb_wr(32'h90078,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b26s1
+dwc_ddrphy_apb_wr(32'h90079,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b26s2
+dwc_ddrphy_apb_wr(32'h9007a,16'h441); // DWC_DDRPHYA_INITENG0_SequenceReg0b27s0
+dwc_ddrphy_apb_wr(32'h9007b,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b27s1
+dwc_ddrphy_apb_wr(32'h9007c,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b27s2
+dwc_ddrphy_apb_wr(32'h9007d,16'h42); // DWC_DDRPHYA_INITENG0_SequenceReg0b28s0
+dwc_ddrphy_apb_wr(32'h9007e,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b28s1
+dwc_ddrphy_apb_wr(32'h9007f,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b28s2
+dwc_ddrphy_apb_wr(32'h90080,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b29s0
+dwc_ddrphy_apb_wr(32'h90081,16'h633); // DWC_DDRPHYA_INITENG0_SequenceReg0b29s1
+dwc_ddrphy_apb_wr(32'h90082,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b29s2
+dwc_ddrphy_apb_wr(32'h90083,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b30s0
+dwc_ddrphy_apb_wr(32'h90084,16'he0); // DWC_DDRPHYA_INITENG0_SequenceReg0b30s1
+dwc_ddrphy_apb_wr(32'h90085,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b30s2
+dwc_ddrphy_apb_wr(32'h90086,16'ha); // DWC_DDRPHYA_INITENG0_SequenceReg0b31s0
+dwc_ddrphy_apb_wr(32'h90087,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b31s1
+dwc_ddrphy_apb_wr(32'h90088,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b31s2
+dwc_ddrphy_apb_wr(32'h90089,16'h9); // DWC_DDRPHYA_INITENG0_SequenceReg0b32s0
+dwc_ddrphy_apb_wr(32'h9008a,16'h3c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b32s1
+dwc_ddrphy_apb_wr(32'h9008b,16'h149); // DWC_DDRPHYA_INITENG0_SequenceReg0b32s2
+dwc_ddrphy_apb_wr(32'h9008c,16'h9); // DWC_DDRPHYA_INITENG0_SequenceReg0b33s0
+dwc_ddrphy_apb_wr(32'h9008d,16'h3c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b33s1
+dwc_ddrphy_apb_wr(32'h9008e,16'h159); // DWC_DDRPHYA_INITENG0_SequenceReg0b33s2
+dwc_ddrphy_apb_wr(32'h9008f,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b34s0
+dwc_ddrphy_apb_wr(32'h90090,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b34s1
+dwc_ddrphy_apb_wr(32'h90091,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b34s2
+dwc_ddrphy_apb_wr(32'h90092,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b35s0
+dwc_ddrphy_apb_wr(32'h90093,16'h3c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b35s1
+dwc_ddrphy_apb_wr(32'h90094,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b35s2
+dwc_ddrphy_apb_wr(32'h90095,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b36s0
+dwc_ddrphy_apb_wr(32'h90096,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b36s1
+dwc_ddrphy_apb_wr(32'h90097,16'h48); // DWC_DDRPHYA_INITENG0_SequenceReg0b36s2
+dwc_ddrphy_apb_wr(32'h90098,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b37s0
+dwc_ddrphy_apb_wr(32'h90099,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b37s1
+dwc_ddrphy_apb_wr(32'h9009a,16'h58); // DWC_DDRPHYA_INITENG0_SequenceReg0b37s2
+dwc_ddrphy_apb_wr(32'h9009b,16'hb); // DWC_DDRPHYA_INITENG0_SequenceReg0b38s0
+dwc_ddrphy_apb_wr(32'h9009c,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b38s1
+dwc_ddrphy_apb_wr(32'h9009d,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b38s2
+dwc_ddrphy_apb_wr(32'h9009e,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b39s0
+dwc_ddrphy_apb_wr(32'h9009f,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b39s1
+dwc_ddrphy_apb_wr(32'h900a0,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b39s2
+dwc_ddrphy_apb_wr(32'h900a1,16'h5); // DWC_DDRPHYA_INITENG0_SequenceReg0b40s0
+dwc_ddrphy_apb_wr(32'h900a2,16'h7c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b40s1
+dwc_ddrphy_apb_wr(32'h900a3,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b40s2
+dwc_ddrphy_apb_wr(32'h40000,16'h811); // DWC_DDRPHYA_ACSM0_AcsmSeq0x0
+dwc_ddrphy_apb_wr(32'h40020,16'h880); // DWC_DDRPHYA_ACSM0_AcsmSeq1x0
+dwc_ddrphy_apb_wr(32'h40040,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x0
+dwc_ddrphy_apb_wr(32'h40060,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x0
+dwc_ddrphy_apb_wr(32'h40001,16'h4008); // DWC_DDRPHYA_ACSM0_AcsmSeq0x1
+dwc_ddrphy_apb_wr(32'h40021,16'h83); // DWC_DDRPHYA_ACSM0_AcsmSeq1x1
+dwc_ddrphy_apb_wr(32'h40041,16'h4f); // DWC_DDRPHYA_ACSM0_AcsmSeq2x1
+dwc_ddrphy_apb_wr(32'h40061,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x1
+dwc_ddrphy_apb_wr(32'h40002,16'h4040); // DWC_DDRPHYA_ACSM0_AcsmSeq0x2
+dwc_ddrphy_apb_wr(32'h40022,16'h83); // DWC_DDRPHYA_ACSM0_AcsmSeq1x2
+dwc_ddrphy_apb_wr(32'h40042,16'h51); // DWC_DDRPHYA_ACSM0_AcsmSeq2x2
+dwc_ddrphy_apb_wr(32'h40062,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x2
+dwc_ddrphy_apb_wr(32'h40003,16'h811); // DWC_DDRPHYA_ACSM0_AcsmSeq0x3
+dwc_ddrphy_apb_wr(32'h40023,16'h880); // DWC_DDRPHYA_ACSM0_AcsmSeq1x3
+dwc_ddrphy_apb_wr(32'h40043,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x3
+dwc_ddrphy_apb_wr(32'h40063,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x3
+dwc_ddrphy_apb_wr(32'h40004,16'h720); // DWC_DDRPHYA_ACSM0_AcsmSeq0x4
+dwc_ddrphy_apb_wr(32'h40024,16'hf); // DWC_DDRPHYA_ACSM0_AcsmSeq1x4
+dwc_ddrphy_apb_wr(32'h40044,16'h1740); // DWC_DDRPHYA_ACSM0_AcsmSeq2x4
+dwc_ddrphy_apb_wr(32'h40064,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x4
+dwc_ddrphy_apb_wr(32'h40005,16'h16); // DWC_DDRPHYA_ACSM0_AcsmSeq0x5
+dwc_ddrphy_apb_wr(32'h40025,16'h83); // DWC_DDRPHYA_ACSM0_AcsmSeq1x5
+dwc_ddrphy_apb_wr(32'h40045,16'h4b); // DWC_DDRPHYA_ACSM0_AcsmSeq2x5
+dwc_ddrphy_apb_wr(32'h40065,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x5
+dwc_ddrphy_apb_wr(32'h40006,16'h716); // DWC_DDRPHYA_ACSM0_AcsmSeq0x6
+dwc_ddrphy_apb_wr(32'h40026,16'hf); // DWC_DDRPHYA_ACSM0_AcsmSeq1x6
+dwc_ddrphy_apb_wr(32'h40046,16'h2001); // DWC_DDRPHYA_ACSM0_AcsmSeq2x6
+dwc_ddrphy_apb_wr(32'h40066,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x6
+dwc_ddrphy_apb_wr(32'h40007,16'h716); // DWC_DDRPHYA_ACSM0_AcsmSeq0x7
+dwc_ddrphy_apb_wr(32'h40027,16'hf); // DWC_DDRPHYA_ACSM0_AcsmSeq1x7
+dwc_ddrphy_apb_wr(32'h40047,16'h2800); // DWC_DDRPHYA_ACSM0_AcsmSeq2x7
+dwc_ddrphy_apb_wr(32'h40067,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x7
+dwc_ddrphy_apb_wr(32'h40008,16'h716); // DWC_DDRPHYA_ACSM0_AcsmSeq0x8
+dwc_ddrphy_apb_wr(32'h40028,16'hf); // DWC_DDRPHYA_ACSM0_AcsmSeq1x8
+dwc_ddrphy_apb_wr(32'h40048,16'hf00); // DWC_DDRPHYA_ACSM0_AcsmSeq2x8
+dwc_ddrphy_apb_wr(32'h40068,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x8
+dwc_ddrphy_apb_wr(32'h40009,16'h720); // DWC_DDRPHYA_ACSM0_AcsmSeq0x9
+dwc_ddrphy_apb_wr(32'h40029,16'hf); // DWC_DDRPHYA_ACSM0_AcsmSeq1x9
+dwc_ddrphy_apb_wr(32'h40049,16'h1400); // DWC_DDRPHYA_ACSM0_AcsmSeq2x9
+dwc_ddrphy_apb_wr(32'h40069,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x9
+dwc_ddrphy_apb_wr(32'h4000a,16'he08); // DWC_DDRPHYA_ACSM0_AcsmSeq0x10
+dwc_ddrphy_apb_wr(32'h4002a,16'hc15); // DWC_DDRPHYA_ACSM0_AcsmSeq1x10
+dwc_ddrphy_apb_wr(32'h4004a,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x10
+dwc_ddrphy_apb_wr(32'h4006a,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x10
+dwc_ddrphy_apb_wr(32'h4000b,16'h625); // DWC_DDRPHYA_ACSM0_AcsmSeq0x11
+dwc_ddrphy_apb_wr(32'h4002b,16'h15); // DWC_DDRPHYA_ACSM0_AcsmSeq1x11
+dwc_ddrphy_apb_wr(32'h4004b,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x11
+dwc_ddrphy_apb_wr(32'h4006b,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x11
+dwc_ddrphy_apb_wr(32'h4000c,16'h4028); // DWC_DDRPHYA_ACSM0_AcsmSeq0x12
+dwc_ddrphy_apb_wr(32'h4002c,16'h80); // DWC_DDRPHYA_ACSM0_AcsmSeq1x12
+dwc_ddrphy_apb_wr(32'h4004c,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x12
+dwc_ddrphy_apb_wr(32'h4006c,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x12
+dwc_ddrphy_apb_wr(32'h4000d,16'he08); // DWC_DDRPHYA_ACSM0_AcsmSeq0x13
+dwc_ddrphy_apb_wr(32'h4002d,16'hc1a); // DWC_DDRPHYA_ACSM0_AcsmSeq1x13
+dwc_ddrphy_apb_wr(32'h4004d,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x13
+dwc_ddrphy_apb_wr(32'h4006d,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x13
+dwc_ddrphy_apb_wr(32'h4000e,16'h625); // DWC_DDRPHYA_ACSM0_AcsmSeq0x14
+dwc_ddrphy_apb_wr(32'h4002e,16'h1a); // DWC_DDRPHYA_ACSM0_AcsmSeq1x14
+dwc_ddrphy_apb_wr(32'h4004e,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x14
+dwc_ddrphy_apb_wr(32'h4006e,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x14
+dwc_ddrphy_apb_wr(32'h4000f,16'h4040); // DWC_DDRPHYA_ACSM0_AcsmSeq0x15
+dwc_ddrphy_apb_wr(32'h4002f,16'h80); // DWC_DDRPHYA_ACSM0_AcsmSeq1x15
+dwc_ddrphy_apb_wr(32'h4004f,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x15
+dwc_ddrphy_apb_wr(32'h4006f,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x15
+dwc_ddrphy_apb_wr(32'h40010,16'h2604); // DWC_DDRPHYA_ACSM0_AcsmSeq0x16
+dwc_ddrphy_apb_wr(32'h40030,16'h15); // DWC_DDRPHYA_ACSM0_AcsmSeq1x16
+dwc_ddrphy_apb_wr(32'h40050,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x16
+dwc_ddrphy_apb_wr(32'h40070,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x16
+dwc_ddrphy_apb_wr(32'h40011,16'h708); // DWC_DDRPHYA_ACSM0_AcsmSeq0x17
+dwc_ddrphy_apb_wr(32'h40031,16'h5); // DWC_DDRPHYA_ACSM0_AcsmSeq1x17
+dwc_ddrphy_apb_wr(32'h40051,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x17
+dwc_ddrphy_apb_wr(32'h40071,16'h2002); // DWC_DDRPHYA_ACSM0_AcsmSeq3x17
+dwc_ddrphy_apb_wr(32'h40012,16'h8); // DWC_DDRPHYA_ACSM0_AcsmSeq0x18
+dwc_ddrphy_apb_wr(32'h40032,16'h80); // DWC_DDRPHYA_ACSM0_AcsmSeq1x18
+dwc_ddrphy_apb_wr(32'h40052,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x18
+dwc_ddrphy_apb_wr(32'h40072,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x18
+dwc_ddrphy_apb_wr(32'h40013,16'h2604); // DWC_DDRPHYA_ACSM0_AcsmSeq0x19
+dwc_ddrphy_apb_wr(32'h40033,16'h1a); // DWC_DDRPHYA_ACSM0_AcsmSeq1x19
+dwc_ddrphy_apb_wr(32'h40053,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x19
+dwc_ddrphy_apb_wr(32'h40073,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x19
+dwc_ddrphy_apb_wr(32'h40014,16'h708); // DWC_DDRPHYA_ACSM0_AcsmSeq0x20
+dwc_ddrphy_apb_wr(32'h40034,16'ha); // DWC_DDRPHYA_ACSM0_AcsmSeq1x20
+dwc_ddrphy_apb_wr(32'h40054,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x20
+dwc_ddrphy_apb_wr(32'h40074,16'h2002); // DWC_DDRPHYA_ACSM0_AcsmSeq3x20
+dwc_ddrphy_apb_wr(32'h40015,16'h4040); // DWC_DDRPHYA_ACSM0_AcsmSeq0x21
+dwc_ddrphy_apb_wr(32'h40035,16'h80); // DWC_DDRPHYA_ACSM0_AcsmSeq1x21
+dwc_ddrphy_apb_wr(32'h40055,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x21
+dwc_ddrphy_apb_wr(32'h40075,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x21
+dwc_ddrphy_apb_wr(32'h40016,16'h60a); // DWC_DDRPHYA_ACSM0_AcsmSeq0x22
+dwc_ddrphy_apb_wr(32'h40036,16'h15); // DWC_DDRPHYA_ACSM0_AcsmSeq1x22
+dwc_ddrphy_apb_wr(32'h40056,16'h1200); // DWC_DDRPHYA_ACSM0_AcsmSeq2x22
+dwc_ddrphy_apb_wr(32'h40076,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x22
+dwc_ddrphy_apb_wr(32'h40017,16'h61a); // DWC_DDRPHYA_ACSM0_AcsmSeq0x23
+dwc_ddrphy_apb_wr(32'h40037,16'h15); // DWC_DDRPHYA_ACSM0_AcsmSeq1x23
+dwc_ddrphy_apb_wr(32'h40057,16'h1300); // DWC_DDRPHYA_ACSM0_AcsmSeq2x23
+dwc_ddrphy_apb_wr(32'h40077,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x23
+dwc_ddrphy_apb_wr(32'h40018,16'h60a); // DWC_DDRPHYA_ACSM0_AcsmSeq0x24
+dwc_ddrphy_apb_wr(32'h40038,16'h1a); // DWC_DDRPHYA_ACSM0_AcsmSeq1x24
+dwc_ddrphy_apb_wr(32'h40058,16'h1200); // DWC_DDRPHYA_ACSM0_AcsmSeq2x24
+dwc_ddrphy_apb_wr(32'h40078,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x24
+dwc_ddrphy_apb_wr(32'h40019,16'h642); // DWC_DDRPHYA_ACSM0_AcsmSeq0x25
+dwc_ddrphy_apb_wr(32'h40039,16'h1a); // DWC_DDRPHYA_ACSM0_AcsmSeq1x25
+dwc_ddrphy_apb_wr(32'h40059,16'h1300); // DWC_DDRPHYA_ACSM0_AcsmSeq2x25
+dwc_ddrphy_apb_wr(32'h40079,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x25
+dwc_ddrphy_apb_wr(32'h4001a,16'h4808); // DWC_DDRPHYA_ACSM0_AcsmSeq0x26
+dwc_ddrphy_apb_wr(32'h4003a,16'h880); // DWC_DDRPHYA_ACSM0_AcsmSeq1x26
+dwc_ddrphy_apb_wr(32'h4005a,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq2x26
+dwc_ddrphy_apb_wr(32'h4007a,16'h0); // DWC_DDRPHYA_ACSM0_AcsmSeq3x26
+dwc_ddrphy_apb_wr(32'h900a4,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b41s0
+dwc_ddrphy_apb_wr(32'h900a5,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b41s1
+dwc_ddrphy_apb_wr(32'h900a6,16'h11a); // DWC_DDRPHYA_INITENG0_SequenceReg0b41s2
+dwc_ddrphy_apb_wr(32'h900a7,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b42s0
+dwc_ddrphy_apb_wr(32'h900a8,16'h7aa); // DWC_DDRPHYA_INITENG0_SequenceReg0b42s1
+dwc_ddrphy_apb_wr(32'h900a9,16'h2a); // DWC_DDRPHYA_INITENG0_SequenceReg0b42s2
+dwc_ddrphy_apb_wr(32'h900aa,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b43s0
+dwc_ddrphy_apb_wr(32'h900ab,16'h7b2); // DWC_DDRPHYA_INITENG0_SequenceReg0b43s1
+dwc_ddrphy_apb_wr(32'h900ac,16'h2a); // DWC_DDRPHYA_INITENG0_SequenceReg0b43s2
+dwc_ddrphy_apb_wr(32'h900ad,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b44s0
+dwc_ddrphy_apb_wr(32'h900ae,16'h7c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b44s1
+dwc_ddrphy_apb_wr(32'h900af,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b44s2
+dwc_ddrphy_apb_wr(32'h900b0,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b45s0
+dwc_ddrphy_apb_wr(32'h900b1,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b45s1
+dwc_ddrphy_apb_wr(32'h900b2,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b45s2
+dwc_ddrphy_apb_wr(32'h900b3,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b46s0
+dwc_ddrphy_apb_wr(32'h900b4,16'h2a8); // DWC_DDRPHYA_INITENG0_SequenceReg0b46s1
+dwc_ddrphy_apb_wr(32'h900b5,16'h129); // DWC_DDRPHYA_INITENG0_SequenceReg0b46s2
+dwc_ddrphy_apb_wr(32'h900b6,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b47s0
+dwc_ddrphy_apb_wr(32'h900b7,16'h370); // DWC_DDRPHYA_INITENG0_SequenceReg0b47s1
+dwc_ddrphy_apb_wr(32'h900b8,16'h129); // DWC_DDRPHYA_INITENG0_SequenceReg0b47s2
+dwc_ddrphy_apb_wr(32'h900b9,16'ha); // DWC_DDRPHYA_INITENG0_SequenceReg0b48s0
+dwc_ddrphy_apb_wr(32'h900ba,16'h3c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b48s1
+dwc_ddrphy_apb_wr(32'h900bb,16'h1a9); // DWC_DDRPHYA_INITENG0_SequenceReg0b48s2
+dwc_ddrphy_apb_wr(32'h900bc,16'hc); // DWC_DDRPHYA_INITENG0_SequenceReg0b49s0
+dwc_ddrphy_apb_wr(32'h900bd,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b49s1
+dwc_ddrphy_apb_wr(32'h900be,16'h199); // DWC_DDRPHYA_INITENG0_SequenceReg0b49s2
+dwc_ddrphy_apb_wr(32'h900bf,16'h14); // DWC_DDRPHYA_INITENG0_SequenceReg0b50s0
+dwc_ddrphy_apb_wr(32'h900c0,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b50s1
+dwc_ddrphy_apb_wr(32'h900c1,16'h11a); // DWC_DDRPHYA_INITENG0_SequenceReg0b50s2
+dwc_ddrphy_apb_wr(32'h900c2,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b51s0
+dwc_ddrphy_apb_wr(32'h900c3,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b51s1
+dwc_ddrphy_apb_wr(32'h900c4,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b51s2
+dwc_ddrphy_apb_wr(32'h900c5,16'he); // DWC_DDRPHYA_INITENG0_SequenceReg0b52s0
+dwc_ddrphy_apb_wr(32'h900c6,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b52s1
+dwc_ddrphy_apb_wr(32'h900c7,16'h199); // DWC_DDRPHYA_INITENG0_SequenceReg0b52s2
+dwc_ddrphy_apb_wr(32'h900c8,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b53s0
+dwc_ddrphy_apb_wr(32'h900c9,16'h8568); // DWC_DDRPHYA_INITENG0_SequenceReg0b53s1
+dwc_ddrphy_apb_wr(32'h900ca,16'h108); // DWC_DDRPHYA_INITENG0_SequenceReg0b53s2
+dwc_ddrphy_apb_wr(32'h900cb,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b54s0
+dwc_ddrphy_apb_wr(32'h900cc,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b54s1
+dwc_ddrphy_apb_wr(32'h900cd,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b54s2
+dwc_ddrphy_apb_wr(32'h900ce,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b55s0
+dwc_ddrphy_apb_wr(32'h900cf,16'h1d8); // DWC_DDRPHYA_INITENG0_SequenceReg0b55s1
+dwc_ddrphy_apb_wr(32'h900d0,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b55s2
+dwc_ddrphy_apb_wr(32'h900d1,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b56s0
+dwc_ddrphy_apb_wr(32'h900d2,16'h8558); // DWC_DDRPHYA_INITENG0_SequenceReg0b56s1
+dwc_ddrphy_apb_wr(32'h900d3,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b56s2
+dwc_ddrphy_apb_wr(32'h900d4,16'h70); // DWC_DDRPHYA_INITENG0_SequenceReg0b57s0
+dwc_ddrphy_apb_wr(32'h900d5,16'h788); // DWC_DDRPHYA_INITENG0_SequenceReg0b57s1
+dwc_ddrphy_apb_wr(32'h900d6,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b57s2
+dwc_ddrphy_apb_wr(32'h900d7,16'h1ff8); // DWC_DDRPHYA_INITENG0_SequenceReg0b58s0
+dwc_ddrphy_apb_wr(32'h900d8,16'h85a8); // DWC_DDRPHYA_INITENG0_SequenceReg0b58s1
+dwc_ddrphy_apb_wr(32'h900d9,16'h1e8); // DWC_DDRPHYA_INITENG0_SequenceReg0b58s2
+dwc_ddrphy_apb_wr(32'h900da,16'h50); // DWC_DDRPHYA_INITENG0_SequenceReg0b59s0
+dwc_ddrphy_apb_wr(32'h900db,16'h798); // DWC_DDRPHYA_INITENG0_SequenceReg0b59s1
+dwc_ddrphy_apb_wr(32'h900dc,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b59s2
+dwc_ddrphy_apb_wr(32'h900dd,16'h60); // DWC_DDRPHYA_INITENG0_SequenceReg0b60s0
+dwc_ddrphy_apb_wr(32'h900de,16'h7a0); // DWC_DDRPHYA_INITENG0_SequenceReg0b60s1
+dwc_ddrphy_apb_wr(32'h900df,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b60s2
+dwc_ddrphy_apb_wr(32'h900e0,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b61s0
+dwc_ddrphy_apb_wr(32'h900e1,16'h8310); // DWC_DDRPHYA_INITENG0_SequenceReg0b61s1
+dwc_ddrphy_apb_wr(32'h900e2,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b61s2
+dwc_ddrphy_apb_wr(32'h900e3,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b62s0
+dwc_ddrphy_apb_wr(32'h900e4,16'ha310); // DWC_DDRPHYA_INITENG0_SequenceReg0b62s1
+dwc_ddrphy_apb_wr(32'h900e5,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b62s2
+dwc_ddrphy_apb_wr(32'h900e6,16'ha); // DWC_DDRPHYA_INITENG0_SequenceReg0b63s0
+dwc_ddrphy_apb_wr(32'h900e7,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b63s1
+dwc_ddrphy_apb_wr(32'h900e8,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b63s2
+dwc_ddrphy_apb_wr(32'h900e9,16'h6e); // DWC_DDRPHYA_INITENG0_SequenceReg0b64s0
+dwc_ddrphy_apb_wr(32'h900ea,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b64s1
+dwc_ddrphy_apb_wr(32'h900eb,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b64s2
+dwc_ddrphy_apb_wr(32'h900ec,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b65s0
+dwc_ddrphy_apb_wr(32'h900ed,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b65s1
+dwc_ddrphy_apb_wr(32'h900ee,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b65s2
+dwc_ddrphy_apb_wr(32'h900ef,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b66s0
+dwc_ddrphy_apb_wr(32'h900f0,16'h8310); // DWC_DDRPHYA_INITENG0_SequenceReg0b66s1
+dwc_ddrphy_apb_wr(32'h900f1,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b66s2
+dwc_ddrphy_apb_wr(32'h900f2,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b67s0
+dwc_ddrphy_apb_wr(32'h900f3,16'ha310); // DWC_DDRPHYA_INITENG0_SequenceReg0b67s1
+dwc_ddrphy_apb_wr(32'h900f4,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b67s2
+dwc_ddrphy_apb_wr(32'h900f5,16'h1ff8); // DWC_DDRPHYA_INITENG0_SequenceReg0b68s0
+dwc_ddrphy_apb_wr(32'h900f6,16'h85a8); // DWC_DDRPHYA_INITENG0_SequenceReg0b68s1
+dwc_ddrphy_apb_wr(32'h900f7,16'h1e8); // DWC_DDRPHYA_INITENG0_SequenceReg0b68s2
+dwc_ddrphy_apb_wr(32'h900f8,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b69s0
+dwc_ddrphy_apb_wr(32'h900f9,16'h798); // DWC_DDRPHYA_INITENG0_SequenceReg0b69s1
+dwc_ddrphy_apb_wr(32'h900fa,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b69s2
+dwc_ddrphy_apb_wr(32'h900fb,16'h78); // DWC_DDRPHYA_INITENG0_SequenceReg0b70s0
+dwc_ddrphy_apb_wr(32'h900fc,16'h7a0); // DWC_DDRPHYA_INITENG0_SequenceReg0b70s1
+dwc_ddrphy_apb_wr(32'h900fd,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b70s2
+dwc_ddrphy_apb_wr(32'h900fe,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b71s0
+dwc_ddrphy_apb_wr(32'h900ff,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b71s1
+dwc_ddrphy_apb_wr(32'h90100,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b71s2
+dwc_ddrphy_apb_wr(32'h90101,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b72s0
+dwc_ddrphy_apb_wr(32'h90102,16'h8b10); // DWC_DDRPHYA_INITENG0_SequenceReg0b72s1
+dwc_ddrphy_apb_wr(32'h90103,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b72s2
+dwc_ddrphy_apb_wr(32'h90104,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b73s0
+dwc_ddrphy_apb_wr(32'h90105,16'hab10); // DWC_DDRPHYA_INITENG0_SequenceReg0b73s1
+dwc_ddrphy_apb_wr(32'h90106,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b73s2
+dwc_ddrphy_apb_wr(32'h90107,16'ha); // DWC_DDRPHYA_INITENG0_SequenceReg0b74s0
+dwc_ddrphy_apb_wr(32'h90108,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b74s1
+dwc_ddrphy_apb_wr(32'h90109,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b74s2
+dwc_ddrphy_apb_wr(32'h9010a,16'h58); // DWC_DDRPHYA_INITENG0_SequenceReg0b75s0
+dwc_ddrphy_apb_wr(32'h9010b,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b75s1
+dwc_ddrphy_apb_wr(32'h9010c,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b75s2
+dwc_ddrphy_apb_wr(32'h9010d,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b76s0
+dwc_ddrphy_apb_wr(32'h9010e,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b76s1
+dwc_ddrphy_apb_wr(32'h9010f,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b76s2
+dwc_ddrphy_apb_wr(32'h90110,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b77s0
+dwc_ddrphy_apb_wr(32'h90111,16'h8b10); // DWC_DDRPHYA_INITENG0_SequenceReg0b77s1
+dwc_ddrphy_apb_wr(32'h90112,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b77s2
+dwc_ddrphy_apb_wr(32'h90113,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b78s0
+dwc_ddrphy_apb_wr(32'h90114,16'hab10); // DWC_DDRPHYA_INITENG0_SequenceReg0b78s1
+dwc_ddrphy_apb_wr(32'h90115,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b78s2
+dwc_ddrphy_apb_wr(32'h90116,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b79s0
+dwc_ddrphy_apb_wr(32'h90117,16'h1d8); // DWC_DDRPHYA_INITENG0_SequenceReg0b79s1
+dwc_ddrphy_apb_wr(32'h90118,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b79s2
+dwc_ddrphy_apb_wr(32'h90119,16'h80); // DWC_DDRPHYA_INITENG0_SequenceReg0b80s0
+dwc_ddrphy_apb_wr(32'h9011a,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b80s1
+dwc_ddrphy_apb_wr(32'h9011b,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b80s2
+dwc_ddrphy_apb_wr(32'h9011c,16'h18); // DWC_DDRPHYA_INITENG0_SequenceReg0b81s0
+dwc_ddrphy_apb_wr(32'h9011d,16'h7aa); // DWC_DDRPHYA_INITENG0_SequenceReg0b81s1
+dwc_ddrphy_apb_wr(32'h9011e,16'h6a); // DWC_DDRPHYA_INITENG0_SequenceReg0b81s2
+dwc_ddrphy_apb_wr(32'h9011f,16'ha); // DWC_DDRPHYA_INITENG0_SequenceReg0b82s0
+dwc_ddrphy_apb_wr(32'h90120,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b82s1
+dwc_ddrphy_apb_wr(32'h90121,16'h1e9); // DWC_DDRPHYA_INITENG0_SequenceReg0b82s2
+dwc_ddrphy_apb_wr(32'h90122,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b83s0
+dwc_ddrphy_apb_wr(32'h90123,16'h8080); // DWC_DDRPHYA_INITENG0_SequenceReg0b83s1
+dwc_ddrphy_apb_wr(32'h90124,16'h108); // DWC_DDRPHYA_INITENG0_SequenceReg0b83s2
+dwc_ddrphy_apb_wr(32'h90125,16'hf); // DWC_DDRPHYA_INITENG0_SequenceReg0b84s0
+dwc_ddrphy_apb_wr(32'h90126,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b84s1
+dwc_ddrphy_apb_wr(32'h90127,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b84s2
+dwc_ddrphy_apb_wr(32'h90128,16'hc); // DWC_DDRPHYA_INITENG0_SequenceReg0b85s0
+dwc_ddrphy_apb_wr(32'h90129,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b85s1
+dwc_ddrphy_apb_wr(32'h9012a,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b85s2
+dwc_ddrphy_apb_wr(32'h9012b,16'h9); // DWC_DDRPHYA_INITENG0_SequenceReg0b86s0
+dwc_ddrphy_apb_wr(32'h9012c,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b86s1
+dwc_ddrphy_apb_wr(32'h9012d,16'h1a9); // DWC_DDRPHYA_INITENG0_SequenceReg0b86s2
+dwc_ddrphy_apb_wr(32'h9012e,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b87s0
+dwc_ddrphy_apb_wr(32'h9012f,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b87s1
+dwc_ddrphy_apb_wr(32'h90130,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b87s2
+dwc_ddrphy_apb_wr(32'h90131,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b88s0
+dwc_ddrphy_apb_wr(32'h90132,16'h8080); // DWC_DDRPHYA_INITENG0_SequenceReg0b88s1
+dwc_ddrphy_apb_wr(32'h90133,16'h108); // DWC_DDRPHYA_INITENG0_SequenceReg0b88s2
+dwc_ddrphy_apb_wr(32'h90134,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b89s0
+dwc_ddrphy_apb_wr(32'h90135,16'h7aa); // DWC_DDRPHYA_INITENG0_SequenceReg0b89s1
+dwc_ddrphy_apb_wr(32'h90136,16'h6a); // DWC_DDRPHYA_INITENG0_SequenceReg0b89s2
+dwc_ddrphy_apb_wr(32'h90137,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b90s0
+dwc_ddrphy_apb_wr(32'h90138,16'h8568); // DWC_DDRPHYA_INITENG0_SequenceReg0b90s1
+dwc_ddrphy_apb_wr(32'h90139,16'h108); // DWC_DDRPHYA_INITENG0_SequenceReg0b90s2
+dwc_ddrphy_apb_wr(32'h9013a,16'hb7); // DWC_DDRPHYA_INITENG0_SequenceReg0b91s0
+dwc_ddrphy_apb_wr(32'h9013b,16'h790); // DWC_DDRPHYA_INITENG0_SequenceReg0b91s1
+dwc_ddrphy_apb_wr(32'h9013c,16'h16a); // DWC_DDRPHYA_INITENG0_SequenceReg0b91s2
+dwc_ddrphy_apb_wr(32'h9013d,16'h1f); // DWC_DDRPHYA_INITENG0_SequenceReg0b92s0
+dwc_ddrphy_apb_wr(32'h9013e,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b92s1
+dwc_ddrphy_apb_wr(32'h9013f,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b92s2
+dwc_ddrphy_apb_wr(32'h90140,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b93s0
+dwc_ddrphy_apb_wr(32'h90141,16'h8558); // DWC_DDRPHYA_INITENG0_SequenceReg0b93s1
+dwc_ddrphy_apb_wr(32'h90142,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b93s2
+dwc_ddrphy_apb_wr(32'h90143,16'hf); // DWC_DDRPHYA_INITENG0_SequenceReg0b94s0
+dwc_ddrphy_apb_wr(32'h90144,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b94s1
+dwc_ddrphy_apb_wr(32'h90145,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b94s2
+dwc_ddrphy_apb_wr(32'h90146,16'hd); // DWC_DDRPHYA_INITENG0_SequenceReg0b95s0
+dwc_ddrphy_apb_wr(32'h90147,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b95s1
+dwc_ddrphy_apb_wr(32'h90148,16'h68); // DWC_DDRPHYA_INITENG0_SequenceReg0b95s2
+dwc_ddrphy_apb_wr(32'h90149,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b96s0
+dwc_ddrphy_apb_wr(32'h9014a,16'h408); // DWC_DDRPHYA_INITENG0_SequenceReg0b96s1
+dwc_ddrphy_apb_wr(32'h9014b,16'h169); // DWC_DDRPHYA_INITENG0_SequenceReg0b96s2
+dwc_ddrphy_apb_wr(32'h9014c,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b97s0
+dwc_ddrphy_apb_wr(32'h9014d,16'h8558); // DWC_DDRPHYA_INITENG0_SequenceReg0b97s1
+dwc_ddrphy_apb_wr(32'h9014e,16'h168); // DWC_DDRPHYA_INITENG0_SequenceReg0b97s2
+dwc_ddrphy_apb_wr(32'h9014f,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b98s0
+dwc_ddrphy_apb_wr(32'h90150,16'h3c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b98s1
+dwc_ddrphy_apb_wr(32'h90151,16'h1a9); // DWC_DDRPHYA_INITENG0_SequenceReg0b98s2
+dwc_ddrphy_apb_wr(32'h90152,16'h3); // DWC_DDRPHYA_INITENG0_SequenceReg0b99s0
+dwc_ddrphy_apb_wr(32'h90153,16'h370); // DWC_DDRPHYA_INITENG0_SequenceReg0b99s1
+dwc_ddrphy_apb_wr(32'h90154,16'h129); // DWC_DDRPHYA_INITENG0_SequenceReg0b99s2
+dwc_ddrphy_apb_wr(32'h90155,16'h20); // DWC_DDRPHYA_INITENG0_SequenceReg0b100s0
+dwc_ddrphy_apb_wr(32'h90156,16'h2aa); // DWC_DDRPHYA_INITENG0_SequenceReg0b100s1
+dwc_ddrphy_apb_wr(32'h90157,16'h9); // DWC_DDRPHYA_INITENG0_SequenceReg0b100s2
+dwc_ddrphy_apb_wr(32'h90158,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b101s0
+dwc_ddrphy_apb_wr(32'h90159,16'h400); // DWC_DDRPHYA_INITENG0_SequenceReg0b101s1
+dwc_ddrphy_apb_wr(32'h9015a,16'h10e); // DWC_DDRPHYA_INITENG0_SequenceReg0b101s2
+dwc_ddrphy_apb_wr(32'h9015b,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b102s0
+dwc_ddrphy_apb_wr(32'h9015c,16'he8); // DWC_DDRPHYA_INITENG0_SequenceReg0b102s1
+dwc_ddrphy_apb_wr(32'h9015d,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b102s2
+dwc_ddrphy_apb_wr(32'h9015e,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b103s0
+dwc_ddrphy_apb_wr(32'h9015f,16'h8140); // DWC_DDRPHYA_INITENG0_SequenceReg0b103s1
+dwc_ddrphy_apb_wr(32'h90160,16'h10c); // DWC_DDRPHYA_INITENG0_SequenceReg0b103s2
+dwc_ddrphy_apb_wr(32'h90161,16'h10); // DWC_DDRPHYA_INITENG0_SequenceReg0b104s0
+dwc_ddrphy_apb_wr(32'h90162,16'h8138); // DWC_DDRPHYA_INITENG0_SequenceReg0b104s1
+dwc_ddrphy_apb_wr(32'h90163,16'h10c); // DWC_DDRPHYA_INITENG0_SequenceReg0b104s2
+dwc_ddrphy_apb_wr(32'h90164,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b105s0
+dwc_ddrphy_apb_wr(32'h90165,16'h7c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b105s1
+dwc_ddrphy_apb_wr(32'h90166,16'h101); // DWC_DDRPHYA_INITENG0_SequenceReg0b105s2
+dwc_ddrphy_apb_wr(32'h90167,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b106s0
+dwc_ddrphy_apb_wr(32'h90168,16'h448); // DWC_DDRPHYA_INITENG0_SequenceReg0b106s1
+dwc_ddrphy_apb_wr(32'h90169,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b106s2
+dwc_ddrphy_apb_wr(32'h9016a,16'hf); // DWC_DDRPHYA_INITENG0_SequenceReg0b107s0
+dwc_ddrphy_apb_wr(32'h9016b,16'h7c0); // DWC_DDRPHYA_INITENG0_SequenceReg0b107s1
+dwc_ddrphy_apb_wr(32'h9016c,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b107s2
+dwc_ddrphy_apb_wr(32'h9016d,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b108s0
+dwc_ddrphy_apb_wr(32'h9016e,16'he8); // DWC_DDRPHYA_INITENG0_SequenceReg0b108s1
+dwc_ddrphy_apb_wr(32'h9016f,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b108s2
+dwc_ddrphy_apb_wr(32'h90170,16'h47); // DWC_DDRPHYA_INITENG0_SequenceReg0b109s0
+dwc_ddrphy_apb_wr(32'h90171,16'h630); // DWC_DDRPHYA_INITENG0_SequenceReg0b109s1
+dwc_ddrphy_apb_wr(32'h90172,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b109s2
+dwc_ddrphy_apb_wr(32'h90173,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b110s0
+dwc_ddrphy_apb_wr(32'h90174,16'h618); // DWC_DDRPHYA_INITENG0_SequenceReg0b110s1
+dwc_ddrphy_apb_wr(32'h90175,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b110s2
+dwc_ddrphy_apb_wr(32'h90176,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b111s0
+dwc_ddrphy_apb_wr(32'h90177,16'he0); // DWC_DDRPHYA_INITENG0_SequenceReg0b111s1
+dwc_ddrphy_apb_wr(32'h90178,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b111s2
+dwc_ddrphy_apb_wr(32'h90179,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b112s0
+dwc_ddrphy_apb_wr(32'h9017a,16'h7c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b112s1
+dwc_ddrphy_apb_wr(32'h9017b,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b112s2
+dwc_ddrphy_apb_wr(32'h9017c,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b113s0
+dwc_ddrphy_apb_wr(32'h9017d,16'h8140); // DWC_DDRPHYA_INITENG0_SequenceReg0b113s1
+dwc_ddrphy_apb_wr(32'h9017e,16'h10c); // DWC_DDRPHYA_INITENG0_SequenceReg0b113s2
+dwc_ddrphy_apb_wr(32'h9017f,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b114s0
+dwc_ddrphy_apb_wr(32'h90180,16'h478); // DWC_DDRPHYA_INITENG0_SequenceReg0b114s1
+dwc_ddrphy_apb_wr(32'h90181,16'h109); // DWC_DDRPHYA_INITENG0_SequenceReg0b114s2
+dwc_ddrphy_apb_wr(32'h90182,16'h0); // DWC_DDRPHYA_INITENG0_SequenceReg0b115s0
+dwc_ddrphy_apb_wr(32'h90183,16'h1); // DWC_DDRPHYA_INITENG0_SequenceReg0b115s1
+dwc_ddrphy_apb_wr(32'h90184,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b115s2
+dwc_ddrphy_apb_wr(32'h90185,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b116s0
+dwc_ddrphy_apb_wr(32'h90186,16'h4); // DWC_DDRPHYA_INITENG0_SequenceReg0b116s1
+dwc_ddrphy_apb_wr(32'h90187,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b116s2
+dwc_ddrphy_apb_wr(32'h90188,16'h8); // DWC_DDRPHYA_INITENG0_SequenceReg0b117s0
+dwc_ddrphy_apb_wr(32'h90189,16'h7c8); // DWC_DDRPHYA_INITENG0_SequenceReg0b117s1
+dwc_ddrphy_apb_wr(32'h9018a,16'h101); // DWC_DDRPHYA_INITENG0_SequenceReg0b117s2
+dwc_ddrphy_apb_wr(32'h90006,16'h0); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b0s0
+dwc_ddrphy_apb_wr(32'h90007,16'h0); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b0s1
+dwc_ddrphy_apb_wr(32'h90008,16'h8); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b0s2
+dwc_ddrphy_apb_wr(32'h90009,16'h0); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b1s0
+dwc_ddrphy_apb_wr(32'h9000a,16'h0); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b1s1
+dwc_ddrphy_apb_wr(32'h9000b,16'h0); // DWC_DDRPHYA_INITENG0_PostSequenceReg0b1s2
+dwc_ddrphy_apb_wr(32'hd00e7,16'h400); // DWC_DDRPHYA_APBONLY0_SequencerOverride
+dwc_ddrphy_apb_wr(32'h90017,16'h0); // DWC_DDRPHYA_INITENG0_StartVector0b0
+dwc_ddrphy_apb_wr(32'h9001f,16'h29); // DWC_DDRPHYA_INITENG0_StartVector0b8
+dwc_ddrphy_apb_wr(32'h90026,16'h6a); // DWC_DDRPHYA_INITENG0_StartVector0b15
+dwc_ddrphy_apb_wr(32'h400d0,16'h0); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl0
+dwc_ddrphy_apb_wr(32'h400d1,16'h101); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl1
+dwc_ddrphy_apb_wr(32'h400d2,16'h105); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl2
+dwc_ddrphy_apb_wr(32'h400d3,16'h107); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl3
+dwc_ddrphy_apb_wr(32'h400d4,16'h10f); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl4
+dwc_ddrphy_apb_wr(32'h400d5,16'h202); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl5
+dwc_ddrphy_apb_wr(32'h400d6,16'h20a); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl6
+dwc_ddrphy_apb_wr(32'h400d7,16'h20b); // DWC_DDRPHYA_ACSM0_AcsmCsMapCtrl7
+dwc_ddrphy_apb_wr(32'h2003a,16'h2); // DWC_DDRPHYA_MASTER0_DbyteDllModeCntrl
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1600MHz, Programming Seq0BDLY0 to 0x64
+dwc_ddrphy_apb_wr(32'h2000b,16'h64); // DWC_DDRPHYA_MASTER0_Seq0BDLY0_p0
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1600MHz, Programming Seq0BDLY1 to 0xc8
+dwc_ddrphy_apb_wr(32'h2000c,16'hc8); // DWC_DDRPHYA_MASTER0_Seq0BDLY1_p0
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1600MHz, Programming Seq0BDLY2 to 0x7d0
+dwc_ddrphy_apb_wr(32'h2000d,16'h7d0); // DWC_DDRPHYA_MASTER0_Seq0BDLY2_p0
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1600MHz, Programming Seq0BDLY3 to 0x2c
+dwc_ddrphy_apb_wr(32'h2000e,16'h2c); // DWC_DDRPHYA_MASTER0_Seq0BDLY3_p0
+dwc_ddrphy_apb_wr(32'h9000c,16'h0); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag0
+dwc_ddrphy_apb_wr(32'h9000d,16'h173); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag1
+dwc_ddrphy_apb_wr(32'h9000e,16'h60); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag2
+dwc_ddrphy_apb_wr(32'h9000f,16'h6110); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag3
+dwc_ddrphy_apb_wr(32'h90010,16'h2152); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag4
+dwc_ddrphy_apb_wr(32'h90011,16'hdfbd); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag5
+// // [phyinit_I_loadPIEImage] Disabling DRAM drift compensation.
+dwc_ddrphy_apb_wr(32'h90012,16'hffff); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag6
+dwc_ddrphy_apb_wr(32'h90013,16'h6152); // DWC_DDRPHYA_INITENG0_Seq0BDisableFlag7
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback0x0 to 0xe0
+dwc_ddrphy_apb_wr(32'h40080,16'he0); // DWC_DDRPHYA_ACSM0_AcsmPlayback0x0_p0
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback1x0 to 0x12
+dwc_ddrphy_apb_wr(32'h40081,16'h12); // DWC_DDRPHYA_ACSM0_AcsmPlayback1x0_p0
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback0x1 to 0xe0
+dwc_ddrphy_apb_wr(32'h40082,16'he0); // DWC_DDRPHYA_ACSM0_AcsmPlayback0x1_p0
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback1x1 to 0x12
+dwc_ddrphy_apb_wr(32'h40083,16'h12); // DWC_DDRPHYA_ACSM0_AcsmPlayback1x1_p0
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback0x2 to 0xe0
+dwc_ddrphy_apb_wr(32'h40084,16'he0); // DWC_DDRPHYA_ACSM0_AcsmPlayback0x2_p0
+// // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback1x2 to 0x12
+dwc_ddrphy_apb_wr(32'h40085,16'h12); // DWC_DDRPHYA_ACSM0_AcsmPlayback1x2_p0
+// // [phyinit_I_loadPIEImage] Programing Training Hardware Registers for mission mode retraining
+dwc_ddrphy_apb_wr(32'h400fd,16'hf); // DWC_DDRPHYA_ACSM0_AcsmCtrl13
+dwc_ddrphy_apb_wr(32'h10011,16'h1); // DWC_DDRPHYA_DBYTE0_TsmByte1
+dwc_ddrphy_apb_wr(32'h10012,16'h1); // DWC_DDRPHYA_DBYTE0_TsmByte2
+dwc_ddrphy_apb_wr(32'h10013,16'h180); // DWC_DDRPHYA_DBYTE0_TsmByte3
+dwc_ddrphy_apb_wr(32'h10018,16'h1); // DWC_DDRPHYA_DBYTE0_TsmByte5
+dwc_ddrphy_apb_wr(32'h10002,16'h6209); // DWC_DDRPHYA_DBYTE0_TrainingParam
+dwc_ddrphy_apb_wr(32'h100b2,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm0_i0
+dwc_ddrphy_apb_wr(32'h101b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i1
+dwc_ddrphy_apb_wr(32'h102b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i2
+dwc_ddrphy_apb_wr(32'h103b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i3
+dwc_ddrphy_apb_wr(32'h104b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i4
+dwc_ddrphy_apb_wr(32'h105b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i5
+dwc_ddrphy_apb_wr(32'h106b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i6
+dwc_ddrphy_apb_wr(32'h107b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i7
+dwc_ddrphy_apb_wr(32'h108b4,16'h1); // DWC_DDRPHYA_DBYTE0_Tsm2_i8
+dwc_ddrphy_apb_wr(32'h11011,16'h1); // DWC_DDRPHYA_DBYTE1_TsmByte1
+dwc_ddrphy_apb_wr(32'h11012,16'h1); // DWC_DDRPHYA_DBYTE1_TsmByte2
+dwc_ddrphy_apb_wr(32'h11013,16'h180); // DWC_DDRPHYA_DBYTE1_TsmByte3
+dwc_ddrphy_apb_wr(32'h11018,16'h1); // DWC_DDRPHYA_DBYTE1_TsmByte5
+dwc_ddrphy_apb_wr(32'h11002,16'h6209); // DWC_DDRPHYA_DBYTE1_TrainingParam
+dwc_ddrphy_apb_wr(32'h110b2,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm0_i0
+dwc_ddrphy_apb_wr(32'h111b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i1
+dwc_ddrphy_apb_wr(32'h112b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i2
+dwc_ddrphy_apb_wr(32'h113b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i3
+dwc_ddrphy_apb_wr(32'h114b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i4
+dwc_ddrphy_apb_wr(32'h115b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i5
+dwc_ddrphy_apb_wr(32'h116b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i6
+dwc_ddrphy_apb_wr(32'h117b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i7
+dwc_ddrphy_apb_wr(32'h118b4,16'h1); // DWC_DDRPHYA_DBYTE1_Tsm2_i8
+dwc_ddrphy_apb_wr(32'h12011,16'h1); // DWC_DDRPHYA_DBYTE2_TsmByte1
+dwc_ddrphy_apb_wr(32'h12012,16'h1); // DWC_DDRPHYA_DBYTE2_TsmByte2
+dwc_ddrphy_apb_wr(32'h12013,16'h180); // DWC_DDRPHYA_DBYTE2_TsmByte3
+dwc_ddrphy_apb_wr(32'h12018,16'h1); // DWC_DDRPHYA_DBYTE2_TsmByte5
+dwc_ddrphy_apb_wr(32'h12002,16'h6209); // DWC_DDRPHYA_DBYTE2_TrainingParam
+dwc_ddrphy_apb_wr(32'h120b2,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm0_i0
+dwc_ddrphy_apb_wr(32'h121b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i1
+dwc_ddrphy_apb_wr(32'h122b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i2
+dwc_ddrphy_apb_wr(32'h123b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i3
+dwc_ddrphy_apb_wr(32'h124b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i4
+dwc_ddrphy_apb_wr(32'h125b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i5
+dwc_ddrphy_apb_wr(32'h126b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i6
+dwc_ddrphy_apb_wr(32'h127b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i7
+dwc_ddrphy_apb_wr(32'h128b4,16'h1); // DWC_DDRPHYA_DBYTE2_Tsm2_i8
+dwc_ddrphy_apb_wr(32'h13011,16'h1); // DWC_DDRPHYA_DBYTE3_TsmByte1
+dwc_ddrphy_apb_wr(32'h13012,16'h1); // DWC_DDRPHYA_DBYTE3_TsmByte2
+dwc_ddrphy_apb_wr(32'h13013,16'h180); // DWC_DDRPHYA_DBYTE3_TsmByte3
+dwc_ddrphy_apb_wr(32'h13018,16'h1); // DWC_DDRPHYA_DBYTE3_TsmByte5
+dwc_ddrphy_apb_wr(32'h13002,16'h6209); // DWC_DDRPHYA_DBYTE3_TrainingParam
+dwc_ddrphy_apb_wr(32'h130b2,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm0_i0
+dwc_ddrphy_apb_wr(32'h131b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i1
+dwc_ddrphy_apb_wr(32'h132b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i2
+dwc_ddrphy_apb_wr(32'h133b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i3
+dwc_ddrphy_apb_wr(32'h134b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i4
+dwc_ddrphy_apb_wr(32'h135b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i5
+dwc_ddrphy_apb_wr(32'h136b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i6
+dwc_ddrphy_apb_wr(32'h137b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i7
+dwc_ddrphy_apb_wr(32'h138b4,16'h1); // DWC_DDRPHYA_DBYTE3_Tsm2_i8
+// // [phyinit_I_loadPIEImage] Turn on calibration and hold idle until dfi_init_start is asserted sequence is triggered.
+dwc_ddrphy_apb_wr(32'h20089,16'h1); // DWC_DDRPHYA_MASTER0_CalZap
+// // [phyinit_I_loadPIEImage] Programming CalRate::CalInterval to 0x9
+// // [phyinit_I_loadPIEImage] Programming CalRate::CalOnce to 0x0
+// // [phyinit_I_loadPIEImage] Programming CalRate::CalRun to 0x1
+dwc_ddrphy_apb_wr(32'h20088,16'h19); // DWC_DDRPHYA_MASTER0_CalRate
+// // [phyinit_I_loadPIEImage] Disabling Ucclk (PMU)
+dwc_ddrphy_apb_wr(32'hc0080,16'h2); // DWC_DDRPHYA_DRTUB0_UcclkHclkEnables
+// // [phyinit_I_loadPIEImage] Isolate the APB access from the internal CSRs by setting the MicroContMuxSel CSR to 1. 
+dwc_ddrphy_apb_wr(32'hd0000,16'h1); // DWC_DDRPHYA_APBONLY0_MicroContMuxSel
+// // [phyinit_I_loadPIEImage] End of dwc_ddrphy_phyinit_I_loadPIEImage()
+// 
+// 
+// //##############################################################
+// //
+// // dwc_ddrphy_phyinit_userCustom_customPostTrain is a user-editable function.
+// //
+// // See PhyInit App Note for detailed description and function usage
+// 
+// //##############################################################
+// 
+dwc_ddrphy_phyinit_userCustom_customPostTrain ();
+
+// // [dwc_ddrphy_phyinit_userCustom_customPostTrain] End of dwc_ddrphy_phyinit_userCustom_customPostTrain()
+// // [dwc_ddrphy_phyinit_userCustom_J_enterMissionMode] Start of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()
+// 
+// 
+// //##############################################################
+// //
+// // (J) Initialize the PHY to Mission Mode through DFI Initialization 
+// //
+// // Initialize the PHY to mission mode as follows: 
+// //
+// // 1. Set the PHY input clocks to the desired frequency. 
+// // 2. Initialize the PHY to mission mode by performing DFI Initialization. 
+// //    Please see the DFI specification for more information. See the DFI frequency bus encoding in section <XXX>.
+// // Note: The PHY training firmware initializes the DRAM state. if skip 
+// // training is used, the DRAM state is not initialized. 
+// //
+// //##############################################################
+// 
+dwc_ddrphy_phyinit_userCustom_J_enterMissionMode ();
+
+// 
+// // [dwc_ddrphy_phyinit_userCustom_J_enterMissionMode] End of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()
+// [dwc_ddrphy_phyinit_sequence] End of dwc_ddrphy_phyinit_sequence()
+// [dwc_ddrphy_phyinit_main] End of dwc_ddrphy_phyinit_main()
