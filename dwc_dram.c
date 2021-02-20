@@ -6,7 +6,7 @@
 #include <common.h>
 #include <config.h>
 #include <dram_param.h>
-//#include <dwc_ddrphy_phyinit.h>
+#include <dwc_ddrphy_phyinit.h>
 
 #if 1
 #define SPI_FLASH_BASE      0x98000000
