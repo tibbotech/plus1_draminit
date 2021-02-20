@@ -36,7 +36,7 @@ LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
 LDFLAGS += -Wl,--build-id=none
 PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
 ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
-CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude -I../dwc/software/lpddr4/include -I../xboot/include
+CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude -I../draminit/dwc/software/lpddr4/include -I../xboot/include
 else
 CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude
 endif
