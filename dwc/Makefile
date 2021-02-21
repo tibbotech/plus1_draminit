@@ -1,12 +1,6 @@
-PROJECT_ROOT = $(shell cd ../xboot/ && pwd)
 SIM_TYPE := CSIM_ASIC
 QUICK_SIM :=  NO
 
-#dwc
-DWC_SRC_DIR=software/lpddr4/src
-DWC_USER_DIR=software/lpddr4/userCustom
-DWC=dwc_ddrphy_phyinit_
-DWC_USER=dwc_ddrphy_phyinit_userCustom_
 
 # Toolchain path
 ifneq ($(CROSS),)
@@ -36,23 +30,21 @@ CFLAGS += -fdata-sections -ffunction-sections
 CFLAGS += -DDRAM_INIT=1
 CFLAGS += -DDRAM_INIT_DEBUG=1
 
-# Get Platform configuration from xboot/.config
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_I143")
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_I143=y)
-CC = $(CROSS)gcc
-CFLAGS += -DCONFIG_PLATFORM_I143
-endif
 
 # software
-CSOURCES += $(DWC_SRC_DIR)/$(DWC)print.c $(DWC_SRC_DIR)/$(DWC)cmnt.c $(DWC_USER_DIR)/$(DWC_USER)A_bringupPower.c
-CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)B_startClockResetPhy.c 
-CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c 
-CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c 
+DWC_SRC_DIR=software/lpddr4/src
+DWC_USER_DIR=software/lpddr4/userCustom
+DWC=dwc_ddrphy_phyinit_
+DWC_USER=dwc_ddrphy_phyinit_userCustom_
 
-CSOURCES +=	$(DWC_SRC_DIR)/$(DWC)print.c $(DWC_SRC_DIR)/$(DWC)cmnt.c $(DWC_USER_DIR)/$(DWC_USER)A_bringupPower.c
-CSOURCES +=	$(DWC_USER_DIR)/$(DWC_USER)B_startClockResetPhy.c $(DWC_USER_DIR)/$(DWC_USER)E_setDfiClk.c 
-CSOURCES +=	$(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c $(DWC_USER_DIR)/$(DWC_USER)H_readMsgBlock.c $(DWC_USER_DIR)/$(DWC_USER)customPostTrain.c  
-CSOURCES +=	$(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c $(DWC_USER_DIR)/$(DWC_USER)J_enterMissionMode.c 
+CSOURCES += $(DWC_SRC_DIR)/$(DWC)print.c $(DWC_SRC_DIR)/$(DWC)cmnt.c $(DWC_USER_DIR)/$(DWC_USER)A_bringupPower.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)B_startClockResetPhy.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c
+CSOURCES += $(DWC_SRC_DIR)/$(DWC)print.c $(DWC_SRC_DIR)/$(DWC)cmnt.c $(DWC_USER_DIR)/$(DWC_USER)A_bringupPower.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)B_startClockResetPhy.c $(DWC_USER_DIR)/$(DWC_USER)E_setDfiClk.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c $(DWC_USER_DIR)/$(DWC_USER)H_readMsgBlock.c $(DWC_USER_DIR)/$(DWC_USER)customPostTrain.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c $(DWC_USER_DIR)/$(DWC_USER)J_enterMissionMode.c
 
 OBJS = $(CSOURCES:.c=.o)
 

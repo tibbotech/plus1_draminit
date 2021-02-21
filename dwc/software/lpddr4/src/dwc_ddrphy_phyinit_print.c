@@ -38,7 +38,7 @@ void dwc_ddrphy_phyinit_print (const char *fmt,...)
   }  
   arg1=va_arg(argptr,int); 
   arg2=va_arg(argptr,int);   
-  prn_string_for_lpddr4(fmt,arg1,arg2);	  
+  //prn_string_for_lpddr4(fmt,arg1,arg2);	  
   va_end(argptr);
   #else
   va_list argptr;
