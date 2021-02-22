@@ -13,7 +13,6 @@ OBJCOPY = $(CROSS)objcopy
 OBJDUMP = $(CROSS)objdump
 endif
 
-DWC_INIT = 0
 ifeq ($(MK_DRAM_INIT),1)
 	TARGET = draminit
 	DRAM_INIT = 1
@@ -34,12 +33,8 @@ endif
 LDFLAGS = -T autogen.ld
 LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
 LDFLAGS += -Wl,--build-id=none
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
-CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude -I../draminit/dwc/software/lpddr4/include -I../xboot/include
-else
 CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude
-endif
+
 ifeq ($(ARCH),arm)
 CFLAGS	+= -march=armv5te
 else
@@ -115,17 +110,7 @@ endif
 
 # Boot up
 ASOURCES = $(START_S)
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
-CSOURCES = dwc_dram.c
-else
 CSOURCES = plf_dram.c
-endif
-
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
-DWC_INIT = 1
-endif
 
 # common
 CSOURCES += $(COMMON_DIR)/diag.c $(COMMON_DIR)/common.c
@@ -141,7 +126,7 @@ OBJS = $(ASOURCES:.S=.o) $(CSOURCES:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-ifeq ($(DWC_INIT),0)
+
 ifeq ($(MK_DRAM_INIT),1)
 	$(CC) -E -x c -DDRAM_INIT $(SRC_LD) | grep -v '^#' > autogen.ld
 else ifeq ($(MK_DEBUG),1)
@@ -166,7 +151,6 @@ ifeq ($(DRAM_INIT),1)
 		echo ">> Release verson is built" ; \
 	fi
 endif
-endif 
 
 %.o: %.S
 	$(CC) $(CFLAGS) -c -o $@ $<

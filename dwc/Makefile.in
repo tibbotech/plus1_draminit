@@ -1,0 +1,21 @@
+#CSIM_ASIC / CSIM_FPGA
+#SIM_TYPE := CSIM_FPGA
+SIM_TYPE := CSIM_ASIC
+
+# DRAM type: DDR3, DDR2
+#MPEG_DRAM_TYPE  ?=  DDR3
+
+# DRAM speed: 2133, 1600, 1333, 1066
+# ASIC test : first round : 1066
+# Production : 1333
+#MPEG_DRAM_SPEED ?=  1600
+#MPEG_DRAM_SPEED ?=  1066
+
+# DRAM bits: 32BIT, 16BIT, 8BIT
+#MPEG_DRAM_BITS  ?=  16BIT
+
+# DDR size: 8Gb, 4Gb, 2Gb, 1Gb
+#MPEG_DRAM0_SIZE ?=  4Gb
+#MPEG_DRAM1_SIZE ?=  2Gb
+
+QUICK_SIM       :=  NO
