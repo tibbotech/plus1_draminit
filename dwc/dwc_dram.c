@@ -5,7 +5,7 @@
 #include <types.h>
 #include <common.h>
 #include <config.h>
-#include <dram_param.h>
+#include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
 #if 1
@@ -39,12 +39,6 @@ struct sp_registers {
 };
 static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers *)(RF_GRP(0, 0));
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
-
-struct umctl2_regs {
-	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
-};
-static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_regs *)(UMCTL2_REG_Base);
-#define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
 
 #define TEST_LEN_0		(4 << 10)
 
@@ -355,9 +349,9 @@ int dram_booting_flow(unsigned int dram_id)
 {
 	unsigned int        SDC_BASE_GRP = 0,
 			    PHY_BASE_GRP = 0;
-	unsigned int        wait_flag      = 0;	 // min
-	unsigned int        aphy_select1_value = 0;
-	unsigned int        aphy_select2_value = 0;
+	//unsigned int        wait_flag      = 0;	 // min
+	//unsigned int        aphy_select1_value = 0;
+	//unsigned int        aphy_select2_value = 0;
 	prn_string(">>> enter dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -395,7 +389,7 @@ int dram_booting_flow(unsigned int dram_id)
 #else
 	do_system_reset_flow(dram_id);
 	dbg_stamp(0xA000);
-
+#if 0
 	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_DPCU);
 	// set MPLL_DIV to operation freq.
 	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(n_MPLL_DIV);
@@ -457,6 +451,7 @@ int dram_booting_flow(unsigned int dram_id)
 		return 0;
 	}
 #endif
+#endif 
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -704,6 +699,8 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	prn_string(">>> enter dram_training_flow_for_ddr4 for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
+	prn_string("code ver0006");
+    prn_string("\n");
 
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
@@ -716,151 +713,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	// -------------------------------------------------------
 	// DRAM MRS SETTING
 	dbg_stamp(0xA002);
-#if 0	
-	UMCTL2_REG(0x0304) = 0x00000001;									
-	UMCTL2_REG(0x0030) = 0x00000001;	//PWRCTL								
-	UMCTL2_REG(0x0004); //STAT									
-	UMCTL2_REG(0x0000) = 0x80080020;	//MSTR								
-	UMCTL2_REG(0x0010) = 0x4000c010;	//MRCTRL0								
-	UMCTL2_REG(0x0014) = 0x000209ce;	//MRCTRL1								
-	UMCTL2_REG(0x001c) = 0xe7256067;	//MRCTRL2								
-	UMCTL2_REG(0x0020) = 0x00001203;	//DERATEEN								
-	UMCTL2_REG(0x0024) = 0x031cd8cf;	//DERATEINT								
-	UMCTL2_REG(0x002c) = 0x00000000;	//DERATECTL								
-	UMCTL2_REG(0x0030) = 0x00000120;	//PWRCTL								
-	UMCTL2_REG(0x0034) = 0x00040600;	//PWRTMG								
-	UMCTL2_REG(0x0038) = 0x00000000;	//HWLPCTL								
-	UMCTL2_REG(0x0050) = 0x00a080f4;	//RFSHCTL0								
-	UMCTL2_REG(0x0060) = 0x00000000;	//RFSHCTL3								
-	UMCTL2_REG(0x0064) = 0x81860048;	//RFSHTMG								
-	UMCTL2_REG(0x0068) = 0x00480000;	//RFSHTMG1								
-	UMCTL2_REG(0x00c0) = 0x00000000;	//CRCPARCTL0								
-	UMCTL2_REG(0x00c4) = 0x00001000;	//CRCPARCTL1								
-	UMCTL2_REG(0x00d0) = 0xc0020003;	//INIT0								
-	UMCTL2_REG(0x00d4) = 0x00010006;	//INIT1								
-	UMCTL2_REG(0x00d8) = 0x00004505;	//INIT2								
-	UMCTL2_REG(0x00dc) = 0x0054002d;	//INIT3								
-	UMCTL2_REG(0x00e0) = 0x00f10028;	//INIT4								
-	UMCTL2_REG(0x00e4) = 0x00040009;	//INIT5								
-	UMCTL2_REG(0x00e8) = 0x0004004d;	//INIT6								
-	UMCTL2_REG(0x00ec) = 0x0000004d;	//INIT7								
-	UMCTL2_REG(0x00f0) = 0x00000000;	//DIMMCTL								
-	UMCTL2_REG(0x0100) = 0x1b203622;	//DRAMTMG0								
-	UMCTL2_REG(0x0104) = 0x00060630;	//DRAMTMG1								
-	UMCTL2_REG(0x0108) = 0x07101717;	//DRAMTMG2								
-	UMCTL2_REG(0x010c) = 0x00b0c006;	//DRAMTMG3								
-	UMCTL2_REG(0x0110) = 0x0f04080f;	//DRAMTMG4								
-	UMCTL2_REG(0x0114) = 0x09520c0c;	//DRAMTMG5								
-	UMCTL2_REG(0x0118) = 0x09050007;	//DRAMTMG6								
-	UMCTL2_REG(0x011c) = 0x0000080c;	//DRAMTMG7								
-	UMCTL2_REG(0x0120) = 0x01016601;	//DRAMTMG8								
-	UMCTL2_REG(0x0124) = 0x40000015;	//DRAMTMG9								
-	UMCTL2_REG(0x0128) = 0x0009080b;	//DRAMTMG10								
-	UMCTL2_REG(0x012c) = 0x01010005;	//DRAMTMG11								
-	UMCTL2_REG(0x0130) = 0x00020000;	//DRAMTMG12								
-	UMCTL2_REG(0x0134) = 0x0c100002;	//DRAMTMG13								
-	UMCTL2_REG(0x0138) = 0x00000f6b;	//DRAMTMG14								
-	UMCTL2_REG(0x013c) = 0x80000000;	//DRAMTMG15								
-	UMCTL2_REG(0x0180) = 0x03200018;	//ZQCTL0								
-	UMCTL2_REG(0x0184) = 0x02800070;	//ZQCTL1								
-	UMCTL2_REG(0x0188) = 0x00000000;	//ZQCTL2								
-							
-										
-	UMCTL2_REG(0x0190) = 0x039b820a;	//DFITMG0								
-							
-	UMCTL2_REG(0x0194) = 0x00090202;	//DFITMG1								
-	UMCTL2_REG(0x0198) = 0x07f1a001;	//DFILPCFG0								
-	UMCTL2_REG(0x019c) = 0x00000020;	//DFILPCFG1								
-	UMCTL2_REG(0x01a0) = 0x20400018;	//DFIUPD0								
-	UMCTL2_REG(0x01a4) = 0x000100fa;	//DFIUPD1								
-	UMCTL2_REG(0x01a8) = 0x00000000;	//DFIUPD2								
-	UMCTL2_REG(0x01b0) = 0x00000051;	//DFIMISC								
-	UMCTL2_REG(0x01b4) = 0x00001b0a;	//DFITMG2								
-	UMCTL2_REG(0x01b8) = 0x0000001d;	//DFITMG3								
-	UMCTL2_REG(0x01c0) = 0x00000006;	//DBICTL								
-	UMCTL2_REG(0x01c4) = 0x00000001;	//DFIPHYMSTR)								
-	UMCTL2_REG(0x0204) = 0x00121416;	//ADDRMAP1								
-	UMCTL2_REG(0x0208) = 0x00000000;	//ADDRMAP2								
-	UMCTL2_REG(0x020c) = 0x02010000;	//ADDRMAP3								
-	UMCTL2_REG(0x0210) = 0x00001f1f;	//ADDRMAP4								
-	UMCTL2_REG(0x0214) = 0x08040302;	//ADDRMAP5								
-								
-										
-	UMCTL2_REG(0x0218) = 0x0f060209;	//ADDRMAP6								
-	UMCTL2_REG(0x021c) = 0x00000f0f;	//ADDRMAP7								
-	UMCTL2_REG(0x0220) = 0x00000000;	//ADDRMAP8								
-	UMCTL2_REG(0x0224) = 0x09070904;	//ADDRMAP9								
-	UMCTL2_REG(0x0228) = 0x0b030901;	//ADDRMAP10								
-	UMCTL2_REG(0x022c) = 0x00000009;	//ADDRMAP11								
-	UMCTL2_REG(0x0240) = 0x0e1d0608;	//ODTCFG								
-	UMCTL2_REG(0x0244) = 0x00000000;	//ODTMAP								
-	UMCTL2_REG(0x0250) = 0x48f79a06;	//SCHED								
-	UMCTL2_REG(0x0254) = 0x00000030;	//SCHED1								
-	UMCTL2_REG(0x025c) = 0x0d0021ee;	//PERFHPR1								
-	UMCTL2_REG(0x0264) = 0x6100a3f5;	//PERFLPR1								
-	UMCTL2_REG(0x026c) = 0x4200594c;	//PERFWR1								
-	UMCTL2_REG(0x0300) = 0x00000000;	//DBG0								
-	UMCTL2_REG(0x0304) = 0x00000000;	//DBG1								
-	UMCTL2_REG(0x030c) = 0x00000000;	//DBGCMD								
-	UMCTL2_REG(0x0320) = 0x00000001;	//SWCTL								
-	UMCTL2_REG(0x0328) = 0x00000000;	//SWCTLSTATIC								
-	UMCTL2_REG(0x036c) = 0x00010000;	//POISONCFG								
-	UMCTL2_REG(0x0400) = 0x00000110;	//PCCFG								
-	UMCTL2_REG(0x0404) = 0x000001df;	//PCFGR_0								
-	UMCTL2_REG(0x0408) = 0x00006069;	//PCFGW_0								
-	UMCTL2_REG(0x0490) = 0x00000001;	//PCTRL_0								
-	UMCTL2_REG(0x0494) = 0x00210002;	//PCFGQOS0_0								
-	UMCTL2_REG(0x0498) = 0x00e702d6;	//PCFGQOS1_0								
-	UMCTL2_REG(0x049c) = 0x01100c01;	//PCFGWQOS0_0								
-	UMCTL2_REG(0x04a0) = 0x02af028c;	//PCFGWQOS1_0								
-													
-	UMCTL2_REG(0x0060);									
-	UMCTL2_REG(0x0030);		//PWRCTL							
-	UMCTL2_REG(0x0030) = 0x00000120;//PWRCTL									
-										
-	//SP_REG([     3133125] RESET: <aresetn> for Port 0  DEASSERTED									
-	//SP_REG([     3133125] RESET: <core_ddrc_rstn> DEASSERTED									
-													
-	UMCTL2_REG(0x0304) = 0x00000000; //DBG1									
-	UMCTL2_REG(0x0030); //PWRCTL									
-	UMCTL2_REG(0x0030) = 0x00000120; //PWRCTL									
-	UMCTL2_REG(0x0030); //PWRCTL									
-	UMCTL2_REG(0x0030) = 0x00000120; //PWRCTL									
-	UMCTL2_REG(0x01c4); //DFIPHYMSTR									
-	UMCTL2_REG(0x01c4) = 0x00000000; //DFIPHYMSTR									
-	UMCTL2_REG(0x0320) = 0x00000000; //SWCTL									
-	UMCTL2_REG(0x01b0) = 0x00000050; //DFIMISC									
-	UMCTL2_REG(0x01b0) = 0x00000050; //DFIMISC									
-	UMCTL2_REG(0x0304) = 0x00000002; //DBG1									
-						
-									
-	UMCTL2_REG(0x00d0);//INIT0									
-	UMCTL2_REG(0x01c0);//DBICTL 'h00000006 									
-	UMCTL2_REG(0x0000);//MSTR 'h80080020 									
-	UMCTL2_REG(0x0000);//MSTR 'h80080020 									
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d 									
-										
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028 									
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d 									
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d 									
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028  									
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d  									
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d  									
-	UMCTL2_REG(0x00d0);//INIT0 'hc0020003  									
-	UMCTL2_REG(0x01c0);//DBICTL 'h00000006  									
-	UMCTL2_REG(0x0000);//MSTR 'h80080020  									
-	UMCTL2_REG(0x0000);//MSTR 'h80080020  									
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d  									
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d  									
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028  									
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d  									
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d  									
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028  									
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d  									
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d  									
-	UMCTL2_REG(0x00d0);//INIT0 'hc0020003  									
-#endif							
-									
+	dwc_umctl2_init(dram_id);					
 
 	// -------------------------------------------------------
 	// 3. 

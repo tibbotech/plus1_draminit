@@ -34,7 +34,7 @@ int  sp_getString(char *data);
 #define prn_dump_buffer(buf,len) do {} while(0)
 #else
 void prn_string(char *);
-void prn_string_for_lpddr4(char *,unsigned int,unsigned int);   //tonyh test
+void prn_string_for_lpddr4(const char *,unsigned int,unsigned int);   //tonyh test
 void prn_byte(unsigned char);
 void prn_char(unsigned char);
 void prn_dword(unsigned int);

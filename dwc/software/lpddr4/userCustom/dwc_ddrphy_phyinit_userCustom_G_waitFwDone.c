@@ -3,6 +3,7 @@
  *  \addtogroup CustFunc
  **  @{
  */
+#include <common.h>
 #include "dwc_ddrphy_phyinit.h"
 
 /** \brief Implements the mechanism to wait for completion of training firmware
@@ -67,7 +68,7 @@ unsigned int get_mail(unsigned short mode)
 
 void decode_streaming_message()
 {
-	unsigned char i, args[10];
+	unsigned char i;
 	unsigned int string_index;
 	string_index = get_mail(32);
 	//lpddr4_pmu_train.strings
@@ -91,7 +92,7 @@ void decode_streaming_message()
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone () {
 
     char *printf_header;
-	unsigned char major_message;
+	//unsigned char major_message;
 	
     printf_header = "// [dwc_ddrphy_phyinit_userCustom_G_waitFwDone]";
 
