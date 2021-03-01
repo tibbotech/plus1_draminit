@@ -18,7 +18,8 @@ type=$7
 ####################
 # check if mkimage is available?
 
-MKIMAGE=./tools/mkimage   # Only our mkimage supports quickboot
+# MKIMAGE path could be defined externally (in Yocto - by NATIVE_*)
+${MKIMAGE:=./tools/mkimage}
 TYPE=quickboot
 
 function usage()
