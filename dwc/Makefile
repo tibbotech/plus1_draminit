@@ -15,7 +15,7 @@ CFLAGS += -D$(SIM_TYPE)\
 CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Isoftware/lpddr4/include -Iinclude -I../../draminit/include
 
 ifeq ($(ARCH),arm)
-CFLAGS	+= -march=armv5te
+CFLAGS	+= -march=armv8-a
 else
 CFLAGS	+= -march=rv64gc -mabi=lp64d -mcmodel=medany -msave-restore
 endif
