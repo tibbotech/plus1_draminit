@@ -8,12 +8,12 @@ struct umctl2_regs {
 static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_regs *)(UMCTL2_REG_Base);
 #define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
 
-void dwc_umctl2_write16(UINT32 adr, UINT32 dat) {
-    dwc_ddrphy_phyinit_print ("dwc_umctl2_wr(32'h%x,32'h%x);\n", adr, dat);
+void ctl_apb_wr(UINT32 adr, UINT32 dat) {
+    dwc_ddrphy_phyinit_print ("ctl_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 	//UMCTL2_REG(adr) = dat;
 }
-void dwc_umctl2_read16(UINT32 adr) {
-    dwc_ddrphy_phyinit_print ("dwc_umctl2_rd(32'h%x);\n", adr);
+void ctl_apb_rd(UINT32 adr) {
+    dwc_ddrphy_phyinit_print ("ctl_apb_rd(12'h%x, rd_data);\n", adr);
 	//UMCTL2_REG(adr);
 }
 
@@ -26,113 +26,113 @@ int dwc_umctl2_init(unsigned int dram_id)
 	//RESET:<presetn> ASSERTED (ACTIVE LOW) 
 	//RESET:<presetn> DEASSERTED 
 #if 1
-	dwc_umctl2_write16(0x0304,UMCTL2_304(UMCTL2_304_5));
-	dwc_umctl2_write16(0x0030,UMCTL2_30(UMCTL2_30_1)); //PWRCTL	
-	dwc_umctl2_read16(0x0004); //STAT			
-	dwc_umctl2_write16(0x0000,UMCTL2_0);//MSTR	
-	dwc_umctl2_write16(0x0010,UMCTL2_10); //MRCTRL0								
-	dwc_umctl2_write16(0x0014,UMCTL2_14); //MRCTRL1								
-	dwc_umctl2_write16(0x001c,UMCTL2_1C); //MRCTRL2	
-	dwc_umctl2_write16(0x0020,UMCTL2_20); //DERATEEN								
-	dwc_umctl2_write16(0x0024,UMCTL2_24); //DERATEINT 							
-	dwc_umctl2_write16(0x002c,UMCTL2_2C); //DERATECTL 							
-	dwc_umctl2_write16(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL					
-	dwc_umctl2_write16(0x0034,UMCTL2_34); //PWRTMG								
-	dwc_umctl2_write16(0x0038,UMCTL2_38); //HWLPCTL								
-	dwc_umctl2_write16(0x0050,UMCTL2_50); //RFSHCTL0	
-	dwc_umctl2_write16(0x0060,UMCTL2_60); //RFSHCTL3								
-	dwc_umctl2_write16(0x0064,UMCTL2_64); //RFSHTMG	
-	dwc_umctl2_write16(0x0068,UMCTL2_68); //RFSHTMG1	
-	dwc_umctl2_write16(0x00c0,UMCTL2_C0); //CRCPARCTL0								
-	dwc_umctl2_write16(0x00c4,UMCTL2_C4(UMCTL2_C4_1));	//CRCPARCTL1
-	dwc_umctl2_write16(0x00d0,UMCTL2_D0); //INIT0 							
-	dwc_umctl2_write16(0x00d4,UMCTL2_D4); //INIT1 							
-	dwc_umctl2_write16(0x00d8,UMCTL2_D8); //INIT2 							
-	dwc_umctl2_write16(0x00dc,UMCTL2_DC); //INIT3
-	dwc_umctl2_write16(0x00e0,UMCTL2_E0); //INIT4 							
-	dwc_umctl2_write16(0x00e4,UMCTL2_E4); //INIT5 							
-	dwc_umctl2_write16(0x00e8,UMCTL2_E8); //INIT6 							
-	dwc_umctl2_write16(0x00ec,UMCTL2_EC); //INIT7 
-	dwc_umctl2_write16(0x00f0,UMCTL2_F0); //DIMMCTL
-	dwc_umctl2_write16(0x0100,UMCTL2_100);	//DRAMTMG0								
-	dwc_umctl2_write16(0x0104,UMCTL2_104);	//DRAMTMG1								
-	dwc_umctl2_write16(0x0108,UMCTL2_108);	//DRAMTMG2								
-	dwc_umctl2_write16(0x010c,UMCTL2_10C);	//DRAMTMG3	
-	dwc_umctl2_write16(0x0110,UMCTL2_110);	//DRAMTMG4								
-	dwc_umctl2_write16(0x0114,UMCTL2_114);	//DRAMTMG5								
-	dwc_umctl2_write16(0x0118,UMCTL2_118);	//DRAMTMG6								
-	dwc_umctl2_write16(0x011c,UMCTL2_11C);	//DRAMTMG7								
-	dwc_umctl2_write16(0x0120,UMCTL2_120);	//DRAMTMG8								
-	dwc_umctl2_write16(0x0124,UMCTL2_124);	//DRAMTMG9								
-	dwc_umctl2_write16(0x0128,UMCTL2_128);	//DRAMTMG10 							
-	dwc_umctl2_write16(0x012c,UMCTL2_12C);	//DRAMTMG11 							
-	dwc_umctl2_write16(0x0130,UMCTL2_130);	//DRAMTMG12 							
-	dwc_umctl2_write16(0x0134,UMCTL2_134);	//DRAMTMG13 							
-	dwc_umctl2_write16(0x0138,UMCTL2_138);	//DRAMTMG14 							
-	dwc_umctl2_write16(0x013c,UMCTL2_13C);	//DRAMTMG15 
-	dwc_umctl2_write16(0x0180,UMCTL2_180);	//ZQCTL0								
-	dwc_umctl2_write16(0x0184,UMCTL2_184);	//ZQCTL1								
-	dwc_umctl2_write16(0x0188,UMCTL2_188);	//ZQCTL2	
-	dwc_umctl2_write16(0x0190,UMCTL2_190);	//DFITMG0								
-	dwc_umctl2_write16(0x0194,UMCTL2_194);	//DFITMG1								
-	dwc_umctl2_write16(0x0198,UMCTL2_198);	//DFILPCFG0 							
-	dwc_umctl2_write16(0x019c,UMCTL2_19C);	//DFILPCFG1 
-	dwc_umctl2_write16(0x01a0,UMCTL2_1A0);	//DFIUPD0								
-	dwc_umctl2_write16(0x01a4,UMCTL2_1A4);	//DFIUPD1								
-	dwc_umctl2_write16(0x01a8,UMCTL2_1A8);	//DFIUPD2								
-	dwc_umctl2_write16(0x01b0,UMCTL2_1B0(UMCTL2_1B0_1));	//DFIMISC								
-	dwc_umctl2_write16(0x01b4,UMCTL2_1B4);	//DFITMG2								
-	dwc_umctl2_write16(0x01b8,UMCTL2_1B8);	//DFITMG3								
-	dwc_umctl2_write16(0x01c0,UMCTL2_1C0);	//DBICTL								
-	dwc_umctl2_write16(0x01c4,UMCTL2_1C4(UMCTL2_1C4_1));	//DFIPHYMSTR	
-	dwc_umctl2_write16(0x0204,UMCTL2_204);	//ADDRMAP1								
-	dwc_umctl2_write16(0x0208,UMCTL2_208);	//ADDRMAP2								
-	dwc_umctl2_write16(0x020c,UMCTL2_20C);	//ADDRMAP3	
-	dwc_umctl2_write16(0x0210,UMCTL2_210);	//ADDRMAP4								
-	dwc_umctl2_write16(0x0214,UMCTL2_214);	//ADDRMAP5									
-	dwc_umctl2_write16(0x0218,UMCTL2_218);	//ADDRMAP6								
-	dwc_umctl2_write16(0x021c,UMCTL2_21C);	//ADDRMAP7	
-	dwc_umctl2_write16(0x0220,UMCTL2_220);	//ADDRMAP8								
-	dwc_umctl2_write16(0x0224,UMCTL2_224);	//ADDRMAP9								
-	dwc_umctl2_write16(0x0228,UMCTL2_228);	//ADDRMAP10 							
-	dwc_umctl2_write16(0x022c,UMCTL2_22C);	//ADDRMAP11 							
-	dwc_umctl2_write16(0x0240,UMCTL2_240);	//ODTCFG								
-	dwc_umctl2_write16(0x0244,UMCTL2_244);	//ODTMAP	
-	dwc_umctl2_write16(0x0250,UMCTL2_250);	//SCHED 							
-	dwc_umctl2_write16(0x0254,UMCTL2_254);	//SCHED1								
-	dwc_umctl2_write16(0x025c,UMCTL2_25C);	//PERFHPR1								
-	dwc_umctl2_write16(0x0264,UMCTL2_264);	//PERFLPR1								
-	dwc_umctl2_write16(0x026c,UMCTL2_26C);	//PERFWR1	
-	dwc_umctl2_write16(0x0300,UMCTL2_300);	//DBG0								
-	dwc_umctl2_write16(0x0304,UMCTL2_304(UMCTL2_304_3));	//DBG1								
-	dwc_umctl2_write16(0x030c,UMCTL2_30C);	//DBGCMD								
-	dwc_umctl2_write16(0x0320,UMCTL2_320(UMCTL2_320_1));	//SWCTL 							
-	dwc_umctl2_write16(0x0328,UMCTL2_328);	//SWCTLSTATIC	
-	dwc_umctl2_write16(0x036c,UMCTL2_36C);	//POISONCFG 							
-	dwc_umctl2_write16(0x0400,UMCTL2_400);	//PCCFG 							
-	dwc_umctl2_write16(0x0404,UMCTL2_404);	//PCFGR_0								
-	dwc_umctl2_write16(0x0408,UMCTL2_408(UMCTL2_408_4));	//PCFGW_0	
-	dwc_umctl2_write16(0x0490,UMCTL2_490);	//PCTRL_0								
-	dwc_umctl2_write16(0x0494,UMCTL2_494);	//PCFGQOS0_0								
-	dwc_umctl2_write16(0x0498,UMCTL2_498);	//PCFGQOS1_0								
-	dwc_umctl2_write16(0x049c,UMCTL2_49C);	//PCFGWQOS0_0								
-	dwc_umctl2_write16(0x04a0,UMCTL2_4A0);	//PCFGWQOS1_0	
-	dwc_umctl2_read16(0x0060); 								
-	dwc_umctl2_read16(0x0030); 	//PWRCTL							
-	dwc_umctl2_write16(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1)); //PWRCTL	
+	ctl_apb_rd(0x0004); //STAT			
+	ctl_apb_wr(0x0000,UMCTL2_0);//MSTR	
+	ctl_apb_wr(0x0010,UMCTL2_10); //MRCTRL0								
+	ctl_apb_wr(0x0014,UMCTL2_14); //MRCTRL1								
+	ctl_apb_wr(0x001c,UMCTL2_1C); //MRCTRL2	
+	ctl_apb_wr(0x0020,UMCTL2_20); //DERATEEN								
+	ctl_apb_wr(0x0024,UMCTL2_24); //DERATEINT 							
+	ctl_apb_wr(0x002c,UMCTL2_2C); //DERATECTL 							
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL					
+	ctl_apb_wr(0x0034,UMCTL2_34); //PWRTMG								
+	ctl_apb_wr(0x0038,UMCTL2_38); //HWLPCTL								
+	ctl_apb_wr(0x0050,UMCTL2_50); //RFSHCTL0	
+	ctl_apb_wr(0x0060,UMCTL2_60); //RFSHCTL3								
+	ctl_apb_wr(0x0064,UMCTL2_64); //RFSHTMG	
+	ctl_apb_wr(0x0068,UMCTL2_68); //RFSHTMG1	
+	ctl_apb_wr(0x00c0,UMCTL2_C0); //CRCPARCTL0								
+	ctl_apb_wr(0x00c4,UMCTL2_C4(UMCTL2_C4_1));	//CRCPARCTL1
+	ctl_apb_wr(0x00d0,UMCTL2_D0); //INIT0 							
+	ctl_apb_wr(0x00d4,UMCTL2_D4); //INIT1 							
+	ctl_apb_wr(0x00d8,UMCTL2_D8); //INIT2 							
+	ctl_apb_wr(0x00dc,UMCTL2_DC); //INIT3
+	ctl_apb_wr(0x00e0,UMCTL2_E0); //INIT4 							
+	ctl_apb_wr(0x00e4,UMCTL2_E4); //INIT5 							
+	ctl_apb_wr(0x00e8,UMCTL2_E8); //INIT6 							
+	ctl_apb_wr(0x00ec,UMCTL2_EC); //INIT7 
+	ctl_apb_wr(0x00f0,UMCTL2_F0); //DIMMCTL
+	ctl_apb_wr(0x0100,UMCTL2_100);	//DRAMTMG0								
+	ctl_apb_wr(0x0104,UMCTL2_104);	//DRAMTMG1								
+	ctl_apb_wr(0x0108,UMCTL2_108);	//DRAMTMG2								
+	ctl_apb_wr(0x010c,UMCTL2_10C);	//DRAMTMG3	
+	ctl_apb_wr(0x0110,UMCTL2_110);	//DRAMTMG4								
+	ctl_apb_wr(0x0114,UMCTL2_114);	//DRAMTMG5								
+	ctl_apb_wr(0x0118,UMCTL2_118);	//DRAMTMG6								
+	ctl_apb_wr(0x011c,UMCTL2_11C);	//DRAMTMG7								
+	ctl_apb_wr(0x0120,UMCTL2_120);	//DRAMTMG8								
+	ctl_apb_wr(0x0124,UMCTL2_124);	//DRAMTMG9								
+	ctl_apb_wr(0x0128,UMCTL2_128);	//DRAMTMG10 							
+	ctl_apb_wr(0x012c,UMCTL2_12C);	//DRAMTMG11 							
+	ctl_apb_wr(0x0130,UMCTL2_130);	//DRAMTMG12 							
+	ctl_apb_wr(0x0134,UMCTL2_134);	//DRAMTMG13 							
+	ctl_apb_wr(0x0138,UMCTL2_138);	//DRAMTMG14 							
+	ctl_apb_wr(0x013c,UMCTL2_13C);	//DRAMTMG15 
+	ctl_apb_wr(0x0180,UMCTL2_180);	//ZQCTL0								
+	ctl_apb_wr(0x0184,UMCTL2_184);	//ZQCTL1								
+	ctl_apb_wr(0x0188,UMCTL2_188);	//ZQCTL2	
+	ctl_apb_wr(0x0190,UMCTL2_190);	//DFITMG0								
+	ctl_apb_wr(0x0194,UMCTL2_194);	//DFITMG1								
+	ctl_apb_wr(0x0198,UMCTL2_198);	//DFILPCFG0 							
+	ctl_apb_wr(0x019c,UMCTL2_19C);	//DFILPCFG1 
+	ctl_apb_wr(0x01a0,UMCTL2_1A0);	//DFIUPD0								
+	ctl_apb_wr(0x01a4,UMCTL2_1A4);	//DFIUPD1								
+	ctl_apb_wr(0x01a8,UMCTL2_1A8);	//DFIUPD2								
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_1));	//DFIMISC								
+	ctl_apb_wr(0x01b4,UMCTL2_1B4);	//DFITMG2								
+	ctl_apb_wr(0x01b8,UMCTL2_1B8);	//DFITMG3								
+	ctl_apb_wr(0x01c0,UMCTL2_1C0);	//DBICTL								
+	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_1));	//DFIPHYMSTR	
+	ctl_apb_wr(0x0204,UMCTL2_204);	//ADDRMAP1								
+	ctl_apb_wr(0x0208,UMCTL2_208);	//ADDRMAP2								
+	ctl_apb_wr(0x020c,UMCTL2_20C);	//ADDRMAP3	
+	ctl_apb_wr(0x0210,UMCTL2_210);	//ADDRMAP4								
+	ctl_apb_wr(0x0214,UMCTL2_214);	//ADDRMAP5									
+	ctl_apb_wr(0x0218,UMCTL2_218);	//ADDRMAP6								
+	ctl_apb_wr(0x021c,UMCTL2_21C);	//ADDRMAP7	
+	ctl_apb_wr(0x0220,UMCTL2_220);	//ADDRMAP8								
+	ctl_apb_wr(0x0224,UMCTL2_224);	//ADDRMAP9								
+	ctl_apb_wr(0x0228,UMCTL2_228);	//ADDRMAP10 							
+	ctl_apb_wr(0x022c,UMCTL2_22C);	//ADDRMAP11 							
+	ctl_apb_wr(0x0240,UMCTL2_240);	//ODTCFG								
+	ctl_apb_wr(0x0244,UMCTL2_244);	//ODTMAP	
+	ctl_apb_wr(0x0250,UMCTL2_250);	//SCHED 							
+	ctl_apb_wr(0x0254,UMCTL2_254);	//SCHED1								
+	ctl_apb_wr(0x025c,UMCTL2_25C);	//PERFHPR1								
+	ctl_apb_wr(0x0264,UMCTL2_264);	//PERFLPR1								
+	ctl_apb_wr(0x026c,UMCTL2_26C);	//PERFWR1	
+	ctl_apb_wr(0x0300,UMCTL2_300);	//DBG0								
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));	//DBG1								
+	ctl_apb_wr(0x030c,UMCTL2_30C);	//DBGCMD								
+	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_320_1));	//SWCTL 							
+	ctl_apb_wr(0x0328,UMCTL2_328);	//SWCTLSTATIC	
+	ctl_apb_wr(0x036c,UMCTL2_36C);	//POISONCFG 							
+	ctl_apb_wr(0x0400,UMCTL2_400);	//PCCFG 							
+	ctl_apb_wr(0x0404,UMCTL2_404);	//PCFGR_0								
+	ctl_apb_wr(0x0408,UMCTL2_408(UMCTL2_408_4));	//PCFGW_0	
+	ctl_apb_wr(0x0490,UMCTL2_490);	//PCTRL_0								
+	ctl_apb_wr(0x0494,UMCTL2_494);	//PCFGQOS0_0								
+	ctl_apb_wr(0x0498,UMCTL2_498);	//PCFGQOS1_0								
+	ctl_apb_wr(0x049c,UMCTL2_49C);	//PCFGWQOS0_0								
+	ctl_apb_wr(0x04a0,UMCTL2_4A0);	//PCFGWQOS1_0	
+	ctl_apb_rd(0x0060); 								
+	ctl_apb_rd(0x0030); 	//PWRCTL							
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
 	//RESET:<aresetn> for Port 0 DEASSERTED 
 	//RESET:<core_ddrc_rstn> DEASSERTED 
-	dwc_umctl2_write16(0x0304,UMCTL2_304(UMCTL2_304_3));
-	dwc_umctl2_read16(0x0030); 	//PWRCTL		
-	dwc_umctl2_write16(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
-	dwc_umctl2_read16(0x0030); 	//PWRCTL		
-	dwc_umctl2_write16(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
-	dwc_umctl2_read16(0x01c4); //DFIPHYMSTR	
-	dwc_umctl2_write16(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));	//DFIPHYMSTR	
-	dwc_umctl2_write16(0x0320,UMCTL2_320(UMCTL2_304_2));	//SWCTL 	
-	dwc_umctl2_write16(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));	//DFIMISC
-	dwc_umctl2_write16(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));	//DFIMISC
-	dwc_umctl2_write16(0x0304,UMCTL2_304(UMCTL2_304_4));
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
+	ctl_apb_rd(0x0030); 	//PWRCTL		
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
+	ctl_apb_rd(0x0030); 	//PWRCTL		
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL 
+	ctl_apb_rd(0x01c4); //DFIPHYMSTR	
+	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));	//DFIPHYMSTR	
+	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_304_2));	//SWCTL 	
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));	//DFIMISC
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));	//DFIMISC
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
 #endif 
 
 	
