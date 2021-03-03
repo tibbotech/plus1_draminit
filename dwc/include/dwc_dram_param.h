@@ -252,7 +252,7 @@
 #define nDDR_TYPE       2
 #endif
 
-   
+
 #ifdef SDRAM0_SIZE_4Gb	//need modify
 #define nROW_WIDTH      14
 #define nCOL_WIDTH       19
@@ -1110,7 +1110,7 @@
 #else	/* for external DRAM */
 #define DPCU_GLB_DEF            0x0030AA00
 #endif
-#elif defined(PLATFORM_Q645)  //need modify 
+#elif defined(PLATFORM_Q645)  //need modify
 #if 0
 #define DPCU_GLB_DEF            0x0430AA00
 #else	/* for external DRAM */
@@ -1268,7 +1268,7 @@
 #elif defined(PLATFORM_I143)
 //#define MPLL_CFG1_DEF   0x00415600
 #define MPLL_CFG1_DEF   0x00455600
-#elif defined(PLATFORM_Q645) //need modify 
+#elif defined(PLATFORM_Q645) //need modify
 //#define MPLL_CFG1_DEF   0x00415600
 #define MPLL_CFG1_DEF   0x00455600
 #endif
@@ -1581,7 +1581,7 @@
 // Add for New UMCTL2
 #define UMCTL2_0_1      2 //device_config: x16 device
 #define UMCTL2_0_2      0 //frequency_ratio: 1:2 Mode
-#define UMCTL2_0_3      8 //burst_rdwr: Burst length of 16	
+#define UMCTL2_0_3      8 //burst_rdwr: Burst length of 16
 #define UMCTL2_0_4      SDCTRL_MRS_DLL_MODE //dll_off_mode
 #define UMCTL2_0_5      1 //lpddr4
 #define UMCTL2_0        ((UMCTL2_0_1)   << 30 |\
@@ -1646,13 +1646,13 @@
                          (UMCTL2_64_2)  << 16 |\
                          (UMCTL2_64_3)  << 15 |\
                          (UMCTL2_64_4)  <<  0 )
-                         
+
 
 #define UMCTL2_68_1     72
 #define UMCTL2_68_2     0
 #define UMCTL2_68       ((UMCTL2_68_1)  << 16 |\
                          (UMCTL2_68_2)  << 0 )
-                         
+
 
 #define UMCTL2_C0_1     0
 #define UMCTL2_C0_2     0
@@ -1729,7 +1729,7 @@
                          (UMCTL2_DC_18) <<  0 )
 #else
 #define UMCTL2_DC       0x0054002d
-#endif 
+#endif
 
 
 #if 0
@@ -1838,14 +1838,14 @@
 
 #define UMCTL2_104       0x00060630
 
-#define UMCTL2_108       0x07101717
+#define UMCTL2_108       0x070e1717 //RL=28 WL=14
 
 #define UMCTL2_10C       0x00b0c006
 
 #define UMCTL2_110       0x0f04080f
 
 #define UMCTL2_114       0x09520c0c
-#endif 
+#endif
 
 #define UMCTL2_118       0x09050007
 
@@ -1897,11 +1897,11 @@
 #define UMCTL2_184      ((UMCTL2_184_1) << 20 |\
                          (UMCTL2_184_2) <<  0 )
 
-#define UMCTL2_188	0x00000000	
+#define UMCTL2_188	0x00000000
 
 #define UMCTL2_190_1    3
 #define UMCTL2_190_2    1
-#define UMCTL2_190_3    27
+#define UMCTL2_190_3    23 //t_rddata_en = RL-5 = 23
 #define UMCTL2_190_4    1
 #define UMCTL2_190_5    2
 #define UMCTL2_190_6    10
@@ -1911,7 +1911,7 @@
                          (UMCTL2_190_4) << 15 |\
                          (UMCTL2_190_5) <<  8 |\
                          (UMCTL2_190_6) <<  0 )
-             
+
 #define UMCTL2_194_1    0
 #define UMCTL2_194_2    0
 #define UMCTL2_194_3    9
@@ -1938,7 +1938,7 @@
                          (UMCTL2_198_6) <<  4 |\
                          (UMCTL2_198_7) <<  0 )
 
-#define UMCTL2_19C	0x00000020		
+#define UMCTL2_19C	0x00000020
 
 
 #define UMCTL2_1A0_1    0
@@ -1989,14 +1989,14 @@
                          (UMCTL2_1B0_7)         << 5 |\
                          (n)                    << 0 )
 
-#define UMCTL2_1B4_1    27
+#define UMCTL2_1B4_1    23 //rdcslat=RL-5
 #define UMCTL2_1B4_2    10
 #define UMCTL2_1B4      ((UMCTL2_1B4_1) << 8 |\
                          (UMCTL2_1B4_2) << 0 )
 
 #define UMCTL2_1B8	0x0000001d
 
-#define UMCTL2_1C0	0x00000006
+#define UMCTL2_1C0	0x00000000
 
 #define UMCTL2_1C4_1    1
 #define UMCTL2_1C4_2    0
@@ -2559,7 +2559,7 @@
 #define UMCTL2_218	0x0f060209
 
 #define UMCTL2_21C	0x00000f0f
-#endif 
+#endif
 
 #define UMCTL2_220	0x00000000
 
@@ -2597,8 +2597,8 @@
                          (UMCTL2_240_3) <<  8 |\
                          (UMCTL2_240_4) <<  2 )
 #else
-#define UMCTL2_240	0x0e1d0608 
-#endif 
+#define UMCTL2_240	0x0e1d0608
+#endif
 #define UMCTL2_244_1    0
 #define UMCTL2_244_2    0
 #define UMCTL2_244_3    0
@@ -2636,7 +2636,7 @@
 #define UMCTL2_25C_2    8686
 #define UMCTL2_25C      ((UMCTL2_25C_1) << 24 |\
                          (UMCTL2_25C_2) <<  0 )
-						
+
 #define UMCTL2_264_1    97
 #define UMCTL2_264_2    41973
 #define UMCTL2_264      ((UMCTL2_264_1) << 24 |\
