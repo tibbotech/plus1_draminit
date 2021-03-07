@@ -2775,6 +2775,7 @@
 
 #define uMCTL2_register_offset  0x9c107000
 
-int dwc_umctl2_init(unsigned int dram_id);
+int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id);
+int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id);
 
 

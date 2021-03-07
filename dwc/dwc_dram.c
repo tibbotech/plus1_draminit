@@ -21,7 +21,7 @@ struct xboot_hdr {
 	u32 img_flag;
 	u32 reserved[3];
 };
-#endif 
+#endif
 
 
 // #define DRAM_INIT_DEBUG 0 // defined in Makefile: please use "make debug"
@@ -237,7 +237,7 @@ int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int te
 	for (i = 0; i < test_size_word; i++) {
 		switch (test_case) {
 		case 0:
-			
+
 			prn_string("2");
 			prn_string("5");
 			ret = memory_rw_check(ram[i], i, debug);
@@ -451,7 +451,7 @@ int dram_booting_flow(unsigned int dram_id)
 		return 0;
 	}
 #endif
-#endif 
+#endif
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -495,11 +495,11 @@ void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag )
 		//prn_dword(sum);
 		j = i/2;
 		mem[j] = word16;
-	}	
+	}
 
 	if(flag == 0)
 		return;
-					
+
 	/* Handle odd-sized case */
 	if (size & 1)
 	{
@@ -513,9 +513,9 @@ void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag )
 
 	/* Invert to get the negative in ones-complement arithmetic */
 	sum = ~sum;
-	
+
 	//prn_dword(sum);
-	
+
 }
 
 void LoadBinCode(unsigned char Train2D, unsigned int offset)
@@ -524,9 +524,9 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 	//unsigned short *temp = (SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32);
 	unsigned short i, j, addr, num0, num1;
 	#define rsize 512
-	#define IM1D_HDR_MAGIC   0x64316d69      
+	#define IM1D_HDR_MAGIC   0x64316d69
 	#define DM1D_HDR_MAGIC   0x64316d64
-	#define IM2D_HDR_MAGIC   0x64326d69      
+	#define IM2D_HDR_MAGIC   0x64326d69
 	#define DM2D_HDR_MAGIC   0x64326d64
 
 	//prn_dword(xhdr->magic);
@@ -541,38 +541,38 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 	//prn_dword(num1);
 	for(i=0;i<num0;i++)
 	{
-		for (addr=0;addr<mem_size;addr++) 
+		for (addr=0;addr<mem_size;addr++)
 			mem[addr]=0;
 
 		unsigned char *temp = (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
 		tcpsum(temp, rsize, 0);
 		for(j=0;j<256;j++)
 		{
-		    /*****write register *********/			
+		    /*****write register *********/
 			/*****write register *********/
 			//prn_string("addr");
-			//prn_dword(IMEM_ADDR+ (256*i)+j);					
+			//prn_dword(IMEM_ADDR+ (256*i)+j);
 			//prn_string("value");
 			//prn_dword(mem[j]);
-		}			
+		}
 	}
 
-	for (addr=0;addr<mem_size;addr++) 
+	for (addr=0;addr<mem_size;addr++)
 	{
 		mem[addr]=0;
 	}
 	unsigned char *temp =  (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
 	tcpsum(temp, num1, 1);
 	for(i=0;i<(num1/2);i++)
-	{	
+	{
 		/*****write register *********/
 		/*****write register *********/
 		//prn_string("addr");
-		//prn_dword(IMEM_ADDR+ (256*num0)+i);					
+		//prn_dword(IMEM_ADDR+ (256*num0)+i);
 		//prn_string("value");
 		//prn_dword(mem[i]); //wirte dword
 	}
-    
+
 	if((sum&0x0000FFFF) != xhdr->checksum)
 	{
 	    if (xhdr->magic == IM1D_HDR_MAGIC)
@@ -585,10 +585,10 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 			prn_string("2d DMEM checksum error!!!!\n");
 
 		prn_string("sum");
-		prn_dword(sum);					
+		prn_dword(sum);
 		prn_string("xhdr->checksum");
 		prn_dword((xhdr->checksum)); //wirte dword
-	}		
+	}
 	else
 	{
 		if (xhdr->magic == IM1D_HDR_MAGIC)
@@ -600,7 +600,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		else if (xhdr->magic == DM2D_HDR_MAGIC)
 			prn_string("2d DMEM checksum ok!!!!\n");
 		//prn_string("sum");
-		//prn_dword(sum);					
+		//prn_dword(sum);
 		//prn_string("xhdr->checksum");
 		//prn_dword((xhdr->checksum)); //wirte dword
 	}
@@ -608,13 +608,13 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 }
 
 void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D) {
-    
+
     char *printf_header;
     if (Train2D)
         printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 2D]";
     else
         printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 1D]";
-    
+
     dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=%d)\n", printf_header, Train2D);
 
     dwc_ddrphy_phyinit_cmnt ("\n");
@@ -648,7 +648,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D) {
 
 void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D) {
 
-    
+
     char *printf_header;
     if (Train2D)
         printf_header = "// [phyinit_F_loadDMEM, 2D]";
@@ -675,7 +675,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D) {
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	if(Train2D == 0)
-			LoadBinCode(0,offset);	
+			LoadBinCode(0,offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
@@ -707,16 +707,17 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	// -------------------------------------------------------
 	dbg_stamp(0xA001);
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-	
+
 	// -------------------------------------------------------
-	// 2. 
+	// 2.
 	// -------------------------------------------------------
 	// DRAM MRS SETTING
 	dbg_stamp(0xA002);
-	dwc_umctl2_init(dram_id);					
+	dwc_umctl2_init_before_ctl_rst(dram_id);
+	dwc_umctl2_init_after_ctl_rst(dram_id);
 
 	// -------------------------------------------------------
-	// 3. 
+	// 3.
 	// -------------------------------------------------------
 	printf_header = "// [dwc_ddrphy_phyinit_sequence]";
 	dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
@@ -807,14 +808,14 @@ DRAM_BOOT_FLOW_AGAIN:
 		} else {
 			// prn_string("DRAM-"); prn_decimal(dram_id); prn_string("booting PASS @ loop_time =");
 			// prn_decimal(loop_time); prn_string("!!\n");
-		}	
+		}
 
 		prn_string("GRP(PHY_BASE_GRP, 9) =  ");
 		prn_dword(SP_REG(PHY_BASE_GRP, 9));
 		prn_string("\n ");
-		
+
 		ret = dram_training_flow_for_ddr4(dram_id);
-		
+
 		if (ret == WAIT_FLAG_FAIL) {
 			prn_string("wait flag or register G(37,10) fail!!!!\n");
 			// goto DRAM_BOOT_FLOW_AGAIN;
@@ -831,7 +832,7 @@ DRAM_BOOT_FLOW_AGAIN:
 
 		prn_string("lpddr4_test_01\n");
 		return SUCCESS;
-		
+
 		if (loop_time + 1 == max_init_fail_cnt) { // robert fix
 			prn_string("DRAM-");
 			prn_decimal(dram_id);
@@ -839,7 +840,7 @@ DRAM_BOOT_FLOW_AGAIN:
 			// while (1); // robert: return fail rather than hang
 			return FAIL;
 		} // all loop training fail
-		 
+
 	} // end of for loop :: loop_time for initial & training time control
 
 	prn_string("DRAM-");
@@ -869,7 +870,7 @@ static int silent_dram_init(void)
 
 	mpb = mp;
 	mp = 0;
-	
+
 	prn_string(" silent_dram_init\n");
 	int ret = dram_init(0);
 	mp = mpb;

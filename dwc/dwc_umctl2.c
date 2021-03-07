@@ -17,18 +17,17 @@ void ctl_apb_rd(UINT32 adr) {
 	//UMCTL2_REG(adr);
 }
 
-
-int dwc_umctl2_init(unsigned int dram_id)
+int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 {
-	//prn_string("dwc_umctl2_init\n");
+	dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
 	//RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)
 	//RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> DEASSERTED
 #if 1
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1)); //PWRCTL
-	ctl_apb_rd(0x0004); //STAT
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
+	ctl_apb_rd(0x0004);//STAT
 	ctl_apb_wr(0x0000,UMCTL2_0);//MSTR
 	ctl_apb_wr(0x0010,UMCTL2_10);//MRCTRL0
 	ctl_apb_wr(0x0014,UMCTL2_14);//MRCTRL1
@@ -122,17 +121,6 @@ int dwc_umctl2_init(unsigned int dram_id)
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
 	//RESET:<aresetn> for Port 0 DEASSERTED
 	//RESET:<core_ddrc_rstn> DEASSERTED
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
-	ctl_apb_rd(0x0030);//PWRCTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
-	ctl_apb_rd(0x0030);//PWRCTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
-	ctl_apb_rd(0x01c4);//DFIPHYMSTR
-	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));//DFIPHYMSTR
-	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_304_2));//SWCTL
-	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
-	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
 #endif
 
 #if 0
@@ -335,6 +323,55 @@ int dwc_umctl2_init(unsigned int dram_id)
 	prn_string("\n");
 	prn_string("RESET:<core_ddrc_rstn> DEASSERTED");
 	prn_string("\n");
+#endif
+	dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_before_ctl_rst\n");
+	return 0;
+}
+
+
+int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
+{
+	dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
+#if 1
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
+	ctl_apb_rd(0x0030);//PWRCTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
+	ctl_apb_rd(0x0030);//PWRCTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2)); //PWRCTL
+	ctl_apb_rd(0x01c4);//DFIPHYMSTR
+	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));//DFIPHYMSTR
+	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_304_2));//SWCTL
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
+	ctl_apb_rd(0x00d0);//INIT0
+	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
+	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
+#endif
+
+#if 0
 	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_3));
 	prn_string("\n");
 	prn_string("READ 0x0030");
@@ -358,43 +395,6 @@ int dwc_umctl2_init(unsigned int dram_id)
 	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_4));
 	prn_string("\n");
 #endif
-
-#if 0
-	UMCTL2_REG(OFFSET)(0x00d0);//INIT0
-	UMCTL2_REG(0x01c0);//DBICTL 'h00000006
-	UMCTL2_REG(0x0000);//MSTR 'h80080020
-	UMCTL2_REG(0x0000);//MSTR 'h80080020
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d
-
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d
-	UMCTL2_REG(0x00d0);//INIT0 'hc0020003
-	UMCTL2_REG(0x01c0);//DBICTL 'h00000006
-	UMCTL2_REG(0x0000);//MSTR 'h80080020
-	UMCTL2_REG(0x0000);//MSTR 'h80080020
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d
-	UMCTL2_REG(0x00dc);//INIT3 'h0054002d
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d
-	UMCTL2_REG(0x00e8);//INIT6 'h0004004d
-	UMCTL2_REG(0x00e0);//INIT4 'h00f10028
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d
-	UMCTL2_REG(0x00ec);//INIT7 'h0000004d
-	UMCTL2_REG(0x00d0);//INIT0 'hc0020003
-#endif
+	dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_after_ctl_rst\n");
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
