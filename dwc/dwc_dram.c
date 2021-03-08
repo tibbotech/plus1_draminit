@@ -9,8 +9,15 @@
 #include <dwc_ddrphy_phyinit.h>
 
 #if 1
+
+#ifdef CONFIG_PLATFORM_Q645
+#define SPI_FLASH_BASE      0xF0000000
+#define SPI_XBOOT_OFFSET    (96 * 1024)
+#else
 #define SPI_FLASH_BASE      0x98000000
 #define SPI_XBOOT_OFFSET    (64 * 1024)
+#endif 
+
 typedef unsigned int        u32;
 
 struct xboot_hdr {
