@@ -2777,5 +2777,7 @@
 
 int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id);
 int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id);
-
-
+void polling_sw_cfg_done();
+void run_waitFwDone ();
+void run_customPostTrain();
+void ctl_trigger_init_and_wait_normal();

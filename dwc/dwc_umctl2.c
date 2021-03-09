@@ -9,17 +9,32 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 #define UMCTL2_REG(OFFSET)		(umctl2_reg_ptr->umctl2_reg[OFFSET >> 2])
 
 void ctl_apb_wr(UINT32 adr, UINT32 dat) {
-    dwc_ddrphy_phyinit_print ("ctl_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
+    //dwc_ddrphy_phyinit_print ("ctl_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
+	UMCTL2_REG(adr) = dat;
+}
+int ctl_apb_rd(UINT32 adr) {
+	UINT16 value;
+    //dwc_ddrphy_phyinit_print ("ctl_apb_rd(12'h%x, rd_data);\n", adr);
+	value = UMCTL2_REG(adr);
+	return value;
+}
+
+void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat) {
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 	//UMCTL2_REG(adr) = dat;
 }
-void ctl_apb_rd(UINT32 adr) {
-    dwc_ddrphy_phyinit_print ("ctl_apb_rd(12'h%x, rd_data);\n", adr);
-	//UMCTL2_REG(adr);
+int dwc_ddrphy_apb_rd(UINT32 adr) {
+	//UINT16 value;
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
+	//value = UMCTL2_REG(adr);
+	//return value;
+	return 0;
 }
 
 int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 {
-	dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
+	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
+	prn_string ("//Start of dwc_umctl2_init_before_ctl_rst\n");
 	//RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)
 	//RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> ASSERTED (ACTIVE LOW)
@@ -324,14 +339,16 @@ int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 	prn_string("RESET:<core_ddrc_rstn> DEASSERTED");
 	prn_string("\n");
 #endif
-	dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_before_ctl_rst\n");
+	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_before_ctl_rst\n");
+	prn_string ("//End of dwc_umctl2_init_before_ctl_rst\n");
 	return 0;
 }
 
 
 int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
 {
-	dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
+	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
+	prn_string ("//Start of dwc_umctl2_init_after_ctl_rst\n");
 #if 1
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
@@ -395,6 +412,125 @@ int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
 	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_4));
 	prn_string("\n");
 #endif
-	dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_after_ctl_rst\n");
+	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_after_ctl_rst\n");
+	prn_string ("//End of dwc_umctl2_init_after_ctl_rst\n");
 	return 0;
+}
+
+void polling_sw_cfg_done(){
+    UINT16 rd_data;
+	while(1){
+		rd_data = ctl_apb_rd(0x324);
+		if(rd_data == 1){
+			prn_string("Register programming done!!!");
+			prn_string("\n");
+			break;
+		}
+	}
+}
+
+void run_waitFwDone (){
+    UINT16 rd_data;
+    UINT8 train_test = 0;
+    prn_string("Start to wait for the training firmware to complete!!!");
+	prn_string("\n");
+    while(train_test==0){
+        while(1) {
+            rd_data = dwc_ddrphy_apb_rd(0xd0004);
+            if(rd_data == 0){
+                prn_string("Wait mailbox send message done!!!");
+				prn_string("\n");
+                break;
+            }
+        }
+        rd_data = dwc_ddrphy_apb_rd(0xd0032);
+        if(rd_data == 0x07) {
+            train_test = 1;
+            prn_string("GET mailbox send 7 ,FW training done!!!!");
+			prn_string("\n");
+        }
+        prn_string("GET mailbox message = ");prn_dword0(rd_data);
+		prn_string("\n");
+        if(rd_data == 0xff) {
+            prn_string("GET mailbox send 16'hff ,FW training Fail!!!!");
+			prn_string("\n");
+            return;
+        }
+        rd_data = dwc_ddrphy_apb_rd(0xd0034);
+        //dwc_ddrphy_apb_rd(32'hd0031,rd_data);
+        dwc_ddrphy_apb_wr(0xd0031,0);
+        while(1) {
+            rd_data = dwc_ddrphy_apb_rd(0xd0004);
+            if(rd_data == 1) {
+                break;
+            }
+        }
+        dwc_ddrphy_apb_wr(0xd0031,1);
+    }
+}
+
+void run_customPostTrain(){
+    UINT16 rd_data;
+    dwc_ddrphy_apb_wr(0xd0000,0);
+    rd_data = dwc_ddrphy_apb_rd(0x20010);
+    prn_string("32'h20010 rd_data = ");prn_dword0(rd_data);
+	prn_string("\n");
+    dwc_ddrphy_apb_wr(0x20010,0x6a);
+    dwc_ddrphy_apb_wr(0x20010,0x6a);
+    rd_data = dwc_ddrphy_apb_rd(0x2001d);
+    prn_string("32'h2001d rd_data = ");prn_dword0(rd_data);
+	prn_string("\n");
+    dwc_ddrphy_apb_wr(0x2001d,0x01);
+    rd_data = dwc_ddrphy_apb_rd(0x20097);
+	prn_string("32'h20097 rd_data = ");prn_dword0(rd_data);
+	prn_string("\n");
+}
+
+
+void ctl_trigger_init_and_wait_normal(){
+	UINT16 rd_data;
+    ctl_apb_wr(0x1b0,0x00000070);   //trigger dfi_init_start
+    prn_string("Start to wait for dfi_init_complete !!!");
+	prn_string("\n");
+    while(1){
+       rd_data = ctl_apb_rd(0x1bc);
+       if(rd_data == 1){
+          prn_string("Wait for dfi_init_complete, done!!!");
+		  prn_string("\n");
+          break;
+       }
+    }
+    //->TRIG_VIP_REFRESH_CHECK;
+
+    ctl_apb_wr(0x1b0,0x00000050);
+    ctl_apb_wr(0x1b0,0x00000051); //trigger SDRAM initilaztion.
+    ctl_apb_wr(0x030,0x00000000); //PWRCTL
+    ctl_apb_wr(0x030,0x00000000);
+    ctl_apb_wr(0x320,0x00000001); //SWCTL
+    //// add w.zhou
+    //ctl_apb_wr(12'h014,32'h000002ce);
+    ////////
+    polling_sw_cfg_done();
+    //prn_string("12'h324 rd_data = 'h%8h",rd_data);
+
+    prn_string("Start to wait for ctl into normal mode !!!");
+	prn_string("\n");
+    while(1){
+       rd_data = ctl_apb_rd(0x004);
+       if(rd_data == 1){
+          prn_string("Wait for ctl into normal mode, done!!!");
+		  prn_string("\n");
+          break;
+       }
+    }
+
+    ctl_apb_wr(0x1c4,0x00000001); //enable the PHY master interface.
+    ctl_apb_wr(0x320,0x00000000); //SWCTL
+    ctl_apb_wr(0x0d0,0x00030003); //set skip_dram_init to 0, for what???(lj.guo)
+    ctl_apb_wr(0x320,0x00000001); //SWCTL
+    polling_sw_cfg_done();
+    ctl_apb_wr(0x304,0x00000000); //enable dq and hif.
+    ctl_apb_wr(0x030,0x00000000);
+    ctl_apb_wr(0x030,0x00000000);
+    ctl_apb_wr(0x490,0x00000001); //axi port 0 enable.
 }
