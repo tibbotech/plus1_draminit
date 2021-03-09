@@ -730,6 +730,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
 	dbg_stamp(0xA003);
 	dwc_ddrphy_phyinit_main();
+	ctl_trigger_init_and_wait_normal(); 
 
 	if (SP_REG(50, 0) != 0x00) {
 		prn_string("<<< TEST ");
