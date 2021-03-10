@@ -24,8 +24,7 @@ extern PMU_SMB_LPDDR4_2D_t        shdw_LPDDR4_2D[4];
 int dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D);
 int dwc_ddrphy_phyinit_softSetMb (int ps, char *field, int value, int Train2D);
 void dwc_ddrphy_phyinit_initStruct(int Train2D);
-//void SP_REG_01(unsigned int addr, int val);
-void SP_REG_W(unsigned int addr,int value);
-unsigned short SP_REG_R(unsigned int addr);
+//void SP_REG_W(unsigned int addr,int value);
+//unsigned short SP_REG_R(unsigned int addr);
 
 char* ApbStr;   //tonyh test

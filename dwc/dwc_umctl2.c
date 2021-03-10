@@ -19,18 +19,6 @@ int ctl_apb_rd(UINT32 adr) {
 	return value;
 }
 
-void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat) {
-    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
-	//UMCTL2_REG(adr) = dat;
-}
-int dwc_ddrphy_apb_rd(UINT32 adr) {
-	//UINT16 value;
-    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
-	//value = UMCTL2_REG(adr);
-	//return value;
-	return 0;
-}
-
 int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");

@@ -470,19 +470,14 @@ int dram_booting_flow(unsigned int dram_id)
 //////////////////////////////////////////////////////
 ///////////////LPDDR4////////////////////////////////
 //////////////////////////////////////////////////////
-
-void SP_REG_W(unsigned int addr,int value)
-{
-    prn_dword(addr);
-	prn_dword(value);
+void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat) {
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 }
-
-unsigned short SP_REG_R(unsigned int addr)
-{
-	unsigned short temp;
-	temp = 0;
-    prn_dword(addr);
-	return temp;
+int dwc_ddrphy_apb_rd(UINT32 adr) {
+	//UINT16 value;
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
+	//return value;
+	return 0;
 }
 
 #define IMEM_ADDR 0x50000
