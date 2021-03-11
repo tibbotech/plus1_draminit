@@ -27,4 +27,5 @@ void dwc_ddrphy_phyinit_initStruct(int Train2D);
 //void SP_REG_W(unsigned int addr,int value);
 //unsigned short SP_REG_R(unsigned int addr);
 
+
 char* ApbStr;   //tonyh test

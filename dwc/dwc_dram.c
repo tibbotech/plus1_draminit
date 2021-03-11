@@ -150,6 +150,10 @@ void assert_sdc_phy_reset(void)
 	SP_REG(0, 21) = RF_MASK_V_SET(1 << 10);	// UMCTL2
 	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
+#elif defined(PLATFORM_Q645)
+	SP_REG(0, 21) = RF_MASK_V_SET(1 << 10);	// UMCTL2
+	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY	
 #endif
 }
 
@@ -159,6 +163,10 @@ void release_sdc_phy_reset(void)
 	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
 #elif defined(PLATFORM_I143)
+	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 10);	// UMCTL2
+	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
+#elif defined(PLATFORM_Q645)
 	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 10);	// UMCTL2
 	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY

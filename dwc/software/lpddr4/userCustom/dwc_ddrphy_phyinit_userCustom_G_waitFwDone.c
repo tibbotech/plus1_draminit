@@ -46,6 +46,7 @@ typedef struct debug_t
 *5.When a 1 is seen, write the DctWriteProt to 1 to complete the protocal
 *6.Go to step 1.
 */
+#if 0
 unsigned int get_mail(unsigned short mode)
 {
 	unsigned int mail;
@@ -87,7 +88,7 @@ void decode_streaming_message()
 	//dwc_ddrphy_phyinit_cmnt ("%s \n", debug_string);
 
 }
-
+#endif 
 
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone () {
 
@@ -98,19 +99,9 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone () {
 
     dwc_ddrphy_phyinit_cmnt ("%s Wait for the training firmware to complete.  Implement timeout fucntion or follow the procedure in \"3.4 Running the firmware\" of the Training Firmware Application Note to poll the Mailbox message.\n", printf_header);
     dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_G_waitFwDone ();\n\n");
-	dwc_ddrphy_phyinit_print ("get_mail(16)\n\n");
-#if 0
-	while (1) {
-		major_message = get_mail(16);
-		if(major_message == 0x08)
-		{
-			decode_streaming_message();
-		}
-		if(major_message == 0x07)
-			break;	
-		break;//tonyh test
-	}
-#endif 
+
+	
+
     dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_G_waitFwDone()\n", printf_header);
 
 }

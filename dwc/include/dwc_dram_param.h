@@ -2810,8 +2810,9 @@
 int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id);
 int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id);
 void polling_sw_cfg_done();
-void run_waitFwDone ();
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone ();
 void run_customPostTrain();
 void ctl_trigger_init_and_wait_normal();
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat);
 int dwc_ddrphy_apb_rd(UINT32 adr);
+

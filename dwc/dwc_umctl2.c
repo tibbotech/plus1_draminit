@@ -426,7 +426,7 @@ void polling_sw_cfg_done(){
 	}
 }
 
-void run_waitFwDone (){
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone () {
     UINT16 rd_data;
     UINT8 train_test = 0;
     prn_string("Start to wait for the training firmware to complete!!!");

@@ -49,7 +49,7 @@ CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c
 CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c
 CSOURCES += $(DWC_SRC_DIR)/$(DWC)print.c $(DWC_SRC_DIR)/$(DWC)cmnt.c $(DWC_USER_DIR)/$(DWC_USER)A_bringupPower.c
 CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)B_startClockResetPhy.c $(DWC_USER_DIR)/$(DWC_USER)E_setDfiClk.c
-CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)G_waitFwDone.c $(DWC_USER_DIR)/$(DWC_USER)H_readMsgBlock.c $(DWC_USER_DIR)/$(DWC_USER)customPostTrain.c
+CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)H_readMsgBlock.c $(DWC_USER_DIR)/$(DWC_USER)customPostTrain.c
 CSOURCES += $(DWC_USER_DIR)/$(DWC_USER)overrideUserInput.c $(DWC_USER_DIR)/$(DWC_USER)J_enterMissionMode.c
 
 OBJS = $(CSOURCES:.c=.o)
