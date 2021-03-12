@@ -75,7 +75,7 @@ static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
 //static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
 
 #define DRAM_0_SDC_REG_BASE	33
-#define DRAM_0_PHY_REG_BASE	50
+#define DRAM_0_PHY_REG_BASE	768
 #define DRAM_1_SDC_REG_BASE	0	/* N/A */
 #define DRAM_1_PHY_REG_BASE	0	/* N/A */
 
@@ -478,12 +478,15 @@ int dram_booting_flow(unsigned int dram_id)
 //////////////////////////////////////////////////////
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat) {
     //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
+	adr = adr / 4;
+    SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat; 
 }
 int dwc_ddrphy_apb_rd(UINT32 adr) {
-	//UINT16 value;
+	UINT16 value;
     //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
-	//return value;
-	return 0;
+	adr = adr / 4;
+	value = SP_REG(DRAM_0_PHY_REG_BASE + adr, 0);
+	return value;
 }
 
 #define IMEM_ADDR 0x50000
@@ -562,6 +565,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 			//prn_dword(IMEM_ADDR+ (256*i)+j);
 			//prn_string("value");
 			//prn_dword(mem[j]);
+			dwc_ddrphy_apb_wr(IMEM_ADDR+ (256*i)+j, mem[j]);
 		}
 	}
 
@@ -579,6 +583,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		//prn_dword(IMEM_ADDR+ (256*num0)+i);
 		//prn_string("value");
 		//prn_dword(mem[i]); //wirte dword
+		dwc_ddrphy_apb_wr(IMEM_ADDR+ (256*num0)+i, mem[i]);
 	}
 
 	if((sum&0x0000FFFF) != xhdr->checksum)
