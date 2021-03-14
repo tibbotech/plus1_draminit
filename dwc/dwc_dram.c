@@ -16,7 +16,7 @@
 #else
 #define SPI_FLASH_BASE      0x98000000
 #define SPI_XBOOT_OFFSET    (64 * 1024)
-#endif 
+#endif
 
 typedef unsigned int        u32;
 
@@ -140,7 +140,6 @@ void wait_loop(unsigned int wait_counter)
 	}
 }
 
-
 void assert_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
@@ -152,7 +151,7 @@ void assert_sdc_phy_reset(void)
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
 #elif defined(PLATFORM_Q645)
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// UMCTL2
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 3);	// PHY	
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 3);	// PHY
 #endif
 }
 
@@ -170,6 +169,7 @@ void release_sdc_phy_reset(void)
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 3);	// PHY
 #endif
 }
+
 // ***********************************************************************
 // * FUNC      : do_system_reset_flow
 // * PARAM     : dram_id
@@ -250,12 +250,12 @@ int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int te
 	for (i = 0; i < test_size_word; i++) {
 		switch (test_case) {
 		case 0:
-
 			prn_string("2");
 			prn_string("5");
 			ret = memory_rw_check(ram[i], i, debug);
 			prn_string("3");
 			break;
+
 		default:
 			ret = memory_rw_check(ram[i], pattern[i % num_pattern], debug);
 			break;
@@ -325,9 +325,9 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 			   unsigned int SW_WRDATA_MASK, unsigned int SW_WRDATA1_HIGH, unsigned int SW_WRDATA1_LOW,
 			   unsigned int SW_WRDATA0_HIGH, unsigned int SW_WRDATA0_LOW, unsigned int CMD_TRIGGER)
 {
-	unsigned int        temp;
-	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0;
+	unsigned int temp;
+	unsigned int SDC_BASE_GRP = 0,
+		     PHY_BASE_GRP = 0;
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	temp = SP_REG(PHY_BASE_GRP + 1, 27) & 0xF0000000;
@@ -360,11 +360,11 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 // ***********************************************************************
 int dram_booting_flow(unsigned int dram_id)
 {
-	unsigned int        SDC_BASE_GRP = 0,
-			    PHY_BASE_GRP = 0;
-	//unsigned int        wait_flag      = 0;	 // min
-	//unsigned int        aphy_select1_value = 0;
-	//unsigned int        aphy_select2_value = 0;
+	unsigned int SDC_BASE_GRP = 0,
+		     PHY_BASE_GRP = 0;
+	//unsigned int wait_flag      = 0;	 // min
+	//unsigned int aphy_select1_value = 0;
+	//unsigned int aphy_select2_value = 0;
 	prn_string(">>> enter dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -476,14 +476,17 @@ int dram_booting_flow(unsigned int dram_id)
 //////////////////////////////////////////////////////
 ///////////////LPDDR4////////////////////////////////
 //////////////////////////////////////////////////////
-void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat) {
-    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
+void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
+{
+	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 	adr = adr / 4;
-    SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat; 
+	SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat;
 }
-int dwc_ddrphy_apb_rd(UINT32 adr) {
+
+int dwc_ddrphy_apb_rd(UINT32 adr)
+{
 	UINT16 value;
-    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
+	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
 	adr = adr / 4;
 	value = SP_REG(DRAM_0_PHY_REG_BASE + adr, 0);
 	return value;
@@ -494,12 +497,12 @@ int dwc_ddrphy_apb_rd(UINT32 adr) {
 #define mem_size 256
 unsigned sum = 0;
 unsigned short mem[mem_size];
-void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag )
+void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag)
 {
 	int i,j;
+
 	/* Accumulate checksum */
-	for (i = 0; i < size - 1; i += 2)
-	{
+	for (i = 0; i < size - 1; i += 2) {
 		unsigned short word16 = *(unsigned short *) &buf[i];
 		//prn_dword(word16);
 		sum += word16;
@@ -508,12 +511,11 @@ void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag )
 		mem[j] = word16;
 	}
 
-	if(flag == 0)
+	if (flag == 0)
 		return;
 
 	/* Handle odd-sized case */
-	if (size & 1)
-	{
+	if (size & 1) {
 		unsigned short word16 = (unsigned char) buf[i];
 		sum += word16;
 	}
@@ -526,7 +528,6 @@ void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag )
 	sum = ~sum;
 
 	//prn_dword(sum);
-
 }
 
 void LoadBinCode(unsigned char Train2D, unsigned int offset)
@@ -543,23 +544,21 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 	//prn_dword(xhdr->magic);
 	//prn_dword(xhdr->length);
 	//prn_dword(xhdr->checksum);
-    // checksum verify
-    num0 = (xhdr->length/rsize);
+	// checksum verify
+	num0 = (xhdr->length/rsize);
 	num1 = (xhdr->length%rsize);
 	//prn_string("num0");
 	//prn_dword(num0);
 	//prn_string("num1");
 	//prn_dword(num1);
-	for(i=0;i<num0;i++)
-	{
-		for (addr=0;addr<mem_size;addr++)
+	for (i=0; i<num0; i++) {
+		for (addr=0; addr<mem_size; addr++)
 			mem[addr]=0;
 
 		unsigned char *temp = (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
 		tcpsum(temp, rsize, 0);
-		for(j=0;j<256;j++)
-		{
-		    /*****write register *********/
+		for (j=0; j<256; j++) {
+			/*****write register *********/
 			/*****write register *********/
 			//prn_string("addr");
 			//prn_dword(IMEM_ADDR+ (256*i)+j);
@@ -569,14 +568,13 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		}
 	}
 
-	for (addr=0;addr<mem_size;addr++)
-	{
+	for (addr=0; addr<mem_size; addr++) {
 		mem[addr]=0;
 	}
+
 	unsigned char *temp =  (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
 	tcpsum(temp, num1, 1);
-	for(i=0;i<(num1/2);i++)
-	{
+	for (i=0; i<(num1/2); i++) {
 		/*****write register *********/
 		/*****write register *********/
 		//prn_string("addr");
@@ -586,9 +584,8 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		dwc_ddrphy_apb_wr(IMEM_ADDR+ (256*num0)+i, mem[i]);
 	}
 
-	if((sum&0x0000FFFF) != xhdr->checksum)
-	{
-	    if (xhdr->magic == IM1D_HDR_MAGIC)
+	if ((sum&0x0000FFFF) != xhdr->checksum) {
+		if (xhdr->magic == IM1D_HDR_MAGIC)
 			prn_string("1d IMEM checksum error!!!!\n");
 		else if (xhdr->magic == DM1D_HDR_MAGIC)
 			prn_string("1d DMEM checksum error!!!!\n");
@@ -601,9 +598,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		prn_dword(sum);
 		prn_string("xhdr->checksum");
 		prn_dword((xhdr->checksum)); //wirte dword
-	}
-	else
-	{
+	} else {
 		if (xhdr->magic == IM1D_HDR_MAGIC)
 			prn_string("1d IMEM checksum ok!!!!\n");
 		else if (xhdr->magic == DM1D_HDR_MAGIC)
@@ -620,66 +615,67 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 	sum = 0;
 }
 
-void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D) {
+void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
+{
+	char *printf_header;
 
-    char *printf_header;
-    if (Train2D)
-        printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 2D]";
-    else
-        printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 1D]";
+	if (Train2D)
+		printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 2D]";
+	else
+		printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 1D]";
 
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=%d)\n", printf_header, Train2D);
+	dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=%d)\n", printf_header, Train2D);
 
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// (D) Load the %dD IMEM image\n", Train2D+1);
-    dwc_ddrphy_phyinit_cmnt ("// \n");
-    dwc_ddrphy_phyinit_cmnt ("// This function loads the training firmware IMEM image into the SRAM.\n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_cmnt ("// \n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+	dwc_ddrphy_phyinit_cmnt ("//\n");
+	dwc_ddrphy_phyinit_cmnt ("// (D) Load the %dD IMEM image\n", Train2D+1);
+	dwc_ddrphy_phyinit_cmnt ("// \n");
+	dwc_ddrphy_phyinit_cmnt ("// This function loads the training firmware IMEM image into the SRAM.\n");
+	dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+	dwc_ddrphy_phyinit_cmnt ("// \n");
+	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
 
 	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
 	unsigned int offset;
 	offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if(Train2D == 0)
+	if (Train2D == 0)
 		LoadBinCode(0,offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	offset = offset + sizeof(struct xboot_hdr)	+ xhdr->length;//xboot+im1d+dm1d  length
+	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if(Train2D == 1)
+	if (Train2D == 1)
 		LoadBinCode(1,offset);
-	offset = offset + sizeof(struct xboot_hdr)	+ xhdr->length;//xboot+im1d+dm1d+im2d  length
+	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 }
 
-void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D) {
+void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
+{
+	char *printf_header;
 
+	if (Train2D)
+		printf_header = "// [phyinit_F_loadDMEM, 2D]";
+	else
+		printf_header = "// [phyinit_F_loadDMEM, 1D]";
 
-    char *printf_header;
-    if (Train2D)
-        printf_header = "// [phyinit_F_loadDMEM, 2D]";
-    else
-        printf_header = "// [phyinit_F_loadDMEM, 1D]";
+	dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_F_loadDMEM (pstate=%d, Train2D=%d)\n", printf_header, pstate, Train2D);
 
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_F_loadDMEM (pstate=%d, Train2D=%d)\n", printf_header, pstate, Train2D);
-
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// (F) Load the %dD DMEM image and write the %dD Message Block parameters for the training firmware \n", Train2D+1, Train2D+1);
-    dwc_ddrphy_phyinit_cmnt ("// \n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_cmnt ("// \n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
+	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+	dwc_ddrphy_phyinit_cmnt ("//\n");
+	dwc_ddrphy_phyinit_cmnt ("// (F) Load the %dD DMEM image and write the %dD Message Block parameters for the training firmware \n", Train2D+1, Train2D+1);
+	dwc_ddrphy_phyinit_cmnt ("// \n");
+	dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+	dwc_ddrphy_phyinit_cmnt ("// \n");
+	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+	dwc_ddrphy_phyinit_cmnt ("\n");
 
 	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
 	unsigned int offset;
@@ -687,13 +683,13 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D) {
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if(Train2D == 0)
-			LoadBinCode(0,offset);
+	if (Train2D == 0)
+		LoadBinCode(0,offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if(Train2D == 1)
+	if (Train2D == 1)
 		LoadBinCode(1,offset);
 }
 
@@ -713,7 +709,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	prn_decimal(dram_id);
 	prn_string("\n");
 	prn_string("code ver0006");
-    prn_string("\n");
+	prn_string("\n");
 
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
@@ -736,20 +732,18 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
 	dbg_stamp(0xA003);
 	dwc_ddrphy_phyinit_main();
-	ctl_trigger_init_and_wait_normal(); 
+	ctl_trigger_init_and_wait_normal();
 
 	if (SP_REG(50, 0) != 0x00) {
 		prn_string("<<< TEST ");
 		prn_decimal(dram_id);
 		prn_string("\n");
 	}
-    prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
+	prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
 	return 1;
 }
-
-
 
 // ***********************************************************************
 // * FUNC      : dram_init
@@ -762,10 +756,11 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 // ***********************************************************************
 int dram_init(unsigned int dram_id)
 {
-	unsigned int        SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
-	unsigned int        max_init_fail_cnt = 15;
-	unsigned int        loop_time;
-	unsigned int        ret = 0;
+	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
+	unsigned int max_init_fail_cnt = 15;
+	unsigned int loop_time;
+	unsigned int ret = 0;
+
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
@@ -1071,6 +1066,7 @@ int dram_init_main()
 		SP_REG(98, 1) &= ~(1 << 5); // restore G98.01[5] = 0(default = 0)
 		SP_REG(98, 2) &= ~(1 << 0); // restore G98.03[0] = 0(default = 0)
 	}
+
 	/* Monitor Chip temperature */
 	SP_REG(5, 0) = 0xFFFF3101;
 	SP_REG(5, 1) = 0xFFFF0000;
@@ -1098,7 +1094,7 @@ int dram_init_main()
 	dram_init(0);
 
 #ifdef SDRAM_WATCHDOG
-    SP_REG(4, 29) = 0x00120000; // Stop watch dog feature
+	SP_REG(4, 29) = 0x00120000; // Stop watch dog feature
 #endif
 
 #else
