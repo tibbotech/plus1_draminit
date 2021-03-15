@@ -76,3 +76,4 @@ sinclude .depend
 .PHONY: clean
 clean:
 	rm -f $(OBJS)
+	rm -f .depend

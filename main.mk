@@ -168,3 +168,4 @@ sinclude .depend
 clean:
 	rm -f $(OBJS) autogen.ld
 	rm -rf $(BIN)
+	rm -f .depend
