@@ -9,10 +9,17 @@ CC = $(CROSS)gcc
 CPP = $(CROSS)cpp
 endif
 
+# Get Platform configuration from xboot/.config
+PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
+PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
+ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
+CFLAGS = -DCONFIG_PLATFORM_Q645
+endif
+
 CFLAGS += -D$(SIM_TYPE)\
 	  -D$(QUICK_SIM)_QUICK_SIM
 
-CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Isoftware/lpddr4/include -Iinclude -I../../draminit/include
+CFLAGS += -Os -Wall -g  -nostdlib -fno-builtin -Isoftware/lpddr4/include -Iinclude -I../../draminit/include
 
 ifeq ($(ARCH),arm)
 CFLAGS	+= -march=armv8-a

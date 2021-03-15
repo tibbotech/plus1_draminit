@@ -10,7 +10,7 @@
 
 #if 1
 
-#ifdef CONFIG_PLATFORM_Q645
+#ifdef PLATFORM_Q645
 #define SPI_FLASH_BASE      0xF0000000
 #define SPI_XBOOT_OFFSET    (96 * 1024)
 #else
@@ -67,7 +67,7 @@ static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers 
 
 #define SDRAM0_SIZE		TEST_LEN_ALL
 #define SDRAM1_SIZE		SDRAM0_SIZE
-#ifdef PLATFORM_PENTAGRAM
+#if defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_Q645)
 static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
 #else
 static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
