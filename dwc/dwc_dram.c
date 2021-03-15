@@ -819,10 +819,6 @@ DRAM_BOOT_FLOW_AGAIN:
 			// prn_decimal(loop_time); prn_string("!!\n");
 		}
 
-		prn_string("GRP(PHY_BASE_GRP, 9) =  ");
-		prn_dword(SP_REG(PHY_BASE_GRP, 9));
-		prn_string("\n ");
-
 		ret = dram_training_flow_for_ddr4(dram_id);
 
 		if (ret == WAIT_FLAG_FAIL) {
