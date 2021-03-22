@@ -530,7 +530,7 @@ void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag)
 	//prn_dword(sum);
 }
 
-void LoadBinCode(unsigned char Train2D, unsigned int offset)
+void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
 	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset);//xboot start addr
 	//unsigned short *temp = (SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32);
@@ -564,7 +564,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 			//prn_dword(IMEM_ADDR+ (256*i)+j);
 			//prn_string("value");
 			//prn_dword(mem[j]);
-			dwc_ddrphy_apb_wr(IMEM_ADDR+ (256*i)+j, mem[j]);
+			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+j, mem[j]);
 		}
 	}
 
@@ -581,7 +581,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset)
 		//prn_dword(IMEM_ADDR+ (256*num0)+i);
 		//prn_string("value");
 		//prn_dword(mem[i]); //wirte dword
-		dwc_ddrphy_apb_wr(IMEM_ADDR+ (256*num0)+i, mem[i]);
+		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+i, mem[i]);
 	}
 
 	if ((sum&0x0000FFFF) != xhdr->checksum) {
@@ -644,13 +644,13 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 	offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	if (Train2D == 0)
-		LoadBinCode(0,offset);
+		LoadBinCode(0,offset,IMEM_ADDR);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	if (Train2D == 1)
-		LoadBinCode(1,offset);
+		LoadBinCode(1,offset,IMEM_ADDR);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 }
@@ -684,13 +684,13 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	if (Train2D == 0)
-		LoadBinCode(0,offset);
+		LoadBinCode(0,offset,DMEM_ADDR);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	if (Train2D == 1)
-		LoadBinCode(1,offset);
+		LoadBinCode(1,offset,DMEM_ADDR);
 }
 
 void dwc_ddrphy_phyinit_main(void)
