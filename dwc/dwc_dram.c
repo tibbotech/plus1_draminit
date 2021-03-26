@@ -1037,13 +1037,16 @@ void check_run_siscope()
 }
 #endif	/* (defined(DRAMSCAN) || defined(SISCOPE)) */
 
-int dram_init_main()
+int dram_init_main(unsigned int gbootRom_boot_mode)
 {
 	unsigned int temp_value = 0;
 #ifdef CHIP_WARM_RESET
 	unsigned int cnt;
 #endif
-
+	unsigned int bootdevice;
+	bootdevice=gbootRom_boot_mode;
+	prn_string("bootdevice=");
+	prn_dword(bootdevice);
 	// init params
 	ckobd_training_flag = 1;
 	gAC = DPCU_AC0BD;
