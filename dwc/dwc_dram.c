@@ -497,29 +497,34 @@ int dwc_ddrphy_apb_rd(UINT32 adr)
 #define mem_size 256
 unsigned sum = 0;
 unsigned short mem[mem_size];
-void tcpsum(const unsigned char *buf, unsigned size, unsigned char flag)
+void tcpsum(const unsigned int *buf, unsigned size, unsigned char flag)
 {
-	int i,j;
+	unsigned short word16_h,word16_l;
+	int i,k;
 
 	/* Accumulate checksum */
-	for (i = 0; i < size - 1; i += 2) {
-		unsigned short word16 = *(unsigned short *) &buf[i];
-		//prn_dword(word16);
-		sum += word16;
-		//prn_dword(sum);
-		j = i/2;
-		mem[j] = word16;
+	k = 0;
+	for (i = 0; i < size; i++) {
+		//unsigned short word16 = *(unsigned short *) &buf[i];
+		word16_h = (buf[i]>>16)&0xFFFF;
+		word16_l = buf[i]&0xFFFF;
+		//prn_string("word16_l=");prn_dword(word16_l);		
+		//prn_string("word16_h=");prn_dword(word16_h);
+		//prn_string("\n");
+		sum += word16_l;
+		sum += word16_h;
+		//prn_string("sum1=");prn_dword(sum1);
+		//prn_string("\n");
+		mem[k] = word16_l;
+		mem[k+1] = word16_h;
+		//prn_string("mem[k]=");prn_dword(mem[k]);		
+		//prn_string(";mem[k+1]=");prn_dword(mem[k+1]);
+		//prn_string("\n");
 	}
 
 	if (flag == 0)
 		return;
-
-	/* Handle odd-sized case */
-	if (size & 1) {
-		unsigned short word16 = (unsigned char) buf[i];
-		sum += word16;
-	}
-
+	
 	/* Fold to get the ones-complement result */
 	while (sum >> 16) sum = (sum & 0xFFFF)+(sum >> 16);
 	//prn_dword(sum);
@@ -555,8 +560,8 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 		for (addr=0; addr<mem_size; addr++)
 			mem[addr]=0;
 
-		unsigned char *temp = (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
-		tcpsum(temp, rsize, 0);
+		unsigned int *temp = (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
+		tcpsum(temp, 128, 0);
 		for (j=0; j<256; j++) {
 			/*****write register *********/
 			/*****write register *********/
@@ -572,8 +577,8 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 		mem[addr]=0;
 	}
 
-	unsigned char *temp =  (unsigned char*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
-	tcpsum(temp, num1, 1);
+	unsigned int *temp =  (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
+	tcpsum(temp, num1/4, 1);
 	for (i=0; i<(num1/2); i++) {
 		/*****write register *********/
 		/*****write register *********/
