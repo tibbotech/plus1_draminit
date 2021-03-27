@@ -406,32 +406,26 @@ int dwc_ddrphy_apb_rd(UINT32 adr)
 
 #define IMEM_ADDR 0x50000
 #define DMEM_ADDR 0x54000
-#define mem_size 256
-unsigned sum = 0;
-unsigned short mem[mem_size];
+#define mem_size 128
+unsigned int sum = 0;
+unsigned int mem[mem_size];
 void tcpsum(const unsigned int *buf, unsigned size, unsigned char flag)
 {
 	unsigned short word16_h,word16_l;
-	int i,k;
+	int i;
 
 	/* Accumulate checksum */
-	k = 0;
 	for (i = 0; i < size; i++) {
 		//unsigned short word16 = *(unsigned short *) &buf[i];
-		word16_h = (buf[i]>>16)&0xFFFF;
-		word16_l = buf[i]&0xFFFF;
+		//word16_h = (buf[i]>>16)&0xFFFF;
+		//word16_l = buf[i]&0xFFFF;
+		word16_h = (mem[i]>>16)&0xFFFF;
+		word16_l = mem[i]&0xFFFF;
 		//prn_string("word16_l=");prn_dword(word16_l);
 		//prn_string("word16_h=");prn_dword(word16_h);
 		//prn_string("\n");
 		sum += word16_l;
 		sum += word16_h;
-		//prn_string("sum1=");prn_dword(sum1);
-		//prn_string("\n");
-		mem[k] = word16_l;
-		mem[k+1] = word16_h;
-		//prn_string("mem[k]=");prn_dword(mem[k]);
-		//prn_string(";mem[k+1]=");prn_dword(mem[k+1]);
-		//prn_string("\n");
 	}
 	//prn_string("sum=");prn_dword(sum);
 	//prn_string("\n");
@@ -452,15 +446,18 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 {
 	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset);//xboot start addr
 	//unsigned short *temp = (SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32);
-	unsigned short i, j, addr, num0, num1;
+	unsigned short i, j, addr, num0, num1,word16;
 	#define rsize 512
 	#define IM1D_HDR_MAGIC   0x64316d69
 	#define DM1D_HDR_MAGIC   0x64316d64
 	#define IM2D_HDR_MAGIC   0x64326d69
 	#define DM2D_HDR_MAGIC   0x64326d64
 
+	prn_string("mg=");
 	prn_dword(xhdr->magic);
+	prn_string("len=");
 	prn_dword(xhdr->length);
+	prn_string("chk=");
 	prn_dword(xhdr->checksum);
 	// checksum verify
 	num0 = (xhdr->length/rsize);
@@ -473,16 +470,23 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 		for (addr=0; addr<mem_size; addr++)
 			mem[addr]=0;
 
-		unsigned int *temp = (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
-		tcpsum(temp, 128, 0);
-		for (j=0; j<256; j++) {
+		unsigned int *src = (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
+		memcpy32(mem, src, rsize/4); //copy data 512 bytest
+		tcpsum(src, 128, 0);//checksum
+		for (j=0; j<128; j++) {
 			/*****write register *********/
-			/*****write register *********/
+			word16 = mem[j]&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+(j*2), word16);
 			//prn_string("addr");
-			//prn_dword(IMEM_ADDR+ (256*i)+j);
+			//prn_dword(MEM_ADDR+ (256*i)+(j*2));
 			//prn_string("value");
-			//prn_dword(mem[j]);
-			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+j, mem[j]);
+			//prn_dword(word16);
+			word16 = (mem[j]>>16)&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+(j*2)+1, word16);
+			//prn_string("addr");
+			//prn_dword(MEM_ADDR+ (256*i)+(j*2)+1);
+			//prn_string("value");
+			//prn_dword(word16);
 		}
 	}
 
@@ -490,16 +494,23 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 		mem[addr]=0;
 	}
 
-	unsigned int *temp =  (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
-	tcpsum(temp, num1/4, 1);
-	for (i=0; i<(num1/2); i++) {
-		/*****write register *********/
-		/*****write register *********/
+	unsigned int *src =  (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
+	memcpy32(mem, src, num1/4);//copy data
+	tcpsum(src, num1/4, 1);//checksum
+	for (j=0; j<(num1/4); j++) {
+		/*****write register *********/		
+		word16 = mem[j]&0xFFFF;
+		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+(j*2), word16);
 		//prn_string("addr");
-		//prn_dword(IMEM_ADDR+ (256*num0)+i);
+		//prn_dword(MEM_ADDR+ (256*num0)+(j*2));
 		//prn_string("value");
-		//prn_dword(mem[i]); //wirte dword
-		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+i, mem[i]);
+		//prn_dword(word16);
+		word16 = (mem[j]>>16)&0xFFFF;
+		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+(j*2)+1, word16);
+		//prn_string("addr");
+		//prn_dword(MEM_ADDR+ (256*num0)+(j*2)+1);
+		//prn_string("value");
+		//prn_dword(word16);
 	}
 
 	if ((sum&0x0000FFFF) != xhdr->checksum) {
