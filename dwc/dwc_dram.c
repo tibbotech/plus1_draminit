@@ -82,9 +82,9 @@ static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
 #define SCAN_TRIM_LEN		5
 
 static unsigned int rgst_value = 0;
-static unsigned int aphy_select_value = 0;
+//static unsigned int aphy_select_value = 0;
 static unsigned int ckobd_training_flag = 0;
-static unsigned int ckobd_re_training_number = 0;
+//static unsigned int ckobd_re_training_number = 0;
 
 //static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
 //static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
@@ -372,99 +372,11 @@ int dram_booting_flow(unsigned int dram_id)
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-#ifdef PLATFORM_PENTAGRAM
-	// CBUS-MBUS Bridge setting
-#ifdef CONFIG_DRAM_SIZE_USE_OTP
-	DRAM_SIZE_FLAG = ((SP_REG(350,7) >> 16) & 0x3);
-	if (DRAM_SIZE_FLAG == DRAM_SIZE_512Mb) {
-		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
-	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_1Gb) {
-		SP_REG(5, 6) = (0x000f << 16)  | (0 << 2) | (0 << 0);
-	} else if (DRAM_SIZE_FLAG == DRAM_SIZE_4Gb) {
-		SP_REG(5, 6) = (0x000f << 16)  | (2 << 2) | (2 << 0);
-	} else {
-		DRAM_SIZE_FLAG = 0xFF;
-		SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
-	}
-#else
-	SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
-#endif
-#elif defined(PLATFORM_I143)
-	SP_REG(5, 6) = (0x000f << 16)  | (MO_SDRAM_B_SIZE << 2) | (MO_SDRAM_A_SIZE << 0);
-#endif
-
 	// -------------------------------------------------------
 	// 1. DPCU_APHY_INIT setting => a001
 	// -------------------------------------------------------
-#ifdef SDRAM_FPGA
-	// There are no APHY circuit in FPGA platform, so bypass this flow
-#else
 	do_system_reset_flow(dram_id);
 	dbg_stamp(0xA000);
-#if 0
-	SP_REG(PHY_BASE_GRP + 0, 0) = DPCU_GLB_CFG0 | DPCU_DFI_PATH_SEL(n_DFI_PATH_DPCU);
-	// set MPLL_DIV to operation freq.
-	SP_REG(PHY_BASE_GRP + 0, 12) = MPLL_CFG1_DEF | MPLL_DIV(n_MPLL_DIV);
-	// set MPLL_DIV to operation freq.
-	SP_REG(PHY_BASE_GRP + 0, 3) = DPCU_INIT_TIMMER;
-	// Set DDRIO CFG
-	SP_REG(PHY_BASE_GRP + 0, 21) = DPCU_DDRIO_CFG3;
-	// set PZQ to internal mode for Q571
-#ifdef USING_INTERNAL_PZQ_CAL
-	prn_string("\tDPCU initial : Using Internal PZQ!!\n");
-	SP_REG(PHY_BASE_GRP + 0, 18) = DPCU_PZQ_CFG0 | PZQ_REGI_ZQ_INTR(n_PZQ_ZQ_INTR_EN);
-#else
-	prn_string("\tDPCU initial : Using External PZQ!!\n");
-	SP_REG(PHY_BASE_GRP + 0, 18) = DPCU_PZQ_CFG0;
-#endif
-	// setting PZQ CFG1
-	SP_REG(PHY_BASE_GRP + 0, 19) = DPCU_PZQ_CFG1;
-	// setting AI CFG
-#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
-	SP_REG(PHY_BASE_GRP + 0, 14) = (SP_REG(PHY_BASE_GRP + 0, 14) & 0xFFFDFFFF) | 0x00020000;
-#endif
-	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1;
-	// enable APHY_INIT start
-	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT1 | AI_INIT_START(n_AI_INIT_START_EN);
-
-	// wait aphy init done
-	wait_flag   =   0;
-	do {
-		wait_flag   =   SP_REG(PHY_BASE_GRP + 0, 2) & 0x00000001;
-	} while ((wait_flag == 0));
-
-	rgst_value = (SP_REG(PHY_BASE_GRP + 0, 2) >> 8) & 0x0F;
-
-	aphy_select1_value = rgst_value;
-	// Disable DDR IO PAD Retention flag
-	// setting AI CFG
-	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT2;
-	// enable APHY_INIT start
-	SP_REG(PHY_BASE_GRP + 0, 1) = DPCU_AI_CFG0_SELECT2 | AI_INIT_START(n_AI_INIT_START_EN);
-	// wait aphy init done
-	wait_flag   =   0;
-	do {
-		wait_flag   =   SP_REG(PHY_BASE_GRP + 0, 2) & 0x00000001;
-	} while ((wait_flag == 0));
-
-	rgst_value = (SP_REG(PHY_BASE_GRP + 0, 2) >> 8) & 0x0F;
-
-	aphy_select2_value = rgst_value;
-	aphy_select_value = (aphy_select1_value | aphy_select2_value);
-
-#if (defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_I143))
-	SP_REG(PHY_BASE_GRP + 0, 0) = SP_REG(PHY_BASE_GRP + 0, 0) & 0xFFFFFFBF;
-#endif
-
-	if (rgst_value != 0) {
-		prn_string("<<< leave dram_booting_flow for DRAM");
-		prn_decimal(dram_id);
-		prn_string("\n");
-		return 0;
-	}
-#endif
-#endif
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -479,16 +391,16 @@ int dram_booting_flow(unsigned int dram_id)
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 {
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
-	adr = adr / 4;
-	SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat;
+	//adr = adr / 4;
+	//SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat;
 }
 
 int dwc_ddrphy_apb_rd(UINT32 adr)
 {
 	UINT16 value;
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
-	adr = adr / 4;
-	value = SP_REG(DRAM_0_PHY_REG_BASE + adr, 0);
+	//adr = adr / 4;
+	//value = SP_REG(DRAM_0_PHY_REG_BASE + adr, 0);
 	return value;
 }
 
@@ -708,12 +620,12 @@ void dwc_ddrphy_phyinit_main(void)
 int dram_training_flow_for_ddr4(unsigned int dram_id)
 {
 	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
-	char *printf_header;
+	//char *printf_header;
 
 	prn_string(">>> enter dram_training_flow_for_ddr4 for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
-	prn_string("code ver0006");
+	prn_string("code ver0007");
 	prn_string("\n");
 
 	// -------------------------------------------------------
@@ -725,25 +637,23 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	// -------------------------------------------------------
 	// 2.
 	// -------------------------------------------------------
-	// DRAM MRS SETTING
 	dbg_stamp(0xA002);
-	dwc_umctl2_init_before_ctl_rst(dram_id);
-	dwc_umctl2_init_after_ctl_rst(dram_id);
+	//dwc_umctl2_init_before_ctl_rst(dram_id);
+	//dwc_umctl2_init_after_ctl_rst(dram_id);
 
 	// -------------------------------------------------------
 	// 3.
 	// -------------------------------------------------------
-	printf_header = "// [dwc_ddrphy_phyinit_sequence]";
-	dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
+	//printf_header = "// [dwc_ddrphy_phyinit_sequence]";
+	//dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
 	dbg_stamp(0xA003);
-	dwc_ddrphy_phyinit_main();
-	ctl_trigger_init_and_wait_normal();
+	//dwc_ddrphy_phyinit_main();
+	dwc_ddrphy_phyinit_D_loadIMEM (0);
+	dwc_ddrphy_phyinit_D_loadIMEM (1);
+	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
+	dwc_ddrphy_phyinit_F_loadDMEM (0,1);
 
-	if (SP_REG(50, 0) != 0x00) {
-		prn_string("<<< TEST ");
-		prn_decimal(dram_id);
-		prn_string("\n");
-	}
+	//ctl_trigger_init_and_wait_normal();
 	prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -772,90 +682,25 @@ int dram_init(unsigned int dram_id)
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	loop_time = 0;
-	// ckobd_training_flag = 0;
-	ckobd_re_training_number = 0;
 	prn_string(" dram_init\n");
 
-	// 20140728 mazar : add max_init_fail_cnt for sometime training fail
 	for (loop_time = 0; loop_time < max_init_fail_cnt; loop_time++) {
-		ckobd_re_training_number = loop_time;
-
-		// dram_bootint_flow pass return 1, error return 0;
-		// 20140727 mazar : do not add any action if we encounter APHY INIT ERR, just dump error flag
-DRAM_BOOT_FLOW_AGAIN:
-		if (!dram_booting_flow(dram_id)) {
-			// error check flow
-			// 1. dram_id = 1 and all initial error flag are asserted (note)
-			// => we consider this is 216 package, so package_256_flag = 0;
-			// note : SSCPLL isn't assert, so check PZQ, CTCAL, DDL error flag
-			// and pass all DRAM 1 training flow
-			// 2. dram_id = 1 and not all initial error flag are asserted => we consider this is 256 package, so package_256_flag = 1;
-			// and print the error message
-			// 3. dram_id = 0, print the error message
-			prn_string("DPCU_INFO : \t********** DUMP APHY INIT************************\n");
-			prn_string("aphy_select_value =");
-			prn_dword(aphy_select_value);
-			if ((dram_id == 1) && (aphy_select_value == 0x0D)) {
-				// case 1, we think this is 216 pin package, and don't need to dump initial error message
-				// only check PZQ, CTCAL, DDL error flag
-				//package_256_flag = 0;
-				// prn_string("is this 216 package !?\n");
-			} else {
-				// case 2 or case 3, we dump the initial error flag
-				// DUMP INIT flag
-				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error infor @ loop_time = ");
-				prn_decimal(loop_time);
-				prn_string(" ***\n");
-				//prn_string("\tCTCAL_ERR flag =");
-				//prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 8) & 0x01));
-				//prn_string("\tSSCPLL_ERR flag =");
-				//prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 9) & 0x01));
-				//prn_string("\n");
-				//prn_string("\tDDL_ERR flag =");
-				//prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 10) & 0x01));
-				//prn_string("\tPZQ_ERR flag =");
-				//prn_decimal((unsigned int)((SP_REG(PHY_BASE_GRP, 2) >> 11) & 0x01));
-				//prn_string("\n");
-				prn_string("DPCU_INFO : \t********** DUMP APHY INIT error information end **********\n");
-				goto DRAM_BOOT_FLOW_AGAIN;
-			}
-		} else {
-			// prn_string("DRAM-"); prn_decimal(dram_id); prn_string("booting PASS @ loop_time =");
-			// prn_decimal(loop_time); prn_string("!!\n");
-		}
+		dram_booting_flow(dram_id);
 
 		ret = dram_training_flow_for_ddr4(dram_id);
 
 		if (ret == WAIT_FLAG_FAIL) {
-			prn_string("wait flag or register G(37,10) fail!!!!\n");
-			// goto DRAM_BOOT_FLOW_AGAIN;
+			prn_string("WAIT_FLAG_FAIL!!!!\n");
 			return FAIL;
 		} else if (ret == 0) {
-			// (dram_id=0) or (dram_id=1 and package_256_flag==1) => do training flow
-			// dump error message
-
-			prn_string("DPCU_INFO : \t********** DUMP init & training error info @ loop_time = ");
+			prn_string("loop_time = ");
 			prn_decimal(loop_time);
 			prn_string(" ***\n");
-			//DPCU_DT_RESULT_DUMP(dram_id);
 		}
 
-		prn_string("lpddr4_test_01\n");
+		prn_string("lpddr4_training_OK\n");
 		return SUCCESS;
-
-		if (loop_time + 1 == max_init_fail_cnt) { // robert fix
-			prn_string("DRAM-");
-			prn_decimal(dram_id);
-			prn_string("initial failed\n\n");
-			// while (1); // robert: return fail rather than hang
-			return FAIL;
-		} // all loop training fail
-
 	} // end of for loop :: loop_time for initial & training time control
-
-	prn_string("DRAM-");
-	prn_decimal(dram_id);
-	prn_string("initial done !!!!\n\n");
 
 	return SUCCESS;
 } // end dram_init
