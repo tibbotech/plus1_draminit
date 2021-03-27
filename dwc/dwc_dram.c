@@ -420,7 +420,7 @@ void tcpsum(const unsigned int *buf, unsigned size, unsigned char flag)
 		//unsigned short word16 = *(unsigned short *) &buf[i];
 		word16_h = (buf[i]>>16)&0xFFFF;
 		word16_l = buf[i]&0xFFFF;
-		//prn_string("word16_l=");prn_dword(word16_l);		
+		//prn_string("word16_l=");prn_dword(word16_l);
 		//prn_string("word16_h=");prn_dword(word16_h);
 		//prn_string("\n");
 		sum += word16_l;
@@ -429,14 +429,15 @@ void tcpsum(const unsigned int *buf, unsigned size, unsigned char flag)
 		//prn_string("\n");
 		mem[k] = word16_l;
 		mem[k+1] = word16_h;
-		//prn_string("mem[k]=");prn_dword(mem[k]);		
+		//prn_string("mem[k]=");prn_dword(mem[k]);
 		//prn_string(";mem[k+1]=");prn_dword(mem[k+1]);
 		//prn_string("\n");
 	}
+	//prn_string("sum=");prn_dword(sum);
+	//prn_string("\n");
 
 	if (flag == 0)
 		return;
-	
 	/* Fold to get the ones-complement result */
 	while (sum >> 16) sum = (sum & 0xFFFF)+(sum >> 16);
 	//prn_dword(sum);
@@ -458,9 +459,9 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 	#define IM2D_HDR_MAGIC   0x64326d69
 	#define DM2D_HDR_MAGIC   0x64326d64
 
-	//prn_dword(xhdr->magic);
-	//prn_dword(xhdr->length);
-	//prn_dword(xhdr->checksum);
+	prn_dword(xhdr->magic);
+	prn_dword(xhdr->length);
+	prn_dword(xhdr->checksum);
 	// checksum verify
 	num0 = (xhdr->length/rsize);
 	num1 = (xhdr->length%rsize);
