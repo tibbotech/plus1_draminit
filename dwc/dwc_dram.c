@@ -8,18 +8,27 @@
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
-#if 1
-
-#ifdef PLATFORM_Q645
 #define SPI_FLASH_BASE      0xF0000000
 #define SPI_XBOOT_OFFSET    (96 * 1024)
-#else
-#define SPI_FLASH_BASE      0x98000000
-#define SPI_XBOOT_OFFSET    (64 * 1024)
-#endif
+
+#define EMMC_BOOT               0x1F
+#define SPINAND_BOOT            0x1D
+#define USB_ISP                 0x1B
+#define SDCARD_ISP              0x19
+#define SPI_NOR_BOOT            0x17
+#define UART_ISP                0x15
+#define AUTO_SCAN               0x11
+#define USB_BOOT                0xfd
+#define SDCARD_BOOT             0xfe
+#define NAND_LARGE_BOOT         0xff
+
+#define rsize 512
+#define IM1D_HDR_MAGIC   0x64316d69
+#define DM1D_HDR_MAGIC   0x64316d64
+#define IM2D_HDR_MAGIC   0x64326d69
+#define DM2D_HDR_MAGIC   0x64326d64
 
 typedef unsigned int        u32;
-
 struct xboot_hdr {
 	u32 magic;
 	u32 version;
@@ -28,7 +37,6 @@ struct xboot_hdr {
 	u32 img_flag;
 	u32 reserved[3];
 };
-#endif
 
 
 // #define DRAM_INIT_DEBUG 0 // defined in Makefile: please use "make debug"
@@ -91,6 +99,14 @@ static unsigned int ckobd_training_flag = 0;
 //static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
 //static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
 static unsigned int gAC, gACK, gCK;
+
+static unsigned int bootdevice;
+
+static unsigned int XBOOT_len;
+static unsigned int IMEM1d_len = 0;
+static unsigned int DMEM1d_len = 0;
+static unsigned int IMEM2d_len = 0;
+static unsigned int DMEM2d_len = 0;
 
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
 static unsigned int DRAM_SIZE_FLAG;
@@ -360,8 +376,7 @@ void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int 
 // ***********************************************************************
 int dram_booting_flow(unsigned int dram_id)
 {
-	unsigned int SDC_BASE_GRP = 0,
-		     PHY_BASE_GRP = 0;
+	//unsigned int SDC_BASE_GRP = 0,PHY_BASE_GRP = 0;
 	//unsigned int wait_flag      = 0;	 // min
 	//unsigned int aphy_select1_value = 0;
 	//unsigned int aphy_select2_value = 0;
@@ -371,12 +386,12 @@ int dram_booting_flow(unsigned int dram_id)
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
+	//get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 	// -------------------------------------------------------
 	// 1. DPCU_APHY_INIT setting => a001
 	// -------------------------------------------------------
-	do_system_reset_flow(dram_id);
-	dbg_stamp(0xA000);
+	//do_system_reset_flow(dram_id);
+	//dbg_stamp(0xA000);
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -409,49 +424,75 @@ int dwc_ddrphy_apb_rd(UINT32 adr)
 #define mem_size 128
 unsigned int sum = 0;
 unsigned int mem[mem_size];
-void tcpsum(const unsigned int *buf, unsigned size, unsigned char flag)
+void tcpsum(unsigned int StartNo, unsigned int EndNo, unsigned char flag)
 {
 	unsigned short word16_h,word16_l;
 	int i;
 
 	/* Accumulate checksum */
-	for (i = 0; i < size; i++) {
-		//unsigned short word16 = *(unsigned short *) &buf[i];
-		//word16_h = (buf[i]>>16)&0xFFFF;
-		//word16_l = buf[i]&0xFFFF;
+	for (i = StartNo; i < EndNo; i++) {
 		word16_h = (mem[i]>>16)&0xFFFF;
 		word16_l = mem[i]&0xFFFF;
-		//prn_string("word16_l=");prn_dword(word16_l);
-		//prn_string("word16_h=");prn_dword(word16_h);
-		//prn_string("\n");
 		sum += word16_l;
 		sum += word16_h;
 	}
-	//prn_string("sum=");prn_dword(sum);
-	//prn_string("\n");
 
 	if (flag == 0)
 		return;
 	/* Fold to get the ones-complement result */
 	while (sum >> 16) sum = (sum & 0xFFFF)+(sum >> 16);
-	//prn_dword(sum);
 
 	/* Invert to get the negative in ones-complement arithmetic */
 	sum = ~sum;
 
-	//prn_dword(sum);
+}
+
+void DwcCheckSum(unsigned int magic, unsigned int checksum)
+{
+	if ((sum&0x0000FFFF) != checksum) {
+		if (magic == IM1D_HDR_MAGIC)
+			prn_string("1d IMEM checksum error!!!!\n");
+		else if (magic == DM1D_HDR_MAGIC)
+			prn_string("1d DMEM checksum error!!!!\n");
+		else if (magic == IM2D_HDR_MAGIC)
+			prn_string("2d IMEM checksum error!!!!\n");
+		else if (magic == DM2D_HDR_MAGIC)
+			prn_string("2d DMEM checksum error!!!!\n");
+
+		prn_string("sum");
+		prn_dword(sum);
+		prn_string("checksum");
+		prn_dword((checksum)); //wirte dword
+	} else {
+		if (magic == IM1D_HDR_MAGIC)
+			prn_string("1d IMEM checksum ok!!!!\n");
+		else if (magic == DM1D_HDR_MAGIC)
+			prn_string("1d DMEM checksum ok!!!!\n");
+		else if (magic == IM2D_HDR_MAGIC)
+			prn_string("2d IMEM checksum ok!!!!\n");
+		else if (magic == DM2D_HDR_MAGIC)
+			prn_string("2d DMEM checksum ok!!!!\n");
+	}
+}
+
+void printf_offset_value(unsigned short offset, unsigned short value)
+{
+	prn_string("mem_offset");
+	prn_dword(offset);
+	prn_string("value");
+	prn_dword(value);
+}
+
+void printf_sectorNo(unsigned short sectorNo0, unsigned short sectorNo1)
+{
+	prn_string("sectorNo0="); prn_dword(sectorNo0);
+	prn_string("sectorNo1="); prn_dword(sectorNo1);
 }
 
 void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
 	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset);//xboot start addr
-	//unsigned short *temp = (SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32);
 	unsigned short i, j, addr, num0, num1,word16;
-	#define rsize 512
-	#define IM1D_HDR_MAGIC   0x64316d69
-	#define DM1D_HDR_MAGIC   0x64316d64
-	#define IM2D_HDR_MAGIC   0x64326d69
-	#define DM2D_HDR_MAGIC   0x64326d64
 
 	prn_string("mg=");
 	prn_dword(xhdr->magic);
@@ -462,31 +503,22 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 	// checksum verify
 	num0 = (xhdr->length/rsize);
 	num1 = (xhdr->length%rsize);
-	//prn_string("num0");
-	//prn_dword(num0);
-	//prn_string("num1");
-	//prn_dword(num1);
+
 	for (i=0; i<num0; i++) {
 		for (addr=0; addr<mem_size; addr++)
 			mem[addr]=0;
 
 		unsigned int *src = (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
 		memcpy32(mem, src, rsize/4); //copy data 512 bytest
-		tcpsum(src, 128, 0);//checksum
+		tcpsum(0,128, 0);//checksum
 		for (j=0; j<128; j++) {
 			/*****write register *********/
 			word16 = mem[j]&0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+(j*2), word16);
-			//prn_string("addr");
-			//prn_dword(MEM_ADDR+ (256*i)+(j*2));
-			//prn_string("value");
-			//prn_dword(word16);
+			//printf_offset_value((256*i)+(j*2),word16);
 			word16 = (mem[j]>>16)&0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+ (256*i)+(j*2)+1, word16);
-			//prn_string("addr");
-			//prn_dword(MEM_ADDR+ (256*i)+(j*2)+1);
-			//prn_string("value");
-			//prn_dword(word16);
+			//printf_offset_value((256*i)+(j*2)+1,word16);
 		}
 	}
 
@@ -496,130 +528,221 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 	unsigned int *src =  (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
 	memcpy32(mem, src, num1/4);//copy data
-	tcpsum(src, num1/4, 1);//checksum
+	tcpsum(0,num1/4, 1);//checksum
 	for (j=0; j<(num1/4); j++) {
-		/*****write register *********/		
+		/*****write register *********/
 		word16 = mem[j]&0xFFFF;
 		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+(j*2), word16);
-		//prn_string("addr");
-		//prn_dword(MEM_ADDR+ (256*num0)+(j*2));
-		//prn_string("value");
-		//prn_dword(word16);
+		//printf_offset_value((256*num0)+(j*2),word16);
 		word16 = (mem[j]>>16)&0xFFFF;
 		dwc_ddrphy_apb_wr(MEM_ADDR+ (256*num0)+(j*2)+1, word16);
-		//prn_string("addr");
-		//prn_dword(MEM_ADDR+ (256*num0)+(j*2)+1);
-		//prn_string("value");
-		//prn_dword(word16);
+		//printf_offset_value((256*num0)+(j*2)+1,word16);
 	}
 
-	if ((sum&0x0000FFFF) != xhdr->checksum) {
-		if (xhdr->magic == IM1D_HDR_MAGIC)
-			prn_string("1d IMEM checksum error!!!!\n");
-		else if (xhdr->magic == DM1D_HDR_MAGIC)
-			prn_string("1d DMEM checksum error!!!!\n");
-		else if (xhdr->magic == IM2D_HDR_MAGIC)
-			prn_string("2d IMEM checksum error!!!!\n");
-		else if (xhdr->magic == DM2D_HDR_MAGIC)
-			prn_string("2d DMEM checksum error!!!!\n");
+	DwcCheckSum(xhdr->magic, xhdr->checksum);
+	sum = 0;
+}
 
-		prn_string("sum");
-		prn_dword(sum);
-		prn_string("xhdr->checksum");
-		prn_dword((xhdr->checksum)); //wirte dword
-	} else {
-		if (xhdr->magic == IM1D_HDR_MAGIC)
-			prn_string("1d IMEM checksum ok!!!!\n");
-		else if (xhdr->magic == DM1D_HDR_MAGIC)
-			prn_string("1d DMEM checksum ok!!!!\n");
-		else if (xhdr->magic == IM2D_HDR_MAGIC)
-			prn_string("2d IMEM checksum ok!!!!\n");
-		else if (xhdr->magic == DM2D_HDR_MAGIC)
-			prn_string("2d DMEM checksum ok!!!!\n");
-		//prn_string("sum");
-		//prn_dword(sum);
-		//prn_string("xhdr->checksum");
-		//prn_dword((xhdr->checksum)); //wirte dword
+void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
+{
+	struct xboot_hdr *hdr;
+	unsigned short i, j, addr, word16;
+	unsigned short mem_offset, img_length,cnt;
+
+	mem_offset = 0;
+
+	//Read first block
+	for (addr = 0; addr < mem_size; addr++)
+		mem[addr]=0;
+	ReadSDSector(offset, 1, mem);
+	for (j = 0; j < 128; j++) {
+		if((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
+			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)) //j is array number
+		{
+			prn_string("mem[j]=");
+			prn_dword(mem[j]);
+		    hdr->magic = mem[j];
+			if(mem[j] == IM1D_HDR_MAGIC)
+				IMEM1d_len = mem[j+2];
+			else if(mem[j] == DM1D_HDR_MAGIC)
+				DMEM1d_len = mem[j+2];
+			else if(mem[j] == IM2D_HDR_MAGIC)
+				IMEM2d_len = mem[j+2];
+			else if(mem[j] == DM2D_HDR_MAGIC)
+				DMEM2d_len = mem[j+2];
+			prn_string("leng=");
+			prn_dword(mem[j+2]);
+			hdr->length = img_length = mem[j+2];
+			prn_string("checksum=");
+			prn_dword(mem[j+3]);
+			hdr->checksum =  mem[j+3];
+			//prn_string("j=");
+			//prn_dword(j);
+			if((j+8-1) > 127) //add header length 8*4=32bytes overlap block size
+			{
+				i = (j+8-1)-127;//i is counter.
+				for (addr = 0; addr < mem_size; addr++)
+					mem[addr]=0;
+				offset++;
+				ReadSDSector(offset, 1, mem);
+				tcpsum(i, 128, 0);//checksum
+			}
+			else
+			{
+				i = j+8;
+				tcpsum(i, 128, 0);//checksum
+			}
+			for (j = i; j < 128; j++) {
+				/*****write register *********/
+				word16 = mem[j]&0xFFFF;
+				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+				//printf_offset_value(mem_offset,word16);
+				mem_offset++;
+				word16 = (mem[j]>>16)&0xFFFF;
+				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+				//printf_offset_value(mem_offset,word16);
+				mem_offset++;
+				hdr->length -= 4;
+			}
+			break;
+		}
 	}
+
+	//Read middle block
+	while(hdr->length > 512)
+	{
+		for (addr = 0; addr < mem_size; addr++)
+			mem[addr]=0;
+		offset++;
+		ReadSDSector(offset, 1, mem);
+		tcpsum(0, 128, 0);//checksum
+		for (j = 0; j < 128; j++) {
+			/*****write register *********/
+			word16 = mem[j]&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+			word16 = (mem[j]>>16)&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+		}
+		hdr->length -= 512;
+		//prn_string("hdr->length");
+		//prn_dword(hdr->length);
+	}
+
+	//Read last block
+	for (addr = 0; addr < mem_size; addr++)
+		mem[addr]=0;
+	offset++;
+	ReadSDSector(offset, 1, mem);
+	cnt = hdr->length/4;
+	tcpsum(0, cnt, 1);//checksum
+	//prn_string("cnt=");
+	//prn_dword(cnt);
+	for (j = 0; j < cnt; j++){
+		/*****write register *********/
+		word16 = mem[j]&0xFFFF;
+		dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+		//printf_offset_value(mem_offset,word16);
+		mem_offset++;
+		word16 = (mem[j]>>16)&0xFFFF;
+		dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+		//printf_offset_value(mem_offset,word16);
+		mem_offset++;
+	}
+
+	DwcCheckSum(hdr->magic, hdr->checksum);
 	sum = 0;
 }
 
 void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 {
-	char *printf_header;
+	if(bootdevice == SPI_NOR_BOOT)
+	{
+		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
+		unsigned int offset;
+		offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 0)
+			LoadBinCode(0,offset,IMEM_ADDR);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 1)
+			LoadBinCode(1,offset,IMEM_ADDR);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+	}
+	else if(bootdevice == EMMC_BOOT)
+	{
+		unsigned int sectorNo0,sectorNo1, total_length, addr;
+		for (addr = 0; addr < mem_size; addr++)
+			mem[addr]=0;
+		ReadSDSector(0, 1, mem);
 
-	if (Train2D)
-		printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 2D]";
-	else
-		printf_header = "// [dwc_ddrphy_phyinit_D_loadIMEM, 1D]";
-
-	dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=%d)\n", printf_header, Train2D);
-
-	dwc_ddrphy_phyinit_cmnt ("\n");
-	dwc_ddrphy_phyinit_cmnt ("\n");
-	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-	dwc_ddrphy_phyinit_cmnt ("//\n");
-	dwc_ddrphy_phyinit_cmnt ("// (D) Load the %dD IMEM image\n", Train2D+1);
-	dwc_ddrphy_phyinit_cmnt ("// \n");
-	dwc_ddrphy_phyinit_cmnt ("// This function loads the training firmware IMEM image into the SRAM.\n");
-	dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-	dwc_ddrphy_phyinit_cmnt ("// \n");
-	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-	dwc_ddrphy_phyinit_cmnt ("\n");
-	dwc_ddrphy_phyinit_cmnt ("\n");
-
-	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
-	unsigned int offset;
-	offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if (Train2D == 0)
-		LoadBinCode(0,offset,IMEM_ADDR);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if (Train2D == 1)
-		LoadBinCode(1,offset,IMEM_ADDR);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		XBOOT_len = mem[2];
+		prn_string("XBOOT_len="); prn_dword(XBOOT_len);
+		if (Train2D == 0)
+		{
+			total_length = 32 + XBOOT_len + 32; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			printf_sectorNo(sectorNo0, sectorNo1);
+			LoadBinCodeForEmmc(0,sectorNo0,IMEM_ADDR);
+		}
+		else if(Train2D == 1)
+		{
+			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			printf_sectorNo(sectorNo0, sectorNo1);
+			LoadBinCodeForEmmc(0,sectorNo0,IMEM_ADDR);
+		}
+	}
 }
 
 void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 {
-	char *printf_header;
-
-	if (Train2D)
-		printf_header = "// [phyinit_F_loadDMEM, 2D]";
-	else
-		printf_header = "// [phyinit_F_loadDMEM, 1D]";
-
-	dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_F_loadDMEM (pstate=%d, Train2D=%d)\n", printf_header, pstate, Train2D);
-
-	dwc_ddrphy_phyinit_cmnt ("\n");
-	dwc_ddrphy_phyinit_cmnt ("\n");
-	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-	dwc_ddrphy_phyinit_cmnt ("//\n");
-	dwc_ddrphy_phyinit_cmnt ("// (F) Load the %dD DMEM image and write the %dD Message Block parameters for the training firmware \n", Train2D+1, Train2D+1);
-	dwc_ddrphy_phyinit_cmnt ("// \n");
-	dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-	dwc_ddrphy_phyinit_cmnt ("// \n");
-	dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-	dwc_ddrphy_phyinit_cmnt ("\n");
-
-	struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
-	unsigned int offset;
-	offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if (Train2D == 0)
-		LoadBinCode(0,offset,DMEM_ADDR);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
-	xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
-	if (Train2D == 1)
-		LoadBinCode(1,offset,DMEM_ADDR);
+	if(bootdevice == SPI_NOR_BOOT)
+	{
+		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
+		unsigned int offset;
+		offset = sizeof(struct xboot_hdr) + xhdr->length; //xboot length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 0)
+			LoadBinCode(0,offset,DMEM_ADDR);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 1)
+			LoadBinCode(1,offset,DMEM_ADDR);
+	}
+	else if(bootdevice == EMMC_BOOT)
+	{
+		int sectorNo0,sectorNo1, total_length;
+		if (Train2D == 0)
+		{
+			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			printf_sectorNo(sectorNo0, sectorNo1);
+			LoadBinCodeForEmmc(0,sectorNo0,DMEM_ADDR);
+		}
+		else if(Train2D == 1)
+		{
+			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			printf_sectorNo(sectorNo0, sectorNo1);
+			LoadBinCodeForEmmc(0,sectorNo0,DMEM_ADDR);
+		}
+	}
 }
 
 void dwc_ddrphy_phyinit_main(void)
@@ -634,11 +757,11 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	//char *printf_header;
 
-	prn_string(">>> enter dram_training_flow_for_ddr4 for DRAM");
-	prn_decimal(dram_id);
-	prn_string("\n");
-	prn_string("code ver0007");
-	prn_string("\n");
+	//prn_string(">>> enter dram_training_flow_for_ddr4 for DRAM");
+	//prn_decimal(dram_id);
+	//prn_string("\n");
+	//prn_string("code ver0009");
+	//prn_string("\n");
 
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
@@ -661,14 +784,14 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	dbg_stamp(0xA003);
 	//dwc_ddrphy_phyinit_main();
 	dwc_ddrphy_phyinit_D_loadIMEM (0);
-	dwc_ddrphy_phyinit_D_loadIMEM (1);
 	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
+	dwc_ddrphy_phyinit_D_loadIMEM (1);
 	dwc_ddrphy_phyinit_F_loadDMEM (0,1);
 
 	//ctl_trigger_init_and_wait_normal();
-	prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
-	prn_decimal(dram_id);
-	prn_string("\n");
+	//prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
+	//prn_decimal(dram_id);
+	//prn_string("\n");
 	return 1;
 }
 
@@ -905,7 +1028,6 @@ int dram_init_main(unsigned int gbootRom_boot_mode)
 #ifdef CHIP_WARM_RESET
 	unsigned int cnt;
 #endif
-	unsigned int bootdevice;
 	bootdevice=gbootRom_boot_mode;
 	prn_string("bootdevice=");
 	prn_dword(bootdevice);
@@ -914,7 +1036,6 @@ int dram_init_main(unsigned int gbootRom_boot_mode)
 	gAC = DPCU_AC0BD;
 	gACK = DPCU_ACK0BD;
 	gCK = DPCU_CK0BD;
-	prn_string("3333\n");
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef CHIP_WARM_RESET
