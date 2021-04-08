@@ -441,14 +441,14 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone ()
 	while (train_test == 0) {
 		while (1) {
 			rd_data = dwc_ddrphy_apb_rd(0xd0004);
-			if (rd_data == 0) {
+			if ((rd_data & 0x01) == 0) {
 				prn_string("Wait mailbox send message done!!!");
 				prn_string("\n");
 				break;
 			}
 		}
 		rd_data = dwc_ddrphy_apb_rd(0xd0032);
-		if (rd_data == 0x07) {
+		if ((rd_data & 0x0f) == 0x07) {
 			train_test = 1;
 			prn_string("GET mailbox send 7 ,FW training done!!!!");
 			prn_string("\n");
@@ -465,7 +465,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone ()
 		dwc_ddrphy_apb_wr(0xd0031,0);
 		while (1) {
 			rd_data = dwc_ddrphy_apb_rd(0xd0004);
-			if (rd_data == 1) {
+			if ((rd_data & 0x01) == 1) {
 				break;
 			}
 		}
