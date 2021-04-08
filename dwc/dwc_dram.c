@@ -37,6 +37,10 @@ struct xboot_hdr {
 	u32 img_flag;
 	u32 reserved[3];
 };
+#define MO3_REG ((volatile struct int_regs *)RF_GRP(3, 0))
+struct int_regs {
+    UINT32  mo3_reserved[32];
+};
 
 
 // #define DRAM_INIT_DEBUG 0 // defined in Makefile: please use "make debug"
@@ -54,6 +58,11 @@ struct sp_registers {
 };
 static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers *)(RF_GRP(0, 0));
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
+struct dwc_phy_regs {
+	UINT16 dwc_phy_reg[4096];	/* change the size here, (area >> 2) */
+};
+static volatile struct dwc_phy_regs *dwc_phy_reg_ptr = (volatile struct dwc_phy_regs *)(DWC_PHY_REG_Base);
+#define DWC_PHY_REG(OFFSET)		(dwc_phy_reg_ptr->dwc_phy_reg[OFFSET ])
 
 #define TEST_LEN_0		(4 << 10)
 
@@ -156,6 +165,7 @@ void wait_loop(unsigned int wait_counter)
 	}
 }
 
+#if 0
 void assert_sdc_phy_reset(void)
 {
 #ifdef PLATFORM_PENTAGRAM
@@ -197,7 +207,7 @@ void do_system_reset_flow(unsigned int dram_id)
 	wait_loop(1000);
 	release_sdc_phy_reset();
 }
-
+#endif 
 void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 {
 	int idx;
@@ -392,6 +402,16 @@ int dram_booting_flow(unsigned int dram_id)
 	// -------------------------------------------------------
 	//do_system_reset_flow(dram_id);
 	//dbg_stamp(0xA000);
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
+	SP_REG(0, 25) = RF_MASK_V_SET(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+	SP_REG(3, 24) = RF_MASK_V_SET(1 << 12);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	wait_loop(1000);
+	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+	
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -406,16 +426,14 @@ int dram_booting_flow(unsigned int dram_id)
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 {
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
-	//adr = adr / 4;
-	//SP_REG(DRAM_0_PHY_REG_BASE + adr, 0) = dat;
+	DWC_PHY_REG(adr)=dat;
 }
 
 int dwc_ddrphy_apb_rd(UINT32 adr)
 {
 	UINT16 value;
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
-	//adr = adr / 4;
-	//value = SP_REG(DRAM_0_PHY_REG_BASE + adr, 0);
+	value= DWC_PHY_REG(adr);
 	return value;
 }
 
@@ -762,32 +780,41 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	//prn_string("\n");
 	//prn_string("code ver0009");
 	//prn_string("\n");
-
+	#if 0 //test code for load bin file	
+	dwc_ddrphy_phyinit_D_loadIMEM (0);
+	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
+	dwc_ddrphy_phyinit_D_loadIMEM (1);
+	dwc_ddrphy_phyinit_F_loadDMEM (0,1);
+	#endif
 	// -------------------------------------------------------
 	// 0. SDCTRL / DDR_PHY RGST GRP selection
 	// -------------------------------------------------------
 	dbg_stamp(0xA001);
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
+	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
+	wait_loop(1000);
+	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+	wait_loop(1000);
 	// -------------------------------------------------------
 	// 2.
 	// -------------------------------------------------------
 	dbg_stamp(0xA002);
-	//dwc_umctl2_init_before_ctl_rst(dram_id);
-	//dwc_umctl2_init_after_ctl_rst(dram_id);
-
+	dwc_umctl2_init_before_ctl_rst(dram_id);
+	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
+	wait_loop(1000);
+	wait_loop(1000);
+	dwc_umctl2_init_after_ctl_rst(dram_id);
+	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+ 	wait_loop(1000);
 	// -------------------------------------------------------
 	// 3.
 	// -------------------------------------------------------
 	//printf_header = "// [dwc_ddrphy_phyinit_sequence]";
 	//dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
 	dbg_stamp(0xA003);
-	//dwc_ddrphy_phyinit_main();
-	dwc_ddrphy_phyinit_D_loadIMEM (0);
-	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
-	dwc_ddrphy_phyinit_D_loadIMEM (1);
-	dwc_ddrphy_phyinit_F_loadDMEM (0,1);
-
+	dwc_ddrphy_phyinit_main();
 	//ctl_trigger_init_and_wait_normal();
 	//prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
 	//prn_decimal(dram_id);

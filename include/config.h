@@ -25,4 +25,8 @@
 #define UMCTL2_REG_Base		0x9C107000
 #endif
 
+#ifdef PLATFORM_Q645
+#define DWC_PHY_REG_Base	0xF9000000
+#endif 
+
 #endif /* __CONFIG_H */
