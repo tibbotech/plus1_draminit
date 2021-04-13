@@ -563,7 +563,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
-	struct xboot_hdr *hdr;
+	struct xboot_hdr *hdr = (struct xboot_hdr *)mem;
 	unsigned short i, j, addr, word16;
 	unsigned short mem_offset, img_length,cnt;
 

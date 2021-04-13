@@ -2815,4 +2815,10 @@ void run_customPostTrain();
 void ctl_trigger_init_and_wait_normal();
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat);
 int dwc_ddrphy_apb_rd(UINT32 adr);
+int ReadSDSector(
+	unsigned int sectorNo,
+	unsigned int pageCount,
+	unsigned int* ptrPyldData
+);
+
 
