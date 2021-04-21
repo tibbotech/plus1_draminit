@@ -767,7 +767,8 @@ void dwc_ddrphy_phyinit_main(void)
 {
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
-   #include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
+   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
+   #include <dwc_devinit_skiptrain_zebu.txt>
 }
 
 int dram_training_flow_for_ddr4(unsigned int dram_id)
