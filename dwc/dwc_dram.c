@@ -8,6 +8,13 @@
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
+#include <nand_boot/nfdriver.h>
+#include <nand_boot/nandop.h>
+#include <nand_boot/hal_nand_error.h>
+#include <fat/common.h>
+#include <fat/fat.h>
+
+
 #define SPI_FLASH_BASE      0xF0000000
 #define SPI_XBOOT_OFFSET    (96 * 1024)
 
@@ -207,7 +214,7 @@ void do_system_reset_flow(unsigned int dram_id)
 	wait_loop(1000);
 	release_sdc_phy_reset();
 }
-#endif 
+#endif
 void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 {
 	int idx;
@@ -406,12 +413,12 @@ int dram_booting_flow(unsigned int dram_id)
 	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
 	SP_REG(0, 25) = RF_MASK_V_SET(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-	SP_REG(3, 24) = RF_MASK_V_SET(1 << 12);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	SP_REG(3, 24) = RF_MASK_V_SET(1 << 12);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	wait_loop(1000);
-	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-	
+
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
@@ -495,9 +502,9 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 
 void printf_offset_value(unsigned short offset, unsigned short value)
 {
-	prn_string("mem_offset");
+	prn_string("mem_offset=");
 	prn_dword(offset);
-	prn_string("value");
+	prn_string("value=");
 	prn_dword(value);
 }
 
@@ -561,13 +568,16 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 	sum = 0;
 }
 
-void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
+void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
-	struct xboot_hdr *hdr = (struct xboot_hdr *)mem;
 	unsigned short i, j, addr, word16;
 	unsigned short mem_offset, img_length,cnt;
+	unsigned int img_name, img_sum;
 
 	mem_offset = 0;
+	img_name = 0;
+	img_length = 0;
+	img_sum = 0;
 
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
@@ -577,9 +587,9 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 		if((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
 			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)) //j is array number
 		{
-			prn_string("mem[j]=");
-			prn_dword(mem[j]);
-		    hdr->magic = mem[j];
+			//prn_string("mem[j]=");
+			//prn_dword(mem[j]);
+		    img_name = mem[j];
 			if(mem[j] == IM1D_HDR_MAGIC)
 				IMEM1d_len = mem[j+2];
 			else if(mem[j] == DM1D_HDR_MAGIC)
@@ -588,12 +598,12 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 				IMEM2d_len = mem[j+2];
 			else if(mem[j] == DM2D_HDR_MAGIC)
 				DMEM2d_len = mem[j+2];
-			prn_string("leng=");
-			prn_dword(mem[j+2]);
-			hdr->length = img_length = mem[j+2];
-			prn_string("checksum=");
-			prn_dword(mem[j+3]);
-			hdr->checksum =  mem[j+3];
+			//prn_string("leng=");
+			//prn_dword(mem[j+2]);
+			img_length = mem[j+2];
+			//prn_string("checksum=");
+			//prn_dword(mem[j+3]);
+			img_sum =  mem[j+3];
 			//prn_string("j=");
 			//prn_dword(j);
 			if((j+8-1) > 127) //add header length 8*4=32bytes overlap block size
@@ -620,14 +630,14 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
 				//printf_offset_value(mem_offset,word16);
 				mem_offset++;
-				hdr->length -= 4;
+				img_length -= 4;
 			}
 			break;
 		}
 	}
 
 	//Read middle block
-	while(hdr->length > 512)
+	while(img_length > 512)
 	{
 		for (addr = 0; addr < mem_size; addr++)
 			mem[addr]=0;
@@ -645,9 +655,9 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 			//printf_offset_value(mem_offset,word16);
 			mem_offset++;
 		}
-		hdr->length -= 512;
-		//prn_string("hdr->length");
-		//prn_dword(hdr->length);
+		img_length -= 512;
+		//prn_string("img_length");
+		//prn_dword(img_length);
 	}
 
 	//Read last block
@@ -655,7 +665,7 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 		mem[addr]=0;
 	offset++;
 	ReadSDSector(offset, 1, mem);
-	cnt = hdr->length/4;
+	cnt = img_length/4;
 	tcpsum(0, cnt, 1);//checksum
 	//prn_string("cnt=");
 	//prn_dword(cnt);
@@ -671,7 +681,7 @@ void LoadBinCodeForEmmc(unsigned char Train2D, unsigned int offset, unsigned int
 		mem_offset++;
 	}
 
-	DwcCheckSum(hdr->magic, hdr->checksum);
+	DwcCheckSum(img_name, img_sum);
 	sum = 0;
 }
 
@@ -694,14 +704,31 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	}
-	else if(bootdevice == EMMC_BOOT)
+	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
 		unsigned int sectorNo0,sectorNo1, total_length, addr;
-		for (addr = 0; addr < mem_size; addr++)
-			mem[addr]=0;
-		ReadSDSector(0, 1, mem);
+		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
+		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
+		int ret;
 
-		XBOOT_len = mem[2];
+		if(bootdevice == EMMC_BOOT)
+		{
+			for (addr = 0; addr < mem_size; addr++)
+				mem[addr]=0;
+			ReadSDSector(0, 1, mem);
+			XBOOT_len = mem[2];
+		}
+		else if(bootdevice == SDCARD_ISP)
+		{
+			ret = fat_read_file(0, &g_finfo, g_io_buf.usb.sect_buf, 0, 32, buf); //for get xboot's sector No
+			if (ret == FAIL) {
+				prn_string("load xboot hdr failed\n");
+				return;
+			}
+			//prn_string("xboot len=");
+			//prn_dword(32 + xhdr->length);
+			XBOOT_len = xhdr->length;
+		}
 		prn_string("XBOOT_len="); prn_dword(XBOOT_len);
 		if (Train2D == 0)
 		{
@@ -709,7 +736,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
 			printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForEmmc(0,sectorNo0,IMEM_ADDR);
+			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 		else if(Train2D == 1)
 		{
@@ -717,7 +744,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
 			printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForEmmc(0,sectorNo0,IMEM_ADDR);
+			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 	}
 }
@@ -741,7 +768,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 		if (Train2D == 1)
 			LoadBinCode(1,offset,DMEM_ADDR);
 	}
-	else if(bootdevice == EMMC_BOOT)
+	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
 		int sectorNo0,sectorNo1, total_length;
 		if (Train2D == 0)
@@ -750,7 +777,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
 			printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForEmmc(0,sectorNo0,DMEM_ADDR);
+			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 		else if(Train2D == 1)
 		{
@@ -758,7 +785,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
 			printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForEmmc(0,sectorNo0,DMEM_ADDR);
+			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 	}
 }
@@ -781,7 +808,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	//prn_string("\n");
 	//prn_string("code ver0009");
 	//prn_string("\n");
-	#if 0 //test code for load bin file	
+	#if 0 //test code for load bin file
 	dwc_ddrphy_phyinit_D_loadIMEM (0);
 	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
 	dwc_ddrphy_phyinit_D_loadIMEM (1);
@@ -792,7 +819,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	// -------------------------------------------------------
 	dbg_stamp(0xA001);
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin 
+	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
 	wait_loop(1000);
