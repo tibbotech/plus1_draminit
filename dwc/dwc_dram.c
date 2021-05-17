@@ -8,6 +8,7 @@
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
+#include <bootmain.h>
 #include <nand_boot/nfdriver.h>
 #include <nand_boot/nandop.h>
 #include <nand_boot/hal_nand_error.h>
@@ -36,14 +37,7 @@
 #define DM2D_HDR_MAGIC   0x64326d64
 
 typedef unsigned int        u32;
-struct xboot_hdr {
-	u32 magic;
-	u32 version;
-	u32 length;       // exclude header
-	u32 checksum;     // exclude header
-	u32 img_flag;
-	u32 reserved[3];
-};
+
 #define MO3_REG ((volatile struct int_regs *)RF_GRP(3, 0))
 struct int_regs {
     UINT32  mo3_reserved[32];
@@ -118,7 +112,7 @@ static unsigned int gAC, gACK, gCK;
 
 static unsigned int bootdevice;
 
-static unsigned int XBOOT_len;
+static unsigned int XBOOT_len  = 0;
 static unsigned int IMEM1d_len = 0;
 static unsigned int DMEM1d_len = 0;
 static unsigned int IMEM2d_len = 0;
@@ -449,15 +443,15 @@ int dwc_ddrphy_apb_rd(UINT32 adr)
 #define mem_size 128
 unsigned int sum = 0;
 unsigned int mem[mem_size];
-void tcpsum(unsigned int StartNo, unsigned int EndNo, unsigned char flag)
+void tcpsum(unsigned int StartNo, unsigned int EndNo, unsigned int *buf, unsigned char flag)
 {
 	unsigned short word16_h,word16_l;
 	int i;
 
 	/* Accumulate checksum */
 	for (i = StartNo; i < EndNo; i++) {
-		word16_h = (mem[i]>>16)&0xFFFF;
-		word16_l = mem[i]&0xFFFF;
+		word16_h = (buf[i]>>16)&0xFFFF;
+		word16_l = buf[i]&0xFFFF;
 		sum += word16_l;
 		sum += word16_h;
 	}
@@ -476,36 +470,33 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 {
 	if ((sum&0x0000FFFF) != checksum) {
 		if (magic == IM1D_HDR_MAGIC)
-			prn_string("1d IMEM checksum error!!!!\n");
+			prn_string("1D IMEM checksum error!!!!\n");
 		else if (magic == DM1D_HDR_MAGIC)
-			prn_string("1d DMEM checksum error!!!!\n");
+			prn_string("1D DMEM checksum error!!!!\n");
 		else if (magic == IM2D_HDR_MAGIC)
-			prn_string("2d IMEM checksum error!!!!\n");
+			prn_string("2D IMEM checksum error!!!!\n");
 		else if (magic == DM2D_HDR_MAGIC)
-			prn_string("2d DMEM checksum error!!!!\n");
+			prn_string("2D DMEM checksum error!!!!\n");
 
-		prn_string("sum");
-		prn_dword(sum);
-		prn_string("checksum");
-		prn_dword((checksum)); //wirte dword
+		prn_string("sum="); prn_dword(sum);
+		prn_string("checksum="); prn_dword((checksum));
 	} else {
 		if (magic == IM1D_HDR_MAGIC)
-			prn_string("1d IMEM checksum ok!!!!\n");
+			prn_string("1D IMEM checksum ok!!!!\n");
 		else if (magic == DM1D_HDR_MAGIC)
-			prn_string("1d DMEM checksum ok!!!!\n");
+			prn_string("1D DMEM checksum ok!!!!\n");
 		else if (magic == IM2D_HDR_MAGIC)
-			prn_string("2d IMEM checksum ok!!!!\n");
+			prn_string("2D IMEM checksum ok!!!!\n");
 		else if (magic == DM2D_HDR_MAGIC)
-			prn_string("2d DMEM checksum ok!!!!\n");
+			prn_string("2D DMEM checksum ok!!!!\n");
 	}
+	sum = 0;    // Reset DWC checksum
 }
 
 void printf_offset_value(unsigned short offset, unsigned short value)
 {
-	prn_string("mem_offset=");
-	prn_dword(offset);
-	prn_string("value=");
-	prn_dword(value);
+	prn_string("mem_offset="); prn_dword(offset);
+	prn_string("value="); prn_dword(value);
 }
 
 void printf_sectorNo(unsigned short sectorNo0, unsigned short sectorNo1)
@@ -535,7 +526,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 		unsigned int *src = (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*i));
 		memcpy32(mem, src, rsize/4); //copy data 512 bytest
-		tcpsum(0,128, 0);//checksum
+		tcpsum(0, 128, mem, 0);//checksum
 		for (j=0; j<128; j++) {
 			/*****write register *********/
 			word16 = mem[j]&0xFFFF;
@@ -553,7 +544,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 	unsigned int *src =  (unsigned int*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET+offset+32+(rsize*num0));
 	memcpy32(mem, src, num1/4);//copy data
-	tcpsum(0,num1/4, 1);//checksum
+	tcpsum(0,num1/4, mem, 1);//checksum
 	for (j=0; j<(num1/4); j++) {
 		/*****write register *********/
 		word16 = mem[j]&0xFFFF;
@@ -613,12 +604,12 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 					mem[addr]=0;
 				offset++;
 				ReadSDSector(offset, 1, mem);
-				tcpsum(i, 128, 0);//checksum
+				tcpsum(i, 128, mem, 0);//checksum
 			}
 			else
 			{
 				i = j+8;
-				tcpsum(i, 128, 0);//checksum
+				tcpsum(i, 128, mem, 0);//checksum
 			}
 			for (j = i; j < 128; j++) {
 				/*****write register *********/
@@ -643,7 +634,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			mem[addr]=0;
 		offset++;
 		ReadSDSector(offset, 1, mem);
-		tcpsum(0, 128, 0);//checksum
+		tcpsum(0, 128, mem, 0);//checksum
 		for (j = 0; j < 128; j++) {
 			/*****write register *********/
 			word16 = mem[j]&0xFFFF;
@@ -666,7 +657,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	offset++;
 	ReadSDSector(offset, 1, mem);
 	cnt = img_length/4;
-	tcpsum(0, cnt, 1);//checksum
+	tcpsum(0, cnt, mem, 1);//checksum
 	//prn_string("cnt=");
 	//prn_dword(cnt);
 	for (j = 0; j < cnt; j++){
@@ -685,9 +676,225 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	sum = 0;
 }
 
+void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
+{
+	u32 read_bytes = 0;
+	int sz_sect = GetNANDPageCount_1K60(g_bootinfo.sys_nand.u16PyldLen) * 1024;
+	int res;
+	u32 mem_addr = 0, mem_offset = 0;
+	u32 img_name = 0, img_length = 0, img_sum = 0;
+	u32 i, j, cnt, word16;
+
+	//prn_string("LoadBinForNAND\n");
+
+	sum = 0;    // Reset DWC checksum
+	cnt = sz_sect / 4;
+	mem_addr = (mem_type == 0)? IMEM_ADDR : DMEM_ADDR;
+
+	/* Read first page of BIN file */
+	//prn_string("Read first page\n");
+	prn_string("1st pg_off="); prn_decimal(pg_off); prn_string("\n");
+	res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+	if (res != ROM_SUCCESS) {
+		prn_string("failed at pg="); prn_dword(pg_off);
+		//break;
+	}
+
+	// Search BIN header
+	//prn_string("Search BIN header\n");
+	for (i = 0; i < cnt; i++) {
+		if ((buf[i] == IM1D_HDR_MAGIC) || (buf[i] == DM1D_HDR_MAGIC) ||
+			(buf[i] == IM2D_HDR_MAGIC) || (buf[i] == DM2D_HDR_MAGIC)) {
+			prn_string("Found BIN at i="); prn_dword(i);
+
+			img_name   = buf[i];
+			img_length = buf[i+2];
+			img_sum    = buf[i+3];
+			//prn_string("img_name="); prn_dword(img_name);
+			//prn_string("img_length="); prn_dword(img_length);
+			//prn_string("img_sum="); prn_dword(img_sum);
+
+			// Check if BIN image is correct
+			if (((Train2D == 0) && (mem_type == 0) && (img_name != IM1D_HDR_MAGIC)) ||
+				((Train2D == 0) && (mem_type == 1) && (img_name != DM1D_HDR_MAGIC)) ||
+				((Train2D == 1) && (mem_type == 0) && (img_name != IM2D_HDR_MAGIC)) ||
+				((Train2D == 1) && (mem_type == 1) && (img_name != DM2D_HDR_MAGIC))) {
+				prn_string("Wrong image! img_name="); prn_dword(img_name);
+			}
+
+			// Check first data position
+			j = i + 8;
+			//prn_string("j="); prn_dword(j);
+			if (j >= cnt) {
+				// The first page of BIN files spans two NAND pages
+				j = j - cnt;
+				pg_off++;
+				//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
+				res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+				if (res != ROM_SUCCESS) {
+					prn_string("failed at pg="); prn_dword(pg_off);
+					//break;
+				}
+
+				// Get BIN checksum and length again
+				if (j > 4) {
+					img_sum = buf[j-5];
+					//prn_string("img_sum="); prn_dword(img_sum);
+				}
+				if (j > 5) {
+					img_length = buf[j-4];
+					//prn_string("img_length="); prn_dword(img_length);
+				}
+			}
+			tcpsum(j, cnt, buf, 0);
+
+			// Store BIN file length. Add it to header length, 32 bytes.
+			if (img_name == IM1D_HDR_MAGIC)
+				IMEM1d_len = img_length + 32;
+			else if (img_name == DM1D_HDR_MAGIC)
+				DMEM1d_len = img_length + 32;
+			else if (img_name == IM2D_HDR_MAGIC)
+				IMEM2d_len = img_length + 32;
+			else if (img_name == DM2D_HDR_MAGIC)
+				DMEM2d_len = img_length + 32;
+
+			// Write DWC PHY register
+			//prn_string("Write DWC PHY register\n");
+			//prn_string("mem_addr="); prn_dword(mem_addr);
+			for (; j < cnt; j++) {
+				//prn_string("j="); prn_dword(j);
+				word16 = buf[j]&0xFFFF;
+				dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+				//printf_offset_value(mem_offset,word16);
+				mem_offset++;
+				word16 = (buf[j]>>16)&0xFFFF;
+				dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+				//printf_offset_value(mem_offset,word16);
+				mem_offset++;
+				img_length -= 4;
+			}
+			//prn_string("img_length="); prn_dword(img_length);
+			break;
+		}
+	}
+
+	/* Read middle pages of BIN file */
+	//prn_string("Read middle pages\n");
+	while(img_length > sz_sect) {
+		pg_off++;
+		//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
+		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+		if (res != ROM_SUCCESS) {
+			prn_string("failed at pg="); prn_dword(pg_off);
+			//break;
+		}
+		tcpsum(0, cnt, buf, 0);
+
+		// Write DWC PHY register
+		//prn_string("Write DWC PHY register\n");
+		for (j = 0; j < cnt; j++) {
+			//prn_string("j="); prn_dword(j);
+			word16 = buf[j]&0xFFFF;
+			dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+			word16 = (buf[j]>>16)&0xFFFF;
+			dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+			img_length -= 4;
+		}
+		//prn_string("img_length ="); prn_dword(img_length);
+	}
+
+	/* Read last page of BIN file */
+	//prn_string("Read last page\n");
+	pg_off++;
+	//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
+	res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+	if (res != ROM_SUCCESS) {
+		prn_string("failed at pg="); prn_dword(pg_off);
+		//break;
+	}
+	i = img_length / 4;
+	tcpsum(0, i, buf, 1);
+	//prn_string("i="); prn_dword(i);
+
+	// Write DWC PHY register
+	//prn_string("Write DWC PHY register\n");
+	for (j = 0; j < i; j++) {
+		//prn_string("j="); prn_dword(j);
+		word16 = buf[j] & 0xFFFF;
+		dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+		//printf_offset_value(mem_offset,word16);
+		mem_offset++;
+		word16 = (buf[j] >> 16) & 0xFFFF;
+		dwc_ddrphy_apb_wr(mem_addr+mem_offset, word16);
+		//printf_offset_value(mem_offset,word16);
+		mem_offset++;
+		img_length -= 4;
+	}
+
+	DwcCheckSum(img_name, img_sum);
+}
+
+void LoadMEMForNAND(int Train2D, int mem_type)
+{
+	struct BootProfileHeader *ptr = Get_Header_Profile_Ptr();
+	u32 read_bytes = 0, pg_off = 0, pg_cnt = 0;
+	u8 *buf = g_io_buf.nand.data;
+	int res;
+	int sz_sect = GetNANDPageCount_1K60(g_bootinfo.sys_nand.u16PyldLen) * 1024;
+	int xbsize;
+
+	prn_string("LoadMEMForNAND\n");
+	prn_string("Train2D="); prn_decimal(Train2D); prn_string("; ");
+	prn_string("mem_type="); prn_decimal(mem_type); prn_string("\n");
+
+	// Get NAND infor from Boot Profile header
+	pg_off = ptr->xboot_pg_off; 	// Xboot offset
+	//prn_string("pg_off="); prn_dword(pg_off);
+	//prn_string("sz_sect="); prn_dword(sz_sect);
+
+	if (XBOOT_len == 0) {
+		// Get Xboot length from NAND
+		//prn_string("Get Xboot length from NAND\n");
+		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+		if (res != ROM_SUCCESS) {
+			prn_string("failed at pg="); prn_dword(pg_off);
+			//break;
+		}
+
+		xbsize = get_xboot_size(buf);
+		XBOOT_len = xbsize;
+	}
+	//prn_string("XBOOT_len="); prn_dword(XBOOT_len);
+
+	if (mem_type == 0) {
+		if (Train2D == 0) {
+			pg_cnt = XBOOT_len + sz_sect - 1;
+		} else {
+			//prn_string("DMEM1d_len="); prn_dword(DMEM1d_len);
+			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len + sz_sect - 1;
+		}
+	} else {
+		if (Train2D == 0) {
+			//prn_string("IMEM1d_len="); prn_dword(IMEM1d_len);
+			pg_cnt = XBOOT_len + IMEM1d_len + sz_sect - 1;
+		} else {
+			//prn_string("IMEM2d_len="); prn_dword(IMEM2d_len);
+			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len + IMEM2d_len + sz_sect - 1;
+		}
+	}
+	pg_cnt /= sz_sect;
+	pg_off = pg_off + pg_cnt - 1;
+
+	LoadBinForNAND(Train2D, mem_type, pg_off, (u32 *)buf);
+}
+
 void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 {
-	if(bootdevice == SPI_NOR_BOOT)
+	if (bootdevice == SPI_NOR_BOOT)
 	{
 		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
 		unsigned int offset;
@@ -704,21 +911,21 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	}
-	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
+	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
 		unsigned int sectorNo0,sectorNo1, total_length, addr;
 		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
 		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
 		int ret;
 
-		if(bootdevice == EMMC_BOOT)
+		if (bootdevice == EMMC_BOOT)
 		{
 			for (addr = 0; addr < mem_size; addr++)
 				mem[addr]=0;
 			ReadSDSector(0, 1, mem);
 			XBOOT_len = mem[2];
 		}
-		else if(bootdevice == SDCARD_ISP)
+		else if (bootdevice == SDCARD_ISP)
 		{
 			ret = fat_read_file(0, &g_finfo, g_io_buf.usb.sect_buf, 0, 32, buf); //for get xboot's sector No
 			if (ret == FAIL) {
@@ -738,7 +945,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 			printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
-		else if(Train2D == 1)
+		else if (Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
@@ -746,6 +953,10 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 			printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
+	}
+	else if (bootdevice == SPINAND_BOOT)
+	{
+		LoadMEMForNAND(Train2D, 0);
 	}
 }
 
@@ -787,6 +998,10 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 			printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
+	}
+	else if (bootdevice == SPINAND_BOOT)
+	{
+		LoadMEMForNAND(Train2D, 1);
 	}
 }
 
