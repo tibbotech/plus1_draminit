@@ -676,6 +676,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	sum = 0;
 }
 
+#ifdef CONFIG_HAVE_SPI_NAND
 void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 {
 	u32 read_bytes = 0;
@@ -891,6 +892,7 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 
 	LoadBinForNAND(Train2D, mem_type, pg_off, (u32 *)buf);
 }
+#endif
 
 void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 {
@@ -954,10 +956,12 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 	}
+#ifdef CONFIG_HAVE_SPI_NAND
 	else if (bootdevice == SPINAND_BOOT)
 	{
 		LoadMEMForNAND(Train2D, 0);
 	}
+#endif
 }
 
 void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
@@ -999,10 +1003,12 @@ void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 	}
+#ifdef CONFIG_HAVE_SPI_NAND
 	else if (bootdevice == SPINAND_BOOT)
 	{
 		LoadMEMForNAND(Train2D, 1);
 	}
+#endif
 }
 
 void dwc_ddrphy_phyinit_main(void)
