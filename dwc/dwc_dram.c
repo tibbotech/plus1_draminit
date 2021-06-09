@@ -43,6 +43,7 @@ struct int_regs {
     UINT32  mo3_reserved[32];
 };
 
+#define CSTAMP(value)      { *(volatile unsigned int *)RF_GRP(0, 0) = (unsigned int)ADDRESS_CONVERT(value); }
 
 // #define DRAM_INIT_DEBUG 0 // defined in Makefile: please use "make debug"
 
@@ -412,6 +413,8 @@ int dram_booting_flow(unsigned int dram_id)
 	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+
+	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
 
 	prn_string("<<< leave dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
@@ -1016,7 +1019,8 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
-   #include <dwc_devinit_skiptrain_zebu.txt>
+   //#include <dwc_devinit_skiptrain_zebu.txt>
+   #include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_2020_0607_c8.txt>
 }
 
 int dram_training_flow_for_ddr4(unsigned int dram_id)
@@ -1064,7 +1068,7 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 	//dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
 	dbg_stamp(0xA003);
 	dwc_ddrphy_phyinit_main();
-	//ctl_trigger_init_and_wait_normal();
+	ctl_trigger_init_and_wait_normal();
 	//prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
 	//prn_decimal(dram_id);
 	//prn_string("\n");
