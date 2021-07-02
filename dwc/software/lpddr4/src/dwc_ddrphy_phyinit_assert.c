@@ -11,14 +11,14 @@
 #include <common.h>
 
 /** @brief Assertion handler used by PhyInit
- * 
+ *
  * This function is called by PhyInit when errors or warnings need to be issued
  * based on user programing. The user if free to change this function to their
  * needs depending on their usage model and environment. The implementation
  * provided here is for \ref useModel only. The function prints the
  * input string fmt prepended with "[Error]" or [Warning]" depending on Svrty
  * level. if Svrty ==0 it exits the program due to Error.  if Svrty != 0 it
- * returns void. 
+ * returns void.
  *
  * \note Error/warning messages are displayed to stdout in this implementation.
  *
@@ -31,10 +31,11 @@ void dwc_ddrphy_phyinit_assert (int Svrty, const char *fmt,...)
 {
   char *PreStr;
   PreStr = (Svrty==0) ? "[Error]" : "[Warning]";
-#if 1 //tonyh test
+#if 0 //tonyh test
   prn_string(fmt);
   return;
-#else
+#endif
+#if 0
   va_list argptr;
 
   va_start(argptr,fmt);
@@ -43,6 +44,6 @@ void dwc_ddrphy_phyinit_assert (int Svrty, const char *fmt,...)
   va_end(argptr);
 
   if (Svrty==0) exit(EXIT_FAILURE); else return;
-#endif 
+#endif
 }
 /** @} */

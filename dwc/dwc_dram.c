@@ -167,49 +167,6 @@ void wait_loop(unsigned int wait_counter)
 	}
 }
 
-#if 0
-void assert_sdc_phy_reset(void)
-{
-#ifdef PLATFORM_PENTAGRAM
-	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
-#elif defined(PLATFORM_I143)
-	SP_REG(0, 21) = RF_MASK_V_SET(1 << 10);	// UMCTL2
-	SP_REG(0, 21) = RF_MASK_V_SET(1 << 14);	// SDCTRL0
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 0);	// PHY
-#elif defined(PLATFORM_Q645)
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// UMCTL2
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 3);	// PHY
-#endif
-}
-
-void release_sdc_phy_reset(void)
-{
-#ifdef PLATFORM_PENTAGRAM
-	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
-	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
-#elif defined(PLATFORM_I143)
-	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 10);	// UMCTL2
-	SP_REG(0, 21) = RF_MASK_V_CLR(1 << 14);	// SDCTRL0
-	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 0);	// PHY
-#elif defined(PLATFORM_Q645)
-	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// UMCTL2
-	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 3);	// PHY
-#endif
-}
-
-// ***********************************************************************
-// * FUNC      : do_system_reset_flow
-// * PARAM     : dram_id
-// * PURPOSE   : do SDC & PHY reset flow
-// ***********************************************************************
-void do_system_reset_flow(unsigned int dram_id)
-{
-	assert_sdc_phy_reset();
-	wait_loop(1000);
-	release_sdc_phy_reset();
-}
-#endif
 void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
 {
 	int idx;
@@ -332,55 +289,6 @@ int memory_rw_test(unsigned int start_addr, unsigned int test_len, int flag)
 }
 
 // ***********************************************************************
-// * FUNC      : SDCTRL_TRIMMER_TEST
-// * PARAM     : dram_id
-// * PURPOSE   : trigger SDC.trimmer 4 modes to do random DRAM access test
-// ***********************************************************************
-int SDCTRL_TRIMMER_TEST(unsigned int dram_id, unsigned int start_addr, unsigned int TEST_DATA_LENGTH)
-{
-	// H/W trimmer has beem removed.
-	// Just run memory test.
-
-	return ((memory_rw_test(start_addr, TEST_DATA_LENGTH, MEMORY_RW_FLAG_EXIT) < 0) ? 0 : 1);
-}
-
-// ***********************************************************************
-// * FUNC      : DPCU_CMD_ISSUE_SW_CMD
-// * PARAM     : CMD, RANK,BANK,ADDR, DATA_MASK, DATA, TRIGGER
-// * PURPOSE   : using CMD ISSUE issue
-// ***********************************************************************
-void DPCU_CMD_ISSUE_SW_CMD(unsigned int dram_id, unsigned int CMD, unsigned int RANK, unsigned int BANK, unsigned int ADDR,
-			   unsigned int SW_WRDATA_MASK, unsigned int SW_WRDATA1_HIGH, unsigned int SW_WRDATA1_LOW,
-			   unsigned int SW_WRDATA0_HIGH, unsigned int SW_WRDATA0_LOW, unsigned int CMD_TRIGGER)
-{
-	unsigned int temp;
-	unsigned int SDC_BASE_GRP = 0,
-		     PHY_BASE_GRP = 0;
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-	temp = SP_REG(PHY_BASE_GRP + 1, 27) & 0xF0000000;
-	// fill cmd, RANK, BANK, ADDR infor
-	SP_REG(PHY_BASE_GRP + 1, 27) = temp | (CMD << 24) | (RANK << 20) | (BANK << 16) | (ADDR);
-	// fill WRdata mask
-	SP_REG(PHY_BASE_GRP + 2, 21) = SW_WRDATA_MASK & 0xFF;
-	SP_REG(PHY_BASE_GRP + 3, 21) = (SW_WRDATA_MASK >> 8) & 0xFF;
-	// fill WRDATA
-	SP_REG(PHY_BASE_GRP + 2, 22) = SW_WRDATA0_LOW;
-	SP_REG(PHY_BASE_GRP + 2, 23) = SW_WRDATA0_HIGH;
-	SP_REG(PHY_BASE_GRP + 3, 22) = SW_WRDATA1_LOW;
-	SP_REG(PHY_BASE_GRP + 3, 23) = SW_WRDATA1_HIGH;
-	// Commit the cmd setting to DPCU CMD CUE
-	temp = SP_REG(PHY_BASE_GRP + 1, 10);
-	wait_loop(10);
-	SP_REG(PHY_BASE_GRP + 1, 10) = temp | (1 << 8); // commit
-	wait_loop(10);
-	// Trigger CMD if need
-	temp = SP_REG(PHY_BASE_GRP + 1, 10);
-	wait_loop(10);
-	SP_REG(PHY_BASE_GRP + 1, 10) = temp | (CMD_TRIGGER << 9); // Trigger
-}  // End    DPCU_CMD_ISSUE_SW_CMD
-
-// ***********************************************************************
 // * FUNC      : dram_booting_flow
 // * PARAM     : dram_id
 // * PURPOSE   : to do the following sequences
@@ -392,7 +300,7 @@ int dram_booting_flow(unsigned int dram_id)
 	//unsigned int wait_flag      = 0;	 // min
 	//unsigned int aphy_select1_value = 0;
 	//unsigned int aphy_select2_value = 0;
-	prn_string(">>> enter dram_booting_flow for DRAM");
+	prn_string("enter dram_booting_flow for DRAM");
 	prn_decimal(dram_id);
 	prn_string("\n");
 	// -------------------------------------------------------
@@ -416,9 +324,9 @@ int dram_booting_flow(unsigned int dram_id)
 
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
 
-	prn_string("<<< leave dram_booting_flow for DRAM");
-	prn_decimal(dram_id);
-	prn_string("\n");
+	//prn_string("leave dram_booting_flow for DRAM");
+	//prn_decimal(dram_id);
+	//prn_string("\n");
 	return 1;
 } // end of dram_booting_flow
 
@@ -1020,7 +928,8 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt>
-   #include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_2020_0607_c8.txt>
+   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_2020_0607_c8.txt>
+   #include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
 }
 
 int dram_training_flow_for_ddr4(unsigned int dram_id)

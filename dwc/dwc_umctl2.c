@@ -25,7 +25,7 @@ int ctl_apb_rd(UINT32 adr)
 int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
-	prn_string ("//Start of dwc_umctl2_init_before_ctl_rst\n");
+	//prn_string ("Start of dwc_umctl2_init_before_ctl_rst\n");
 	//RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)
 	//RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> ASSERTED (ACTIVE LOW)
@@ -80,7 +80,9 @@ int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 	ctl_apb_wr(0x0180,UMCTL2_180);//ZQCTL0
 	ctl_apb_wr(0x0184,UMCTL2_184);//ZQCTL1
 	ctl_apb_wr(0x0188,UMCTL2_188);//ZQCTL2
-	ctl_apb_wr(0x0190,UMCTL2_190);//DFITMG0
+
+	ctl_apb_wr(0x0190,UMCTL2_190);//DFITMG0 0x0397820a
+
 	ctl_apb_wr(0x0194,UMCTL2_194);//DFITMG1
 	ctl_apb_wr(0x0198,UMCTL2_198);//DFILPCFG0
 	ctl_apb_wr(0x019c,UMCTL2_19C);//DFILPCFG1
@@ -340,7 +342,7 @@ int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 	prn_string("\n");
 #endif
 	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_before_ctl_rst\n");
-	prn_string ("//End of dwc_umctl2_init_before_ctl_rst\n");
+	//prn_string ("End of dwc_umctl2_init_before_ctl_rst\n");
 	return 0;
 }
 
@@ -348,7 +350,7 @@ int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
-	prn_string ("//Start of dwc_umctl2_init_after_ctl_rst\n");
+	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
 #if 1
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
@@ -413,7 +415,7 @@ int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
 	prn_string("\n");
 #endif
 	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_after_ctl_rst\n");
-	prn_string ("//End of dwc_umctl2_init_after_ctl_rst\n");
+	//prn_string ("End of dwc_umctl2_init_after_ctl_rst\n");
 	return 0;
 }
 
@@ -436,28 +438,28 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone ()
 	UINT16 rd_data;
 	UINT8 train_test = 0;
 
-	prn_string("Start to wait for the training firmware to complete!!!");
-	prn_string("\n");
+	//prn_string("Start to wait for the training firmware to complete!!!");
+	//prn_string("\n");
 	while (train_test == 0) {
 		while (1) {
 			rd_data = dwc_ddrphy_apb_rd(0xd0004);
 			if ((rd_data & 0x01) == 0) {
-				prn_string("Wait mailbox send message done!!!");
-				prn_string("\n");
+				//prn_string("Wait mailbox send message done!!!");
+				//prn_string("\n");
 				break;
 			}
 		}
 		rd_data = dwc_ddrphy_apb_rd(0xd0032);
 		if ((rd_data & 0x0f) == 0x07) {
 			train_test = 1;
-			prn_string("GET mailbox send 7 ,FW training done!!!!");
-			prn_string("\n");
+			//prn_string("GET mailbox send 7 ,FW training done!!!!");
+			//prn_string("\n");
 		}
-		prn_string("GET mailbox message = ");prn_dword0(rd_data);
-		prn_string("\n");
+		//prn_string("GET mailbox message = ");prn_dword0(rd_data);
+		//prn_string("\n");
 		if (rd_data == 0xff) {
-			prn_string("GET mailbox send 16'hff ,FW training Fail!!!!");
-			prn_string("\n");
+			//prn_string("GET mailbox send 16'hff ,FW training Fail!!!!");
+			//prn_string("\n");
 			return;
 		}
 		rd_data = dwc_ddrphy_apb_rd(0xd0034);
@@ -497,13 +499,13 @@ void ctl_trigger_init_and_wait_normal()
 	UINT16 rd_data;
 
 	ctl_apb_wr(0x1b0,0x00000070);   //trigger dfi_init_start
-	prn_string("Start to wait for dfi_init_complete !!!");
-	prn_string("\n");
+	//prn_string("Start to wait for dfi_init_complete !!!");
+	//prn_string("\n");
 	while (1) {
 		rd_data = ctl_apb_rd(0x1bc);
 		if (rd_data == 1) {
-			prn_string("Wait for dfi_init_complete, done!!!");
-			prn_string("\n");
+			//prn_string("Wait for dfi_init_complete, done!!!");
+			//prn_string("\n");
 			break;
 		}
 	}
@@ -520,13 +522,13 @@ void ctl_trigger_init_and_wait_normal()
 	polling_sw_cfg_done();
 	//prn_string("12'h324 rd_data = 'h%8h",rd_data);
 
-	prn_string("Start to wait for ctl into normal mode !!!");
-	prn_string("\n");
+	//prn_string("Start to wait for ctl into normal mode !!!");
+	//prn_string("\n");
 	while (1) {
 		rd_data = ctl_apb_rd(0x004);
 		if (rd_data == 1) {
-			prn_string("Wait for ctl into normal mode, done!!!");
-			prn_string("\n");
+			//prn_string("Wait for ctl into normal mode, done!!!");
+			//prn_string("\n");
 			break;
 		}
 	}
