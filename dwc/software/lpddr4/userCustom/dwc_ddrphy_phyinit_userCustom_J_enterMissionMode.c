@@ -33,32 +33,32 @@
  */
 void dwc_ddrphy_phyinit_userCustom_J_enterMissionMode () { 
 
-    char *printf_header;
-    printf_header = "// [dwc_ddrphy_phyinit_userCustom_J_enterMissionMode]";
+    //char *printf_header;
+    //printf_header = "// [dwc_ddrphy_phyinit_userCustom_J_enterMissionMode]";
 
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()\n", printf_header);
 
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// (J) Initialize the PHY to Mission Mode through DFI Initialization \n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Initialize the PHY to mission mode as follows: \n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// 1. Set the PHY input clocks to the desired frequency. \n");
-    dwc_ddrphy_phyinit_cmnt ("// 2. Initialize the PHY to mission mode by performing DFI Initialization. \n");
-    dwc_ddrphy_phyinit_cmnt ("//    Please see the DFI specification for more information. See the DFI frequency bus encoding in section <XXX>.\n");
-    dwc_ddrphy_phyinit_cmnt ("// Note: The PHY training firmware initializes the DRAM state. if skip \n");
-    dwc_ddrphy_phyinit_cmnt ("// training is used, the DRAM state is not initialized. \n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_J_enterMissionMode ();\n\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// (J) Initialize the PHY to Mission Mode through DFI Initialization \n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Initialize the PHY to mission mode as follows: \n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// 1. Set the PHY input clocks to the desired frequency. \n");
+    //dwc_ddrphy_phyinit_cmnt ("// 2. Initialize the PHY to mission mode by performing DFI Initialization. \n");
+    //dwc_ddrphy_phyinit_cmnt ("//    Please see the DFI specification for more information. See the DFI frequency bus encoding in section <XXX>.\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Note: The PHY training firmware initializes the DRAM state. if skip \n");
+    //dwc_ddrphy_phyinit_cmnt ("// training is used, the DRAM state is not initialized. \n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_J_enterMissionMode ();\n\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
     
 
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_J_enterMissionMode()\n", printf_header);
 
 }
 /** @} */

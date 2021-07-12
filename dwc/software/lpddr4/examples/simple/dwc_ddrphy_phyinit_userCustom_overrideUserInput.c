@@ -5,18 +5,18 @@ void dwc_ddrphy_phyinit_userCustom_overrideUserInput () {
     char *printf_header;
 
     printf_header = " [dwc_ddrphy_phyinit_userCustom_overrideUserInput]";
-    dwc_ddrphy_phyinit_print ("\n");
-    dwc_ddrphy_phyinit_print ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyinit_userCustom_overrideUserInput is a user-editable function.\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_print ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_print ("\n");
+    //dwc_ddrphy_phyinit_print ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyinit_userCustom_overrideUserInput is a user-editable function.\n");
+   // dwc_ddrphy_phyinit_cmnt ("//\n");
+   // dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+    //dwc_ddrphy_phyinit_print ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
     dwc_ddrphy_phyinit_print ("\n");
     dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_overrideUserInput ();\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
 
     // == Definitions for overriding a single PHY system 
     // Example Values for testing

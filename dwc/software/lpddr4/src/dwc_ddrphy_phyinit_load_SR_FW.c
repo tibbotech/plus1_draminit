@@ -18,15 +18,15 @@ void dwc_ddrphy_phyinit_load_SR_FW (void) {
   char *printf_header;
   printf_header = "// [phyinit_SR_loading_FW_image]";
 
-  dwc_ddrphy_phyinit_cmnt ("\n");
-  dwc_ddrphy_phyinit_cmnt ("\n");
-  dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-  dwc_ddrphy_phyinit_cmnt ("//\n");
-  dwc_ddrphy_phyinit_cmnt ("// Loading Universal Resident Retention FW image \n");
-  dwc_ddrphy_phyinit_cmnt ("// \n");
-  dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-  dwc_ddrphy_phyinit_cmnt ("\n");
-  dwc_ddrphy_phyinit_cmnt ("\n");
+  //dwc_ddrphy_phyinit_cmnt ("\n");
+  //dwc_ddrphy_phyinit_cmnt ("\n");
+  //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+  //dwc_ddrphy_phyinit_cmnt ("//\n");
+  //dwc_ddrphy_phyinit_cmnt ("// Loading Universal Resident Retention FW image \n");
+  //dwc_ddrphy_phyinit_cmnt ("// \n");
+  //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+  //dwc_ddrphy_phyinit_cmnt ("\n");
+  //dwc_ddrphy_phyinit_cmnt ("\n");
 
   int i;
   int imem[SR_IMEM_SIZE];
@@ -36,13 +36,13 @@ void dwc_ddrphy_phyinit_load_SR_FW (void) {
   // initialize the dmem structure
   for (i=0;i<SR_IMEM_SIZE;i++) imem[i]=0;
 
-   dwc_ddrphy_phyinit_cmnt ("%s Start of loading Universal Resident Retention IMEM\n", printf_header );
+   //dwc_ddrphy_phyinit_cmnt ("%s Start of loading Universal Resident Retention IMEM\n", printf_header );
    imem_offset = dwc_ddrphy_phyinit_storeIncvFile (SR_IMEM_INCV_FILENAME, imem, return_type);
    // Write local imem array
    dwc_ddrphy_phyinit_WriteOutMem(imem, imem_offset, SR_IMEM_SIZE); 
    //dwc_ddrphy_phyinit_print("WriteImem: COMPLETED\n");
    fflush(stdout);
-   dwc_ddrphy_phyinit_cmnt ("%s End of loading Universal Resident Retention IMEM\n", printf_header); 
+   //dwc_ddrphy_phyinit_cmnt ("%s End of loading Universal Resident Retention IMEM\n", printf_header); 
 
 
 

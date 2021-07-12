@@ -33,18 +33,18 @@ void dwc_ddrphy_phyinit_userCustom_overrideUserInput () {
     char *printf_header;
     printf_header = " [dwc_ddrphy_phyinit_userCustom_overrideUserInput]";
 
-    dwc_ddrphy_phyinit_print ("\n");
-    dwc_ddrphy_phyinit_print ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyinit_userCustom_overrideUserInput is a user-editable function.\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_print ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_print ("\n");
-    dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_overrideUserInput ();\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_print ("\n");
+    //dwc_ddrphy_phyinit_print ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyinit_userCustom_overrideUserInput is a user-editable function.\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+    //dwc_ddrphy_phyinit_print ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_print ("\n");
+   // dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_overrideUserInput ();\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
 
     // == Definitions for overriding a single PHY system 
     // Example Values for testing
@@ -86,6 +86,44 @@ void dwc_ddrphy_phyinit_userCustom_overrideUserInput () {
     //dwc_ddrphy_phyinit_setMb (2, "HdtCtrl", 0x8, 0);
     //dwc_ddrphy_phyinit_setMb (3, "HdtCtrl", 0x8, 0);
 
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_overrideUserInput()\n", printf_header);
+
+    userInputBasic.DramType                 = LPDDR4;
+    userInputBasic.DimmType                 = UDIMM;
+    userInputBasic.NumDbyte                 = 0x0004;
+    userInputBasic.NumActiveDbyteDfi0       = 0x0002;
+    userInputBasic.NumAnib                  = 0x000a;
+    userInputBasic.NumRank_dfi0             = 0x0002;
+    userInputBasic.NumActiveDbyteDfi1       = 0x0002;
+    userInputBasic.NumRank_dfi1             = 0x0002;
+    userInputBasic.DramDataWidth            = 16;
+    userInputBasic.NumPStates               = 0x0001;
+    userInputBasic.Dfi1Exists               = 0x0001;
+    userInputBasic.DfiMode                  = 0x0000;
+    userInputBasic.Lp4xMode                 = 0x0000;
+    userInputBasic.Frequency[0]             = 1600;
+    userInputBasic.PllBypass[0]             = 0x0000;
+    userInputBasic.DfiFreqRatio[0]          = 0x0001;
+    userInputAdvanced.Lp4RxPreambleMode[0]  = 0x0000;
+    userInputAdvanced.Lp4PostambleExt[0]    = 0x0001;
+    userInputAdvanced.Lp4RL[0]              = 0x0005;
+    userInputAdvanced.Lp4WL[0]              = 0x0005;
+    userInputAdvanced.Lp4nWR[0]             = 0x0005;
+    userInputAdvanced.Lp4WLS[0]             = 0x0000;
+    userInputAdvanced.Lp4DbiRd[0]           = 0x0000;
+    userInputAdvanced.Lp4DbiWr[0]           = 0x0000;
+    userInputSim.tDQS2DQ                    = 200;
+    userInputSim.tDQSCK                     = 1500;
+    
+        dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_overrideUserInput()\n", printf_header);
+    userInputBasic.HardMacroVer = 4; //HardMacro family E
+    userInputBasic.PllBypass[0]  = 1;
+    userInputBasic.PllBypass[1]  = 1;
+    userInputBasic.PllBypass[2]  = 1;
+    userInputBasic.PllBypass[3]  = 1;
+    
+userInputAdvanced.ODTImpedance[3] = 0;
+userInputAdvanced.ODTImpedance[2] = 0;
+userInputAdvanced.ODTImpedance[1] = 0;
+userInputAdvanced.ODTImpedance[0] = 0;
 }
 /** @} */

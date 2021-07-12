@@ -2,9 +2,7 @@
 /** \file 
  * \brief initializes PhyInit input data structures to sane values.
  */
-#include <string.h>
-//#include <stdio.h> //tonyh test
-//#include <memory.h> //tonyh test
+//#include<string.h>
 #include "dwc_ddrphy_phyinit.h"
 
 /**  
@@ -25,17 +23,33 @@ extern PMU_SMB_LPDDR4_2D_t    mb_LPDDR4_2D[4];
  * 
  * @return Void
  */
+
+typedef unsigned char		UINT8;
+void *memset(UINT8 *s1, int c, int n)
+{
+	UINT8 *s1_end = s1 + n;
+
+	while (s1 != s1_end)
+		*s1++ = c;
+
+	return s1;
+}
+
 void dwc_ddrphy_phyinit_initStruct (int Train2D /**< Train2D 1=1D & 2D training enabled, 0=only 1D training. */) {
     
-    char *printf_header;
-    printf_header = "// [dwc_ddrphy_phyinit_initStruct]";
+    //char *printf_header;
+    //printf_header = "// [dwc_ddrphy_phyinit_initStruct]";
 
-    dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_initStruct()\n", printf_header);
-
-    memset((void *) &userInputBasic, 0, sizeof(userInputBasic)); // Zero out struct contents 
+    //dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_initStruct()\n", printf_header);
+#if 0
+	memset((void *) &userInputBasic, 0, sizeof(userInputBasic)); // Zero out struct contents 
     memset((void *) &userInputAdvanced, 0, sizeof(userInputAdvanced)); // Zero out struct contents 
     memset((void *) &userInputSim, 0, sizeof(userInputSim)); // Zero out struct contents 
-
+#else
+	memset((UINT8 *) &userInputBasic, 0, sizeof(userInputBasic)); // Zero out struct contents 
+    memset((UINT8 *) &userInputAdvanced, 0, sizeof(userInputAdvanced)); // Zero out struct contents 
+    memset((UINT8 *) &userInputSim, 0, sizeof(userInputSim)); // Zero out struct contents 
+#endif 
     // ##############################################################
     // userInputBasic - Basic Inputs the user must provide values
     // for detailed descriptions of each field see src/dwc_ddrphy_phyinit_struct.h
@@ -179,6 +193,8 @@ void dwc_ddrphy_phyinit_initStruct (int Train2D /**< Train2D 1=1D & 2D training 
             userInputAdvanced.Lp4nWR[pstate]        = 0x0007; 
         }
     }
+
+    userInputAdvanced.EnableDfiCsPolarityFix   = 0;
 
     // ##############################################################
     // Basic Message Block Variables
@@ -397,8 +413,12 @@ void dwc_ddrphy_phyinit_initStruct (int Train2D /**< Train2D 1=1D & 2D training 
       
       mb_LPDDR4_1D[myps].Share2DVrefResult    = Share2DVrefResult;
 
-
+#if 0
       memset((void *) &shdw_LPDDR4_1D[myps], 0, sizeof(PMU_SMB_LPDDR4_1D_t)); // Zero out struct contents 
+#else
+ memset((UINT8 *) &shdw_LPDDR4_1D[myps], 0, sizeof(PMU_SMB_LPDDR4_1D_t)); // Zero out struct contents 
+
+#endif
       } // myps
 
     // 2D message block defaults
@@ -481,8 +501,11 @@ void dwc_ddrphy_phyinit_initStruct (int Train2D /**< Train2D 1=1D & 2D training 
         mb_LPDDR4_2D[myps].Delay_Weight2D       = 0x20; // Evenly weigh Delay vs Voltage
         mb_LPDDR4_2D[myps].Voltage_Weight2D     = 0x80; 
 
-
+#if 0
         memset((void *) &shdw_LPDDR4_2D[myps], 0, sizeof(PMU_SMB_LPDDR4_2D_t)); // Zero out struct contents 
+#else
+memset((UINT8 *) &shdw_LPDDR4_2D[myps], 0, sizeof(PMU_SMB_LPDDR4_2D_t)); // Zero out struct contents 
+#endif 
       } // myps
     } // Train2D
 
@@ -502,6 +525,6 @@ void dwc_ddrphy_phyinit_initStruct (int Train2D /**< Train2D 1=1D & 2D training 
     userInputSim.tPDM[3]                    = 0;
 
     
-    dwc_ddrphy_phyinit_print ("%s End of dwc_ddrphy_phyinit_initStruct()\n", printf_header);
+    //dwc_ddrphy_phyinit_print ("%s End of dwc_ddrphy_phyinit_initStruct()\n", printf_header);
 }
 /** @} */

@@ -20,32 +20,28 @@
  */
 void dwc_ddrphy_phyinit_WriteOutMem (int mem[], int mem_offset, int mem_size) {
     
-  char *printf_header;
-  printf_header = "// [dwc_ddrphy_phyinit_WriteOutMem]";
+  //char *printf_header;
+  //printf_header = "// [dwc_ddrphy_phyinit_WriteOutMem]";
 
   int index;
-  dwc_ddrphy_phyinit_cmnt ("// 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.\n");
-  dwc_ddrphy_phyinit_cmnt ("//       This allows the memory controller unrestricted access to the configuration CSRs. \n");
+  //dwc_ddrphy_phyinit_cmnt ("// 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.\n");
+  //dwc_ddrphy_phyinit_cmnt ("//       This allows the memory controller unrestricted access to the configuration CSRs. \n");
   dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x0);
 
 
-  dwc_ddrphy_phyinit_cmnt ("%s STARTING. offset 0x%x size 0x%x\n",printf_header, mem_offset, mem_size);
+  //dwc_ddrphy_phyinit_cmnt ("%s STARTING. offset 0x%x size 0x%x\n",printf_header, mem_offset, mem_size);
   for (index=0;index<mem_size;index++) {
     // routine call option
     //   dwc_ddrphy_phyinit_print ("WriteOutMem: Attempting Write: Adr:0x%x Dat: 0x%x\n",index + mem_offset,mem[index]);
     dwc_ddrphy_phyinit_userCustom_io_write16(index + mem_offset,mem[index]);
-#if 1 //tonyh test
-#else
-	fflush(stdout);
-#endif 
+	//fflush(stdout); tonyh test
+
   }
-  dwc_ddrphy_phyinit_cmnt ("%s DONE.  Index 0x%x\n",printf_header,index);
-  dwc_ddrphy_phyinit_cmnt ("// 2.	Isolate the APB access from the internal CSRs by setting the MicroContMuxSel CSR to 1. \n");
-  dwc_ddrphy_phyinit_cmnt ("//      This allows the firmware unrestricted access to the configuration CSRs. \n");
+  //dwc_ddrphy_phyinit_cmnt ("%s DONE.  Index 0x%x\n",printf_header,index);
+  //dwc_ddrphy_phyinit_cmnt ("// 2.	Isolate the APB access from the internal CSRs by setting the MicroContMuxSel CSR to 1. \n");
+  //dwc_ddrphy_phyinit_cmnt ("//      This allows the firmware unrestricted access to the configuration CSRs. \n");
   dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x1);
-#if 1 //tonyh test
-#else
-  fflush(stdout);
-#endif 
+  //fflush(stdout); tonyh test
+
 }
 /** @} */

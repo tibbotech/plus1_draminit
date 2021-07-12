@@ -805,7 +805,8 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 }
 #endif
 
-void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
+
+void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 {
 	if (bootdevice == SPI_NOR_BOOT)
 	{
@@ -875,7 +876,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 #endif
 }
 
-void dwc_ddrphy_phyinit_F_loadDMEM (int pstate, int Train2D)
+void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 {
 	if(bootdevice == SPI_NOR_BOOT)
 	{
@@ -927,9 +928,10 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
-   //#include <dwc_devinit_skiptrain_zebu.txt>
-   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_2020_0607_c8.txt>
-   #include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
+   //#include <dwc_devinit_skiptrain_zebu.txt> 
+   prn_string("dwc_ddrphy_phyinit_main ver.011\n");
+   dwc_ddrphy_phyinit_sequence(2,0,0);
+   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
 }
 
 int dram_training_flow_for_ddr4(unsigned int dram_id)

@@ -42,27 +42,34 @@
  */
 void dwc_ddrphy_phyinit_userCustom_customPreTrain () { 
 
-    char *printf_header;
-    printf_header = "// [phyinit_userCustom_customPreTrain]";
+    //char *printf_header;
+    //printf_header = "// [phyinit_userCustom_customPreTrain]";
 
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyihunit_userCustom_customPreTrain is a user-editable function.\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// dwc_ddrphy_phyihunit_userCustom_customPreTrain is a user-editable function.\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()\n", printf_header);
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_customPostTrain ();\n\n");
 
-    // === Example to override SequenceCtrl in 1D message block for each p-state
+    //dwc_ddrphy_phyinit_userCustom_io_write16 (0xd0000, 0x0);
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_customPreTrain();\n\n");
+    //dwc_ddrphy_phyinit_userCustom_io_write16 (0xd0000, 0x1);
+
+    // === Example to write technology specific programming in PHY databook.
     // === using dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D)
-    //dwc_ddrphy_phyinit_setMb (0, "SequenceCtrl", 0x031f, 0)  // p-state 0, 1D
-    //dwc_ddrphy_phyinit_setMb (1, "SequenceCtrl", 0x031f, 0)  // p-state 1, 1D
-    //dwc_ddrphy_phyinit_setMb (2, "SequenceCtrl", 0x031f, 0)  // p-state 2, 1D
-    //dwc_ddrphy_phyinit_setMb (3, "SequenceCtrl", 0x031f, 0)  // p-state 3, 1D
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P0 | tMASTER | csr_PllCtrl1_ADDR), 0x21);
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P1 | tMASTER | csr_PllCtrl1_ADDR), 0x21);
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P2 | tMASTER | csr_PllCtrl1_ADDR), 0x21);
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P0 | tMASTER | csr_PllCtrl4_ADDR), 0x17f);
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P1 | tMASTER | csr_PllCtrl4_ADDR), 0x17f);
+    //dwc_ddrphy_phyinit_userCustom_io_write16 ((P2 | tMASTER | csr_PllCtrl4_ADDR), 0x17f);
 
     // === Example to override SequenceCtrl in 2D message block for p-state 0
     // === using dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D)
@@ -92,6 +99,6 @@ void dwc_ddrphy_phyinit_userCustom_customPreTrain () {
     //dwc_ddrphy_phyinit_userCustom_io_write16 ((P3 | tMASTER | csr_ARdPtrInitVal_ADDR), 0x3);
 
 
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_customPreTrain()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_customPreTrain()\n", printf_header);
 }
 /** @} */

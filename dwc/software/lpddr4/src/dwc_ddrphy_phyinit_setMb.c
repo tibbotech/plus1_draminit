@@ -96,9 +96,25 @@ int dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D) {
         mb_LPDDR4_1D[ps].HdtCtrl = value;
         shdw_LPDDR4_1D[ps].HdtCtrl = 1;
       }
+      else  if ( strcmp(field, "Reserved13") == 0) {
+        mb_LPDDR4_1D[ps].Reserved13 = value;
+        shdw_LPDDR4_1D[ps].Reserved13 = 1;
+      }
+      else  if ( strcmp(field, "Reserved14") == 0) {
+        mb_LPDDR4_1D[ps].Reserved14 = value;
+        shdw_LPDDR4_1D[ps].Reserved14 = 1;
+      }
+      else  if ( strcmp(field, "Reserved15") == 0) {
+        mb_LPDDR4_1D[ps].Reserved15 = value;
+        shdw_LPDDR4_1D[ps].Reserved15 = 1;
+      }
       else  if ( strcmp(field, "DFIMRLMargin") == 0) {
         mb_LPDDR4_1D[ps].DFIMRLMargin = value;
         shdw_LPDDR4_1D[ps].DFIMRLMargin = 1;
+      }
+      else  if ( strcmp(field, "Reserved17") == 0) {
+        mb_LPDDR4_1D[ps].Reserved17 = value;
+        shdw_LPDDR4_1D[ps].Reserved17 = 1;
       }
       else  if ( strcmp(field, "UseBroadcastMR") == 0) {
         mb_LPDDR4_1D[ps].UseBroadcastMR = value;
@@ -406,9 +422,25 @@ int dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D) {
         mb_LPDDR4_2D[ps].HdtCtrl = value;
         shdw_LPDDR4_2D[ps].HdtCtrl = 1;
       }
+      else if ( strcmp(field, "Reserved13") == 0) {
+        mb_LPDDR4_2D[ps].Reserved13 = value;
+        shdw_LPDDR4_2D[ps].Reserved13 = 1;
+      }
+      else if ( strcmp(field, "Reserved14") == 0) {
+        mb_LPDDR4_2D[ps].Reserved14 = value;
+        shdw_LPDDR4_2D[ps].Reserved14 = 1;
+      }
+      else if ( strcmp(field, "Reserved15") == 0) {
+        mb_LPDDR4_2D[ps].Reserved15 = value;
+        shdw_LPDDR4_2D[ps].Reserved15 = 1;
+      }
       else if ( strcmp(field, "DFIMRLMargin") == 0) {
         mb_LPDDR4_2D[ps].DFIMRLMargin = value;
         shdw_LPDDR4_2D[ps].DFIMRLMargin = 1;
+      }
+      else if ( strcmp(field, "Reserved17") == 0) {
+        mb_LPDDR4_2D[ps].Reserved17 = value;
+        shdw_LPDDR4_2D[ps].Reserved17 = 1;
       }
       else if ( strcmp(field, "UseBroadcastMR") == 0) {
         mb_LPDDR4_2D[ps].UseBroadcastMR = value;

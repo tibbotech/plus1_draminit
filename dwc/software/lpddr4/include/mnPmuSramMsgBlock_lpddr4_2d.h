@@ -135,7 +135,7 @@ typedef struct _PMU_SMB_LPDDR4_2D_t {
                               // Bit Field for enabling optional 2D training features that impact both Rx2D and Tx2D. 
                               // 
                               // Reserved0E[0:3]: bitTimeControl 
-                              //     Input for increasing the number of data-comparisons 2D runs per (delay,voltage) point. Every time this input increases by 1, the number of 2D data comparisons is doubled. The 2D run time will increase proportionally to the number of bit times requested per point. 
+                              //     input for the amount of data bits 2D writes/reads per DQ before deciding if any specific voltage and delay setting passes or fails. Every time this input increases by 1, the number of 2D data comparisons is doubled. The 2D run time will increase proportionally to the number of bit times requested per point. 
                               //     0 = 288 bits per point (legacy behavior)
                               //     1 = 576 bits per point 
                               //     2 = 1.125 kilobits per point
@@ -143,10 +143,18 @@ typedef struct _PMU_SMB_LPDDR4_2D_t {
                               //     15 = 9 megabits per point
                               // 
                               // Reserved0E[4]: Exhaustive2D
-                              //     0 = 2D's optimization assumes the optimal trained point is near the 1D trained point (legacy behavior)
-                              //     1 = 2D's optimization searches the entire passing region at the cost of run time. Recommended for optimal results any time the optimal trained point is expected to be near the edges of the eyes instead of near the 1D trained point. 
+                              //     0 = 2D optimization assumes the optimal trained point is near the 1D trained point (legacy behavior)
+                              //     1 = 2D optimization searches the entire passing region at the cost of run time. Recommended for optimal results any time the optimal trained point is expected to be near the edges of the eyes instead of near the 1D trained point. 
                               // 
-                              // Reserved0E[5:7]: RFU, must be 0
+                              // Reserved0E[5]: Detect Vref Eye Truncation, ignored if eyeWeight2DControl == 0.
+                              //     0 = 2D optimizes for the passing region it can measure.
+                              //     1 = For every eye, 2D checks If the legal voltage range truncated the eye. If the true voltage margin cannot be measured, 2D will optimize heavily for delay margin instead of using incomplete voltage margin data. Eyes that are not truncated will still be optimized using user programmed weights.
+                              // 
+                              // Reserved0E[6]: eyeWeight2DControl
+                              //    0 = Use 8 bit weights for Delay_Weight2D and Voltage_Weight2D and disable TrunkV behavior.
+                              //    1 = Use 4 bit weights for Delay_weight2D and Voltage_Weight2D and enable TrunkV behavior.
+                              // 
+                              // Reserved0E[7]: RFU, must be 0
    uint8_t  CsTestFail;       // Byte offset 0x0f, CSR Addr 0x54007, Direction=Out
                               // This field will be set if training fails on any rank.
                               //    0x0 = No failures
@@ -174,6 +182,7 @@ typedef struct _PMU_SMB_LPDDR4_2D_t {
    uint8_t  HdtCtrl;          // Byte offset 0x12, CSR Addr 0x54009, Direction=In
                               // To control the total number of debug messages, a verbosity subfield (HdtCtrl, Hardware Debug Trace Control) exists in the message block. Every message has a verbosity level associated with it, and as the HdtCtrl value is increased, less important s messages stop being sent through the mailboxes. The meanings of several major HdtCtrl thresholds are explained below:
                               // 
+                              //    0x04 = Maximal debug messages (e.g., Eye contours)
                               //    0x05 = Detailed debug messages (e.g. Eye delays)
                               //    0x0A = Coarse debug messages (e.g. rank information)
                               //    0xC8 = Stage completion
@@ -182,18 +191,31 @@ typedef struct _PMU_SMB_LPDDR4_2D_t {
                               // 
                               // See Training App Note for more detailed information on what messages are included for each threshold.
                               // 
-   uint8_t  Reserved13;       // Byte offset 0x13, CSR Addr 0x54009, Direction=N/A
-                              // This field is reserved and must be programmed to 0x00.
-   uint8_t  Reserved14;       // Byte offset 0x14, CSR Addr 0x5400a, Direction=N/A
-                              // This field is reserved and must be programmed to 0x00.
-   uint8_t  Reserved15;       // Byte offset 0x15, CSR Addr 0x5400a, Direction=N/A
-                              // This field is reserved and must be programmed to 0x00.
+   uint8_t  Reserved13;       // Byte offset 0x13, CSR Addr 0x54009, Direction=In
+                              // 
+                              // 0         = Default operation, unchanged.
+                              // Others = RD DQ calibration Training steps are completed with user specified pattern.
+   uint8_t  Reserved14;       // Byte offset 0x14, CSR Addr 0x5400a, Direction=In
+                              // Configure rd2D search iteration from a starting seed point:
+                              // 
+                              // Reserved14[5:0]: If Reserved14[6] is 0, Number of search iterations (if 0, then default is 20); otherwise if this value non zero, this value is used as a delta to filter out points during the averaging: when averaging over a dimension (delay or voltage), the points having a margin smaller than the max of the eye in this dimension by at least this delta value are filtered out.
+                              // Reserved14[6]: If set, instead of search, extract center using an averaging function over the eye surface area, where some points can be filtered out using Reserved14[5:0]
+                              // Reserved14[7]: if set, start search with large step size, decreasing at each 4 iterations, down to 1 (do not care if Reserved14[6] is set)
+   uint8_t  Reserved15;       // Byte offset 0x15, CSR Addr 0x5400a, Direction=In
+                              // Configure wr2D search iteration from a starting seed point:
+                              // 
+                              // Reserved15[5:0]: If Reserved15[6] is 0, Number of search iterations (if 0, then default is 20); otherwise if this value non zero, this value is used as a delta to filter out points during the averaging: when averaging over a dimension (delay or voltage), the points having a margin smaller than the max of the eye in this dimension by at least this delta value are filtered out.
+                              // Reserved15[6]: If set, instead of search, extract center using an averaging function over the eye surface area, where some points can be filtered out using Reserved15[5:0]
+                              // Reserved15[7]: if set, start search with large step size, decreasing at each 4 iterations, down to 1 (do not care if Reserved15[6] is set)
    uint8_t  DFIMRLMargin;     // Byte offset 0x16, CSR Addr 0x5400b, Direction=In
                               // Margin added to smallest passing trained DFI Max Read Latency value, in units of DFI clocks. Recommended to be >= 1. See the Training App Note for more details on the training process and the use of this value.
                               // 
                               // This margin must include the maximum positive drift expected in tDQSCK over the target temperature and voltage range of the users system.
-   uint8_t  Reserved17;       // Byte offset 0x17, CSR Addr 0x5400b, Direction=N/A
-                              // This field is reserved and must be programmed to 0x00.
+   uint8_t  Reserved17;       // Byte offset 0x17, CSR Addr 0x5400b, Direction=In
+                              // Configure DB from which extra info is dump during 2D training when maximal debug is set:
+                              // 
+                              // Reserved17[3:0]: first DB
+                              // Reserved17[7:4]: number of DB, including first DB (if 0, no extra debug per DB is dump)
    uint8_t  UseBroadcastMR;   // Byte offset 0x18, CSR Addr 0x5400c, Direction=In
                               // Training firmware can optionally set per rank mode register values for DRAM partial array self-refresh features if desired.
                               // 

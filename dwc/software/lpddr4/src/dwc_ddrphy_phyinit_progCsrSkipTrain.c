@@ -2,7 +2,7 @@
  *  \addtogroup SrcFunc
  *  @{
  */
-#include <math.h>
+//#include <math.h>
 #include "dwc_ddrphy_phyinit.h"
 
 /** \brief This function programs registers that are normally set by training
@@ -32,24 +32,77 @@
  *
  * \returns \c void
  */
+
+#if 0
+int floor(float val) {
+    int temp, result;
+	temp = val * 10;
+    if((temp%10) && (temp<0)) 
+    {
+    	result = temp/10 - 1;
+    	return result;
+    }
+	else
+	{
+		result = temp/10;
+        return result;
+	}	
+}
+#endif
+#if 0
+int ceil(float val) {
+    int temp, result;
+	temp = val * 10;
+    if((temp%10) && (temp>0)) 
+    {
+    	result = temp/10 + 1;
+    	return result;
+    }
+	else
+	{
+		result = temp/10;
+        return result;
+	}	
+}
+
+float fmodf (float x, float y)
+{
+	int a;
+	float temp;
+	a=x/y;
+	temp = x-a*y;
+	return temp;
+}
+
+float fmod (float x, float y)
+{
+	int a;
+	float temp;
+	a=x/y;
+	temp = x-a*y;
+	return temp;
+}
+
+#endif 
+
 void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
 
     char *printf_header;
     printf_header = "[dwc_ddrphy_phyinit_progCsrSkipTrain]";
 
-    dwc_ddrphy_phyinit_print ("\n\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Training firmware is *NOT* executed. This function replaces these steps\n");
-    dwc_ddrphy_phyinit_cmnt ("// in the PHY Initialization sequence:\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//  (E) Set the PHY input clocks to the desired frequency \n");
-    dwc_ddrphy_phyinit_cmnt ("//  (F) Write the Message Block parameters for the training firmware \n");
-    dwc_ddrphy_phyinit_cmnt ("//  (G) Execute the Training Firmware \n");
-    dwc_ddrphy_phyinit_cmnt ("//  (H) Read the Message Block results\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_print ("\n\n");
+    //dwc_ddrphy_phyinit_print ("\n\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Training firmware is *NOT* executed. This function replaces these steps\n");
+    //dwc_ddrphy_phyinit_cmnt ("// in the PHY Initialization sequence:\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//  (E) Set the PHY input clocks to the desired frequency \n");
+    //dwc_ddrphy_phyinit_cmnt ("//  (F) Write the Message Block parameters for the training firmware \n");
+    //dwc_ddrphy_phyinit_cmnt ("//  (G) Execute the Training Firmware \n");
+    //dwc_ddrphy_phyinit_cmnt ("//  (H) Read the Message Block results\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_print ("\n\n");
 
     int pstate;
 
@@ -70,12 +123,12 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
     int tPDM[4];
     int tCASL_add[4];
 
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_progCsrSkipTrain()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_progCsrSkipTrain()\n", printf_header);
     
     // Calculate total number of timing groups (ranks)
     int NumRank_total;
     NumRank_total = userInputBasic.NumRank_dfi0 + userInputBasic.NumRank_dfi1 * userInputBasic.Dfi1Exists;
-    dwc_ddrphy_phyinit_cmnt ("%s NumRank_total = %d\n", printf_header, NumRank_total);
+    //dwc_ddrphy_phyinit_cmnt ("%s NumRank_total = %d\n", printf_header, NumRank_total);
 
     //##############################################################
     // 
@@ -118,7 +171,7 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
       
       //HMD
       if ( userInputBasic.HardMacroVer ==  3 && userInputBasic.Lp4xMode ==  1 && userInputBasic.Frequency[pstate] <= 533 ) {
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming ATxDly to 0x40 for all ACX4 macros\n", printf_header, pstate);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming ATxDly to 0x40 for all ACX4 macros\n", printf_header, pstate);
         ATxDly = 0x40;
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tANIB | cbrd | csr_ATxDly_ADDR), ATxDly);
       }
@@ -157,18 +210,18 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
         dficlk_period = 4 * UIps;
         
         PHY_Rx_Fifo_Dly = 200 + 4*UIps;
-        dwc_ddrphy_phyinit_cmnt ("%s PHY_Rx_Fifo_Dly = %d\n", printf_header, PHY_Rx_Fifo_Dly);
-        dwc_ddrphy_phyinit_cmnt ("%s PHY_Tx_Insertion_Dly = %d\n", printf_header, PHY_Tx_Insertion_Dly);
-        dwc_ddrphy_phyinit_cmnt ("%s PHY_Rx_Insertion_Dly = %d\n", printf_header, PHY_Rx_Insertion_Dly);
+        //dwc_ddrphy_phyinit_cmnt ("%s PHY_Rx_Fifo_Dly = %d\n", printf_header, PHY_Rx_Fifo_Dly);
+        //dwc_ddrphy_phyinit_cmnt ("%s PHY_Tx_Insertion_Dly = %d\n", printf_header, PHY_Tx_Insertion_Dly);
+        //dwc_ddrphy_phyinit_cmnt ("%s PHY_Rx_Insertion_Dly = %d\n", printf_header, PHY_Rx_Insertion_Dly);
 
         DFIMRL_in_ps = (ARdPtrInitVal[pstate] * UIps) + PHY_Tx_Insertion_Dly + PHY_Rx_Insertion_Dly + PHY_Rx_Fifo_Dly + userInputSim.tDQSCK + tSTAOFF[pstate] + tCASL_add[pstate] + tPDM[pstate];
         //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DFIMRL_in_ps to %fps\n", printf_header, pstate, userInputBasic.Frequency[pstate], DFIMRL_in_ps);
-        
-        DFIMRL_in_dficlk = (float) DFIMRL_in_ps / dficlk_period;
-        DFIMRL[pstate] = ceil(DFIMRL_in_dficlk) + mb_LPDDR4_1D[pstate].DFIMRLMargin;
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DFIMRL to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DFIMRL[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming HwtMRL to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DFIMRL[pstate]);
+		DFIMRL_in_dficlk = (float) DFIMRL_in_ps / dficlk_period;
+		DFIMRL[pstate] = ceil(DFIMRL_in_dficlk) + mb_LPDDR4_1D[pstate].DFIMRLMargin;
+		
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DFIMRL to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DFIMRL[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming HwtMRL to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DFIMRL[pstate]);
 
         //dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tDBYTE | cbrd | csr_DFIMRL_ADDR), DFIMRL[pstate]);
         for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
@@ -236,19 +289,17 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
         }
 
         TxDqsDly[pstate] = (TxDqsDlyTg_9to6 << 6) | TxDqsDlyTg_5to0;
-      
+        //TxDqsDly[pstate] = 0x100; //tonyh test temp
         if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x1) >> 0) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x1) >> 0)) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqsDlyTg0 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqsDly[pstate]);
         if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x2) >> 1) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x2) >> 1)) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqsDlyTg1 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqsDly[pstate]);
         if (0x0) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqsDlyTg2 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqsDly[pstate]);
         if (0x0) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqsDlyTg3 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqsDly[pstate]);
       
-
-        for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
+		for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
             c_addr = byte << 12;
             for (nibble=0; nibble < 2; nibble++) {
                 u_addr = nibble << 8;
                 if ( !dwc_ddrphy_phyinit_IsDbyteDisabled(byte) ) {
-                  
                     if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x1) >> 0) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x1) >> 0)) dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tDBYTE | c_addr | u_addr | csr_TxDqsDlyTg0_ADDR), TxDqsDly[pstate]);
                     if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x2) >> 1) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x2) >> 1)) dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tDBYTE | c_addr | u_addr | csr_TxDqsDlyTg1_ADDR), TxDqsDly[pstate]);
                     if (0x0) dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tDBYTE | c_addr | u_addr | csr_TxDqsDlyTg2_ADDR), TxDqsDly[pstate]);
@@ -294,7 +345,8 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
         }
 
         TxDqDly[pstate] = (TxDqDly_8to6 << 6) | TxDqDly_5to0;
-        
+
+		//TxDqDly[pstate]=0x45; //tonyh test temp
       
         if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x1) >> 0) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x1) >> 0)) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqDlyTg0 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqDly[pstate]);
         if (((mb_LPDDR4_1D[pstate].CsPresentChA & 0x2) >> 1) | ((mb_LPDDR4_1D[pstate].CsPresentChB & 0x2) >> 1)) dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxDqDlyTg1 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TxDqDly[pstate]);
@@ -374,7 +426,7 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
         float totFineStep = totPs / FineStepPs;
         RxEnDly_10to6 = totFineStep / 32.0; 
         RxEnDly_5to0  = fmod (totFineStep , 32.0);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming RxEnDly_10to6=%d, Rxendly_5to0=%d\n", printf_header, pstate, userInputBasic.Frequency[pstate], RxEnDly_10to6, RxEnDly_5to0);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming RxEnDly_10to6=%d, Rxendly_5to0=%d\n", printf_header, pstate, userInputBasic.Frequency[pstate], RxEnDly_10to6, RxEnDly_5to0);
 
         // Bit-5 of LCDL is no longer used, so bumping bit-5 of fine_dly up to coarse_dly 
         if (RxEnDly_5to0 >= 32) {
@@ -531,22 +583,22 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
 
     // Channel A - 1'b01 if signal-rank, 2'b11 if dual-rank
     HwtLpCsEnA = userInputBasic.NumRank_dfi0 | 0x1;
-    dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnA to 0x%x\n", printf_header, HwtLpCsEnA);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnA to 0x%x\n", printf_header, HwtLpCsEnA);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_HwtLpCsEnA_ADDR), HwtLpCsEnA);
     
     // Channel B - 1'b01 if signal-rank, 2'b11 if dual-rank 
     // if DFI1 exists but disabled, NumRank_dfi0 is used to program CsEnB
     if (userInputBasic.Dfi1Exists == 1 && userInputBasic.NumActiveDbyteDfi1 == 0) {
         HwtLpCsEnB = userInputBasic.NumRank_dfi0 | 0x1;
-        dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
         dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_HwtLpCsEnB_ADDR), HwtLpCsEnB);
     } else if (userInputBasic.Dfi1Exists == 1 && userInputBasic.NumActiveDbyteDfi1 > 0) {
         HwtLpCsEnB = userInputBasic.NumRank_dfi1 | 0x1;
-        dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
         dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_HwtLpCsEnB_ADDR), HwtLpCsEnB);
     } else { // Disable Channel B
         HwtLpCsEnB = 0x0;
-        dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming HwtLpCsEnB to 0x%x\n", printf_header, HwtLpCsEnB);
         dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_HwtLpCsEnB_ADDR), HwtLpCsEnB);
     }
 
@@ -581,12 +633,12 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
         for (rank=0; rank<NumRank_total; rank++) {
             switch (rank) {
                 case 0: {
-                    PptDqsCntInvTrnTg0[pstate] = ceil (65536 * (userInputSim.tDQS2DQ * 2) / (2 * 2048 * UIps) );
-                    dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming PptDqsCntInvTrnTg0 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PptDqsCntInvTrnTg0[pstate]);
+                     PptDqsCntInvTrnTg0[pstate] = ceil (65536 * (userInputSim.tDQS2DQ * 2) / (2 * 2048 * UIps) );
+                    //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming PptDqsCntInvTrnTg0 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PptDqsCntInvTrnTg0[pstate]);
                     break; }
                 case 1: {
-                    PptDqsCntInvTrnTg1[pstate] = ceil (65536 * (userInputSim.tDQS2DQ * 2) / (2 * 2048 * UIps) );
-                    dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming PptDqsCntInvTrnTg1 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PptDqsCntInvTrnTg1[pstate]);
+                     PptDqsCntInvTrnTg1[pstate] = ceil (65536 * (userInputSim.tDQS2DQ * 2) / (2 * 2048 * UIps) );
+                    //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming PptDqsCntInvTrnTg1 to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PptDqsCntInvTrnTg1[pstate]);
                     break; }
             }
 
@@ -611,35 +663,37 @@ void dwc_ddrphy_phyinit_progCsrSkipTrain (int skip_train) {
     // Sim dependencies::
     //      DramByteSwap
     //##############################################################
-    dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic CSR\n", printf_header );
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic CSR\n", printf_header );
     // The customer will setup some feilds in this csr so the fw needs to do a read-modify-write here.
     int PptEnRxEnBackOff ;
     // LPDDR4
     if ( userInputAdvanced.Lp4RxPreambleMode[0] == 1 ) { // Rx-preamble mode for PS0
-dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble\n", printf_header );
+//dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble\n", printf_header );
         PptEnRxEnBackOff = 0x1; // toggling RD_PRE
     }else{ 
         PptEnRxEnBackOff = userInputAdvanced.RxEnBackOff; // static RD_PRE
     }
     
     unsigned int DOCByteTg0, DOCByteTg1;
+	 DOCByteTg0 = 0;
+	 DOCByteTg1 = 0;
     for (byte=0; byte < userInputBasic.NumDbyte ; byte++) { // Each Dbyte could have a different configuration.
       c_addr = byte*c1;
       if (userInputBasic.DramDataWidth==8) {
 
         // all ranks are bytemode
-        if (mb_LPDDR4_1D[pstate].X8Mode == 0xf ) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
+        if (mb_LPDDR4_1D[0].X8Mode == 0xf ) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
         // no ranks are byte mode
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0x0 && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0x0 && byte%2== 1) { DOCByteTg0 = 0x1; DOCByteTg1 = 0x1;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0x0 && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0x0 && byte%2== 1) { DOCByteTg0 = 0x1; DOCByteTg1 = 0x1;}
         // rank0 is byte mode
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0x5 && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0x5 && byte%2== 1) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x1;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0x5 && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0x5 && byte%2== 1) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x1;}
         // rank1 is byte mode
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0xa && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
-        else if (mb_LPDDR4_1D[pstate].X8Mode == 0xa && byte%2== 1) { DOCByteTg0 = 0x1; DOCByteTg1 = 0x0;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0xa && byte%2== 0) { DOCByteTg0 = 0x0; DOCByteTg1 = 0x0;}
+        else if (mb_LPDDR4_1D[0].X8Mode == 0xa && byte%2== 1) { DOCByteTg0 = 0x1; DOCByteTg1 = 0x0;}
         else {
-          dwc_ddrphy_phyinit_assert(0, "%s Unexpected value for mb_LPDDR4_1D[pstate].X8Mode == %d", printf_header);
+          dwc_ddrphy_phyinit_assert(0, "%s Unexpected value for mb_LPDDR4_1D[0].X8Mode == %d", printf_header, mb_LPDDR4_1D[0].X8Mode);
         }
       }else if (byte%2==0){
         DOCByteTg0 = 0x1 & (userInputAdvanced.DramByteSwap>>byte);
@@ -694,7 +748,7 @@ dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble
 
     HwtCAMode = (HwtDBIInvert << csr_HwtDBIInvert_LSB) | (HwtCsInvert << csr_HwtCsInvert_LSB) | (HwtD4AltCAMode << csr_HwtD4AltCAMode_LSB) | (HwtLp4CAMode << csr_HwtLp4CAMode_LSB) | (HwtD4CAMode << csr_HwtD4CAMode_LSB) | (HwtLp3CAMode << csr_HwtLp3CAMode_LSB);
     
-    dwc_ddrphy_phyinit_cmnt ("%s Programming HwtCAMode to 0x%x\n", printf_header, HwtCAMode);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming HwtCAMode to 0x%x\n", printf_header, HwtCAMode);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_HwtCAMode_ADDR), HwtCAMode);
     
 
@@ -756,15 +810,15 @@ dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble
 
         wdDllGainCtl   =  (csr_DllSeedSel_MASK & 0x0000) | (csr_DllGainTV_MASK  & (DllGainTV << csr_DllGainTV_LSB)) | (csr_DllGainIV_MASK  & (DllGainIV << csr_DllGainIV_LSB));
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl::DllGainIV=0x%x, DllGainTV=0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DllGainIV, DllGainTV);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], wdDllGainCtl);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl::DllGainIV=0x%x, DllGainTV=0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DllGainIV, DllGainTV);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], wdDllGainCtl);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DllGainCtl_ADDR), wdDllGainCtl);
 
 
         wdDllLockParam = (csr_LcdlSeed0_MASK & (lcdlSeed << csr_LcdlSeed0_LSB)) | (csr_DisDllGainIVSeed_MASK & 0xffff ) | (csr_DisDllSeedSel_MASK & 0x0000);
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam::LcdlSeed0 to %d \n", printf_header, pstate, userInputBasic.Frequency[pstate], lcdlSeed);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], wdDllLockParam);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam::LcdlSeed0 to %d \n", printf_header, pstate, userInputBasic.Frequency[pstate], lcdlSeed);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], wdDllLockParam);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DllLockParam_ADDR), wdDllLockParam);
     
     }
@@ -783,7 +837,7 @@ dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble
     //
     //##############################################################
     regData = (0x0f << csr_AcsmCsMask_LSB | 0x1 << csr_AcsmCsMode_LSB );
-	dwc_ddrphy_phyinit_cmnt ("%s Programming AcsmCtrl23 to 0x%x\n", printf_header, regData);
+	//dwc_ddrphy_phyinit_cmnt ("%s Programming AcsmCtrl23 to 0x%x\n", printf_header, regData);
 	dwc_ddrphy_phyinit_userCustom_io_write16((c0 | tACSM | csr_AcsmCtrl23_ADDR), regData);
 
 
@@ -799,10 +853,10 @@ dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble
 
     pllctrl3 = (dacval_in << csr_PllDacValIn_LSB) | (force_cal << csr_PllForceCal_LSB) | (maxrange << csr_PllMaxRange_LSB);
 
-	dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllDacValIn to 0x%x\n", printf_header, dacval_in);
-	dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllForceCal to 0x%x\n", printf_header, force_cal);
-	dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllMaxRange to 0x%x\n", printf_header, maxrange);
-	dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3 to 0x%x\n", printf_header, pllctrl3);
+	//dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllDacValIn to 0x%x\n", printf_header, dacval_in);
+	//dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllForceCal to 0x%x\n", printf_header, force_cal);
+	//dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3::PllMaxRange to 0x%x\n", printf_header, maxrange);
+	//dwc_ddrphy_phyinit_cmnt ("%s Programming PllCtrl3 to 0x%x\n", printf_header, pllctrl3);
 
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_PllCtrl3_ADDR), pllctrl3);
 
@@ -820,14 +874,14 @@ dwc_ddrphy_phyinit_cmnt ("%s Programming PptCtlStatic detected toggling preamble
     //
     //##############################################################
     if (skip_train == 1) {
-        dwc_ddrphy_phyinit_cmnt ("%s Special skipTraining configuration to Prevernt DRAM Commands on the first dfi status interface handshake.\n", printf_header);
-        dwc_ddrphy_phyinit_cmnt ("%s In order to see this behavior, the frist dfi_freq should be in the range of 0x0f < dfi_freq_sel[4:0] < 0x14.\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s Special skipTraining configuration to Prevernt DRAM Commands on the first dfi status interface handshake.\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s In order to see this behavior, the frist dfi_freq should be in the range of 0x0f < dfi_freq_sel[4:0] < 0x14.\n", printf_header);
         dwc_ddrphy_phyinit_userCustom_io_write16((tINITENG | csr_PhyInLP3_ADDR),                         0x0);
     }
 
 //##############################################################
 //##############################################################
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_progCsrSkipTrain()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_progCsrSkipTrain()\n", printf_header);
 }
 // End of dwc_ddrphy_phyinit_progCsrSkipTrain()
 //#################################################################################################################

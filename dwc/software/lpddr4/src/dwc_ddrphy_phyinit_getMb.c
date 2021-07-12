@@ -72,8 +72,16 @@ int dwc_ddrphy_phyinit_getMb (int ps, char *field, int Train2D) {
               return mb_LPDDR4_1D[ps].SequenceCtrl;
           else if ( strcmp(field, "HdtCtrl") == 0)
               return mb_LPDDR4_1D[ps].HdtCtrl;
+          else if ( strcmp(field, "Reserved13") == 0)
+              return mb_LPDDR4_1D[ps].Reserved13;
+          else if ( strcmp(field, "Reserved14") == 0)
+              return mb_LPDDR4_1D[ps].Reserved14;
+          else if ( strcmp(field, "Reserved15") == 0)
+              return mb_LPDDR4_1D[ps].Reserved15;
           else if ( strcmp(field, "DFIMRLMargin") == 0)
               return mb_LPDDR4_1D[ps].DFIMRLMargin;
+          else if ( strcmp(field, "Reserved17") == 0)
+              return mb_LPDDR4_1D[ps].Reserved17;
           else if ( strcmp(field, "UseBroadcastMR") == 0)
               return mb_LPDDR4_1D[ps].UseBroadcastMR;
           else if ( strcmp(field, "Lp4Quickboot") == 0)
@@ -230,8 +238,16 @@ int dwc_ddrphy_phyinit_getMb (int ps, char *field, int Train2D) {
                 return  mb_LPDDR4_2D[ps].SequenceCtrl;
               else if ( strcmp(field, "HdtCtrl") == 0)
                 return  mb_LPDDR4_2D[ps].HdtCtrl;
+              else if ( strcmp(field, "Reserved13") == 0)
+                return  mb_LPDDR4_2D[ps].Reserved13;
+              else if ( strcmp(field, "Reserved14") == 0)
+                return  mb_LPDDR4_2D[ps].Reserved14;
+              else if ( strcmp(field, "Reserved15") == 0)
+                return  mb_LPDDR4_2D[ps].Reserved15;
               else if ( strcmp(field, "DFIMRLMargin") == 0)
                 return  mb_LPDDR4_2D[ps].DFIMRLMargin;
+              else if ( strcmp(field, "Reserved17") == 0)
+                return  mb_LPDDR4_2D[ps].Reserved17;
               else if ( strcmp(field, "UseBroadcastMR") == 0)
                 return  mb_LPDDR4_2D[ps].UseBroadcastMR;
               else if ( strcmp(field, "Reserved1A") == 0)

@@ -717,9 +717,10 @@ typedef struct user_input_advanced {
     
     int RxEnBackOff;             ///< Determines the Placement of PHY Read Gate signal
 
-                                 ///< - Only used in LPDDR4 when Lp4RxPreambleMode==0 (static preamble)
+                                 ///< - Only used in LPDDR4 when Lp4RxPreambleMode==0 (static preamble) for skip_train==1
                                  ///<   For other DramTypes or LPDDR4-toggling-preamble no options are available and
                                  ///<   PhyInit will set position as required.  See source code in dwc_ddrphy_phyinit_C_initPhyConfig() to see how the RxEnBackOff register is set.
+                                 ///< - For skip_train==0 or 2, FW will set the position based on Preamble.
                                  ///< - Synopsys Recomends keeping this setting at default value.  
                                  ///<   SI analysis is required to determine if default value needs to be changed. 
                                  ///< - must be set as hex
@@ -874,6 +875,19 @@ typedef struct user_input_advanced {
                                  ///< ----- | ---  
                                  ///<   0x0 | Minimizes number of Imem/Dmem loads (default)
                                  ///<   0x1 | High frequency P1/P2/P3 support (DDR4/LP4 only)
+
+    int EnableDfiCsPolarityFix;  ///< Enable alternative PIE program
+
+                                 ///<
+                                 ///< See STAR 9001524249 for details on this workaround.  Set to 1 if 
+                                 ///< PUB_VERSION <2.43a, otherwise set to 0. If enabled the PIE programs
+                                 ///< Dfi{Rd,Wr}DataCsDestMap CSR's to default values 0x00E4 before runnning PPT.
+                                 ///< Before exiting PPT, PIE will restore Dfi{Rd,Wr}DataCsDestMap CSR's to 0x00E1.
+                                 ///<
+                                 ///< Value | Description
+                                 ///< ----- | ---  
+                                 ///<   0x1 | Enable
+                                 ///<   0x0 | Disable (default)
 
  } user_input_advanced_t;
 

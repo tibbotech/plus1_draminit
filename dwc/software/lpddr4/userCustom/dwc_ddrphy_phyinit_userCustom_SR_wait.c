@@ -35,23 +35,23 @@ void dwc_ddrphy_phyinit_userCustom_SR_wait() {
      * - Wait for a SAVE_NUM_CYCLE of DFI clock cycles
      */
 
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Wait for a SAVE_NUM_CYCLE of DFI clock cycles\n");
-    dwc_ddrphy_phyinit_cmnt ("// Save operation depends on PHY configurations.\n");
-    dwc_ddrphy_phyinit_cmnt ("// Users may use the following table values as reference\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Num of DBYTE    DDR4     LPDDR4\n");
-    dwc_ddrphy_phyinit_cmnt ("// 1               43k      n/a\n");
-    dwc_ddrphy_phyinit_cmnt ("// 4               85k      62k\n");
-    dwc_ddrphy_phyinit_cmnt ("// 8               140k     96k\n");
-    dwc_ddrphy_phyinit_cmnt ("// 9               155k     104k\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Wait for a SAVE_NUM_CYCLE of DFI clock cycles\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Save operation depends on PHY configurations.\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Users may use the following table values as reference\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Num of DBYTE    DDR4     LPDDR4\n");
+    //dwc_ddrphy_phyinit_cmnt ("// 1               43k      n/a\n");
+    //dwc_ddrphy_phyinit_cmnt ("// 4               85k      62k\n");
+    //dwc_ddrphy_phyinit_cmnt ("// 8               140k     96k\n");
+    //dwc_ddrphy_phyinit_cmnt ("// 9               155k     104k\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
 
 }
 /** @} */

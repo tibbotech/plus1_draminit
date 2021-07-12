@@ -13,10 +13,10 @@
  */
 
 #include <stdint.h>
-#include <dwc_ddrphy_phyinit.h>
+#include "dwc_ddrphy_phyinit.h"
 
 int NumRegSaved = 0;    ///< Current Number of registers saved.
-//int TrackEn = 1;        ///< Enabled tracking of registers  //tonyh test
+int TrackEn = 1;        ///< Enabled tracking of registers
 
 /** \brief Tags a register if tracking is enabled in the register
  * interface 
@@ -32,7 +32,7 @@ int NumRegSaved = 0;    ///< Current Number of registers saved.
 int dwc_ddrphy_phyinit_trackReg(uint32_t adr) {
 
   // return if tracking is disabled
-  //if (!TrackEn) return 0;  //tonyh test
+  if (!TrackEn) return 0;
 
   // search register array the address,
   int regIndx=0;
@@ -46,8 +46,8 @@ int dwc_ddrphy_phyinit_trackReg(uint32_t adr) {
           return 1;
         }
     }
-#if 0  //tonyh test
-  if (!foundReg && TrackEn) // register not found, so add it.  //tonyh test
+
+  if (!foundReg && TrackEn) // register not found, so add it.
     {
       if (NumRegSaved == MAX_NUM_RET_REGS ) 
         {
@@ -56,6 +56,8 @@ int dwc_ddrphy_phyinit_trackReg(uint32_t adr) {
         }
       RetRegList[regIndx].Address = adr;
       NumRegSaved++;
+	  //dwc_ddrphy_phyinit_assert (1," [NumRegSaved=%d\n",NumRegSaved);
+          
       return 1;
     }
   else
@@ -63,7 +65,7 @@ int dwc_ddrphy_phyinit_trackReg(uint32_t adr) {
       // should never get here.
       return 0; 
     }
-#endif 
+
 }
 
 /** \brief register interface function used to track, save and restore retention registers.
@@ -126,12 +128,12 @@ int dwc_ddrphy_phyinit_regInterface(regInstr myRegInstr, uint32_t adr, uint16_t 
     }
   else if ( myRegInstr == startTrack ) // Enable tracking
     {
-      //TrackEn=1;  //tonyh test
+      TrackEn=1;
       return 1;
     }
   else if ( myRegInstr == stopTrack ) // Disable tracking
     {
-      //TrackEn=0;  //tonyh test
+      TrackEn=0;
       return 1;
     }
   else if ( myRegInstr == dumpRegs ) // Dump restore state to file.

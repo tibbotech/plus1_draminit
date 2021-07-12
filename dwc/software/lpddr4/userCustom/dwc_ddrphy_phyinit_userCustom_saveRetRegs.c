@@ -4,7 +4,7 @@
  *  @{
  */
 #include <stdlib.h>
-#include <math.h>
+//#include <math.h>
 #include "dwc_ddrphy_phyinit.h"
 
 /** \brief This function can be used to implement saving of PHY registers to be
@@ -89,6 +89,14 @@ void dwc_ddrphy_phyinit_userCustom_saveRetRegs()
       dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_PptCtlStatic_ADDR);
       dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_TrainingIncDecDtsmEn_ADDR);
       dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_TsmByte0_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq0LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq1LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq2LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq3LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq4LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq5LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq6LnSel_ADDR);
+      dwc_ddrphy_phyinit_trackReg(tDBYTE | c_addr | csr_Dq7LnSel_ADDR);
     } // c_addr
 
   // PState variable registers
@@ -130,14 +138,6 @@ void dwc_ddrphy_phyinit_userCustom_saveRetRegs()
             } // r_addr
           dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_PptDqsCntInvTrnTg0_ADDR);
           dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_PptDqsCntInvTrnTg1_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq0LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq1LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq2LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq3LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq4LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq5LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq6LnSel_ADDR);
-          dwc_ddrphy_phyinit_trackReg(p_addr | tDBYTE | c_addr | csr_Dq7LnSel_ADDR);
         } // c_addr
       // PIE Registers
       dwc_ddrphy_phyinit_trackReg(p_addr | tINITENG | csr_Seq0BGPR1_ADDR);

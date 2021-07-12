@@ -41,10 +41,10 @@ extern PMU_SMB_LPDDR4_2D_t    mb_LPDDR4_2D[4];
  */
 void dwc_ddrphy_phyinit_calcMb (int Train2D) { 
 
-    char *printf_header;
-    printf_header = "//[dwc_ddrphy_phyinit_calcMb]";
+    //char *printf_header;
+    //printf_header = "//[dwc_ddrphy_phyinit_calcMb]";
 
-    dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_calcMb()\n", printf_header);
+    //dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_calcMb()\n", printf_header);
 
     int nad0 = userInputBasic.NumActiveDbyteDfi0;
     int nad1 = 0;
@@ -54,15 +54,15 @@ void dwc_ddrphy_phyinit_calcMb (int Train2D) {
     if ( nad0 <= 0 || 
          nad1 < 0 ||
          userInputBasic.NumDbyte <= 0) { 
-      dwc_ddrphy_phyinit_assert(0,"%s NumActiveDbyteDfi0, NumActiveDbyteDfi0, NumByte out of range.\n",printf_header);
+      //dwc_ddrphy_phyinit_assert(0,"%s NumActiveDbyteDfi0, NumActiveDbyteDfi0, NumByte out of range.\n",printf_header);
       }
 
     if ( (nad0 + nad1) > userInputBasic.NumDbyte) { 
-      dwc_ddrphy_phyinit_assert(0,"%s NumActiveDbyteDfi0+NumActiveDbyteDfi1 is larger than NumDbyteDfi0\n",printf_header);
+      //dwc_ddrphy_phyinit_assert(0,"%s NumActiveDbyteDfi0+NumActiveDbyteDfi1 is larger than NumDbyteDfi0\n",printf_header);
       }
 
     if (userInputBasic.Dfi1Exists==0 && nad1 != 0) {
-      dwc_ddrphy_phyinit_assert(0,"%s Dfi1Exists==0 but NumDbyteDfi0 != 0\n",printf_header);
+      //dwc_ddrphy_phyinit_assert(0,"%s Dfi1Exists==0 but NumDbyteDfi0 != 0\n",printf_header);
       }
      
    
@@ -72,7 +72,7 @@ void dwc_ddrphy_phyinit_calcMb (int Train2D) {
     for (myps=0; myps<userInputBasic.NumPStates; myps++) {
    
       if (userInputBasic.DramDataWidth == 8 && mb_LPDDR4_1D[myps].X8Mode == 0x0) {
-        dwc_ddrphy_phyinit_assert(0,"%s LPDDR4 DramDataWidth == 8 but no X8 devices programmed in mb_LPDDR4_1D[%d].X8Mode!\n",printf_header,myps);
+        //dwc_ddrphy_phyinit_assert(0,"%s LPDDR4 DramDataWidth == 8 but no X8 devices programmed in mb_LPDDR4_1D[%d].X8Mode!\n",printf_header,myps);
       }
 
 
@@ -100,7 +100,7 @@ void dwc_ddrphy_phyinit_calcMb (int Train2D) {
     for (myps=0; myps<1; myps++) {
    
       if (userInputBasic.DramDataWidth == 8 && mb_LPDDR4_2D[myps].X8Mode == 0x0) {
-        dwc_ddrphy_phyinit_assert(0,"%s LPDDR4 DramDataWidth == 8 but no X8 devices programmed in mb_LPDDR4_2D[%d].X8Mode!\n",printf_header,myps);
+        //dwc_ddrphy_phyinit_assert(0,"%s LPDDR4 DramDataWidth == 8 but no X8 devices programmed in mb_LPDDR4_2D[%d].X8Mode!\n",printf_header,myps);
       }
 
 
@@ -124,6 +124,6 @@ void dwc_ddrphy_phyinit_calcMb (int Train2D) {
       } // myps
     } // Train2D
 
-    dwc_ddrphy_phyinit_print ("%s End of dwc_ddrphy_phyinit_calcMb()\n", printf_header);
+    //dwc_ddrphy_phyinit_print ("%s End of dwc_ddrphy_phyinit_calcMb()\n", printf_header);
 }
 /** @} */

@@ -4,9 +4,9 @@
  *  @{
  */
 
-#include <dwc_ddrphy_phyinit.h>
+#include "dwc_ddrphy_phyinit.h"
 
-//extern char *ApbStr; // defined in the dwc_ddrphy_phyinit_globals.c//tonyh test
+extern char *ApbStr; // defined in the dwc_ddrphy_phyinit_globals.c
 /** \brief function to perform a APB register read on the PHY
  *
  * This is user-editable function.  User can edit this function according to 
@@ -29,8 +29,9 @@
  */
 uint16_t dwc_ddrphy_phyinit_userCustom_io_read16(uint32_t adr) {
 
-    //dwc_ddrphy_phyinit_print ("// %s", ApbStr);//tonyh test
-    dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(32'h%x);\n", adr);
+    //dwc_ddrphy_phyinit_print ("// %s", ApbStr);
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(0x%x);\n", adr);
+	dwc_ddrphy_apb_rd(adr);
 
     // user must provide an implementation for returning register value
     return 0; 

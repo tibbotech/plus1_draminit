@@ -2,6 +2,7 @@
 #include <common.h>
 #include <config.h>
 #include <dwc_dram_param.h>
+#include <dwc_ddrphy_phyinit.h>
 
 struct umctl2_regs {
 	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
@@ -433,7 +434,7 @@ void polling_sw_cfg_done()
 	}
 }
 
-void dwc_ddrphy_phyinit_userCustom_G_waitFwDone ()
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
 	UINT16 rd_data;
 	UINT8 train_test = 0;

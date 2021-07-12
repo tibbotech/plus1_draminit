@@ -9,8 +9,9 @@
  * @{
  */
 #include <stdlib.h>
-#include <math.h>
+//#include <math.h>
 #include "dwc_ddrphy_phyinit.h"
+
 
 /** \brief implements Step C of initialization sequence
  *
@@ -28,6 +29,13 @@
  * List of registers programmed by this function:
  */
 
+//int ceil(float num)
+//{
+//   if(num < 0)
+//        return (int)num;
+//    else
+//        return (int)num + 1;
+//}
 
 
 void dwc_ddrphy_phyinit_C_initPhyConfig () {
@@ -35,15 +43,15 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     char *printf_header;
     printf_header = "// [phyinit_C_initPhyConfig]";
 
-    dwc_ddrphy_phyinit_cmnt ("\n\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Step (C) Initialize PHY Configuration \n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Load the required PHY configuration registers for the appropriate mode and memory configuration\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Step (C) Initialize PHY Configuration \n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Load the required PHY configuration registers for the appropriate mode and memory configuration\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n\n");
 
     int lane;
     int b_addr;
@@ -54,7 +62,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     int pstate;
     int p_addr;
     
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_C_initPhyConfig()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_C_initPhyConfig()\n", printf_header);
     
    
     /** 
@@ -69,10 +77,10 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     int TxPreN[4];          // Default to 0xf (max). Optimal setting is technology specific.
     int TxPreDrvMode; 
     
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("// TxPreDrvMode[2] = userInputBasic.Lp4xMode \n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("// TxPreDrvMode[2] = userInputBasic.Lp4xMode \n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
 
     if (userInputBasic.Lp4xMode == 1)
         TxPreDrvMode = 0x5;
@@ -88,11 +96,11 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         TxSlewRate[pstate] = (TxPreDrvMode << csr_TxPreDrvMode_LSB) | (TxPreN[pstate] << csr_TxPreN_LSB) | (TxPreP[pstate] << csr_TxPreP_LSB);
 
     
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreDrvMode to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreDrvMode);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreP to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreP[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreN to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreN[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.\n", printf_header);
-        dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Please consult the \"Output Slew Rate\" section of HSpice Model App Note in specific technology for recommended settings\n\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreDrvMode to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreDrvMode);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreP to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreP[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxSlewRate::TxPreN to 0x%x\n", printf_header, pstate,  userInputBasic.Frequency[pstate], TxPreN[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Please consult the \"Output Slew Rate\" section of HSpice Model App Note in specific technology for recommended settings\n\n", printf_header);
 
         for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
             c_addr = byte << 12;
@@ -140,7 +148,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         CK_ANIB_inst[1] = 5;
     } 
     else {
-        dwc_ddrphy_phyinit_assert (0, "Invalid number of ANIBs for protocol.  userInputBasic.NumAnib = %d.\n", userInputBasic.NumAnib);
+        //dwc_ddrphy_phyinit_assert (0, "Invalid number of ANIBs for protocol.  userInputBasic.NumAnib = %d.\n", userInputBasic.NumAnib);
     }
     
     for (anib=0; anib<userInputBasic.NumAnib; anib++) {
@@ -159,11 +167,11 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
         ATxSlewRate = (ATxPreDrvMode << csr_ATxPreDrvMode_LSB) | (ATxPreN << csr_ATxPreN_LSB) | (ATxPreP << csr_ATxPreP_LSB);
         
-        dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreDrvMode to 0x%x, ANIB=%d\n", printf_header, ATxPreDrvMode, anib);
-        dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreP to 0x%x, ANIB=%d\n", printf_header, ATxPreP, anib);
-        dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreN to 0x%x, ANIB=%d\n", printf_header, ATxPreN, anib);
-        dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.\n", printf_header);
-        dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Please consult the \"Output Slew Rate\" section of HSpice Model App Note in specific technology for recommended settings\n\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreDrvMode to 0x%x, ANIB=%d\n", printf_header, ATxPreDrvMode, anib);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreP to 0x%x, ANIB=%d\n", printf_header, ATxPreP, anib);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming ATxSlewRate::ATxPreN to 0x%x, ANIB=%d\n", printf_header, ATxPreN, anib);
+        //dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.\n", printf_header);
+        //dwc_ddrphy_phyinit_cmnt ("%s ### NOTE ### Please consult the \"Output Slew Rate\" section of HSpice Model App Note in specific technology for recommended settings\n\n", printf_header);
 
         dwc_ddrphy_phyinit_userCustom_io_write16((tANIB | c_addr | csr_ATxSlewRate_ADDR), ATxSlewRate);
 
@@ -207,7 +215,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
           }
           
           dwc_ddrphy_phyinit_userCustom_io_write16( (p_addr | tMASTER | csr_PllCtrl2_ADDR), PllCtrl2[pstate] );
-          dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d,  Memclk=%dMHz, Programming PllCtrl2 to %x based on DfiClk frequency = %d.\n", printf_header, pstate,  userInputBasic.Frequency[pstate], PllCtrl2[pstate], userInputBasic.Frequency[pstate]/2);
+          //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d,  Memclk=%dMHz, Programming PllCtrl2 to %x based on DfiClk frequency = %d.\n", printf_header, pstate,  userInputBasic.Frequency[pstate], PllCtrl2[pstate], userInputBasic.Frequency[pstate]/2);
     }
     
     /**
@@ -221,34 +229,34 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
      *
      *     ARdPtrInitVal Programmed differently based on PLL Bypass mode and Frequency:
      *   - PLL Bypassed mode:
-     *     - For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 2-6
-     *     - For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6
+     *     - For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 2-5
+     *     - For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-5
      *   - PLL Enabled mode:
-     *     - For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6
-     *     - For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-6
+     *     - For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-5
+     *     - For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-5
      */
     
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Program ARdPtrInitVal based on Frequency and PLL Bypass inputs\n");
-    dwc_ddrphy_phyinit_cmnt ("// The values programmed here assume ideal properties of DfiClk\n");
-    dwc_ddrphy_phyinit_cmnt ("// and Pclk including:\n");
-    dwc_ddrphy_phyinit_cmnt ("// - DfiClk skew\n");
-    dwc_ddrphy_phyinit_cmnt ("// - DfiClk jitter\n");
-    dwc_ddrphy_phyinit_cmnt ("// - DfiClk PVT variations\n");
-    dwc_ddrphy_phyinit_cmnt ("// - Pclk skew\n");
-    dwc_ddrphy_phyinit_cmnt ("// - Pclk jitter\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// PLL Bypassed mode:\n");
-    dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 2-6\n");
-    dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// PLL Enabled mode:\n");
-    dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-6\n");
-    dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-6\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n" );
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Program ARdPtrInitVal based on Frequency and PLL Bypass inputs\n");
+    //dwc_ddrphy_phyinit_cmnt ("// The values programmed here assume ideal properties of DfiClk\n");
+    //dwc_ddrphy_phyinit_cmnt ("// and Pclk including:\n");
+    //dwc_ddrphy_phyinit_cmnt ("// - DfiClk skew\n");
+    //dwc_ddrphy_phyinit_cmnt ("// - DfiClk jitter\n");
+    //dwc_ddrphy_phyinit_cmnt ("// - DfiClk PVT variations\n");
+    //dwc_ddrphy_phyinit_cmnt ("// - Pclk skew\n");
+    //dwc_ddrphy_phyinit_cmnt ("// - Pclk jitter\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// PLL Bypassed mode:\n");
+    //dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 2-5\n");
+    //dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-5\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// PLL Enabled mode:\n");
+    //dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency > 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 1-5\n");
+    //dwc_ddrphy_phyinit_cmnt ("//     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-5\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n" );
     
     for (pstate=0; pstate<userInputBasic.NumPStates; pstate++) {
         p_addr = pstate << 20;
@@ -264,7 +272,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
             ARdPtrInitVal[pstate] ++;
         }
     
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ARdPtrInitVal to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ARdPtrInitVal[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ARdPtrInitVal to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ARdPtrInitVal[pstate]);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_ARdPtrInitVal_ADDR), ARdPtrInitVal[pstate]);
     }
     
@@ -279,10 +287,10 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     int     ProcOdtAlwaysOff[4];
     int     ProcOdtAlwaysOn[4];
     
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("// Seq0BGPR4       = 0: Make ProcOdtAlwaysOn = 0 and ProcOdtAlwaysOff = 0 \n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Seq0BGPR4       = 0: Make ProcOdtAlwaysOn = 0 and ProcOdtAlwaysOff = 0 \n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
 
     for (pstate=0; pstate<userInputBasic.NumPStates; pstate++) {
       p_addr = pstate << 20;
@@ -291,8 +299,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
       ProcOdtAlwaysOn[pstate]  = 0;
 
       Seq0BGPR4[pstate] = 0x00000000 | ( ProcOdtAlwaysOn[pstate] << csr_ProcOdtAlwaysOn_LSB ) | ( ProcOdtAlwaysOff[pstate] << csr_ProcOdtAlwaysOff_LSB );
-      dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOff  to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtAlwaysOff[pstate]);
-      dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOn   to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtAlwaysOn[pstate]);
+      //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOff  to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtAlwaysOff[pstate]);
+      //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOn   to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtAlwaysOn[pstate]);
       dwc_ddrphy_phyinit_userCustom_io_write16((p_addr  | tINITENG  | c0  | csr_Seq0BGPR4_ADDR), Seq0BGPR4[pstate] );      
     }    
 
@@ -352,25 +360,25 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         
         DqsPreambleControl = (WDQSEXTENSION << csr_WDQSEXTENSION_LSB) | (LP4SttcPreBridgeRxEn << csr_LP4SttcPreBridgeRxEn_LSB) | (LP4PostambleExt << csr_LP4PostambleExt_LSB) | (LP4TglTwoTckTxDqsPre << csr_LP4TglTwoTckTxDqsPre_LSB) | (PositionDfeInit << csr_PositionDfeInit_LSB) | (TwoTckTxDqsPre << csr_TwoTckTxDqsPre_LSB) | (TwoTckRxDqsPre[pstate] << csr_TwoTckRxDqsPre_LSB) ; 
         
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::TwoTckRxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TwoTckRxDqsPre[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::TwoTckTxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TwoTckTxDqsPre);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::PositionDfeInit to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PositionDfeInit);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4TglTwoTckTxDqsPre);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4PostambleExt to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4PostambleExt);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4SttcPreBridgeRxEn);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DqsPreambleControl);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::TwoTckRxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TwoTckRxDqsPre[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::TwoTckTxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], TwoTckTxDqsPre);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::PositionDfeInit to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], PositionDfeInit);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4TglTwoTckTxDqsPre);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4PostambleExt to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4PostambleExt);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], LP4SttcPreBridgeRxEn);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DqsPreambleControl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DqsPreambleControl);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DqsPreambleControl_ADDR), DqsPreambleControl);
     
         DbyteDllModeCntrl = DllRxPreambleMode << csr_DllRxPreambleMode_LSB;
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DbyteDllModeCntrl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DbyteDllModeCntrl);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DbyteDllModeCntrl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DbyteDllModeCntrl);
         dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_DbyteDllModeCntrl_ADDR), DbyteDllModeCntrl);
 
         DllGainCtl = DllGainIV | (DllGainTV<<csr_DllGainTV_LSB);
         DllLockParam =  DisDllSeedSel |  (DisDllGainIVSeed<<csr_DisDllGainIVSeed_LSB)|(LcdlSeed0<<csr_LcdlSeed0_LSB) ;
         
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DllLockParam);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllLockParam to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DllLockParam);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DllLockParam_ADDR), DllLockParam);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DllGainCtl);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DllGainCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate],DllGainCtl);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DllGainCtl_ADDR), DllGainCtl);
         
 
@@ -429,7 +437,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
             }
         }
     
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtTimeCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtTimeCtl[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming ProcOdtTimeCtl to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ProcOdtTimeCtl[pstate]);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_ProcOdtTimeCtl_ADDR), ProcOdtTimeCtl[pstate]);
     }
     
@@ -455,8 +463,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     
       TxOdtDrvStren[pstate] = (ODTStrenN_state[pstate] << csr_ODTStrenN_LSB) | ODTStrenP_state[pstate];
 
-      dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxOdtDrvStren::ODTStrenP to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ODTStrenP_state[pstate]);
-      dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxOdtDrvStren::ODTStrenN to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ODTStrenN_state[pstate]);
+      //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxOdtDrvStren::ODTStrenP to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ODTStrenP_state[pstate]);
+      //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxOdtDrvStren::ODTStrenN to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], ODTStrenN_state[pstate]);
       for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
           c_addr = byte << 12;
           for (lane=0; lane <= b_max ; lane++) {
@@ -488,8 +496,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
    
         TxImpedanceCtrl1[pstate] = (DrvStrenFSDqN_state[pstate] << csr_DrvStrenFSDqN_LSB) | (DrvStrenFSDqP_state[pstate] << csr_DrvStrenFSDqP_LSB);
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DrvStrenFSDqP_state[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DrvStrenFSDqN_state[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DrvStrenFSDqP_state[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DrvStrenFSDqN_state[pstate]);
         
         for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
             c_addr = byte << 12;
@@ -519,9 +527,9 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     // override de default value to be 40ohm
     if ( userInputBasic.HardMacroVer == 4 )  {          
       if( userInputAdvanced.ATxImpedance == 20 ) {
-        dwc_ddrphy_phyinit_assert (1,"%s userInputAdvanced.ATxImpedance == 20 ).\n", printf_header);
-        dwc_ddrphy_phyinit_assert (1,"%s In Hardmacro family E, maximum drive strenght is 40 Ohms \n", printf_header);
-        dwc_ddrphy_phyinit_assert (1,"%s Overriding userInputAdvanced.ATxImpedance to 40.\n", printf_header);
+        //dwc_ddrphy_phyinit_assert (1,"%s userInputAdvanced.ATxImpedance == 20 ).\n", printf_header);
+        //dwc_ddrphy_phyinit_assert (1,"%s In Hardmacro family E, maximum drive strenght is 40 Ohms \n", printf_header);
+        //dwc_ddrphy_phyinit_assert (1,"%s Overriding userInputAdvanced.ATxImpedance to 40.\n", printf_header);
         userInputAdvanced.ATxImpedance = 40;
       }     
     }       
@@ -531,8 +539,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
     ATxImpedance  = (ADrvStrenN_state << csr_ADrvStrenN_LSB) | (ADrvStrenP_state << csr_ADrvStrenP_LSB);
 
-    dwc_ddrphy_phyinit_cmnt ("%s Programming ATxImpedance::ADrvStrenP to 0x%x\n", printf_header, ADrvStrenP_state);
-    dwc_ddrphy_phyinit_cmnt ("%s Programming ATxImpedance::ADrvStrenN to 0x%x\n", printf_header, ADrvStrenN_state);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming ATxImpedance::ADrvStrenP to 0x%x\n", printf_header, ADrvStrenP_state);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming ATxImpedance::ADrvStrenN to 0x%x\n", printf_header, ADrvStrenN_state);
     
     for (anib=0; anib<userInputBasic.NumAnib; anib++) {
         c_addr = anib << 12;
@@ -563,7 +571,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         DfiMode = 0x1;      // DFI1 does not physically exists
     }
     
-    dwc_ddrphy_phyinit_cmnt ("%s Programming DfiMode to 0x%x\n", printf_header, DfiMode);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming DfiMode to 0x%x\n", printf_header, DfiMode);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_DfiMode_ADDR), DfiMode);
     
     /**
@@ -581,7 +589,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     // LPDDR4
     DfiCAMode = 4;
     
-    dwc_ddrphy_phyinit_cmnt ("%s Programming DfiCAMode to 0x%x\n", printf_header, DfiCAMode);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming DfiCAMode to 0x%x\n", printf_header, DfiCAMode);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_DfiCAMode_ADDR), DfiCAMode);
     
     /**
@@ -618,7 +626,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
               break;
             default:
               CalDrvStrPu50 = 0x0;
-              dwc_ddrphy_phyinit_assert (1, "%s userInputAdvanced.ExtCalResVal == %d is not supported in HME.\n", printf_header, userInputAdvanced.ExtCalResVal);
+              //dwc_ddrphy_phyinit_assert (1, "%s userInputAdvanced.ExtCalResVal == %d is not supported in HME.\n", printf_header, userInputAdvanced.ExtCalResVal);
           }
       }
     else
@@ -629,8 +637,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     CalDrvStrPd50 = CalDrvStrPu50; 
     CalDrvStr0 = (CalDrvStrPu50 << csr_CalDrvStrPu50_LSB) | CalDrvStrPd50;
     
-    dwc_ddrphy_phyinit_cmnt ("%s Programming CalDrvStr0::CalDrvStrPd50 to 0x%x\n", printf_header, CalDrvStrPd50);
-    dwc_ddrphy_phyinit_cmnt ("%s Programming CalDrvStr0::CalDrvStrPu50 to 0x%x\n", printf_header, CalDrvStrPu50);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming CalDrvStr0::CalDrvStrPd50 to 0x%x\n", printf_header, CalDrvStrPd50);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming CalDrvStr0::CalDrvStrPu50 to 0x%x\n", printf_header, CalDrvStrPu50);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_CalDrvStr0_ADDR), CalDrvStr0);
     
     /**
@@ -650,7 +658,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
           CalVRefs = (0x1 & mb_LPDDR4_1D[0].MR3_A0) ? 0x0 /* VDDQ/3 */ : 0x1 /* VDDQ*2.5 */ ;
         else 
           CalVRefs = 0x2;
-        dwc_ddrphy_phyinit_cmnt ("%s Programming CalVRefs to 0x%x\n", printf_header, CalVRefs);
+        //dwc_ddrphy_phyinit_cmnt ("%s Programming CalVRefs to 0x%x\n", printf_header, CalVRefs);
         dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_CalVRefs_ADDR), CalVRefs);
       }
 
@@ -671,12 +679,12 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     
         // Number of DfiClk cycles per 1us
         CalUClkTicksPer1uS_double[pstate] = (double)  (1.0*userInputBasic.Frequency[pstate])/2.0;
-        //CalUClkTicksPer1uS[pstate]        = (int) ceil ( CalUClkTicksPer1uS_double[pstate] );  //tonyh test
+        CalUClkTicksPer1uS[pstate]        = (int) ceil ( CalUClkTicksPer1uS_double[pstate] );
         
         if (CalUClkTicksPer1uS[pstate] < 24)
             CalUClkTicksPer1uS[pstate] = 24;  // Minimum value of CalUClkTicksPer1uS = 24
     
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming CalUclkInfo::CalUClkTicksPer1uS to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], CalUClkTicksPer1uS[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming CalUclkInfo::CalUClkTicksPer1uS to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], CalUClkTicksPer1uS[pstate]);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_CalUclkInfo_ADDR), CalUClkTicksPer1uS[pstate]);
     }
     
@@ -703,8 +711,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
     CalRate = (CalOnce << csr_CalOnce_LSB) | (CalInterval << csr_CalInterval_LSB);
 
-    dwc_ddrphy_phyinit_cmnt ("%s Programming CalRate::CalInterval to 0x%x\n", printf_header, CalInterval);
-    dwc_ddrphy_phyinit_cmnt ("%s Programming CalRate::CalOnce to 0x%x\n", printf_header, CalOnce);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming CalRate::CalInterval to 0x%x\n", printf_header, CalInterval);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming CalRate::CalOnce to 0x%x\n", printf_header, CalOnce);
 
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_CalRate_ADDR), CalRate);
 
@@ -765,15 +773,15 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         GlobalVrefInDAC = min(GlobalVrefInDAC,127);
 
         VrefInGlobal = (GlobalVrefInDAC << csr_GlobalVrefInDAC_LSB) | GlobalVrefInSel;
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal::GlobalVrefInSel to 0x%x\n", printf_header, pstate, GlobalVrefInSel);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal::GlobalVrefInDAC to 0x%x\n", printf_header, pstate, GlobalVrefInDAC);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal to 0x%x\n", printf_header, pstate, VrefInGlobal);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal::GlobalVrefInSel to 0x%x\n", printf_header, pstate, GlobalVrefInSel);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal::GlobalVrefInDAC to 0x%x\n", printf_header, pstate, GlobalVrefInDAC);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming VrefInGlobal to 0x%x\n", printf_header, pstate, VrefInGlobal);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_VrefInGlobal_ADDR), VrefInGlobal);
 
         DqDqsRcvCntrl = (GainCurrAdj_defval << csr_GainCurrAdj_LSB) | (MajorModeDbyte << csr_MajorModeDbyte_LSB) | (DfeCtrl_defval << csr_DfeCtrl_LSB) | (ExtVrefRange_defval << csr_ExtVrefRange_LSB) | (SelAnalogVref << csr_SelAnalogVref_LSB);
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming DqDqsRcvCntrl::MajorModeDbyte to 0x%x\n", printf_header, pstate, MajorModeDbyte);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming DqDqsRcvCntrl to 0x%x\n", printf_header, pstate, DqDqsRcvCntrl);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming DqDqsRcvCntrl::MajorModeDbyte to 0x%x\n", printf_header, pstate, MajorModeDbyte);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Programming DqDqsRcvCntrl to 0x%x\n", printf_header, pstate, DqDqsRcvCntrl);
         for (byte=0; byte<userInputBasic.NumDbyte; byte++) {
             c_addr = byte << 12;
             for (lane=0; lane <= b_max ; lane++) {
@@ -797,7 +805,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
         DfiFreqRatio[pstate] = userInputBasic.DfiFreqRatio[pstate];
        
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DfiFreqRatio_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DfiFreqRatio[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DfiFreqRatio_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DfiFreqRatio[pstate]);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DfiFreqRatio_ADDR), DfiFreqRatio[pstate]);
     }
     
@@ -833,8 +841,8 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
       
         TristateModeCA[pstate] = (CkDisVal_def << csr_CkDisVal_LSB) | (DDR2TMode[pstate] << csr_DDR2TMode_LSB) | (DisDynAdrTri[pstate] << csr_DisDynAdrTri_LSB) ;
         
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TristateModeCA::DisDynAdrTri_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DisDynAdrTri[pstate]);
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TristateModeCA::DDR2TMode_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DDR2TMode[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TristateModeCA::DisDynAdrTri_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DisDynAdrTri[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming TristateModeCA::DDR2TMode_p%d to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], pstate, DDR2TMode[pstate]);
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_TristateModeCA_ADDR), TristateModeCA[pstate]);
         
     }
@@ -846,7 +854,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
      *     - user_input_basic.DramType
      *     - user_input_basic.PllBypass
      */
-    dwc_ddrphy_phyinit_cmnt ("%s Programming DfiFreqXlat*\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming DfiFreqXlat*\n", printf_header);
     
     uint16_t loopVector;
     uint16_t dfifreqxlat_dat;
@@ -915,7 +923,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
         c_addr = d*c1;
         if (dwc_ddrphy_phyinit_IsDbyteDisabled(d)) 
           {
-            dwc_ddrphy_phyinit_cmnt ("%s disable Dbyte%d\n",printf_header, d);
+            //dwc_ddrphy_phyinit_cmnt ("%s disable Dbyte%d\n",printf_header, d);
             dwc_ddrphy_phyinit_userCustom_io_write16((c_addr | tDBYTE | csr_DbyteMiscMode_ADDR), regData);
             dwc_ddrphy_phyinit_userCustom_io_write16((c_addr | tDBYTE | csr_DqDqsRcvCntrl1_ADDR), regData1);
           }
@@ -929,7 +937,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
                  userInputAdvanced.Lp4DbiRd[3] == 0 )
               {
         
-                dwc_ddrphy_phyinit_cmnt ("%s Disabling Lane 8 Receiver to save power.%d\n",printf_header, d);
+                //dwc_ddrphy_phyinit_cmnt ("%s Disabling Lane 8 Receiver to save power.%d\n",printf_header, d);
                 dwc_ddrphy_phyinit_userCustom_io_write16((c_addr | tDBYTE | csr_DqDqsRcvCntrl1_ADDR), regData2);
         
               } // DBI
@@ -957,7 +965,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
     MasterX4Config = X4TG << csr_X4TG_LSB;
 
-    dwc_ddrphy_phyinit_cmnt ("%s Programming MasterX4Config::X4TG to 0x%x\n", printf_header, MasterX4Config);
+    //dwc_ddrphy_phyinit_cmnt ("%s Programming MasterX4Config::X4TG to 0x%x\n", printf_header, MasterX4Config);
     dwc_ddrphy_phyinit_userCustom_io_write16((tMASTER | csr_MasterX4Config_ADDR), MasterX4Config);
 
     /**
@@ -991,7 +999,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
     
     
 
-        dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DMIPinPresent::RdDbiEnabled to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DMIPinPresent[pstate]);
+        //dwc_ddrphy_phyinit_cmnt ("%s Pstate=%d, Memclk=%dMHz, Programming DMIPinPresent::RdDbiEnabled to 0x%x\n", printf_header, pstate, userInputBasic.Frequency[pstate], DMIPinPresent[pstate]);
 
         dwc_ddrphy_phyinit_userCustom_io_write16((p_addr | tMASTER | csr_DMIPinPresent_ADDR), DMIPinPresent[pstate]);
     }
@@ -1103,7 +1111,7 @@ void dwc_ddrphy_phyinit_C_initPhyConfig () {
       }
     dwc_ddrphy_phyinit_userCustom_io_write16(( tMASTER |  csr_Acx4AnibDis_ADDR), Acx4AnibDis);
 
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_C_initPhyConfig()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_C_initPhyConfig()\n", printf_header);
 }
 // End of dwc_ddrphy_phyinit_C_initPhyConfig()
 

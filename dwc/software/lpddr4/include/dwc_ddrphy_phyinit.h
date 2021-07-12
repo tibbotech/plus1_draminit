@@ -1,10 +1,10 @@
 /** \file */
 
-#include <dwc_ddrphy_phyinit_userCustom.h>
+#include "dwc_ddrphy_phyinit_userCustom.h"
 /*! \def DWC_DDRPHY_PHYINIT_RID
  * cdefine for a PhyInit Revision ID
  */
-#define DWC_DDRPHY_PHYINIT_RID 201810002
+#define DWC_DDRPHY_PHYINIT_RID 202006
 
 //#############################################################################
 // Global Structures : instantiated in dwc_ddrphy_globals.c
@@ -24,8 +24,18 @@ extern PMU_SMB_LPDDR4_2D_t        shdw_LPDDR4_2D[4];
 int dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D);
 int dwc_ddrphy_phyinit_softSetMb (int ps, char *field, int value, int Train2D);
 void dwc_ddrphy_phyinit_initStruct(int Train2D);
-//void SP_REG_W(unsigned int addr,int value);
-//unsigned short SP_REG_R(unsigned int addr);
 
+void dwc_ddrphy_apb_wr(unsigned int adr, unsigned int dat);
+int dwc_ddrphy_apb_rd(unsigned int adr);
 
-char* ApbStr;   //tonyh test
+void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D);
+void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D);
+void Changing_SDRAMRDQS_of_Zebu_Emulation( void);
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP(void);
+void dwc_dvdrphy_phyinit_Write_DMEM(void);
+
+int floor(float val); 
+int ceil(float val);
+float fmodf (float x, float y);
+float fmod (float x, float y);
+

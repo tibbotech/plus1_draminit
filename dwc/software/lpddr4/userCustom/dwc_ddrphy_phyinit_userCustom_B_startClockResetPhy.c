@@ -35,23 +35,23 @@
  */
 void dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy () { 
     
-    char *printf_header;
-    printf_header = "[dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy]";
+    //char *printf_header;
+    //printf_header = "[dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy]";
 
-    dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()\n", printf_header);
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// Step (B) Start Clocks and Reset the PHY \n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
-    dwc_ddrphy_phyinit_cmnt ("//\n");
-    dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_cmnt ("\n");
-    dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy ();\n\n");
-	
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("%s Start of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()\n", printf_header);
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// Step (B) Start Clocks and Reset the PHY \n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("// See PhyInit App Note for detailed description and function usage\n");
+    //dwc_ddrphy_phyinit_cmnt ("//\n");
+    //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_cmnt ("\n");
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy ();\n\n");
+
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy()\n", printf_header);
 }
 /** @} */

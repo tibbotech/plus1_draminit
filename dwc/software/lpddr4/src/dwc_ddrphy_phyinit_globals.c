@@ -10,7 +10,7 @@
 /// stores input string from -comment_string
 char* CmntStr       = ""; 
 /// stores input string from -apb_string
-//char* ApbStr        = "";   //tonyh test
+char* ApbStr        = ""; 
 
 // === Global Struct Defines === //
 /// instance of runtime objects

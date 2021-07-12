@@ -3,9 +3,6 @@
  * \brief used to set PhyInit inputs statically by the user
  */
 #include <string.h>
-//#include <stdio.h> //tonyh test
-//#include <memory.h> //tonyh test
-
 #include "dwc_ddrphy_phyinit.h"
 
 /**  
@@ -184,6 +181,8 @@ void dwc_ddrphy_phyinit_setDefault (int Train2D /**< Train2D 1=1D & 2D training 
         }
     }
 
+    userInputAdvanced.EnableDfiCsPolarityFix   = 0;
+
     // ##############################################################
     // Basic Message Block Variables
     // ##############################################################
@@ -197,7 +196,7 @@ void dwc_ddrphy_phyinit_setDefault (int Train2D /**< Train2D 1=1D & 2D training 
     uint8_t Reserved00           = 0x0;  // Set Reserved00[7]   = 1 (If using T28 attenuated receivers)
                                          // Set Reserved00[6:0] = 0 (Reserved; must be programmed to 0)
                                           
-    uint8_t HdtCtrl              = 0xff;
+    uint8_t HdtCtrl              = 0xc8;
     uint8_t PhyVref              = 0x14;
     uint8_t CATerminatingRankChA = 0x00; //Usually Rank0 is terminating rank
     uint8_t CATerminatingRankChB = 0x00; //Usually Rank0 is terminating rank
@@ -230,7 +229,7 @@ void dwc_ddrphy_phyinit_setDefault (int Train2D /**< Train2D 1=1D & 2D training 
     uint16_t CkOdtEn[4] = {0x0,0x0,0x0,0x0};
     uint16_t CsOdtEn[4] = {0x0,0x0,0x0,0x0};
     uint16_t CaOdtDis[4] = {0x0,0x0,0x0,0x0};
-     
+
     // itterate through all pstates to write the MR's
     uint8_t  mr1[4];     
     uint8_t  mr2[4];     

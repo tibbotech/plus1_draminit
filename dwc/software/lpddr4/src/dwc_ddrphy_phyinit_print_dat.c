@@ -14,7 +14,7 @@
  * @returns void
  */
 void dwc_ddrphy_phyinit_print_dat () {
-
+#if 0
     char *printf_header;
     printf_header = "// [phyinit_print_dat]";
 
@@ -98,6 +98,7 @@ void dwc_ddrphy_phyinit_print_dat () {
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.RxEnBackOff = %d\n", printf_header, userInputAdvanced.RxEnBackOff);
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.Lp4LowPowerDrv = %d\n", printf_header, userInputAdvanced.Lp4LowPowerDrv);
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.TrainSequenceCtrl = %d\n", printf_header, userInputAdvanced.TrainSequenceCtrl);
+    dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.EnableDfiCsPolarityFix = %d\n", printf_header, userInputAdvanced.EnableDfiCsPolarityFix);
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.Lp4WL[0] = %d\n", printf_header, userInputAdvanced.Lp4WL[0]);
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.Lp4WL[1] = %d\n", printf_header, userInputAdvanced.Lp4WL[1]);
     dwc_ddrphy_phyinit_cmnt ("%s userInputAdvanced.Lp4WL[2] = %d\n", printf_header, userInputAdvanced.Lp4WL[2]);
@@ -192,7 +193,11 @@ void dwc_ddrphy_phyinit_print_dat () {
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved0E = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved0E); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].SequenceCtrl = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].SequenceCtrl); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].HdtCtrl = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].HdtCtrl); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved13 = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved13); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved14 = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved14); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved15 = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved15); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].DFIMRLMargin = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].DFIMRLMargin); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved17 = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved17); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].UseBroadcastMR = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].UseBroadcastMR); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Lp4Quickboot = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Lp4Quickboot); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_1D[%d].Reserved1A = 0x%x\n", printf_header, ps, mb_LPDDR4_1D[ps].Reserved1A); 
@@ -277,7 +282,11 @@ void dwc_ddrphy_phyinit_print_dat () {
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved0E = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved0E); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].SequenceCtrl = 0x%x\n", printf_header, mb_LPDDR4_2D[0].SequenceCtrl); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].HdtCtrl = 0x%x\n", printf_header, mb_LPDDR4_2D[0].HdtCtrl); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved13 = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved13); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved14 = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved14); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved15 = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved15); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].DFIMRLMargin = 0x%x\n", printf_header, mb_LPDDR4_2D[0].DFIMRLMargin); 
+        dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved17 = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved17); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].UseBroadcastMR = 0x%x\n", printf_header, mb_LPDDR4_2D[0].UseBroadcastMR); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].Reserved1A = 0x%x\n", printf_header, mb_LPDDR4_2D[0].Reserved1A); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].CATrainOpt = 0x%x\n", printf_header, mb_LPDDR4_2D[0].CATrainOpt); 
@@ -343,5 +352,6 @@ void dwc_ddrphy_phyinit_print_dat () {
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].MR24_B1 = 0x%x\n", printf_header, mb_LPDDR4_2D[0].MR24_B1); 
         dwc_ddrphy_phyinit_cmnt ("%s mb_LPDDR4_2D[0].CATerminatingRankChB = 0x%x\n", printf_header, mb_LPDDR4_2D[0].CATerminatingRankChB); 
     }
+#endif 	
 }
 /** @} */

@@ -1,6 +1,6 @@
 
 #include <stdint.h>
-#include <dwc_ddrphy_phyinit_struct.h>
+#include "dwc_ddrphy_phyinit_struct.h"
 /** \file
  * \brief structures and enumeration definitions
  */
@@ -91,6 +91,7 @@
 // Message Block Structure Definitions. 
 #include "mnPmuSramMsgBlock_lpddr4.h"
 #include "mnPmuSramMsgBlock_lpddr4_2d.h"
+
 
 
 //------------------

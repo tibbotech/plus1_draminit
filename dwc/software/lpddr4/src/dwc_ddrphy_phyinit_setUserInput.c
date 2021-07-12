@@ -171,6 +171,8 @@ int dwc_ddrphy_phyinit_setUserInput (char *field, int value) {
             userInputAdvanced.Lp4LowPowerDrv = value;
     else if( strcmp(field, "TrainSequenceCtrl") == 0)
             userInputAdvanced.TrainSequenceCtrl = value;
+    else if( strcmp(field, "EnableDfiCsPolarityFix") == 0)
+            userInputAdvanced.EnableDfiCsPolarityFix = value;
     else if( strcmp(field, "Lp4WL[0]") == 0)
             userInputAdvanced.Lp4WL[0] = value;
     else if( strcmp(field, "Lp4WL[1]") == 0)

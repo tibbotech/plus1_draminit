@@ -2,13 +2,12 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
-#include <dwc_ddrphy_phyinit.h>
+//#include <math.h>
+#include "dwc_ddrphy_phyinit.h"
 
 extern FILE *outFilePtr; // defined in the dwc_ddrphy_phyinit_globals.c
 extern char *CmntStr; // defined in the dwc_ddrphy_phyinit_globals.c
-//extern char *ApbStr; // defined in the dwc_ddrphy_phyinit_globals.c  //tonyh test
-//char* ApbStr        = "";   //tonyh test
+extern char *ApbStr; // defined in the dwc_ddrphy_phyinit_globals.c
 
 /** \file 
  *  \brief main function for phyinit executable
@@ -132,7 +131,7 @@ int main (int argc, char *argv[]) {
         } else if (strcmp("-comment_string", argv[i]) == 0) {
             CmntStr = argv[i+1];
         } else if (strcmp("-apb_string", argv[i]) == 0) {
-            ApbStr = argv[i+1];//tonyh test
+            ApbStr = argv[i+1];
         } else if (strcmp("-retention_exit", argv[i]) == 0) {
             retExit = atoi(argv[i+1]);
         } else if (strcmp("-output", argv[i]) == 0) {
@@ -159,7 +158,7 @@ int main (int argc, char *argv[]) {
     if (ApbStr == NULL) {
         dwc_ddrphy_phyinit_assert (0,"%s abp_strings is NULL. See usage.\n%s\n", printf_header, Usage); 
     }
- 
+
     printf("%s Running with values of skip_train = %0d, train2d = %0d, debug = %0d output=%s\n", printf_header, skip_train, train2d, debug, outFileName);
     
     // registering function inputs

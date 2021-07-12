@@ -32,24 +32,24 @@
  */
 void dwc_ddrphy_phyinit_userCustom_H_readMsgBlock (int Train2D) { 
     
-    char *printf_header;
-    printf_header = "[dwc_ddrphy_phyinit_userCustom_H_readMsgBlock]";
+    //char *printf_header;
+    //printf_header = "[dwc_ddrphy_phyinit_userCustom_H_readMsgBlock]";
 
 
-    dwc_ddrphy_phyinit_cmnt ("2. Read the Firmware Message Block to obtain the results from the training.\n");
-    dwc_ddrphy_phyinit_cmnt ("This can be accomplished by issuing APB read commands to the DMEM addresses.\n");
-    dwc_ddrphy_phyinit_cmnt ("Example:\n");
-    dwc_ddrphy_phyinit_cmnt ("if (Train2D)\n");
-    dwc_ddrphy_phyinit_cmnt ("{ \n");
-    dwc_ddrphy_phyinit_cmnt ("  _read_2d_message_block_outputs_\n");
-    dwc_ddrphy_phyinit_cmnt ("}\n");
-    dwc_ddrphy_phyinit_cmnt ("else\n");
-    dwc_ddrphy_phyinit_cmnt ("{\n"); 
-    dwc_ddrphy_phyinit_cmnt ("  _read_1d_message_block_outputs_\n");
-    dwc_ddrphy_phyinit_cmnt ("}\n");
+    //dwc_ddrphy_phyinit_cmnt ("2. Read the Firmware Message Block to obtain the results from the training.\n");
+    //dwc_ddrphy_phyinit_cmnt ("This can be accomplished by issuing APB read commands to the DMEM addresses.\n");
+    //dwc_ddrphy_phyinit_cmnt ("Example:\n");
+    //dwc_ddrphy_phyinit_cmnt ("if (Train2D)\n");
+    //dwc_ddrphy_phyinit_cmnt ("{ \n");
+    //dwc_ddrphy_phyinit_cmnt ("  _read_2d_message_block_outputs_\n");
+    //dwc_ddrphy_phyinit_cmnt ("}\n");
+    //dwc_ddrphy_phyinit_cmnt ("else\n");
+    //dwc_ddrphy_phyinit_cmnt ("{\n"); 
+    //dwc_ddrphy_phyinit_cmnt ("  _read_1d_message_block_outputs_\n");
+    //dwc_ddrphy_phyinit_cmnt ("}\n");
    
-    dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_H_readMsgBlock (%d);\n\n",Train2D);
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_H_readMsgBlock ()\n", printf_header);
+    //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_H_readMsgBlock (%d);\n\n",Train2D);
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_H_readMsgBlock ()\n", printf_header);
 
 }
 /* @} */
