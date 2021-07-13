@@ -40,8 +40,8 @@
 
 void dwc_ddrphy_phyinit_C_initPhyConfig () {
 
-    char *printf_header;
-    printf_header = "// [phyinit_C_initPhyConfig]";
+    //char *printf_header;
+    //printf_header = "// [phyinit_C_initPhyConfig]";
 
     //dwc_ddrphy_phyinit_cmnt ("\n\n");
     //dwc_ddrphy_phyinit_cmnt ("//##############################################################\n");

@@ -130,7 +130,6 @@ static unsigned int DRAM_SIZE_FLAG;
 #if (defined(DRAMSCAN) || defined(SISCOPE))
 static unsigned int scan_val_190;
 #endif
-
 u32 mp;
 #ifdef PLATFORM_PENTAGRAM
 #define CHIP_WARM_RESET
@@ -296,21 +295,7 @@ int memory_rw_test(unsigned int start_addr, unsigned int test_len, int flag)
 // ***********************************************************************
 int dram_booting_flow(unsigned int dram_id)
 {
-	//unsigned int SDC_BASE_GRP = 0,PHY_BASE_GRP = 0;
-	//unsigned int wait_flag      = 0;	 // min
-	//unsigned int aphy_select1_value = 0;
-	//unsigned int aphy_select2_value = 0;
-	prn_string("enter dram_booting_flow for DRAM");
-	prn_decimal(dram_id);
-	prn_string("\n");
-	// -------------------------------------------------------
-	// 0. SDCTRL / DDR_PHY RGST GRP selection
-	// -------------------------------------------------------
-	//get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-	// -------------------------------------------------------
-	// 1. DPCU_APHY_INIT setting => a001
-	// -------------------------------------------------------
-	//do_system_reset_flow(dram_id);
+	prn_string("dram_booting\n");
 	//dbg_stamp(0xA000);
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
@@ -338,6 +323,13 @@ int dram_booting_flow(unsigned int dram_id)
 void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 {
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
+	#if 0
+		prn_string("dwc_ddrphy_apb_wr(");
+		prn_dword0(adr);
+		prn_string(",");
+		prn_dword0(dat);
+		prn_string(")\n");
+	#endif 
 	DWC_PHY_REG(adr)=dat;
 }
 
@@ -929,7 +921,7 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt> 
-   prn_string("dwc_ddrphy_phyinit_main ver.011\n");
+   prn_string("dwc_ddrphy_phyinit_main ver.014\n");
    dwc_ddrphy_phyinit_sequence(2,0,0);
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
 }
@@ -937,13 +929,7 @@ void dwc_ddrphy_phyinit_main(void)
 int dram_training_flow_for_ddr4(unsigned int dram_id)
 {
 	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
-	//char *printf_header;
-
-	//prn_string(">>> enter dram_training_flow_for_ddr4 for DRAM");
-	//prn_decimal(dram_id);
-	//prn_string("\n");
-	//prn_string("code ver0009");
-	//prn_string("\n");
+	
 	#if 0 //test code for load bin file
 	dwc_ddrphy_phyinit_D_loadIMEM (0);
 	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
@@ -989,11 +975,6 @@ int dram_training_flow_for_ddr4(unsigned int dram_id)
 // ***********************************************************************
 // * FUNC      : dram_init
 // * PARAM     : dram_id
-// * PURPOSE   : to do the following sequences
-// *           : (1). DDR_APHY initial sequence (CTCAL->SSCPLL->PZQ)
-// *           : (2). SDCTRL RGST setting
-// *           : (3). DRAM initial setting by SDCTRL
-// *           : (4). DDR_DPHY+APHY data training
 // ***********************************************************************
 int dram_init(unsigned int dram_id)
 {
