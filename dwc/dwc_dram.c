@@ -287,36 +287,6 @@ int memory_rw_test(unsigned int start_addr, unsigned int test_len, int flag)
 	return 0;
 }
 
-// ***********************************************************************
-// * FUNC      : dram_booting_flow
-// * PARAM     : dram_id
-// * PURPOSE   : to do the following sequences
-// *           : (1). DDR_APHY initial sequence (CTCAL->SSCPLL->PZQ)
-// ***********************************************************************
-int dram_booting_flow(unsigned int dram_id)
-{
-	prn_string("dram_booting\n");
-	//dbg_stamp(0xA000);
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
-	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
-	SP_REG(0, 22) = RF_MASK_V_SET(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
-	SP_REG(0, 25) = RF_MASK_V_SET(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-	SP_REG(3, 24) = RF_MASK_V_SET(1 << 12);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin
-	wait_loop(1000);
-	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
-	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
-	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-
-	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
-
-	//prn_string("leave dram_booting_flow for DRAM");
-	//prn_decimal(dram_id);
-	//prn_string("\n");
-	return 1;
-} // end of dram_booting_flow
-
-
-
 //////////////////////////////////////////////////////
 ///////////////LPDDR4////////////////////////////////
 //////////////////////////////////////////////////////
@@ -921,55 +891,56 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt> 
-   prn_string("dwc_ddrphy_phyinit_main ver.014\n");
-   dwc_ddrphy_phyinit_sequence(2,0,0);
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
+   prn_string("dwc_ddrphy_phyinit_main ver.16\n");
+   dwc_ddrphy_phyinit_sequence(2,0,0);
 }
 
-int dram_training_flow_for_ddr4(unsigned int dram_id)
+// ***********************************************************************
+// * FUNC      : startClockResetPhy_of_SP
+// * PARAM     : dram_id
+// * PURPOSE   : 
+// ***********************************************************************
+void startClockResetPhy_of_SP(void)
+{
+	//prn_string("startClockResetPhy_of_SP");
+	//prn_string("\n");
+
+	//dbg_stamp(0xA000);
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
+	SP_REG(0, 22) = RF_MASK_V_SET(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
+	SP_REG(0, 25) = RF_MASK_V_SET(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+	SP_REG(3, 24) = RF_MASK_V_SET(1 << 12);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin
+	wait_loop(1000);
+	//MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
+	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
+	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
+} // end of startClockResetPhy_of_SP
+
+void startClockResetUmctl2_of_SP(void)
 {
 	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
+	//prn_string("startClockResetUmctl2_of_SP");
+	//prn_string("\n");
 	
-	#if 0 //test code for load bin file
-	dwc_ddrphy_phyinit_D_loadIMEM (0);
-	dwc_ddrphy_phyinit_F_loadDMEM (0,0);
-	dwc_ddrphy_phyinit_D_loadIMEM (1);
-	dwc_ddrphy_phyinit_F_loadDMEM (0,1);
-	#endif
-	// -------------------------------------------------------
-	// 0. SDCTRL / DDR_PHY RGST GRP selection
-	// -------------------------------------------------------
 	dbg_stamp(0xA001);
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
 	wait_loop(1000);
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
 	wait_loop(1000);
-	// -------------------------------------------------------
-	// 2.
-	// -------------------------------------------------------
+	
 	dbg_stamp(0xA002);
-	dwc_umctl2_init_before_ctl_rst(dram_id);
+	dwc_umctl2_init_before_ctl_rst();
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 	wait_loop(1000);
 	wait_loop(1000);
-	dwc_umctl2_init_after_ctl_rst(dram_id);
+	dwc_umctl2_init_after_ctl_rst();
 	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
  	wait_loop(1000);
-	// -------------------------------------------------------
-	// 3.
-	// -------------------------------------------------------
-	//printf_header = "// [dwc_ddrphy_phyinit_sequence]";
-	//dwc_ddrphy_phyinit_print ("%s Start of dwc_ddrphy_phyinit_sequence()\n", printf_header);
-	dbg_stamp(0xA003);
-	dwc_ddrphy_phyinit_main();
-	ctl_trigger_init_and_wait_normal();
-	//prn_string("<<< leave dram_training_flow_for_ddr4 for DRAM");
-	//prn_decimal(dram_id);
-	//prn_string("\n");
-	return 1;
 }
 
 // ***********************************************************************
@@ -982,19 +953,17 @@ int dram_init(unsigned int dram_id)
 	unsigned int max_init_fail_cnt = 15;
 	unsigned int loop_time;
 	unsigned int ret = 0;
-
-	// -------------------------------------------------------
-	// 0. SDCTRL / DDR_PHY RGST GRP selection
-	// -------------------------------------------------------
+	
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	loop_time = 0;
-	prn_string(" dram_init\n");
-
+	prn_string("dram_init\n");
+	
 	for (loop_time = 0; loop_time < max_init_fail_cnt; loop_time++) {
-		dram_booting_flow(dram_id);
-
-		ret = dram_training_flow_for_ddr4(dram_id);
+		startClockResetPhy_of_SP();
+		startClockResetUmctl2_of_SP();
+		dwc_ddrphy_phyinit_main();
+		ret = ctl_trigger_init_and_wait_normal();
 
 		if (ret == WAIT_FLAG_FAIL) {
 			prn_string("WAIT_FLAG_FAIL!!!!\n");

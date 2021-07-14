@@ -23,7 +23,7 @@ int ctl_apb_rd(UINT32 adr)
 	return value;
 }
 
-int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
+int dwc_umctl2_init_before_ctl_rst(void)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_before_ctl_rst\n");
@@ -348,7 +348,7 @@ int dwc_umctl2_init_before_ctl_rst(unsigned int dram_id)
 }
 
 
-int dwc_umctl2_init_after_ctl_rst(unsigned int dram_id)
+int dwc_umctl2_init_after_ctl_rst(void)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
@@ -495,7 +495,7 @@ void run_customPostTrain()
 	prn_string("\n");
 }
 
-void ctl_trigger_init_and_wait_normal()
+int ctl_trigger_init_and_wait_normal()
 {
 	UINT16 rd_data;
 
@@ -543,4 +543,5 @@ void ctl_trigger_init_and_wait_normal()
 	ctl_apb_wr(0x030,0x00000000);
 	ctl_apb_wr(0x030,0x00000000);
 	ctl_apb_wr(0x490,0x00000001); //axi port 0 enable.
+	return 1;
 }
