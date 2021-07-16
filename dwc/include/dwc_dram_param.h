@@ -2577,9 +2577,9 @@
 #else
 #define UMCTL2_214	0x0a080309
 
-#define UMCTL2_218	0x0908060b
+#define UMCTL2_218	0x09080608
 
-#define UMCTL2_21C	0x00000f04
+#define UMCTL2_21C	0x00000f07
 #endif
 
 #define UMCTL2_220	0x00000000
