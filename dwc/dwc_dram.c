@@ -299,7 +299,7 @@ void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 		prn_string(",");
 		prn_dword0(dat);
 		prn_string(")\n");
-	#endif 
+	#endif
 	DWC_PHY_REG(adr)=dat;
 }
 
@@ -584,9 +584,9 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 			img_name   = buf[i];
 			img_length = buf[i+2];
 			img_sum    = buf[i+3];
-			//prn_string("img_name="); prn_dword(img_name);
-			//prn_string("img_length="); prn_dword(img_length);
-			//prn_string("img_sum="); prn_dword(img_sum);
+			prn_string("img_name="); prn_dword(img_name);
+			prn_string("img_length="); prn_dword(img_length);
+			prn_string("img_sum="); prn_dword(img_sum);
 
 			// Check if BIN image is correct
 			if (((Train2D == 0) && (mem_type == 0) && (img_name != IM1D_HDR_MAGIC)) ||
@@ -721,7 +721,7 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 	int sz_sect = GetNANDPageCount_1K60(g_bootinfo.sys_nand.u16PyldLen) * 1024;
 	int xbsize;
 
-	prn_string("LoadMEMForNAND\n");
+	//prn_string("LoadMEMForNAND\n");
 	prn_string("Train2D="); prn_decimal(Train2D); prn_string("; ");
 	prn_string("mem_type="); prn_decimal(mem_type); prn_string("\n");
 
@@ -890,7 +890,7 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
-   //#include <dwc_devinit_skiptrain_zebu.txt> 
+   //#include <dwc_devinit_skiptrain_zebu.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
    prn_string("dwc_ddrphy_phyinit_main ver.16\n");
    dwc_ddrphy_phyinit_sequence(2,0,0);
@@ -899,7 +899,7 @@ void dwc_ddrphy_phyinit_main(void)
 // ***********************************************************************
 // * FUNC      : startClockResetPhy_of_SP
 // * PARAM     : dram_id
-// * PURPOSE   : 
+// * PURPOSE   :
 // ***********************************************************************
 void startClockResetPhy_of_SP(void)
 {
@@ -924,7 +924,7 @@ void startClockResetUmctl2_of_SP(void)
 	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	//prn_string("startClockResetUmctl2_of_SP");
 	//prn_string("\n");
-	
+
 	dbg_stamp(0xA001);
 	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
@@ -932,7 +932,7 @@ void startClockResetUmctl2_of_SP(void)
 	wait_loop(1000);
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
 	wait_loop(1000);
-	
+
 	dbg_stamp(0xA002);
 	dwc_umctl2_init_before_ctl_rst();
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
@@ -953,12 +953,12 @@ int dram_init(unsigned int dram_id)
 	unsigned int max_init_fail_cnt = 15;
 	unsigned int loop_time;
 	unsigned int ret = 0;
-	
+
 	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	loop_time = 0;
 	prn_string("dram_init\n");
-	
+
 	for (loop_time = 0; loop_time < max_init_fail_cnt; loop_time++) {
 		startClockResetPhy_of_SP();
 		startClockResetUmctl2_of_SP();
