@@ -818,7 +818,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			total_length = 32 + XBOOT_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
-			printf_sectorNo(sectorNo0, sectorNo1);
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 		else if (Train2D == 1)
@@ -826,7 +826,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
-			printf_sectorNo(sectorNo0, sectorNo1);
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 	}
@@ -865,7 +865,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
-			printf_sectorNo(sectorNo0, sectorNo1);
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 		else if(Train2D == 1)
@@ -873,7 +873,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			sectorNo1 = total_length % 512;
-			printf_sectorNo(sectorNo0, sectorNo1);
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 	}
@@ -892,7 +892,7 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-   prn_string("dwc_ddrphy_phyinit_main ver.16\n");
+   prn_string("dwc_ddrphy_phyinit_main ver.17\n");
    dwc_ddrphy_phyinit_sequence(2,0,0);
 }
 
