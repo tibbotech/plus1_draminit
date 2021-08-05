@@ -2005,7 +2005,7 @@
 
 #define UMCTL2_1B8	0x0000001f
 
-#define UMCTL2_1C0	0x00000000
+#define UMCTL2_1C0	0x00000001	//bit0=1:open write mask
 
 #define UMCTL2_1C4_1    1
 #define UMCTL2_1C4_2    0

@@ -294,11 +294,14 @@ void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 {
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 	#if 0
-		prn_string("dwc_ddrphy_apb_wr(");
+	if(mp == 1)
+	{
+		prn_string("APB W  PUB  ");
 		prn_dword0(adr);
-		prn_string(",");
+		prn_string("  ");
 		prn_dword0(dat);
-		prn_string(")\n");
+		prn_string("\n");
+	}
 	#endif
 	DWC_PHY_REG(adr)=dat;
 }
@@ -770,6 +773,7 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 
 void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 {
+	mp = 0;
 	if (bootdevice == SPI_NOR_BOOT)
 	{
 		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
@@ -836,10 +840,12 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		LoadMEMForNAND(Train2D, 0);
 	}
 #endif
+	mp = 1;
 }
 
 void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 {
+	mp = 0;
 	if(bootdevice == SPI_NOR_BOOT)
 	{
 		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
@@ -883,6 +889,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 		LoadMEMForNAND(Train2D, 1);
 	}
 #endif
+	mp = 1;
 }
 
 void dwc_ddrphy_phyinit_main(void)
@@ -892,7 +899,8 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-   prn_string("dwc_ddrphy_phyinit_main ver.17\n");
+   prn_string("dwc_ddrphy_phyinit_main ver.19\n");
+   mp = 1;
    dwc_ddrphy_phyinit_sequence(2,0,0);
 }
 
