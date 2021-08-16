@@ -1610,8 +1610,8 @@
 
 
 
-#define UMCTL2_34_1     164
-#define UMCTL2_34_2     10
+#define UMCTL2_34_1     10
+#define UMCTL2_34_2     74
 #define UMCTL2_34       ((UMCTL2_34_1)  << 16 |\
                          (UMCTL2_34_2)  <<  8 )
 
@@ -1901,7 +1901,7 @@
                          (UMCTL2_180_5) << 16 |\
                          (UMCTL2_180_6) <<  0 )
 
-#define UMCTL2_184_1    640
+#define UMCTL2_184_1    40
 #define UMCTL2_184_2    112
 #define UMCTL2_184      ((UMCTL2_184_1) << 20 |\
                          (UMCTL2_184_2) <<  0 )
