@@ -899,7 +899,7 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
    //#include <dwc_devinit_skiptrain_zebu.txt>
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-   prn_string("dwc_ddrphy_phyinit_main ver.19\n");
+   prn_string("dwc_ddrphy_phyinit_main ver.20\n");
    mp = 1;
    dwc_ddrphy_phyinit_sequence(2,0,0);
 }
