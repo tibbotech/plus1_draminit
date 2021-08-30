@@ -794,7 +794,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 	}
 	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		unsigned int sectorNo0,sectorNo1, total_length, addr;
+		unsigned int sectorNo0, total_length, addr;
 		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
 		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
 		int ret;
@@ -822,16 +822,12 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		{
 			total_length = 32 + XBOOT_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 		else if (Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 	}
@@ -866,21 +862,17 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	}
 	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		int sectorNo0,sectorNo1, total_length;
+		int sectorNo0, total_length;
 		if (Train2D == 0)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 		else if(Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 	}
@@ -897,7 +889,6 @@ dwc_ddrphy_phyinit_saveRetention()
 {
 	volatile unsigned int *addr;
 	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0x100000);
-	unsigned int *end  = (unsigned int *)ADDRESS_CONVERT(0x110000);
 	prn_string("save retention value: ");
 	prn_dword0((unsigned int)ADDRESS_CONVERT(0x100000));
 	prn_string(" - ");
@@ -961,7 +952,6 @@ void startClockResetPhy_of_SP(void)
 
 void startClockResetUmctl2_of_SP(void)
 {
-	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	//prn_string("startClockResetUmctl2_of_SP");
 	//prn_string("\n");
 
