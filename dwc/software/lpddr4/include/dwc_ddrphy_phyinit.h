@@ -26,7 +26,7 @@ int dwc_ddrphy_phyinit_softSetMb (int ps, char *field, int value, int Train2D);
 void dwc_ddrphy_phyinit_initStruct(int Train2D);
 
 void dwc_ddrphy_apb_wr(unsigned int adr, unsigned int dat);
-unsigned short dwc_ddrphy_apb_rd(unsigned int adr);
+int dwc_ddrphy_apb_rd(unsigned int adr);
 
 void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D);
 void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D);
@@ -34,10 +34,8 @@ void Changing_SDRAMRDQS_of_Zebu_Emulation( void);
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP(void);
 void dwc_dvdrphy_phyinit_Write_DMEM(void);
 
-int floor(float val);
+int floor(float val); 
 int ceil(float val);
 float fmodf (float x, float y);
 float fmod (float x, float y);
-
-extern int NumRegSaved;    ///< Current Number of registers saved.
 

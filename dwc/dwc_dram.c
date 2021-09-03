@@ -306,7 +306,7 @@ void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 	DWC_PHY_REG(adr)=dat;
 }
 
-UINT16 dwc_ddrphy_apb_rd(UINT32 adr)
+int dwc_ddrphy_apb_rd(UINT32 adr)
 {
 	UINT16 value;
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
@@ -346,15 +346,14 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 {
 	if ((sum&0x0000FFFF) != checksum) {
 		if (magic == IM1D_HDR_MAGIC)
-			prn_string("1D IMEM ");
+			prn_string("1D IMEM checksum error!!!!\n");
 		else if (magic == DM1D_HDR_MAGIC)
-			prn_string("1D DMEM ");
+			prn_string("1D DMEM checksum error!!!!\n");
 		else if (magic == IM2D_HDR_MAGIC)
-			prn_string("2D IMEM ");
+			prn_string("2D IMEM checksum error!!!!\n");
 		else if (magic == DM2D_HDR_MAGIC)
-			prn_string("2D DMEM ");
+			prn_string("2D DMEM checksum error!!!!\n");
 
-		prn_string("checksum error!!!!\n");
 		prn_string("sum="); prn_dword(sum);
 		prn_string("checksum="); prn_dword((checksum));
 	} else {
@@ -794,7 +793,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 	}
 	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		unsigned int sectorNo0, total_length, addr;
+		unsigned int sectorNo0,sectorNo1, total_length, addr;
 		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
 		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
 		int ret;
@@ -822,12 +821,16 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		{
 			total_length = 32 + XBOOT_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 		else if (Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 		}
 	}
@@ -862,17 +865,21 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	}
 	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		int sectorNo0, total_length;
+		int sectorNo0,sectorNo1, total_length;
 		if (Train2D == 0)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 		else if(Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
+			sectorNo1 = total_length % 512;
+			//printf_sectorNo(sectorNo0, sectorNo1);
 			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
 		}
 	}
@@ -885,35 +892,6 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	mp = 1;
 }
 
-dwc_ddrphy_phyinit_saveRetention()
-{
-	volatile unsigned int *addr;
-	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0x100000);
-	prn_string("save retention value: ");
-	prn_dword0((unsigned int)ADDRESS_CONVERT(0x100000));
-	prn_string(" - ");
-	prn_dword((unsigned int)ADDRESS_CONVERT(0x110000));
-
-	int regIndx=0;
-	addr = beg;
-	for (regIndx = 0; regIndx < NumRegSaved; regIndx++)
-	{
-		prn_string("regIndx: ");
-		prn_dword0(regIndx);
-		prn_string("; Address: ");
-		prn_dword0((unsigned int)RetRegList[regIndx].Address);
-		*addr = (unsigned int) RetRegList[regIndx].Address;
-		addr++;
-		prn_string("; Value: ");
-		prn_dword0(RetRegList[regIndx].Value);
-		prn_string("\n");
-		*addr = RetRegList[regIndx].Value;
-		addr++;
-	}
-}
-
-
-
 void dwc_ddrphy_phyinit_main(void)
 {
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
@@ -923,7 +901,6 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
    prn_string("dwc_ddrphy_phyinit_main ver.20\n");
    mp = 1;
-   //runtimeConfig.RetEn = 1;
    dwc_ddrphy_phyinit_sequence(2,0,0);
 }
 
@@ -952,6 +929,7 @@ void startClockResetPhy_of_SP(void)
 
 void startClockResetUmctl2_of_SP(void)
 {
+	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	//prn_string("startClockResetUmctl2_of_SP");
 	//prn_string("\n");
 
@@ -1005,7 +983,6 @@ int dram_init(unsigned int dram_id)
 		}
 
 		prn_string("lpddr4_training_OK\n");
-		//dwc_ddrphy_phyinit_saveRetention();
 		return SUCCESS;
 	} // end of for loop :: loop_time for initial & training time control
 
