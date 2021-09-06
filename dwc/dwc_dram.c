@@ -346,14 +346,15 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 {
 	if ((sum&0x0000FFFF) != checksum) {
 		if (magic == IM1D_HDR_MAGIC)
-			prn_string("1D IMEM checksum error!!!!\n");
+			prn_string("1D IMEM ");
 		else if (magic == DM1D_HDR_MAGIC)
-			prn_string("1D DMEM checksum error!!!!\n");
+			prn_string("1D DMEM ");
 		else if (magic == IM2D_HDR_MAGIC)
-			prn_string("2D IMEM checksum error!!!!\n");
+			prn_string("2D IMEM ");
 		else if (magic == DM2D_HDR_MAGIC)
-			prn_string("2D DMEM checksum error!!!!\n");
+			prn_string("2D DMEM ");
 
+		prn_string("checksum error!!!!\n");
 		prn_string("sum="); prn_dword(sum);
 		prn_string("checksum="); prn_dword((checksum));
 	} else {
@@ -440,11 +441,15 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	unsigned short i, j, addr, word16;
 	unsigned short mem_offset, img_length,cnt;
 	unsigned int img_name, img_sum;
+	unsigned short last_img_name_array_cnt, last_img_length_array_cnt;
 
+	i = 0;
 	mem_offset = 0;
 	img_name = 0;
 	img_length = 0;
 	img_sum = 0;
+	last_img_name_array_cnt = 0;
+	last_img_length_array_cnt = 0;
 
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
@@ -456,7 +461,13 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 		{
 			//prn_string("mem[j]=");
 			//prn_dword(mem[j]);
-		    img_name = mem[j];
+			img_name = mem[j];
+			if((j == 126) || (j == 127))
+			{
+				last_img_name_array_cnt = j;
+				break;
+			}
+
 			if(mem[j] == IM1D_HDR_MAGIC)
 				IMEM1d_len = mem[j+2];
 			else if(mem[j] == DM1D_HDR_MAGIC)
@@ -468,6 +479,11 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			//prn_string("leng=");
 			//prn_dword(mem[j+2]);
 			img_length = mem[j+2];
+			if((j+2) == 127)
+			{
+				last_img_length_array_cnt = 127;
+				break;
+			}
 			//prn_string("checksum=");
 			//prn_dword(mem[j+3]);
 			img_sum =  mem[j+3];
@@ -500,6 +516,46 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				img_length -= 4;
 			}
 			break;
+		}
+	}
+
+	if((last_img_name_array_cnt == 126) || (last_img_name_array_cnt == 127)
+		|| (last_img_length_array_cnt == 127))
+	{
+		for (addr = 0; addr < mem_size; addr++)
+			mem[addr]=0;
+		offset++;
+		ReadSDSector(offset, 1, mem);
+		if(last_img_name_array_cnt == 126)
+		{
+			img_length = mem[0];
+			img_sum =  mem[1];
+			i = 6;
+		}
+		else if(last_img_name_array_cnt == 127)
+		{
+			img_length = mem[1];
+			img_sum =  mem[2];
+			i = 7;
+		}
+		else if(last_img_length_array_cnt == 127)
+		{
+			img_sum =  mem[0];
+			i = 5;
+		}
+		tcpsum(i, 128, mem, 0);//checksum
+
+		for (j = i; j < 128; j++) {
+			/*****write register *********/
+			word16 = mem[j]&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+			word16 = (mem[j]>>16)&0xFFFF;
+			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
+			//printf_offset_value(mem_offset,word16);
+			mem_offset++;
+			img_length -= 4;
 		}
 	}
 
@@ -793,10 +849,10 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 	}
 	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		unsigned int sectorNo0,sectorNo1, total_length, addr;
+		unsigned int sectorNo0, total_length, addr;
 		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
 		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
-		int ret;
+		int ret, value;
 
 		if (bootdevice == EMMC_BOOT)
 		{
@@ -816,22 +872,40 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			//prn_dword(32 + xhdr->length);
 			XBOOT_len = xhdr->length;
 		}
-		prn_string("XBOOT_len="); prn_dword(XBOOT_len);
 		if (Train2D == 0)
 		{
+			prn_string("XBOOT_len="); prn_dword(XBOOT_len);
 			total_length = 32 + XBOOT_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+			value = total_length % 512;
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+			}
 		}
 		else if (Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+			value = total_length % 512;
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+			}
 		}
 	}
 #ifdef CONFIG_HAVE_SPI_NAND
@@ -865,22 +939,41 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	}
 	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 	{
-		int sectorNo0,sectorNo1, total_length;
+		int sectorNo0, total_length, value;
 		if (Train2D == 0)
 		{
+			prn_string("IMEM1d_len="); prn_dword(IMEM1d_len);
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+			value = total_length % 512;
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+			}
 		}
 		else if(Train2D == 1)
 		{
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
-			sectorNo1 = total_length % 512;
-			//printf_sectorNo(sectorNo0, sectorNo1);
-			LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+			value = total_length % 512;
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+			}
 		}
 	}
 #ifdef CONFIG_HAVE_SPI_NAND
@@ -929,7 +1022,6 @@ void startClockResetPhy_of_SP(void)
 
 void startClockResetUmctl2_of_SP(void)
 {
-	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	//prn_string("startClockResetUmctl2_of_SP");
 	//prn_string("\n");
 
