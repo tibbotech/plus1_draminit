@@ -306,7 +306,7 @@ void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat)
 	DWC_PHY_REG(adr)=dat;
 }
 
-int dwc_ddrphy_apb_rd(UINT32 adr)
+UINT16 dwc_ddrphy_apb_rd(UINT32 adr)
 {
 	UINT16 value;
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
@@ -985,6 +985,35 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	mp = 1;
 }
 
+dwc_ddrphy_phyinit_saveRetention()
+{
+	volatile unsigned int *addr;
+	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0x100000);
+	prn_string("save retention value: ");
+	prn_dword0((unsigned int)ADDRESS_CONVERT(0x100000));
+	prn_string(" - ");
+	prn_dword((unsigned int)ADDRESS_CONVERT(0x110000));
+
+	int regIndx=0;
+	addr = beg;
+	for (regIndx = 0; regIndx < NumRegSaved; regIndx++)
+	{
+		prn_string("regIndx: ");
+		prn_dword0(regIndx);
+		prn_string("; Address: ");
+		prn_dword0((unsigned int)RetRegList[regIndx].Address);
+		*addr = (unsigned int) RetRegList[regIndx].Address;
+		addr++;
+		prn_string("; Value: ");
+		prn_dword0(RetRegList[regIndx].Value);
+		prn_string("\n");
+		*addr = RetRegList[regIndx].Value;
+		addr++;
+	}
+}
+
+
+
 void dwc_ddrphy_phyinit_main(void)
 {
    //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
@@ -994,6 +1023,7 @@ void dwc_ddrphy_phyinit_main(void)
    //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
    prn_string("dwc_ddrphy_phyinit_main ver.20\n");
    mp = 1;
+   //runtimeConfig.RetEn = 1;
    dwc_ddrphy_phyinit_sequence(2,0,0);
 }
 
@@ -1075,6 +1105,7 @@ int dram_init(unsigned int dram_id)
 		}
 
 		prn_string("lpddr4_training_OK\n");
+		//dwc_ddrphy_phyinit_saveRetention();
 		return SUCCESS;
 	} // end of for loop :: loop_time for initial & training time control
 
