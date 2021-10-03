@@ -847,7 +847,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 	}
-	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
+	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{
 		unsigned int sectorNo0, total_length, addr;
 		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
@@ -861,7 +861,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			ReadSDSector(0, 1, mem);
 			XBOOT_len = mem[2];
 		}
-		else if (bootdevice == SDCARD_ISP)
+		else if ((bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 		{
 			ret = fat_read_file(0, &g_finfo, g_io_buf.usb.sect_buf, 0, 32, buf); //for get xboot's sector No
 			if (ret == FAIL) {
@@ -937,7 +937,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 		if (Train2D == 1)
 			LoadBinCode(1,offset,DMEM_ADDR);
 	}
-	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
+	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{
 		int sectorNo0, total_length, value;
 		if (Train2D == 0)
@@ -985,7 +985,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 	mp = 1;
 }
 
-dwc_ddrphy_phyinit_saveRetention()
+void dwc_ddrphy_phyinit_saveRetention(void)
 {
 	volatile unsigned int *addr;
 	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0x100000);
