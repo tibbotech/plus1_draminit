@@ -436,6 +436,14 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 	sum = 0;
 }
 
+int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData)
+{
+	if (bootdevice == SDCARD_ISP)
+		return ReadSDSector(sectorNo, pageCount, ptrPyldData);
+	else
+		return usb_readSector(sectorNo, pageCount, ptrPyldData);
+}
+
 void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
 	unsigned short i, j, addr, word16;
@@ -454,7 +462,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
 		mem[addr]=0;
-	ReadSDSector(offset, 1, mem);
+	ReadSector(offset, 1, mem);
 	for (j = 0; j < 128; j++) {
 		if((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
 			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)) //j is array number
@@ -495,7 +503,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				for (addr = 0; addr < mem_size; addr++)
 					mem[addr]=0;
 				offset++;
-				ReadSDSector(offset, 1, mem);
+				ReadSector(offset, 1, mem);
 				tcpsum(i, 128, mem, 0);//checksum
 			}
 			else
@@ -525,7 +533,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 		for (addr = 0; addr < mem_size; addr++)
 			mem[addr]=0;
 		offset++;
-		ReadSDSector(offset, 1, mem);
+		ReadSector(offset, 1, mem);
 		if(last_img_name_array_cnt == 126)
 		{
 			img_length = mem[0];
@@ -565,7 +573,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 		for (addr = 0; addr < mem_size; addr++)
 			mem[addr]=0;
 		offset++;
-		ReadSDSector(offset, 1, mem);
+		ReadSector(offset, 1, mem);
 		tcpsum(0, 128, mem, 0);//checksum
 		for (j = 0; j < 128; j++) {
 			/*****write register *********/
@@ -587,7 +595,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	for (addr = 0; addr < mem_size; addr++)
 		mem[addr]=0;
 	offset++;
-	ReadSDSector(offset, 1, mem);
+	ReadSector(offset, 1, mem);
 	cnt = img_length/4;
 	tcpsum(0, cnt, mem, 1);//checksum
 	//prn_string("cnt=");
