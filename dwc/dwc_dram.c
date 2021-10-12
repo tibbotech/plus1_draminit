@@ -438,7 +438,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData)
 {
-	if (bootdevice == SDCARD_ISP)
+	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 		return ReadSDSector(sectorNo, pageCount, ptrPyldData);
 	else
 		return usb_readSector(sectorNo, pageCount, ptrPyldData);
