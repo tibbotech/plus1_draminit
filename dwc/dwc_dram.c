@@ -7,14 +7,12 @@
 #include <config.h>
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
-
 #include <bootmain.h>
 #include <nand_boot/nfdriver.h>
 #include <nand_boot/nandop.h>
 #include <nand_boot/hal_nand_error.h>
 #include <fat/common.h>
 #include <fat/fat.h>
-
 
 #define SPI_FLASH_BASE      0xF0000000
 #define SPI_XBOOT_OFFSET    (96 * 1024)
@@ -68,31 +66,6 @@ static volatile struct dwc_phy_regs *dwc_phy_reg_ptr = (volatile struct dwc_phy_
 
 #define TEST_LEN_0		(4 << 10)
 
-#ifdef SDRAM0_SIZE_256Mb
-#define TEST_LEN_ALL		(32 << 20)
-#elif defined(SDRAM0_SIZE_512Mb)
-#define TEST_LEN_ALL		(64 << 20)
-#elif defined(SDRAM0_SIZE_1Gb)
-#define TEST_LEN_ALL		(128 << 20)
-#elif defined(SDRAM0_SIZE_2Gb)
-#define TEST_LEN_ALL		(256 << 20)
-#elif defined(SDRAM0_SIZE_4Gb)
-#define TEST_LEN_ALL		(512 << 20)
-#elif defined(SDRAM0_SIZE_8Gb)
-#define TEST_LEN_ALL		(1024 << 20)
-#else
-#error Please assign TEST_LEN_ALL
-#endif
-
-#define SDRAM0_SIZE		TEST_LEN_ALL
-#define SDRAM1_SIZE		SDRAM0_SIZE
-#if defined(PLATFORM_PENTAGRAM) || defined(PLATFORM_Q645)
-static const unsigned int dram_base_addr[] = {0, SDRAM0_SIZE};
-#else
-static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
-#endif
-//static const unsigned int dram_size[] = {SDRAM0_SIZE, SDRAM1_SIZE};
-
 #define DRAM_0_SDC_REG_BASE	33
 #define DRAM_0_PHY_REG_BASE	768
 #define DRAM_1_SDC_REG_BASE	0	/* N/A */
@@ -100,10 +73,7 @@ static const unsigned int dram_base_addr[] = {0x20000000, SDRAM0_SIZE};
 
 #define SCAN_TRIM_LEN		5
 
-static unsigned int rgst_value = 0;
-//static unsigned int aphy_select_value = 0;
 static unsigned int ckobd_training_flag = 0;
-//static unsigned int ckobd_re_training_number = 0;
 
 //static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
 //static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
@@ -134,28 +104,6 @@ u32 mp;
 #ifdef PLATFORM_PENTAGRAM
 #define CHIP_WARM_RESET
 #endif
-//#define SDRAM_WATCHDOG
-#ifdef SDRAM_WATCHDOG
-#define WATCHDOG_CMD_CNT_WR_UNLOCK  0xAB00
-#define WATCHDOG_CMD_CNT_WR_LOCK    0xAB01
-#define WATCHDOG_CMD_CNT_WR_MAX     0xDEAF
-#define WATCHDOG_CMD_PAUSE          0x3877
-#define WATCHDOG_CMD_RESUME         0x4A4B
-#define WATCHDOG_CMD_INTR_CLR       0x7482
-#endif
-void get_sdc_phy_addr(unsigned int dram_id, unsigned int *sdc, unsigned int *phy)
-{
-	const unsigned int dram_sdc_reg_addr[] = {DRAM_0_SDC_REG_BASE, DRAM_1_SDC_REG_BASE};
-	const unsigned int dram_phy_reg_addr[] = {DRAM_0_PHY_REG_BASE, DRAM_1_PHY_REG_BASE};
-
-	if (dram_id < (sizeof(dram_sdc_reg_addr) / sizeof(dram_sdc_reg_addr[0]))) {
-		*sdc = dram_sdc_reg_addr[dram_id];
-		*phy = dram_phy_reg_addr[dram_id];
-	} else {
-		prn_string("Err: get_sdc_phy_addr, invalid dram_id\n");
-		while (1);
-	}
-}
 
 void wait_loop(unsigned int wait_counter)
 {
@@ -164,127 +112,6 @@ void wait_loop(unsigned int wait_counter)
 	for (i = 0; i < wait_counter; i++) {
 		__asm__("nop");
 	}
-}
-
-void dram_fill_zero(unsigned int test_size, unsigned int dram_id)
-{
-	int idx;
-	volatile unsigned int *ram = (volatile unsigned int *)ADDRESS_CONVERT(dram_base_addr[dram_id]);
-
-	for (idx = 0; idx < (test_size / sizeof(unsigned int)); idx++) {
-		ram[idx] = 0;
-	}
-}
-
-int memory_rw_check(unsigned int value, unsigned int answer, int debug)
-{
-	int ret = 0;
-
-	if (value != answer) {
-		if (debug) {
-			prn_string("\tvalue: ");
-			prn_dword0(value);
-			prn_string(", expected: ");
-			prn_dword0(answer);
-			prn_string("\n");
-		}
-		ret = -1;
-	}
-	return ret;
-}
-
-const unsigned int pattern[] = {0xAAAAAAAA, 0x55555555, 0xAAAA5555, 0x5555AAAA, 0xAA57AA57, 0xFFDDFFDD, 0x55D755D7};
-int memory_rw_test_cases(int test_case, unsigned int start_addr, unsigned int test_size, int debug)
-{
-	int ret = 0;
-	unsigned int i;
-	unsigned int test_size_word = test_size >> 2;
-	const int num_pattern = sizeof(pattern) / sizeof(pattern[0]);
-//	volatile unsigned int *ram = (volatile unsigned int *)(dram_base_addr[0]);
-	volatile unsigned int *ram = (volatile unsigned int *)ADDRESS_CONVERT(start_addr);
-
-	// TODO: Use CBDMA.
-
-	//dram_fill_zero(test_size, 0);
-
-	debug = 1;
-	if (debug) {
-		prn_string("\t memory_rw_test(");
-	}
-	switch (test_case) {
-	case 0:
-		if (debug) {
-			prn_string("seq)");
-		}
-		for (i = 0; i < test_size_word; i++) {
-			ram[i] = i;
-			prn_string("1");
-		}
-		break;
-	default:
-		if (debug) {
-			prn_string("patterns)");
-		}
-		for (i = 0; i < test_size_word; i++) {
-			ram[i] = pattern[i % num_pattern];
-		}
-		break;
-	}
-
-	for (i = 0; i < test_size_word; i++) {
-		switch (test_case) {
-		case 0:
-			prn_string("2");
-			prn_string("5");
-			ret = memory_rw_check(ram[i], i, debug);
-			prn_string("3");
-			break;
-
-		default:
-			ret = memory_rw_check(ram[i], pattern[i % num_pattern], debug);
-			break;
-		}
-
-		if (ret < 0) {
-			if (debug) {
-				prn_string(" fails\n");
-			}
-			ret = -1;
-			break;
-		}
-	}
-
-	if (ret == 0) {
-		if (debug) {
-			prn_string(" pass\n");
-		}
-	}
-
-	return ret;
-}
-
-#define MEMORY_RW_FLAG_DBG	(1 << 0)
-#define MEMORY_RW_FLAG_LOOP	(1 << 1)
-#define MEMORY_RW_FLAG_EXIT	(1 << 2)
-int memory_rw_test(unsigned int start_addr, unsigned int test_len, int flag)
-{
-	int ret;
-	int is_dbg = flag & MEMORY_RW_FLAG_DBG;
-	int exit = flag & MEMORY_RW_FLAG_EXIT;
-	int test_case = 0;
-
-	do {
-		do {
-			ret = memory_rw_test_cases(test_case, start_addr, test_len, is_dbg);
-			if ((ret < 0) && exit) {
-				return ret;
-			}
-			test_case++;
-			test_case %= 2;
-		} while (test_case != 0);
-	} while (flag & MEMORY_RW_FLAG_LOOP);
-
-	return 0;
 }
 
 //////////////////////////////////////////////////////
@@ -1087,12 +914,9 @@ void startClockResetUmctl2_of_SP(void)
 // ***********************************************************************
 int dram_init(unsigned int dram_id)
 {
-	unsigned int SDC_BASE_GRP = 0, PHY_BASE_GRP = 0;
 	unsigned int max_init_fail_cnt = 15;
 	unsigned int loop_time;
 	unsigned int ret = 0;
-
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
 
 	loop_time = 0;
 	prn_string("dram_init\n");
@@ -1120,194 +944,8 @@ int dram_init(unsigned int dram_id)
 	return SUCCESS;
 } // end dram_init
 
-#if (defined(DRAMSCAN) || defined(SISCOPE))
-
-#define FAE_DEBUG
-// #define DEBUG_BDD
-
-void ddr_clk_info(void)
-{
-	const int clk = ((SP_REG(50, 12) & 0x7F) * 27) >> 1;
-
-	prn_string("DDR CLOCK: ");
-	prn_decimal(clk);
-	prn_string(" MHz\n");
-}
-
-static int silent_dram_init(void)
-{
-	u32 mpb;
-
-	mpb = mp;
-	mp = 0;
-
-	prn_string(" silent_dram_init\n");
-	int ret = dram_init(0);
-	mp = mpb;
-	return ret;
-}
-
-void dram_scan(unsigned int dram_id)
-{
-	unsigned int dfi_tphy_wrdata, dfi_t_rddata_en;
-
-	unsigned int idx;
-	int ret;
-	unsigned int rec_idx = 0;
-	unsigned int SDC_BASE_GRP, PHY_BASE_GRP;
-	int mpb;
-
-	unsigned int cpu_test_result;
-	unsigned int trim_test_result;
-
-	unsigned int scan_pass_param[30];
-	unsigned int scan_pass_acack[30];
-
-	get_sdc_phy_addr(dram_id, &SDC_BASE_GRP, &PHY_BASE_GRP);
-
-	memset((UINT8 *)scan_pass_param, 0, sizeof(scan_pass_param));
-	memset((UINT8 *)scan_pass_acack, 0, sizeof(scan_pass_acack));
-
-	for (dfi_tphy_wrdata = (UMCTL2_190_5 - 0); dfi_tphy_wrdata <= (UMCTL2_190_5 + 0); dfi_tphy_wrdata++) {
-		for (dfi_t_rddata_en = (UMCTL2_190_3 - 0); dfi_t_rddata_en <= (UMCTL2_190_3 + 0); dfi_t_rddata_en++) {
-			// UMCTL2_REG(0x190),
-			//	[22:16] dfi_t_rddata_en
-			//	[14: 8] dfi_tphy_wrdata
-			scan_val_190 = UMCTL2_190 & (~((0x7F << 16) | (0x7F << 8)));
-			scan_val_190 |= (dfi_t_rddata_en << 16) | (dfi_tphy_wrdata << 8);
-
-			ckobd_training_flag = 1;
-			ret = silent_dram_init();
-			mpb = mp;
-			mp = 0;
-			prn_string("\nSCAN=>");
-			prn_string("  dfi_t_rddata_en: ");
-			prn_decimal(dfi_t_rddata_en);
-			prn_string("  dfi_tphy_wrdata: ");
-			prn_decimal(dfi_tphy_wrdata);
-			prn_string("\n");
-			mp = mpb;
-			if (ret != SUCCESS) {
-				continue;
-			}
-
-			dram_fill_zero(TEST_LEN_0, dram_id);
-			cpu_test_result = memory_rw_test(dram_base_addr[0], TEST_LEN_0, MEMORY_RW_FLAG_EXIT);
-			if (cpu_test_result == 0) {
-				for (idx = 0; idx <= SCAN_TRIM_LEN; idx++) {
-					trim_test_result = SDCTRL_TRIMMER_TEST(dram_id, dram_base_addr[0], 0x0100);
-					if (trim_test_result) {
-						if (idx == SCAN_TRIM_LEN) {
-							mpb = mp;
-							mp = 0;
-							prn_string("\tSCAN=> Test Pass\n");
-							scan_pass_param[rec_idx] = UMCTL2_REG(0x0190);
-							scan_pass_acack[rec_idx] = SP_REG(PHY_BASE_GRP + 0, 17);
-							rec_idx++;
-							mp = mpb;
-						}
-					} else {
-						prn_string("\tSCAN=> Test Fail\n");
-						break;
-					}
-				}
-			} else {
-				prn_string("\tSCAN=> Test Fail\n");
-			}
-		}
-	}
-
-	mpb = mp;
-	mp = 0;
-	prn_string("\n\n==================================================================================\n");
-	prn_string("DUMP DRAM-");
-	prn_decimal(dram_id);
-	prn_string("parameters:\n");
-	for (idx = 0; idx < rec_idx; idx++) {
-		if (scan_pass_param[idx] != 0) {
-			prn_string("SCAN=> [");
-			prn_decimal(idx);
-			prn_string("]");
-			prn_string(" ; dfi_t_rddata_en = ");
-			prn_decimal((scan_pass_param[idx] >> 16) & 0x7F);
-			prn_string(" ; dfi_tphy_wrdata = ");
-			prn_decimal((scan_pass_param[idx] >> 8) & 0x7F);
-			prn_string("; AC=");
-			prn_decimal((scan_pass_acack[idx] >> 8) & 0x3F);
-			prn_string("; ACK=");
-			prn_decimal((scan_pass_acack[idx] >> 16) & 0x3F);
-			prn_string("; CK=");
-			prn_decimal((scan_pass_acack[idx] >> 0) & 0x3F);
-			prn_string(";\n");
-		}
-	}
-	prn_string("==================================================================================\n");
-	mp = mpb;
-}
-
-void run_SiScope(void)
-{
-	prn_string("\n\n==================================run_SiScope START================================================\n");
-	gAC = DPCU_AC0BD;
-	gACK = DPCU_ACK0BD;
-	gCK = DPCU_CK0BD;
-
-	dram_scan(0);
-	ddr_clk_info();
-
-	prn_string("\n\n==================================run_SiScope END================================================\n");
-	scan_val_190 = UMCTL2_190;
-	silent_dram_init();
-}
-
-int getSquare(int base, int square)
-{
-	int value = 1;
-	int i = 0;
-
-	if (0 >= square) {
-		// not support minus square
-		value  = 1;
-	} else {
-		for (i = 1; i <= square; i++)
-			value *= base;
-	}
-	return value;
-}
-
-int get_int(int len, int start, char *str)
-{
-	int i = 0, rate = 0;
-	int square = 0;
-
-	for (i = len - 1; i >= start; --i) {
-		rate = rate + ((str[i] - 48) * getSquare(10, square++));
-	}
-	return rate;
-}
-
-void check_run_siscope()
-{
-	char input = '\0';
-
-	do {
-		prn_string("\n\n*Would you like to run SISCOPE?(y/n)\n");
-		input = sp_getChar();
-		if ('y' == input || 'Y' == input) {
-			run_SiScope();
-		} else if ('n' == input || 'N' == input) {
-			break;
-		}
-	} while (0);
-}
-#endif	/* (defined(DRAMSCAN) || defined(SISCOPE)) */
-
 int dram_init_main(unsigned int gbootRom_boot_mode)
 {
-	unsigned int temp_value = 0;
-#ifdef CHIP_WARM_RESET
-	unsigned int cnt;
-#endif
 	bootdevice=gbootRom_boot_mode;
 	prn_string("bootdevice=");
 	prn_dword(bootdevice);
@@ -1318,109 +956,17 @@ int dram_init_main(unsigned int gbootRom_boot_mode)
 	gCK = DPCU_CK0BD;
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
-#ifdef CHIP_WARM_RESET
-	if (((SP_REG(98, 1) & 0x20) == 0) && ((SP_REG(98, 2) &0x01) == 0)) {
-		SP_REG(98, 1) |= (1 << 5); // G98.01[5] = 1(default = 0)
-		SP_REG(98, 2) |= (1 << 0); // G98.03[0] = 1(default = 0)
-		/* System reset */
-		SP_REG(0, 21) = 0x00010001; //G0.21[16] = 1; G0, 21[0] = 1
-	} else {
-		SP_REG(98, 1) &= ~(1 << 5); // restore G98.01[5] = 0(default = 0)
-		SP_REG(98, 2) &= ~(1 << 0); // restore G98.03[0] = 0(default = 0)
-	}
-
-	/* Monitor Chip temperature */
-	SP_REG(5, 0) = 0xFFFF3101;
-	SP_REG(5, 1) = 0xFFFF0000;
-	SP_REG(5, 2) = 0xFFFF4007;
-	SP_REG(5, 3) = 0xFFFF0022;
-	for (cnt = 0; cnt < 0x400000; cnt++) {
-		temp_value = SP_REG(5, 12);
-		if (temp_value <= 1530) { // 1530 is experimental value
-			break;
-		}
-	}
-#endif
-#ifdef SDRAM_WATCHDOG
-	SP_REG(4, 29) = (0x00120000 | ((1 << 4) | (1 << 1)));
-	/* STC Watch dog control */
-	SP_REG(12, 12) = WATCHDOG_CMD_PAUSE;
-	SP_REG(12, 12) = WATCHDOG_CMD_CNT_WR_UNLOCK;
-	SP_REG(12, 13) = 0x1000; // time count
-	SP_REG(12, 12) = WATCHDOG_CMD_RESUME;
-#endif
 #ifdef DRAM_INIT_DEBUG
 	mp = 0;
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 #endif
 	dram_init(0);
 
-#ifdef SDRAM_WATCHDOG
-	SP_REG(4, 29) = 0x00120000; // Stop watch dog feature
-#endif
 
 #else
 	prn_string("Built at " __DATE__ " " __TIME__ "\n");
 
-	do {
-		check_run_siscope();
-	} while (1);
 	while (1) {;}
-#endif
-
-
-#ifdef SDRAM_MPSD_VT_ON
-	// SET MPSD_VT THREADHOLD
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 1, 8);
-	rgst_value = rgst_value & ~(0x0FF0);
-	rgst_value = rgst_value | (0xFF << 4);
-	SP_REG(DRAM_0_PHY_REG_BASE + 1, 8) = rgst_value;
-
-	// Number of MPSD_VT average
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 1, 9);
-	rgst_value = rgst_value & ~(0x03);
-	rgst_value = rgst_value | 0x03;
-	SP_REG(DRAM_0_PHY_REG_BASE + 1, 9) = rgst_value;
-
-	// MPSD_VT ON
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 2, 19) | 0x01;
-	SP_REG(DRAM_0_PHY_REG_BASE + 2, 19) = rgst_value;
-
-	// MPSD_VT ON
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 3, 19) | 0x01;
-	SP_REG(DRAM_0_PHY_REG_BASE + 3, 19) = rgst_value;
-#endif
-
-#ifdef SDRAM_RDQSG_VT_ON
-	// RGST_VT_DYN_DET_OFFSET
-	temp_value = (((SP_REG(DRAM_0_PHY_REG_BASE + 2, 3) >> 8) & 0xFF) + ((SP_REG(DRAM_0_PHY_REG_BASE + 3, 3) >> 8) & 0xFF)) / 16; // avg, 1/16
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 1, 8);
-	rgst_value = rgst_value & ~(0xFF << 12);
-#ifdef MPEG_DRAM_DDR_1600
-	temp_value = 1;
-#else
-	if (temp_value == 0)
-		temp_value = 1;
-#endif
-	rgst_value = rgst_value | (temp_value << 12);
-	SP_REG(DRAM_0_PHY_REG_BASE + 1, 8) = rgst_value;
-
-	// DX0 RDQSG_VT
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 2, 19) | 0x02;
-	SP_REG(DRAM_0_PHY_REG_BASE + 2, 19) = rgst_value;
-
-	// DX1 RDQSG_VT
-	rgst_value = SP_REG(DRAM_0_PHY_REG_BASE + 3, 19) | 0x02;
-	SP_REG(DRAM_0_PHY_REG_BASE + 3, 19) = rgst_value;
-#endif
-
-#ifdef SSC_ENABLE
-	SP_REG(DRAM_0_PHY_REG_BASE, 12) = SP_REG(DRAM_0_PHY_REG_BASE, 12) & ~(0x60000F00);
-	SP_REG(DRAM_0_PHY_REG_BASE, 12) = SP_REG(DRAM_0_PHY_REG_BASE, 12) | (DPCU_RI_MPLL_DIV_S << 8) | (SSC_RATE << 29);
-	SP_REG(DRAM_0_PHY_REG_BASE, 11) = SP_REG(DRAM_0_PHY_REG_BASE, 11) | (1 << 2);
-	prn_string("DDR PLL SETTING:");
-	prn_dword(SSC_RATE);
-	prn_string("\n ");
 #endif
 	return 1;
 }
