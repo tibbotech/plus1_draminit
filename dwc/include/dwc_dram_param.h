@@ -1110,7 +1110,7 @@
 #else	/* for external DRAM */
 #define DPCU_GLB_DEF            0x0030AA00
 #endif
-#elif defined(PLATFORM_Q645)  //need modify
+#elif defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 #if 0
 #define DPCU_GLB_DEF            0x0430AA00
 #else	/* for external DRAM */
@@ -1268,7 +1268,7 @@
 #elif defined(PLATFORM_I143)
 //#define MPLL_CFG1_DEF   0x00415600
 #define MPLL_CFG1_DEF   0x00455600
-#elif defined(PLATFORM_Q645) //need modify
+#elif defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 //#define MPLL_CFG1_DEF   0x00415600
 #define MPLL_CFG1_DEF   0x00455600
 #endif

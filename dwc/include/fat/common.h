@@ -60,7 +60,7 @@ struct bootinfo {
 	u32     mp_flag;             // mp machine flag
 	u32     bootcpu;             // 0: B, 1: A
 	u32     in_xboot;            // 0=in iboot, 1=in xboot
-#ifdef PLATFORM_Q645
+#if defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 	u32     hw_security;         // hw security
 #endif
 	u32     sb_flag;             // secure boot flag, bit0=1(secure boot)

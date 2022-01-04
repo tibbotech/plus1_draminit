@@ -5,11 +5,13 @@
 #define PLATFORM_I143
 #elif defined(CONFIG_PLATFORM_Q645)
 #define PLATFORM_Q645
+#elif defined(CONFIG_PLATFORM_Q654)
+#define PLATFORM_Q654
 #else
 #define PLATFORM_PENTAGRAM
 #endif
 
-#ifdef PLATFORM_Q645
+#if defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 #define REG_BASE		0xF8000000
 #else
 #define REG_BASE		0x9C000000
@@ -19,14 +21,14 @@
 #define RF_MASK_V_SET(_mask)	(((_mask) << 16) | (_mask))
 #define RF_MASK_V_CLR(_mask)	(((_mask) << 16) | 0)
 
-#ifdef PLATFORM_Q645
+#if defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 #define UMCTL2_REG_Base		0xF8107000
 #else
 #define UMCTL2_REG_Base		0x9C107000
 #endif
 
-#ifdef PLATFORM_Q645
+#if defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
 #define DWC_PHY_REG_Base	0xF9000000
-#endif 
+#endif
 
 #endif /* __CONFIG_H */

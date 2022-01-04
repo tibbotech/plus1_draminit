@@ -11,9 +11,12 @@ endif
 
 # Get Platform configuration from xboot/.config
 PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_Q645")
+PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_")
 ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
 CFLAGS = -DCONFIG_PLATFORM_Q645
+endif
+ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q654=y)
+CFLAGS = -DCONFIG_PLATFORM_Q654
 endif
 SPI_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SPI_NAND")
 ifeq (${SPI_NAND_CFG},CONFIG_HAVE_SPI_NAND=y)
