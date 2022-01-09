@@ -7,7 +7,7 @@
 #include <regmap_pentagram.h>
 #elif defined(PLATFORM_I143)
 #include <regmap_i143.h>
-#elif defined(PLATFORM_Q645) || defined(PLATFORM_Q654)
+#elif defined(PLATFORM_Q645) || defined(PLATFORM_SP7350)
 #else
 #error "NO PLATFORM_XXXX defined."
 #endif
