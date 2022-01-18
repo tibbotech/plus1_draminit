@@ -436,34 +436,106 @@ void polling_sw_cfg_done()
 
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
-	UINT16 rd_data;
+ 	UINT32 string_index;
+	UINT16 rd_data, args, i;
 	UINT8 train_test = 0;
 
-	//prn_string("Start to wait for the training firmware to complete!!!");
-	//prn_string("\n");
+	prn_string("Start to wait for the training firmware to complete!!!");
+	prn_string("\n");
 	while (train_test == 0) {
 		while (1) {
-			rd_data = dwc_ddrphy_apb_rd(0xd0004);
+			rd_data = dwc_ddrphy_apb_rd(0xd0004);/* When set to 0, the PMU has a message for the user */
 			if ((rd_data & 0x01) == 0) {
-				//prn_string("Wait mailbox send message done!!!");
-				//prn_string("\n");
+				prn_string("Wait mailbox send message done!!!");
+				prn_string("\n");
 				break;
 			}
 		}
-		rd_data = dwc_ddrphy_apb_rd(0xd0032);
-		if ((rd_data & 0x0f) == 0x07) {
-			train_test = 1;
-			//prn_string("GET mailbox send 7 ,FW training done!!!!");
-			//prn_string("\n");
+
+		rd_data = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the message ID for major message. */
+		prn_string("GET mailbox message = ");prn_dword0(rd_data);
+		prn_string("\n");
+		switch (rd_data & 0xff) {
+			case 0x00:
+				prn_string("End of initialization.");
+				prn_string("\n");
+				break;
+			case 0x01:
+				prn_string("End of fine write leveling.");
+				prn_string("\n");
+				break;
+			case 0x02:
+				prn_string("End of read enable training.");
+				prn_string("\n");
+				break;
+			case 0x03:
+				prn_string("End of read delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0x04:
+				prn_string("End of write delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0x05:
+				prn_string("End of 2D read delay/voltage center optimization.");
+				prn_string("\n");
+				break;
+			case 0x06:
+				prn_string("End of 2D write delay/voltage center optimization.");
+				prn_string("\n");
+				break;
+			case 0x07:
+				train_test = 1;
+				prn_string("Training has run successfully.(firmware complete)");
+				prn_string("\n");
+				break;
+			case 0x08:
+				prn_string("Start streaming message mode.");
+				prn_string("\n");
+				string_index = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+				prn_string("string_index=");prn_dword0(string_index);
+				prn_string("\n");
+				args = string_index & 0xffff;
+				for(i = 0; i < args; i++) {
+					string_index = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+					prn_string("args=");prn_dword0(string_index);
+					prn_string("\n");
+				}
+				break;
+			case 0x09:
+				prn_string("End of max read latency training.");
+				prn_string("\n");
+				break;
+			case 0x0a:
+				prn_string("End of read dq deskew training.");
+				prn_string("\n");
+				break;
+			case 0x0b:
+				prn_string("Reserved.");
+				prn_string("\n");
+				break;
+			case 0x0c:
+				prn_string("End of all DB training(MREP/DWL/MRD/MWD complete).");
+				prn_string("\n");
+				break;
+			case 0x0d:
+				prn_string("End of CA training.");
+				prn_string("\n");
+				break;
+			case 0xfd:
+				prn_string("End of MPR read delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0xfe:
+				prn_string("End of Wrtie leveling coarse delay.");
+				prn_string("\n");
+				break;
+			case 0xff:
+				prn_string("Training has failed.(firmware complete)");
+				prn_string("\n");
+				return;
 		}
-		//prn_string("GET mailbox message = ");prn_dword0(rd_data);
-		//prn_string("\n");
-		if (rd_data == 0xff) {
-			//prn_string("GET mailbox send 16'hff ,FW training Fail!!!!");
-			//prn_string("\n");
-			return;
-		}
-		rd_data = dwc_ddrphy_apb_rd(0xd0034);
+
 		//dwc_ddrphy_apb_rd(32'hd0031,rd_data);
 		dwc_ddrphy_apb_wr(0xd0031,0);
 		while (1) {
