@@ -16,6 +16,12 @@
 #else
 #define REG_BASE		0x9C000000
 #endif
+
+#ifdef PLATFORM_SP7350
+#define REG_BASE_AO		0xF8800000
+#define RF_GRP_AO(_grp, _reg)	((((_grp) * 32 + (_reg)) * 4) + REG_BASE_AO)
+#endif
+
 #define RF_GRP(_grp, _reg)	((((_grp) * 32 + (_reg)) * 4) + REG_BASE)
 #define RF_MASK_V(_mask, _val)	(((_mask) << 16) | (_val))
 #define RF_MASK_V_SET(_mask)	(((_mask) << 16) | (_mask))

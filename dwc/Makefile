@@ -2,6 +2,7 @@ include Makefile.in
 SIM_TYPE := CSIM_ASIC
 QUICK_SIM :=  NO
 
+PLATFROM ?= SP7350
 
 # Toolchain path
 ifneq ($(CROSS),)
@@ -9,15 +10,15 @@ CC = $(CROSS)gcc
 CPP = $(CROSS)cpp
 endif
 
-# Get Platform configuration from xboot/.config
-PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_")
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_Q645=y)
+ifeq (${PLATFROM},Q645)
 CFLAGS = -DCONFIG_PLATFORM_Q645
 endif
-ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_SP7350=y)
+ifeq (${PLATFROM},SP7350)
 CFLAGS = -DCONFIG_PLATFORM_SP7350
 endif
+
+# Get Platform configuration from xboot/.config
+PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
 SPI_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SPI_NAND")
 ifeq (${SPI_NAND_CFG},CONFIG_HAVE_SPI_NAND=y)
 CFLAGS += -DCONFIG_HAVE_SPI_NAND
