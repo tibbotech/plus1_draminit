@@ -281,6 +281,8 @@ int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrP
 	else if (g_bootinfo.bootdev_port == USB2_PORT)
 		return usb2_readSector(sectorNo, pageCount, ptrPyldData);
 #endif
+	else
+		return -1;
 }
 
 void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
