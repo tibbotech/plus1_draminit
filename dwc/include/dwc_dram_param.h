@@ -2817,3 +2817,5 @@ void dwc_ddrphy_apb_wr(UINT32 adr, UINT32 dat);
 UINT16 dwc_ddrphy_apb_rd(UINT32 adr);
 int ReadSDSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData);
 int usb_readSector(u32 lba, u32 count, u32 *dest);
+int usb2_readSector(u32 lba, u32 count, u32 *dest);
+

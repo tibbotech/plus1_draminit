@@ -273,8 +273,14 @@ int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrP
 {
 	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 		return ReadSDSector(sectorNo, pageCount, ptrPyldData);
-	else
+#ifdef CONFIG_HAVE_SNPS_USB3_DISK
+	else if (g_bootinfo.bootdev_port == USB3_PORT)
 		return usb_readSector(sectorNo, pageCount, ptrPyldData);
+#endif
+#ifdef CONFIG_HAVE_USB2_DISK
+	else if (g_bootinfo.bootdev_port == USB2_PORT)
+		return usb2_readSector(sectorNo, pageCount, ptrPyldData);
+#endif
 }
 
 void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
