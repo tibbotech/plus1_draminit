@@ -3,6 +3,8 @@
 
 #include <spinand_boot/sp_spinand_q645.h>
 #include <sdmmc_boot/hal_sd_mmc.h>
+#include <../../../xboot/include/usb/xhci_usb.h>
+#include <../../../xboot/include/usb/ehci_usb.h>
 
 /*
  * storage_buf usage depends on storage driver
