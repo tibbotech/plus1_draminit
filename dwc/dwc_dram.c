@@ -34,6 +34,9 @@
 #define IM2D_HDR_MAGIC   0x64326d69
 #define DM2D_HDR_MAGIC   0x64326d64
 
+#define USB3_PORT		0
+#define USB2_PORT		1
+
 typedef unsigned int        u32;
 
 #define MO3_REG ((volatile struct int_regs *)RF_GRP(3, 0))
@@ -273,14 +276,10 @@ int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrP
 {
 	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
 		return ReadSDSector(sectorNo, pageCount, ptrPyldData);
-#ifdef CONFIG_HAVE_SNPS_USB3_DISK
 	else if (g_bootinfo.bootdev_port == USB3_PORT)
 		return usb_readSector(sectorNo, pageCount, ptrPyldData);
-#endif
-#ifdef CONFIG_HAVE_USB2_DISK
 	else if (g_bootinfo.bootdev_port == USB2_PORT)
 		return usb2_readSector(sectorNo, pageCount, ptrPyldData);
-#endif
 	else
 		return -1;
 }
