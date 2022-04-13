@@ -7,9 +7,30 @@
 /** \brief this function implements the flow of PhyInit software to initialize the PHY.
  *
  * The execution sequence follows the overview figure provided in the PhyInit App Note.
- * 
+ *
  * \returns 0 on completion of the sequence, EXIT_FAILURE on error.
  */
+
+//#define Diagnostic_test
+
+void dwc_ddrphy_phyinit_Diagnostic_test(void)
+{
+	dwc_ddrphy_phyinit_D_loadIMEM( 2 ); /* load Diagnostic image */
+	dwc_ddrphy_phyinit_F_loadDMEM(0, 2);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tDRTUB | csr_UctWriteProt_ADDR), 0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_DctWriteProt_ADDR), 0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tDRTUB | csr_UctWriteOnly_ADDR), 0);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroReset_ADDR), 0x09);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroReset_ADDR), 0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroReset_ADDR), 0);
+	/* Wait for the diagnostics test to finish*/
+	dwc_ddrphy_phyinit_userCustom_G_waitFwDone();
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroReset_ADDR), 1);
+	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0);
+	/* Read back diagnostics return data */
+}
+
 int dwc_ddrphy_phyinit_sequence (int skip_training, int Train2D, int debug) {
 
     int pstate;
@@ -184,7 +205,13 @@ int dwc_ddrphy_phyinit_sequence (int skip_training, int Train2D, int debug) {
               
         }
     }
-           
+
+	#ifdef Diagnostic_test
+	if (runtimeConfig.Train2D == 1)
+		dwc_ddrphy_phyinit_Diagnostic_test();
+	return 0;
+	#endif
+		   
     // Start retention register tracking for training firmware related registers
     dwc_ddrphy_phyinit_regInterface(startTrack,0,0);
 

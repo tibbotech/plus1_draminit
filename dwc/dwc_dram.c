@@ -33,6 +33,8 @@
 #define DM1D_HDR_MAGIC   0x64316d64
 #define IM2D_HDR_MAGIC   0x64326d69
 #define DM2D_HDR_MAGIC   0x64326d64
+#define IMDA_HDR_MAGIC   0x6a646d69
+#define DMDA_HDR_MAGIC   0x6a646d64
 
 #define USB3_PORT		0
 #define USB2_PORT		1
@@ -97,6 +99,9 @@ static unsigned int IMEM1d_len = 0;
 static unsigned int DMEM1d_len = 0;
 static unsigned int IMEM2d_len = 0;
 static unsigned int DMEM2d_len = 0;
+static unsigned int IMDA_len = 0;
+static unsigned int DMDA_len = 0;
+
 
 #ifdef CONFIG_DRAM_SIZE_USE_OTP
 static unsigned int DRAM_SIZE_FLAG;
@@ -189,6 +194,10 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 			prn_string("2D IMEM ");
 		else if (magic == DM2D_HDR_MAGIC)
 			prn_string("2D DMEM ");
+		else if (magic == IMDA_HDR_MAGIC)
+			prn_string("IMDA ");
+		else if (magic == DMDA_HDR_MAGIC)
+			prn_string("DMDA ");
 
 		prn_string("checksum error!!!!\n");
 		prn_string("sum="); prn_dword(sum);
@@ -202,6 +211,10 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 			prn_string("2D IMEM checksum ok!!!!\n");
 		else if (magic == DM2D_HDR_MAGIC)
 			prn_string("2D DMEM checksum ok!!!!\n");
+		else if (magic == IMDA_HDR_MAGIC)
+			prn_string("IMDA checksum ok!!!!\n");
+		else if (magic == DMDA_HDR_MAGIC)
+			prn_string("DMDA checksum ok!!!!\n");
 	}
 	sum = 0;    // Reset DWC checksum
 }
@@ -309,7 +322,8 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	ReadSector(offset, 1, mem);
 	for (j = 0; j < 128; j++) {
 		if((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
-			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)) //j is array number
+			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)
+			|| (mem[j] == IMDA_HDR_MAGIC) || (mem[j] == DMDA_HDR_MAGIC)) //j is array number
 		{
 			//prn_string("mem[j]=");
 			//prn_dword(mem[j]);
@@ -328,6 +342,10 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				IMEM2d_len = mem[j+2];
 			else if(mem[j] == DM2D_HDR_MAGIC)
 				DMEM2d_len = mem[j+2];
+			else if(mem[j] == IMDA_HDR_MAGIC)
+				IMDA_len = mem[j+2];
+			else if(mem[j] == DMDA_HDR_MAGIC)
+				DMDA_len = mem[j+2];
 			//prn_string("leng=");
 			//prn_dword(mem[j+2]);
 			img_length = mem[j+2];
@@ -678,7 +696,11 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 }
 #endif
 
-
+/*
+ * 1D training:Train2D=0
+ * 2D training:Train2D=1
+ * Diagnostic:Train2D=2
+ */
 void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 {
 	mp = 0;
@@ -759,6 +781,23 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
 			}
 		}
+		else if (Train2D == 2)
+		{
+			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32 + DMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			value = total_length % 512;
+			prn_string("sectorNo0="); prn_dword(sectorNo0);
+			prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+			}
+		}
 	}
 #ifdef CONFIG_HAVE_SPI_NAND
 	else if (bootdevice == SPINAND_BOOT)
@@ -815,8 +854,25 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			value = total_length % 512;
-			//prn_string("sectorNo0="); prn_dword(sectorNo0);
-			//prn_string("value="); prn_dword(value);
+			prn_string("sectorNo0="); prn_dword(sectorNo0);
+			prn_string("value="); prn_dword(value);
+			if(value < 0x20)
+			{
+				//prn_string("value < 0x20\n");
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+			}
+			else
+			{
+				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+			}
+		}
+		else if(Train2D == 2)
+		{
+			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32 + DMEM2d_len + 32 + IMDA_len + 32; //xboot header lenght + xboot length + IMEM header length
+			sectorNo0 = total_length / 512;
+			value = total_length % 512;
+			prn_string("sectorNo0="); prn_dword(sectorNo0);
+			prn_string("value="); prn_dword(value);
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
@@ -864,19 +920,19 @@ void dwc_ddrphy_phyinit_saveRetention(void)
 	}
 }
 
-
-
 void dwc_ddrphy_phyinit_main(void)
 {
-   //#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
-   //#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
-   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
-   //#include <dwc_devinit_skiptrain_zebu.txt>
-   //#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-   prn_string("dwc_ddrphy_phyinit_main ver.20\n");
-   mp = 1;
-   //runtimeConfig.RetEn = 1;
-   dwc_ddrphy_phyinit_sequence(2,0,0);
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
+	//#include <dwc_devinit_skiptrain_zebu.txt>
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
+	prn_string("dwc_ddrphy_phyinit_main ver.21\n");
+	mp = 1;
+	//runtimeConfig.RetEn = 1;
+	dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
+	//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
+
 }
 
 // ***********************************************************************

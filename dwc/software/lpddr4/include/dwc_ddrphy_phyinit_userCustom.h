@@ -91,6 +91,7 @@
 // Message Block Structure Definitions. 
 #include "mnPmuSramMsgBlock_lpddr4.h"
 #include "mnPmuSramMsgBlock_lpddr4_2d.h"
+#include "DiagMsgBlock_lpddr4.h"
 
 
 

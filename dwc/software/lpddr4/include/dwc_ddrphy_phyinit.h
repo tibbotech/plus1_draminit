@@ -19,6 +19,7 @@ extern PMU_SMB_LPDDR4_1D_t        mb_LPDDR4_1D[4];
 extern PMU_SMB_LPDDR4_1D_t        shdw_LPDDR4_1D[4];
 extern PMU_SMB_LPDDR4_2D_t        mb_LPDDR4_2D[4];
 extern PMU_SMB_LPDDR4_2D_t        shdw_LPDDR4_2D[4];
+extern PMU_SMB_DIAG_t        	  mb_LPDDR4_DIAG;
 
 // Function definitions
 int dwc_ddrphy_phyinit_setMb (int ps, char *field, int value, int Train2D);
@@ -33,6 +34,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D);
 void Changing_SDRAMRDQS_of_Zebu_Emulation( void);
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP(void);
 void dwc_dvdrphy_phyinit_Write_DMEM(void);
+void dwc_ddrphy_phyinit_Diagnostic_test(void);
 
 int floor(float val);
 int ceil(float val);
