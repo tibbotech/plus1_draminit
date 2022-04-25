@@ -90,7 +90,6 @@ static unsigned int ckobd_training_flag = 0;
 //static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
 //static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
 //static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
-static unsigned int gAC, gACK, gCK;
 
 static unsigned int bootdevice;
 
@@ -1056,9 +1055,6 @@ int dram_init_main(unsigned int gbootRom_boot_mode)
 	prn_dword(bootdevice);
 	// init params
 	ckobd_training_flag = 1;
-	gAC = DPCU_AC0BD;
-	gACK = DPCU_ACK0BD;
-	gCK = DPCU_CK0BD;
 
 #if !(defined(DRAMSCAN) || defined(SISCOPE))
 #ifdef DRAM_INIT_DEBUG
