@@ -65,7 +65,10 @@ static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers 
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
 
 #ifdef PLATFORM_SP7350
-static volatile struct sp_registers *sp_reg_ptr_AO = (volatile struct sp_registers *)(RF_GRP_AO(0, 0));
+struct sp_registers_ao {
+	unsigned int sp_register[5][32];
+};
+static volatile struct sp_registers *sp_reg_ptr_AO = (volatile struct sp_registers_ao *)(RF_GRP_AO(0, 0));
 #define SP_REG_AO(GROUP, OFFSET)	(sp_reg_ptr_AO->sp_register[GROUP][OFFSET])
 #endif
 
@@ -945,13 +948,7 @@ void startClockResetPhy_of_SP(void)
 	//prn_string("\n");
 
 	//dbg_stamp(0xA000);
-#ifdef PLATFORM_SP7350
-	SP_REG_AO(0, 22) = RF_MASK_V_SET(1 << 3);	// presetn MO_UMCTL2_RST_B APB BUS reset
-	SP_REG_AO(0, 22) = RF_MASK_V_SET(1 << 4);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
-	SP_REG_AO(0, 22) = RF_MASK_V_SET(1 << 5);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
-	SP_REG_AO(0, 22) = RF_MASK_V_SET(1 << 2);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-	SP_REG(3, 24) = RF_MASK_V_SET(1 << 13);	// PwrOkIn MO_DDRPHY_PWROKIN ddrphy pwrokin
-#elif defined(PLATFORM_Q645)
+#ifdef PLATFORM_Q645
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	SP_REG(0, 25) = RF_MASK_V_SET(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 	SP_REG(0, 22) = RF_MASK_V_SET(1 << 4);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
@@ -963,9 +960,7 @@ void startClockResetPhy_of_SP(void)
 	//SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
 	//SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
 
-#ifdef PLATFORM_SP7350
-	SP_REG_AO(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
-#elif defined(PLATFORM_Q645)
+#ifdef PLATFORM_Q645
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 0); //CM4 Hardware IP Reset Disable tonyh add 20210608
 #endif
 
@@ -979,12 +974,20 @@ void startClockResetUmctl2_of_SP(void)
 	dbg_stamp(0xA001);
 
 #ifdef PLATFORM_SP7350
-	MO3_REG->mo3_reserved[24] = 0x20002000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 3);	// presetn MO_UMCTL2_RST_B APB BUS reset
+	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 4);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 5);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
 	wait_loop(1000);
 	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 2);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
 	wait_loop(1000);
+
+	SP_REG_AO(3, 13) =0x00180008;
+	SP_REG_AO(4, 28) =0x08000800;
+	SP_REG_AO(4, 28) =0x00400040;
+	wait_loop(1000);
+	SP_REG_AO(4, 28) =0x02000200;
+	wait_loop(1000);
+	
 #elif defined(PLATFORM_Q645)
 	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
@@ -993,14 +996,15 @@ void startClockResetUmctl2_of_SP(void)
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 8);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
 	wait_loop(1000);
 #endif
-	prn_string("G3.24 = ");
-	prn_dword(MO3_REG->mo3_reserved[24]);
 
 	dbg_stamp(0xA002);
 	dwc_umctl2_init_before_ctl_rst();
 
 #ifdef PLATFORM_SP7350
-	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 4);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
+	SP_REG_AO(4, 28) =0x00800080;
+	SP_REG_AO(4, 28) =0x01000100;
+	wait_loop(1000);
+	SP_REG_AO(4, 28) =0x04000400;
 #elif defined(PLATFORM_Q645)
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 #endif
