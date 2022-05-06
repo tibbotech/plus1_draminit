@@ -931,7 +931,9 @@ void dwc_ddrphy_phyinit_main(void)
 	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
 	prn_string("dwc_ddrphy_phyinit_main ver.22\n");
 	mp = 1;
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_sdram_800MHz.txt> //for real chip , training pass
+    #include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_200MHz_SDRAM_400MHz.txt> 
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_400MHz_SIPI.txt>
+	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_800MHz_SIPI.txt>
 	
 	//runtimeConfig.RetEn = 1;
 	//dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
