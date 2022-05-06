@@ -929,10 +929,12 @@ void dwc_ddrphy_phyinit_main(void)
 	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
 	//#include <dwc_devinit_skiptrain_zebu.txt>
 	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-	prn_string("dwc_ddrphy_phyinit_main ver.21\n");
+	prn_string("dwc_ddrphy_phyinit_main ver.22\n");
 	mp = 1;
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_sdram_800MHz.txt> //for real chip , training pass
+	
 	//runtimeConfig.RetEn = 1;
-	dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
+	//dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
 	//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
 
 }

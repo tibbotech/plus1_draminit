@@ -1,6 +1,8 @@
 
-#define MPEG_DRAM_DDR_3200
+//#define MPEG_DRAM_DDR_3200
 //#define MPEG_DRAM_DDR_2667
+#define MPEG_DRAM_DDR_1600
+
 
 #ifdef MPEG_DRAM_DDR_3200
 #define SDRAM_SPEED_1600

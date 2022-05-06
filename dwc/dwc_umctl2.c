@@ -31,8 +31,9 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	//RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> ASSERTED (ACTIVE LOW)
 	//RESET:<presetn> DEASSERTED
-#if 1
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
+	
+#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333)
+ 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
 	ctl_apb_rd(0x0004);//STAT
 	ctl_apb_wr(0x0000,UMCTL2_0);//MSTR
@@ -135,7 +136,98 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	//RESET:<core_ddrc_rstn> DEASSERTED
 #endif
 
-#if 0
+#ifdef SDRAM_SPEED_800   //800 MHz training pass
+ctl_apb_wr(0x304, 0x00000001);
+ctl_apb_wr(0x030, 0x00000001);
+//ctl_apb_rd(0x004, 0x00000000);
+ctl_apb_rd(0x004);
+ctl_apb_wr(0x000, 0x83080020);
+ctl_apb_wr(0x010, 0x40003030);
+ctl_apb_wr(0x014, 0x00008043);
+ctl_apb_wr(0x01c, 0x73b46665);ctl_apb_wr(0x020, 0x00000100);ctl_apb_wr(0x024, 0x0c3a97b5);ctl_apb_wr(0x02c, 0x00000000);ctl_apb_wr(0x030, 0x00000020);ctl_apb_wr(0x034, 0x00403704);ctl_apb_wr(0x038, 0x00350000);ctl_apb_wr(0x050, 0x90210000);ctl_apb_wr(0x054, 0x00150027);ctl_apb_wr(0x060, 0x00000001);ctl_apb_wr(0x064, 0x00300098);ctl_apb_wr(0x068, 0x00240000);ctl_apb_wr(0x0c0, 0x00000000);ctl_apb_wr(0x0c4, 0x00000000);ctl_apb_wr(0x0d0, 0xc0020002);
+//ctl_apb_wr(0x0d0, 0x00020002);
+ctl_apb_wr(0x0d4, 0x00010002);
+ctl_apb_wr(0x0d8, 0x00000d00);
+ctl_apb_wr(0x0dc, 0x00240012);
+ctl_apb_wr(0x0e0, 0x00310008);
+ctl_apb_wr(0x0e4, 0x00030005);
+ctl_apb_wr(0x0e8, 0x0000004d);
+ctl_apb_wr(0x0ec, 0x0000004d);
+ctl_apb_wr(0x0f0, 0x00000000);
+ctl_apb_wr(0x0f4, 0x0000032f);
+ctl_apb_wr(0x100, 0x11100d11);
+ctl_apb_wr(0x104, 0x00030418);
+ctl_apb_wr(0x108, 0x04070a0d);
+ctl_apb_wr(0x10c, 0x00606006);
+ctl_apb_wr(0x110, 0x08040408);
+ctl_apb_wr(0x114, 0x02030606);
+ctl_apb_wr(0x118, 0x01010004);
+ctl_apb_wr(0x11c, 0x00000302);
+ctl_apb_wr(0x120, 0x01010101);
+ctl_apb_wr(0x124, 0x00000008);
+ctl_apb_wr(0x128, 0x00080a03);
+ctl_apb_wr(0x12c, 0x01010007);
+ctl_apb_wr(0x130, 0x00020000);
+ctl_apb_wr(0x134, 0x0a100002);
+ctl_apb_wr(0x138, 0x0000009b);
+ctl_apb_wr(0x13c, 0x00000000);
+ctl_apb_wr(0x180, 0xc190000c);
+ctl_apb_wr(0x184, 0x01472371);
+ctl_apb_wr(0x188, 0x00000000);
+ctl_apb_wr(0x190, 0x03898204);
+ctl_apb_wr(0x194, 0x00090202);
+ctl_apb_wr(0x198, 0x07f06031);
+ctl_apb_wr(0x19c, 0x000000a1);
+ctl_apb_wr(0x1a0, 0x80400018);
+ctl_apb_wr(0x1a4, 0x00c900d5);
+ctl_apb_wr(0x1a8, 0x00000000);
+ctl_apb_wr(0x1b0, 0x00000055);
+ctl_apb_wr(0x1b4, 0x00000904);
+ctl_apb_wr(0x1b8, 0x00000008);
+ctl_apb_wr(0x1c0, 0x00000001);
+ctl_apb_wr(0x1c4, 0xe5000000);
+ctl_apb_wr(0x200, 0x00000018);
+ctl_apb_wr(0x204, 0x00080808);
+ctl_apb_wr(0x208, 0x00000000);
+ctl_apb_wr(0x20c, 0x00000000);
+ctl_apb_wr(0x210, 0x00001f1f);
+ctl_apb_wr(0x214, 0x070f0707);
+ctl_apb_wr(0x218, 0x07070707);
+ctl_apb_wr(0x21c, 0x00000f07);
+ctl_apb_wr(0x220, 0x00000000);
+ctl_apb_wr(0x224, 0x07070707);
+ctl_apb_wr(0x228, 0x07070707);
+ctl_apb_wr(0x22c, 0x00000007);
+ctl_apb_wr(0x240, 0x06050738);
+ctl_apb_wr(0x244, 0x00000000);
+ctl_apb_wr(0x250, 0x008d3f00);
+ctl_apb_wr(0x254, 0x00000000);
+ctl_apb_wr(0x25c, 0x0f000001);
+ctl_apb_wr(0x264, 0x0f00007f);
+ctl_apb_wr(0x26c, 0x0f00007f);
+ctl_apb_wr(0x300, 0x00000000);
+ctl_apb_wr(0x304, 0x00000000);
+ctl_apb_wr(0x30c, 0x00000000);
+ctl_apb_wr(0x320, 0x00000001);
+ctl_apb_wr(0x328, 0x00000000);
+ctl_apb_wr(0x36c, 0x00100000);
+ctl_apb_wr(0x490, 0x00000001);
+ctl_apb_wr(0x540, 0x00000001);
+ctl_apb_wr(0x5f0, 0x00000001);
+ctl_apb_wr(0x6a0, 0x00000001);ctl_apb_wr(0x020, 0x00000100);ctl_apb_wr(0x024, 0x0c3a97b5);ctl_apb_wr(0x034, 0x00403704);ctl_apb_wr(0x050, 0xe8210000);ctl_apb_wr(0x064, 0x00300098);ctl_apb_wr(0x068, 0x00240000);ctl_apb_wr(0x0dc, 0x00240012);ctl_apb_wr(0x0e0, 0x00310008);ctl_apb_wr(0x0e8, 0x0000004d);ctl_apb_wr(0x0ec, 0x0000004d);ctl_apb_wr(0x0f4, 0x0000032f);ctl_apb_wr(0x100, 0x11100d11);ctl_apb_wr(0x104, 0x00030418);ctl_apb_wr(0x108, 0x04070a0d);ctl_apb_wr(0x10c, 0x00606006);ctl_apb_wr(0x110, 0x08040408);ctl_apb_wr(0x114, 0x02030606);ctl_apb_wr(0x118, 0x01010004);ctl_apb_wr(0x11c, 0x00000302);ctl_apb_wr(0x120, 0x01010101);ctl_apb_wr(0x124, 0x00000008);ctl_apb_wr(0x128, 0x00080a03);ctl_apb_wr(0x12c, 0x01010007);ctl_apb_wr(0x130, 0x00020000);ctl_apb_wr(0x134, 0x0a100002);ctl_apb_wr(0x138, 0x0000009b);ctl_apb_wr(0x13c, 0x00000000);ctl_apb_wr(0x180, 0xc190000c);ctl_apb_wr(0x190, 0x03898204);ctl_apb_wr(0x194, 0x00090202);ctl_apb_wr(0x1b4, 0x00000904);ctl_apb_wr(0x1b8, 0x00000008);ctl_apb_wr(0x240, 0x06050738);
+//ctl_apb_rd(0x060, 0x00000001);
+ctl_apb_rd(0x060);ctl_apb_wr(0x400, 0x00000000);ctl_apb_wr(0x404, 0x0000000f);ctl_apb_wr(0x4b4, 0x0000000f);ctl_apb_wr(0x564, 0x0000000f);ctl_apb_wr(0x614, 0x0000000f);ctl_apb_wr(0x404, 0x0000100f);ctl_apb_wr(0x4b4, 0x0000100f);ctl_apb_wr(0x564, 0x0000100f);ctl_apb_wr(0x614, 0x0000100f);
+ctl_apb_wr(0x404, 0x0000100f);
+ctl_apb_wr(0x4b4, 0x0000100f);ctl_apb_wr(0x564, 0x0000100f);ctl_apb_wr(0x614, 0x0000100f);ctl_apb_wr(0x404, 0x0000100f);ctl_apb_wr(0x4b4, 0x0000100f);ctl_apb_wr(0x564, 0x0000100f);ctl_apb_wr(0x614, 0x0000100f);ctl_apb_wr(0x408, 0x0000400f);ctl_apb_wr(0x4b8, 0x0000400f);ctl_apb_wr(0x568, 0x0000400f);ctl_apb_wr(0x618, 0x0000400f);ctl_apb_wr(0x408, 0x0000500f);ctl_apb_wr(0x4b8, 0x0000500f);ctl_apb_wr(0x568, 0x0000500f);ctl_apb_wr(0x618, 0x0000500f);ctl_apb_wr(0x408, 0x0000500f);ctl_apb_wr(0x4b8, 0x0000500f);ctl_apb_wr(0x568, 0x0000500f);ctl_apb_wr(0x618, 0x0000500f);ctl_apb_wr(0x408, 0x0000100f);ctl_apb_wr(0x4b8, 0x0000100f);ctl_apb_wr(0x568, 0x0000100f);ctl_apb_wr(0x618, 0x0000100f);
+//ctl_apb_rd(0x030, 0x00000020);
+ctl_apb_rd(0x030);
+ctl_apb_wr(0x030, 0x00000020);
+
+#endif 
+
+
+
+#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333)
 	prn_string("RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)");
 	prn_string("\n");
 	prn_string("RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)");
@@ -352,7 +444,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 {
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
-#if 1
+#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333) //1333MHz or 1600MHz
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
@@ -390,6 +482,58 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
 	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
 #endif
+
+#ifdef SDRAM_SPEED_800   //800 MHz training pass
+ctl_apb_wr(0x304, 0x00000000);
+//ctl_apb_rd(0x030, 0x00000020);
+ctl_apb_rd(0x030);
+ctl_apb_wr(0x030, 0x00000020);
+//ctl_apb_rd(0x030, 0x00000020);
+ctl_apb_rd(0x030);
+ctl_apb_wr(0x030, 0x00000020);
+//ctl_apb_rd(0x1c4, 0xe5000000);
+ctl_apb_rd(0x1c4);
+ctl_apb_wr(0x1c4, 0xe5000000);
+ctl_apb_wr(0x320, 0x00000000);
+ctl_apb_wr(0x1b0, 0x00000054);
+ctl_apb_wr(0x1b0, 0x00000054);
+ctl_apb_wr(0x304, 0x00000002);
+//ctl_apb_rd(0x0d0, 0xc0020002);
+ctl_apb_rd(0x0d0);
+//ctl_apb_rd(0x1c0, 0x00000001);
+ctl_apb_rd(0x1c0);
+//ctl_apb_rd(0x000, 0x83080020);
+ctl_apb_rd(0x000);
+//ctl_apb_rd(0x0dc, 0x00240012);
+ctl_apb_rd(0x0dc);
+//ctl_apb_rd(0x0e0, 0x00310008);
+ctl_apb_rd(0x0e0);
+//ctl_apb_rd(0x0e8, 0x0000004d);
+ctl_apb_rd(0x0e8);
+//ctl_apb_rd(0x0e0, 0x00310008);
+ctl_apb_rd(0x0e0);
+//ctl_apb_rd(0x0ec, 0x0000004d);
+ctl_apb_rd(0x0ec);
+//ctl_apb_rd(0x0d0, 0xc0020002);
+ctl_apb_rd(0x0d0);
+//ctl_apb_rd(0x1c0, 0x00000001);
+ctl_apb_rd(0x1c0);
+//ctl_apb_rd(0x000, 0x83080020);
+ctl_apb_rd(0x000);
+//ctl_apb_rd(0x0dc, 0x00240012);
+ctl_apb_rd(0x0dc);
+//ctl_apb_rd(0x0e0, 0x00310008);
+ctl_apb_rd(0x0e0);
+//ctl_apb_rd(0x0e8, 0x0000004d);
+ctl_apb_rd(0x0e8);
+//ctl_apb_rd(0x0e0, 0x00310008);
+ctl_apb_rd(0x0e0);
+//ctl_apb_rd(0x0ec, 0x0000004d);
+ctl_apb_rd(0x0ec);
+//ctl_apb_rd(0x0d0, 0xc0020002);
+ctl_apb_rd(0x0d0);
+#endif 
+
 
 #if 0
 	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_3));
@@ -434,26 +578,79 @@ void polling_sw_cfg_done()
 	}
 }
 
+#if 0 //for csim
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP () 
+{    
+	UINT16 rd_data;    
+	UINT8 train_test = 0;    
+	prn_string("Start to wait for the training firmware to complete!!!");	
+	prn_string("\n");    
+	while(train_test==0){       
+		while(1) {            
+			rd_data = dwc_ddrphy_apb_rd(0xd0004);            
+			if((rd_data & 0x01) == 0){                
+				prn_string("Wait mailbox send message done!!!");				
+				prn_string("\n");                
+				break;            
+			}        
+		}        
+		rd_data = dwc_ddrphy_apb_rd(0xd0032);        
+		if(rd_data  == 0x07) {            
+			train_test = 1;            
+			prn_string("GET mailbox send 7 ,FW training done!!!!");			
+			prn_string("\n");
+		}        
+		prn_string("GET mailbox message = ");
+		prn_dword0(rd_data);		
+		prn_string("\n");        
+		if(rd_data == 0xff) {            
+			prn_string("GET mailbox send 16'hff ,FW training Fail!!!!");			
+			prn_string("\n");            
+			return;        
+		}        
+		rd_data = dwc_ddrphy_apb_rd(0xd0034);        //dwc_ddrphy_apb_rd(32'hd0031,rd_data);        
+		dwc_ddrphy_apb_wr(0xd0031,0);        
+		while(1) {            
+			rd_data = dwc_ddrphy_apb_rd(0xd0004);            
+			if(rd_data & 0x01 == 1) {                
+				break;            
+			}        
+		}        
+		dwc_ddrphy_apb_wr(0xd0031,1);    
+	}
+}
+
+#else //for real chip
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
  	UINT32 string_index;
-	UINT16 rd_data, args, i;
+	UINT16 rd_data, args, i, low_16bit, upper_16bit;
 	UINT8 train_test = 0;
 
-	prn_string("Start to wait for the training firmware to complete!!!");
+	prn_string("Start to wait for the training firmware to complete v.00 !!!");
 	prn_string("\n");
 	while (train_test == 0) {
 		while (1) {
 			rd_data = dwc_ddrphy_apb_rd(0xd0004);/* When set to 0, the PMU has a message for the user */
 			if ((rd_data & 0x01) == 0) {
-				prn_string("Wait mailbox send message done!!!");
-				prn_string("\n");
 				break;
 			}
-		}
+		}	
 
-		rd_data = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the message ID for major message. */
-		prn_string("GET mailbox message = ");prn_dword0(rd_data);
+		low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+		upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+		
+		dwc_ddrphy_apb_wr(0xd0031,0);
+		while(1)
+		{
+		   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+		   if((rd_data & 0x01) == 1)
+			   break;
+		}
+		dwc_ddrphy_apb_wr(0xd0031,1);
+
+		rd_data = (upper_16bit << 16) | low_16bit;
+		prn_string("rd_data=");prn_dword0(rd_data);
 		prn_string("\n");
 		switch (rd_data & 0xff) {
 			case 0x00:
@@ -492,13 +689,49 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 			case 0x08:
 				prn_string("Start streaming message mode.");
 				prn_string("\n");
-				string_index = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+                while(1)
+                {
+					rd_data = dwc_ddrphy_apb_rd(0xd0004);
+					if((rd_data & 0x01) == 0)
+						break;
+				}
+
+				low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+				upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+				
+				dwc_ddrphy_apb_wr(0xd0031,0);
+				while(1)
+				{
+				   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+				   if((rd_data & 0x01) == 1)
+					   break;
+				}
+				dwc_ddrphy_apb_wr(0xd0031,1);
+
+				string_index = (upper_16bit << 16) | low_16bit;
 				prn_string("string_index=");prn_dword0(string_index);
 				prn_string("\n");
-				args = string_index & 0xffff;
+				args = low_16bit & 0xffff;
 				for(i = 0; i < args; i++) {
-					string_index = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
-					prn_string("args=");prn_dword0(string_index);
+					while(1)
+	                {
+						rd_data = dwc_ddrphy_apb_rd(0xd0004);
+						if((rd_data & 0x01) == 0)
+							break;
+					}
+					low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+					upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+				
+					dwc_ddrphy_apb_wr(0xd0031,0);
+					while(1)
+					{
+					   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+					   if((rd_data & 0x01) == 1)
+						   break;
+					}
+					dwc_ddrphy_apb_wr(0xd0031,1);
+					string_index = (upper_16bit << 16) | low_16bit;
+					prn_string("args=");prn_dword0(low_16bit);
 					prn_string("\n");
 				}
 				break;
@@ -547,6 +780,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 		dwc_ddrphy_apb_wr(0xd0031,1);
 	}
 }
+#endif 
 
 void run_customPostTrain()
 {
