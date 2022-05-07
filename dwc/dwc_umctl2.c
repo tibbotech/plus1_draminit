@@ -683,6 +683,16 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
 #if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333) //1333MHz or 1600MHz
+
+#if defined(SDRAM_SPEED_1600)
+	prn_string("SDRAM_SPEED_1600");	
+	prn_string("\n"); 
+#endif 	
+#if defined(SDRAM_SPEED_1333)
+		prn_string("SDRAM_SPEED_1333"); 
+		prn_string("\n"); 
+#endif 
+
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
@@ -722,6 +732,10 @@ int dwc_umctl2_init_after_ctl_rst(void)
 #endif
 
 #ifdef SDRAM_SPEED_800   //800 MHz training pass
+prn_string("SDRAM_SPEED_800"); 
+prn_string("\n"); 
+
+
 ctl_apb_wr(0x304, 0x00000000);
 //ctl_apb_rd(0x030, 0x00000020);
 ctl_apb_rd(0x030);
@@ -792,6 +806,9 @@ ctl_apb_rd(0x0d0);
 #endif 
 
 #ifdef SDRAM_SPEED_667   //666 MHz 
+prn_string("SDRAM_SPEED_667"); 
+prn_string("\n");
+
 ctl_apb_wr(0x304, 0x00000000);
 //ctl_apb_rd(0x030, 0x00000020);
 ctl_apb_rd(0x030);
@@ -863,6 +880,8 @@ ctl_apb_rd(0x0d0);
 
 
 #ifdef SDRAM_SPEED_400   //400 MHz 
+prn_string("SDRAM_SPEED_400"); 
+prn_string("\n");
 ctl_apb_wr(0x304, 0x00000000);
 //ctl_apb_rd(0x030, 0x00000020);
 ctl_apb_rd(0x030);
@@ -1018,6 +1037,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP ()
 }
 
 #else //for real chip
+#if 0
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
  	UINT32 string_index;
@@ -1047,9 +1067,9 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 		dwc_ddrphy_apb_wr(0xd0031,1);
 
 		rd_data = (upper_16bit << 16) | low_16bit;
-		prn_string("rd_data=");prn_dword0(rd_data);
+		prn_string("major =");prn_dword0(rd_data);
 		prn_string("\n");
-		switch (rd_data & 0xff) {
+		switch (rd_data & 0xffff) {
 			case 0x00:
 				prn_string("End of initialization.");
 				prn_string("\n");
@@ -1084,8 +1104,8 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				prn_string("\n");
 				break;
 			case 0x08:
-				//prn_string("Start streaming message mode.");
-				//prn_string("\n");
+				prn_string("Start streaming message mode.");
+				prn_string("\n");
                 while(1)
                 {
 					rd_data = dwc_ddrphy_apb_rd(0xd0004);
@@ -1165,18 +1185,161 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				prn_string("\n");
 				return;
 		}
-
-		//dwc_ddrphy_apb_rd(32'hd0031,rd_data);
-		dwc_ddrphy_apb_wr(0xd0031,0);
-		while (1) {
-			rd_data = dwc_ddrphy_apb_rd(0xd0004);
-			if ((rd_data & 0x01) == 1) {
-				break;
-			}
-		}
-		dwc_ddrphy_apb_wr(0xd0031,1);
 	}
 }
+#else
+void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
+{
+ 	UINT32 string_index;
+	UINT16 rd_data, args, i, low_16bit, upper_16bit;
+	UINT8 train_test = 0;
+
+	prn_string("Start to wait for the training firmware to complete v.00 !!!");
+	prn_string("\n");
+	while (train_test == 0) {
+		while (1) {
+			rd_data = dwc_ddrphy_apb_rd(0xd0004);/* When set to 0, the PMU has a message for the user */
+			if ((rd_data & 0x01) == 0) {
+				break;
+			}
+		}	
+
+		low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+		upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+		
+		dwc_ddrphy_apb_wr(0xd0031,0);
+		while(1)
+		{
+		   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+		   if((rd_data & 0x01) == 1)
+			   break;
+		}
+		dwc_ddrphy_apb_wr(0xd0031,1);
+
+		rd_data = (upper_16bit << 16) | low_16bit;
+		//prn_string("major =");prn_dword0(rd_data);
+		//prn_string("\n");
+		switch (rd_data & 0xffff) {
+			case 0x00:
+				//train_test = 1;
+				prn_string("End of initialization.");
+				prn_string("\n");
+				break;
+			case 0x01:
+				prn_string("End of fine write leveling.");
+				prn_string("\n");
+				break;
+			case 0x02:
+				prn_string("End of read enable training.");
+				prn_string("\n");
+				break;
+			case 0x03:
+				prn_string("End of read delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0x04:
+				prn_string("End of write delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0x05:
+				prn_string("End of 2D read delay/voltage center optimization.");
+				prn_string("\n");
+				break;
+			case 0x06:
+				prn_string("End of 2D write delay/voltage center optimization.");
+				prn_string("\n");
+				break;
+			case 0x07:
+				train_test = 1;
+				prn_string("Training has run successfully.(firmware complete)");
+				prn_string("\n");
+				break;
+			case 0x08:
+				//prn_string("Start streaming message mode.");
+				//prn_string("\n");
+                while(1)
+                {
+					rd_data = dwc_ddrphy_apb_rd(0xd0004);
+					if((rd_data & 0x01) == 0)
+						break;
+				}
+
+				low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+				upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+				
+				dwc_ddrphy_apb_wr(0xd0031,0);
+				while(1)
+				{
+				   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+				   if((rd_data & 0x01) == 1)
+					   break;
+				}
+				dwc_ddrphy_apb_wr(0xd0031,1);
+
+				string_index = (upper_16bit << 16) | low_16bit;
+				//prn_string("string_index=");prn_dword0(string_index);
+				//prn_string("\n");
+				args = low_16bit & 0xffff;
+				for(i = 0; i < args; i++) {
+					while(1)
+	                {
+						rd_data = dwc_ddrphy_apb_rd(0xd0004);
+						if((rd_data & 0x01) == 0)
+							break;
+					}
+					low_16bit = dwc_ddrphy_apb_rd(0xd0032);/* Used to pass the lower 16 bits for streaming messages. */
+					upper_16bit = dwc_ddrphy_apb_rd(0xd0034);/* Used to pass the upper 16 bits for streaming messages. */
+				
+					dwc_ddrphy_apb_wr(0xd0031,0);
+					while(1)
+					{
+					   rd_data = dwc_ddrphy_apb_rd(0xd0004);
+					   if((rd_data & 0x01) == 1)
+						   break;
+					}
+					dwc_ddrphy_apb_wr(0xd0031,1);
+					string_index = (upper_16bit << 16) | low_16bit;
+					//prn_string("args=");prn_dword0(low_16bit);
+					//prn_string("\n");
+				}
+				break;
+			case 0x09:
+				prn_string("End of max read latency training.");
+				prn_string("\n");
+				break;
+			case 0x0a:
+				prn_string("End of read dq deskew training.");
+				prn_string("\n");
+				break;
+			case 0x0b:
+				prn_string("Reserved.");
+				prn_string("\n");
+				break;
+			case 0x0c:
+				prn_string("End of all DB training(MREP/DWL/MRD/MWD complete).");
+				prn_string("\n");
+				break;
+			case 0x0d:
+				prn_string("End of CA training.");
+				prn_string("\n");
+				break;
+			case 0xfd:
+				prn_string("End of MPR read delay center optimization.");
+				prn_string("\n");
+				break;
+			case 0xfe:
+				prn_string("End of Wrtie leveling coarse delay.");
+				prn_string("\n");
+				break;
+			case 0xff:
+				prn_string("Training has failed.(firmware complete)");
+				prn_string("\n");
+				return;
+		}
+	}
+}
+
+#endif 
 #endif 
 
 void run_customPostTrain()

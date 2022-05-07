@@ -929,12 +929,12 @@ void dwc_ddrphy_phyinit_main(void)
 	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
 	//#include <dwc_devinit_skiptrain_zebu.txt>
 	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
-	prn_string("dwc_ddrphy_phyinit_main ver.22\n");
+	prn_string("dwc_ddrphy_phyinit_main ver.23\n");
 	mp = 1;
-    #include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_200MHz_SDRAM_400MHz.txt> 
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_400MHz_SIPI.txt>
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL_800MHz_SIPI.txt>
-	
+	#if 1 
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_RANK2\n"); //training pass
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_RANK2.txt>
+	#endif 	
 	//runtimeConfig.RetEn = 1;
 	//dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
 	//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
@@ -1048,7 +1048,7 @@ int dram_init(unsigned int dram_id)
 			prn_string(" ***\n");
 		}
 
-		prn_string("lpddr4_training_OK\n");
+		prn_string("dram_init_end\n");
 		//dwc_ddrphy_phyinit_saveRetention();
 		return SUCCESS;
 	} // end of for loop :: loop_time for initial & training time control
