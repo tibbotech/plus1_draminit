@@ -246,7 +246,7 @@ ctl_apb_wr(0x030, 0x00000020);
 #endif 
 
 
-#ifdef SDRAM_SPEED_667   //666 MHz 
+#ifdef SDRAM_SPEED_666   //666 MHz 
 ctl_apb_wr(0x304, 0x00000001);
 ctl_apb_wr(0x030, 0x00000001);
 //ctl_apb_rd(0x004, 0x00000000);
@@ -805,8 +805,8 @@ ctl_apb_rd(0x0ec);
 ctl_apb_rd(0x0d0);
 #endif 
 
-#ifdef SDRAM_SPEED_667   //666 MHz 
-prn_string("SDRAM_SPEED_667"); 
+#ifdef SDRAM_SPEED_666   //666 MHz 
+prn_string("SDRAM_SPEED_666"); 
 prn_string("\n");
 
 ctl_apb_wr(0x304, 0x00000000);

@@ -1,5 +1,6 @@
 //#define SDRAM_SPEED_1600 //PLL 800MHz
 #define SDRAM_SPEED_800 //PLL 400MHz
+//#define SDRAM_SPEED_666 //PLL 333MHz
 //#define SDRAM_SPEED_400 //PLL 200MHz
 
 // Add for New UMCTL2
