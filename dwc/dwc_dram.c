@@ -949,8 +949,8 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif 
 
 	#ifdef SDRAM_SPEED_800	 //800 MHz training pass
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_RANK2\n"); //training pass
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_RANK2.txt>
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS\n"); //training pass
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_1600	
