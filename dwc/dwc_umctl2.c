@@ -155,7 +155,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x038, 0x00330002);
 	ctl_apb_wr(0x050, 0x90210001);
 	ctl_apb_wr(0x054, 0x00150027);
-	ctl_apb_wr(0x060, 0x00000001);
+	ctl_apb_wr(0x060, 0x00000000);
 	ctl_apb_wr(0x064, 0x00300098);
 	ctl_apb_wr(0x068, 0x00240000);
 	ctl_apb_wr(0x0c0, 0x00000000);
@@ -264,7 +264,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x038, 0x004e0000);
 	ctl_apb_wr(0x050, 0x00210000);
 	ctl_apb_wr(0x054, 0x000e0037);
-	ctl_apb_wr(0x060, 0x00000001);
+	ctl_apb_wr(0x060, 0x00000000);
 	ctl_apb_wr(0x064, 0x005180fe);
 	ctl_apb_wr(0x068, 0x003c0000);
 	ctl_apb_wr(0x0c0, 0x00000000);
@@ -375,7 +375,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x038, 0x00330002);
 	ctl_apb_wr(0x050, 0x90210001);
 	ctl_apb_wr(0x054, 0x00150027);
-	ctl_apb_wr(0x060, 0x00000001);
+	ctl_apb_wr(0x060, 0x00000000);
 	ctl_apb_wr(0x064, 0x00300098);
 	ctl_apb_wr(0x068, 0x00240000);
 	ctl_apb_wr(0x0c0, 0x00000000);
