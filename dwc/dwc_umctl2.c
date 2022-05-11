@@ -128,13 +128,10 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	//RESET:<core_ddrc_rstn> DEASSERTED
 #endif
 
-//#ifdef SDRAM_SPEED_800   //800 MHz training pass
-#if defined(SDRAM_SPEED_800) || defined(SDRAM_SPEED_666)
-
+#ifdef SDRAM_SPEED_800   //800 MHz training pass
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
 	ctl_apb_rd(0x004);
-
 	ctl_apb_wr(0x000, 0x83080020);
 	ctl_apb_wr(0x010, 0x40003030);
 	ctl_apb_wr(0x014, 0x00008043);
@@ -220,7 +217,6 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x36c, 0x00100000);
 	ctl_apb_wr(0x490, 0x00000001);
 	ctl_apb_rd(0x060);
-
 	ctl_apb_wr(0x400, 0x00000000);
 	ctl_apb_wr(0x404, 0x0000000f);
 	ctl_apb_wr(0x404, 0x0000100f);
@@ -231,17 +227,14 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x408, 0x0000500f);
 	ctl_apb_wr(0x408, 0x0000100f);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
 #endif
 
 
-#if 0 //def SDRAM_SPEED_666   //666 MHz
+#ifdef SDRAM_SPEED_666   //666 MHz
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
-	//ctl_apb_rd(0x004, 0x00000000);
 	ctl_apb_rd(0x004);
-
 	ctl_apb_wr(0x000, 0x83080020);
 	ctl_apb_wr(0x010, 0x40003030);
 	ctl_apb_wr(0x014, 0x00008043);
@@ -288,9 +281,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x180, 0xd29b0014);
 	ctl_apb_wr(0x184, 0x022b282b);
 	ctl_apb_wr(0x188, 0x00000000);
-	ctl_apb_wr(0x190, 0x03938208); //tonyh test
-	//ctl_apb_wr(0x190, 0x03948208);//tonyh test
-	//ctl_apb_wr(0x190, 0x03938508);//tonyh test
+	ctl_apb_wr(0x190, 0x03898204);
 	ctl_apb_wr(0x194, 0x00090202);
 	ctl_apb_wr(0x198, 0x07513011);
 	ctl_apb_wr(0x19c, 0x00000071);
@@ -328,9 +319,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x328, 0x00000000);
 	ctl_apb_wr(0x36c, 0x00100000);
 	ctl_apb_wr(0x490, 0x00000001);
-	//ctl_apb_rd(0x060, 0x00000001);
 	ctl_apb_rd(0x060);
-
 	ctl_apb_wr(0x400, 0x00000000);
 	ctl_apb_wr(0x404, 0x0000000f);
 	ctl_apb_wr(0x404, 0x0000100f);
@@ -340,9 +329,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x408, 0x0000500f);
 	ctl_apb_wr(0x408, 0x0000500f);
 	ctl_apb_wr(0x408, 0x0000100f);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
 
 #endif
@@ -402,16 +389,9 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
 #endif
 
-//#ifdef SDRAM_SPEED_800   //800 MHz training pass
-#if defined(SDRAM_SPEED_800) || defined(SDRAM_SPEED_666)
-#if defined(SDRAM_SPEED_800)
+#ifdef SDRAM_SPEED_800   //800 MHz training pass
 	prn_string("SDRAM_SPEED_800");
 	prn_string("\n");
-#endif
-#if defined(SDRAM_SPEED_666)
-	prn_string("SDRAM_SPEED_666");
-	prn_string("\n");		
-#endif 
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
@@ -442,7 +422,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0d0);
 #endif
 
-#if 0 //def SDRAM_SPEED_666   //666 MHz
+#ifdef SDRAM_SPEED_666   //666 MHz
 	prn_string("SDRAM_SPEED_666");
 	prn_string("\n");
 	ctl_apb_wr(0x304, 0x00000000);
@@ -497,7 +477,9 @@ void polling_sw_cfg_done()
 
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
+	#if STREAM_MESSAGE
  	UINT32 string_index;
+	#endif
 	UINT16 rd_data, args, i, low_16bit, upper_16bit;
 	UINT8 train_test = 0;
 
@@ -587,8 +569,8 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				}
 				dwc_ddrphy_apb_wr(0xd0031,1);
 
-				string_index = (upper_16bit << 16) | low_16bit;
 				#if STREAM_MESSAGE
+				string_index = (upper_16bit << 16) | low_16bit;
 				prn_string("string_index=");prn_dword0(string_index);
 				prn_string("\n");
 				#endif
@@ -611,8 +593,8 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 						   break;
 					}
 					dwc_ddrphy_apb_wr(0xd0031,1);
-					string_index = (upper_16bit << 16) | low_16bit;
 					#if STREAM_MESSAGE
+					string_index = (upper_16bit << 16) | low_16bit;
 					prn_string("args=");prn_dword0(low_16bit);
 					prn_string("\n");
 					#endif

@@ -943,22 +943,23 @@ void dwc_ddrphy_phyinit_main(void)
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL200_SDRAM400_RANK2.txt>
 	#endif 
 
-	#ifdef SDRAM_SPEED_666 
+	#ifdef SDRAM_SPEED_666
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS.txt>
 	#endif 
 
 	#ifdef SDRAM_SPEED_800	 //800 MHz training pass
-	#if 0 //1d
+	#if 0 //1D_TRAINING
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS\n"); //training pass
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS.txt>
-	#else //1d2d
+	#endif
+	#if 1 //1D2D_TRAINING
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
-	#endif 
+	#endif
 	#endif
 
-	#ifdef SDRAM_SPEED_1600	
+	#ifdef SDRAM_SPEED_1600
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_RANK2\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_RANK2.txt>
 	#endif
