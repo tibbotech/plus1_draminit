@@ -12,26 +12,18 @@ static volatile struct umctl2_regs *umctl2_reg_ptr = (volatile struct umctl2_reg
 
 void ctl_apb_wr(UINT32 adr, UINT32 dat)
 {
-	//dwc_ddrphy_phyinit_print ("ctl_apb_wr(12'h%x, 32'h%x);\n", adr, dat);
 	UMCTL2_REG(adr) = dat;
 }
 int ctl_apb_rd(UINT32 adr)
 {
 	UINT16 value;
-	//dwc_ddrphy_phyinit_print ("ctl_apb_rd(12'h%x, rd_data);\n", adr);
 	value = UMCTL2_REG(adr);
 	return value;
 }
 
 int dwc_umctl2_init_before_ctl_rst(void)
 {
-	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_before_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_before_ctl_rst\n");
-	//RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)
-	//RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)
-	//RESET:<presetn> ASSERTED (ACTIVE LOW)
-	//RESET:<presetn> DEASSERTED
-
 #if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333)
  	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
@@ -136,11 +128,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	//RESET:<core_ddrc_rstn> DEASSERTED
 #endif
 
-#ifdef SDRAM_SPEED_800   //800 MHz training pass
+//#ifdef SDRAM_SPEED_800   //800 MHz training pass
+#if defined(SDRAM_SPEED_800) || defined(SDRAM_SPEED_666)
 
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
-	//ctl_apb_rd(0x004, 0x00000000);
 	ctl_apb_rd(0x004);
 
 	ctl_apb_wr(0x000, 0x83080020);
@@ -227,7 +219,6 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x328, 0x00000000);
 	ctl_apb_wr(0x36c, 0x00100000);
 	ctl_apb_wr(0x490, 0x00000001);
-	//ctl_apb_rd(0x060, 0x00000001);
 	ctl_apb_rd(0x060);
 
 	ctl_apb_wr(0x400, 0x00000000);
@@ -239,14 +230,13 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x408, 0x0000500f);
 	ctl_apb_wr(0x408, 0x0000500f);
 	ctl_apb_wr(0x408, 0x0000100f);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
 
 	ctl_apb_wr(0x030, 0x00000020);
 #endif
 
 
-#ifdef SDRAM_SPEED_666   //666 MHz
+#if 0 //def SDRAM_SPEED_666   //666 MHz
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
 	//ctl_apb_rd(0x004, 0x00000000);
@@ -356,323 +346,6 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x030, 0x00000020);
 
 #endif
-
-#ifdef SDRAM_SPEED_400   //400 MHz
-	ctl_apb_wr(0x304, 0x00000001);
-	ctl_apb_wr(0x030, 0x00000001);
-	//ctl_apb_rd(0x004, 0x00000000);
-	ctl_apb_rd(0x004);
-
-	ctl_apb_wr(0x000, 0x83080020);
-	ctl_apb_wr(0x010, 0x40003030);
-	ctl_apb_wr(0x014, 0x00008043);
-	ctl_apb_wr(0x01c, 0x9a361bcc);
-	ctl_apb_wr(0x020, 0x00000100);
-	ctl_apb_wr(0x024, 0x0c3a97b5);
-	ctl_apb_wr(0x02c, 0x00000000);
-	ctl_apb_wr(0x030, 0x00000020);
-	ctl_apb_wr(0x034, 0x00403904);
-	ctl_apb_wr(0x038, 0x00330002);
-	ctl_apb_wr(0x050, 0x90210001);
-	ctl_apb_wr(0x054, 0x00150027);
-	ctl_apb_wr(0x060, 0x00000000);
-	ctl_apb_wr(0x064, 0x00300098);
-	ctl_apb_wr(0x068, 0x00240000);
-	ctl_apb_wr(0x0c0, 0x00000000);
-	ctl_apb_wr(0x0c4, 0x00000000);
-	ctl_apb_wr(0x0d0, 0xc0020002);
-	ctl_apb_wr(0x0d4, 0x00010002);
-	ctl_apb_wr(0x0d8, 0x00000d00);
-	ctl_apb_wr(0x0dc, 0x00240012);
-	ctl_apb_wr(0x0e0, 0x00310008);
-	ctl_apb_wr(0x0e4, 0x00030005);
-	ctl_apb_wr(0x0e8, 0x0000004d);
-	ctl_apb_wr(0x0ec, 0x0000004d);
-	ctl_apb_wr(0x0f0, 0x00000000);
-	ctl_apb_wr(0x0f4, 0x0000032f);
-	ctl_apb_wr(0x100, 0x11100d11);
-	ctl_apb_wr(0x104, 0x00030418);
-	ctl_apb_wr(0x108, 0x04070a0d);
-	ctl_apb_wr(0x10c, 0x00606006);
-	ctl_apb_wr(0x110, 0x08040408);
-	ctl_apb_wr(0x114, 0x02030606);
-	ctl_apb_wr(0x118, 0x01010004);
-	ctl_apb_wr(0x11c, 0x00000302);
-	ctl_apb_wr(0x120, 0x01010101);
-	ctl_apb_wr(0x124, 0x00000008);
-	ctl_apb_wr(0x128, 0x00030400);
-	ctl_apb_wr(0x12c, 0x0101001d);
-	ctl_apb_wr(0x130, 0x00020000);
-	ctl_apb_wr(0x134, 0x0a100002);
-	ctl_apb_wr(0x138, 0x0000009b);
-	ctl_apb_wr(0x13c, 0x80000000);
-	ctl_apb_wr(0x180, 0xc190000c);
-	ctl_apb_wr(0x184, 0x0143206e);
-	ctl_apb_wr(0x188, 0x00000000);
-	ctl_apb_wr(0x190, 0x03898204);
-	ctl_apb_wr(0x194, 0x00090202);
-	ctl_apb_wr(0x198, 0x0771a021);
-	ctl_apb_wr(0x19c, 0x00000021);
-	ctl_apb_wr(0x1a0, 0x80400018);
-	ctl_apb_wr(0x1a4, 0x00b800d1);
-	ctl_apb_wr(0x1a8, 0x00000000);
-	ctl_apb_wr(0x1b0, 0x00000041);
-	ctl_apb_wr(0x1b4, 0x00000904);
-	ctl_apb_wr(0x1b8, 0x00000008);
-	ctl_apb_wr(0x1c0, 0x00000000);
-	ctl_apb_wr(0x1c4, 0xcf000000);
-	ctl_apb_wr(0x200, 0x00000018);
-	ctl_apb_wr(0x204, 0x00080808);
-	ctl_apb_wr(0x208, 0x00000000);
-	ctl_apb_wr(0x20c, 0x00000000);
-	ctl_apb_wr(0x210, 0x00001f1f);
-	ctl_apb_wr(0x214, 0x070f0707);
-	ctl_apb_wr(0x218, 0x07070707);
-	ctl_apb_wr(0x21c, 0x00000f07);
-	ctl_apb_wr(0x220, 0x00000000);
-	ctl_apb_wr(0x224, 0x07070707);
-	ctl_apb_wr(0x228, 0x07070707);
-	ctl_apb_wr(0x22c, 0x00000007);
-	ctl_apb_wr(0x240, 0x06050714);
-	ctl_apb_wr(0x244, 0x00000000);
-	ctl_apb_wr(0x250, 0x00f53f00);
-	ctl_apb_wr(0x254, 0x00000000);
-	ctl_apb_wr(0x25c, 0x0f000001);
-	ctl_apb_wr(0x264, 0x0f00007f);
-	ctl_apb_wr(0x26c, 0x0f00007f);
-	ctl_apb_wr(0x300, 0x00000000);
-	ctl_apb_wr(0x304, 0x00000000);
-	ctl_apb_wr(0x30c, 0x00000000);
-	ctl_apb_wr(0x320, 0x00000001);
-	ctl_apb_wr(0x328, 0x00000000);
-	ctl_apb_wr(0x36c, 0x00100000);
-	ctl_apb_wr(0x490, 0x00000001);
-	//ctl_apb_rd(0x060, 0x00000001);
-	ctl_apb_rd(0x060);
-
-	ctl_apb_wr(0x400, 0x00000000);
-	ctl_apb_wr(0x404, 0x0000000f);
-	ctl_apb_wr(0x404, 0x0000100f);
-	ctl_apb_wr(0x404, 0x0000100f);
-	ctl_apb_wr(0x404, 0x0000100f);
-	ctl_apb_wr(0x408, 0x0000400f);
-	ctl_apb_wr(0x408, 0x0000500f);
-	ctl_apb_wr(0x408, 0x0000500f);
-	ctl_apb_wr(0x408, 0x0000100f);
-	//ctl_apb_rd(0x030, 0x00000020);
-	ctl_apb_rd(0x030);
-
-	ctl_apb_wr(0x030, 0x00000020);
-#endif
-
-#if 0
-	prn_string("RESET:<aresetn> for Port 0 ASSERTED (ACTIVE LOW)");
-	prn_string("\n");
-	prn_string("RESET:<core_ddrc_rstn> ASSERTED (ACTIVE LOW)");
-	prn_string("\n");
-	prn_string("RESET:<presetn> ASSERTED (ACTIVE LOW)");
-	prn_string("\n");
-	prn_string("RESET:<presetn> DEASSERTED");
-	prn_string("\n");
-	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_1));
-	prn_string("\n");
-	prn_string("0x0030=");prn_dword0(UMCTL2_30(UMCTL2_30_1));
-	prn_string("\n");
-	//UMCTL2_REG(0x0004);
-	prn_string("0x0000=");prn_dword0(UMCTL2_0);
-	prn_string("\n");
-	prn_string("0x0010=");prn_dword0(UMCTL2_10);
-	prn_string("\n");
-	prn_string("0x0014=");prn_dword0(UMCTL2_14);
-	prn_string("\n");
-	prn_string("0x001c=");prn_dword0(UMCTL2_1C);
-	prn_string("\n");
-	prn_string("0x0020=");prn_dword0(UMCTL2_20);
-	prn_string("\n");
-	prn_string("0x0024=");prn_dword0(UMCTL2_24);
-	prn_string("\n");
-	prn_string("0x002C=");prn_dword0(UMCTL2_2C);
-	prn_string("\n");
-	prn_string("0x0030=");prn_dword0(UMCTL2_30(UMCTL2_30_2));
-	prn_string("\n");
-	prn_string("0x0034=");prn_dword0(UMCTL2_34);
-	prn_string("\n");
-	prn_string("0x0038=");prn_dword0(UMCTL2_38);
-	prn_string("\n");
-	prn_string("0x0050=");prn_dword0(UMCTL2_50);
-	prn_string("\n");
-	prn_string("0x0054=");prn_dword0(UMCTL2_54);
-	prn_string("\n");
-	prn_string("0x0060=");prn_dword0(UMCTL2_60);
-	prn_string("\n");
-	prn_string("0x0064=");prn_dword0(UMCTL2_64);
-	prn_string("\n");
-	prn_string("0x0068=");prn_dword0(UMCTL2_68);
-	prn_string("\n");
-	prn_string("0x00C0=");prn_dword0(UMCTL2_C0);
-	prn_string("\n");
-	prn_string("0x00C4=");prn_dword0(UMCTL2_C4(UMCTL2_C4_1));
-	prn_string("\n");
-	prn_string("0x00D0=");prn_dword0(UMCTL2_D0);
-	prn_string("\n");
-	prn_string("0x00D4=");prn_dword0(UMCTL2_D4);
-	prn_string("\n");
-	prn_string("0x00D8=");prn_dword0(UMCTL2_D8);
-	prn_string("\n");
-	prn_string("0x00DC=");prn_dword0(UMCTL2_DC);
-	prn_string("\n");
-	prn_string("0x00E0=");prn_dword0(UMCTL2_E0);
-	prn_string("\n");
-	prn_string("0x00E4=");prn_dword0(UMCTL2_E4);
-	prn_string("\n");
-	prn_string("0x00E8=");prn_dword0(UMCTL2_E8);
-	prn_string("\n");
-	prn_string("0x00EC=");prn_dword0(UMCTL2_EC);
-	prn_string("\n");
-	prn_string("0x00F0=");prn_dword0(UMCTL2_F0);
-	prn_string("\n");
-	prn_string("0x00F4=");prn_dword0(UMCTL2_F4);
-	prn_string("\n");
-	prn_string("0x0100=");prn_dword0(UMCTL2_100);
-	prn_string("\n");
-	prn_string("0x0104=");prn_dword0(UMCTL2_104);
-	prn_string("\n");
-	prn_string("0x0108=");prn_dword0(UMCTL2_108);
-	prn_string("\n");
-	prn_string("0x010C=");prn_dword0(UMCTL2_10C);
-	prn_string("\n");
-	prn_string("0x0110=");prn_dword0(UMCTL2_110);
-	prn_string("\n");
-	prn_string("0x0114=");prn_dword0(UMCTL2_114);
-	prn_string("\n");
-	prn_string("0x0118=");prn_dword0(UMCTL2_118);
-	prn_string("\n");
-	prn_string("0x011C=");prn_dword0(UMCTL2_11C);
-	prn_string("\n");
-	prn_string("0x0120=");prn_dword0(UMCTL2_120);
-	prn_string("\n");
-	prn_string("0x0124=");prn_dword0(UMCTL2_124);
-	prn_string("\n");
-	prn_string("0x0128=");prn_dword0(UMCTL2_128);
-	prn_string("\n");
-	prn_string("0x012C=");prn_dword0(UMCTL2_12C);
-	prn_string("\n");
-	prn_string("0x0130=");prn_dword0(UMCTL2_130);
-	prn_string("\n");
-	prn_string("0x0134=");prn_dword0(UMCTL2_134);
-	prn_string("\n");
-	prn_string("0x0138=");prn_dword0(UMCTL2_138);
-	prn_string("\n");
-	prn_string("0x013C=");prn_dword0(UMCTL2_13C);
-	prn_string("\n");
-	prn_string("0x0180=");prn_dword0(UMCTL2_180);
-	prn_string("\n");
-	prn_string("0x0184=");prn_dword0(UMCTL2_184);
-	prn_string("\n");
-	prn_string("0x0188=");prn_dword0(UMCTL2_188);
-	prn_string("\n");
-	prn_string("0x0190=");prn_dword0(UMCTL2_190);
-	prn_string("\n");
-	prn_string("0x0194=");prn_dword0(UMCTL2_194);
-	prn_string("\n");
-	prn_string("0x0198=");prn_dword0(UMCTL2_198);
-	prn_string("\n");
-	prn_string("0x019C=");prn_dword0(UMCTL2_19C);
-	prn_string("\n");
-	prn_string("0x01A0=");prn_dword0(UMCTL2_1A0);
-	prn_string("\n");
-	prn_string("0x01A4=");prn_dword0(UMCTL2_1A4);
-	prn_string("\n");
-	prn_string("0x01A8=");prn_dword0(UMCTL2_1A8);
-	prn_string("\n");
-	prn_string("0x01B0=");prn_dword0(UMCTL2_1B0(UMCTL2_1B0_1));
-	prn_string("\n");
-	prn_string("0x01B4=");prn_dword0(UMCTL2_1B4);
-	prn_string("\n");
-	prn_string("0x01B8=");prn_dword0(UMCTL2_1B8);
-	prn_string("\n");
-	prn_string("0x01C0=");prn_dword0(UMCTL2_1C0);
-	prn_string("\n");
-	prn_string("0x01C4=");prn_dword0(UMCTL2_1C4(UMCTL2_1C4_1));
-	prn_string("\n");
-	prn_string("0x0200=");prn_dword0(UMCTL2_200);
-	prn_string("\n");
-	prn_string("0x0204=");prn_dword0(UMCTL2_204);
-	prn_string("\n");
-	prn_string("0x0208=");prn_dword0(UMCTL2_208);
-	prn_string("\n");
-	prn_string("0x020C=");prn_dword0(UMCTL2_20C);
-	prn_string("\n");
-	prn_string("0x0210=");prn_dword0(UMCTL2_210);
-	prn_string("\n");
-	prn_string("0x0214=");prn_dword0(UMCTL2_214);
-	prn_string("\n");
-	prn_string("0x0218=");prn_dword0(UMCTL2_218);
-	prn_string("\n");
-	prn_string("0x021C=");prn_dword0(UMCTL2_21C);
-	prn_string("\n");
-	prn_string("0x0220=");prn_dword0(UMCTL2_220);
-	prn_string("\n");
-	prn_string("0x0224=");prn_dword0(UMCTL2_224);
-	prn_string("\n");
-	prn_string("0x0228=");prn_dword0(UMCTL2_228);
-	prn_string("\n");
-	prn_string("0x022C=");prn_dword0(UMCTL2_22C);
-	prn_string("\n");
-	prn_string("0x0240=");prn_dword0(UMCTL2_240);
-	prn_string("\n");
-	prn_string("0x0244=");prn_dword0(UMCTL2_244);
-	prn_string("\n");
-	prn_string("0x0250=");prn_dword0(UMCTL2_250);
-	prn_string("\n");
-	prn_string("0x0254=");prn_dword0(UMCTL2_254);
-	prn_string("\n");
-	prn_string("0x025C=");prn_dword0(UMCTL2_25C);
-	prn_string("\n");
-	prn_string("0x0264=");prn_dword0(UMCTL2_264);
-	prn_string("\n");
-	prn_string("0x026C=");prn_dword0(UMCTL2_26C);
-	prn_string("\n");
-	prn_string("0x0300=");prn_dword0(UMCTL2_300);
-	prn_string("\n");
-	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_2));
-	prn_string("\n");
-	prn_string("0x030C=");prn_dword0(UMCTL2_30C);
-	prn_string("\n");
-	prn_string("0x0320=");prn_dword0(UMCTL2_320(UMCTL2_320_1));
-	prn_string("\n");
-	prn_string("0x0328=");prn_dword0(UMCTL2_328);
-	prn_string("\n");
-	prn_string("0x036c=");prn_dword0(UMCTL2_36C);
-	prn_string("\n");
-	prn_string("0x0400=");prn_dword0(UMCTL2_400);
-	prn_string("\n");
-	prn_string("0x0404=");prn_dword0(UMCTL2_404);
-	prn_string("\n");
-	prn_string("0x0408=");prn_dword0(UMCTL2_408(UMCTL2_408_4));
-	prn_string("\n");
-	prn_string("0x0490=");prn_dword0(UMCTL2_490);
-	prn_string("\n");
-	prn_string("0x0494=");prn_dword0(UMCTL2_494);
-	prn_string("\n");
-	prn_string("0x0498=");prn_dword0(UMCTL2_498);
-	prn_string("\n");
-	prn_string("0x049c=");prn_dword0(UMCTL2_49C);
-	prn_string("\n");
-	prn_string("0x04a0=");prn_dword0(UMCTL2_4A0);
-	prn_string("\n");
-	prn_string("READ 0x0060");
-	prn_string("\n");
-	prn_string("READ 0x0030");
-	prn_string("\n");
-	prn_string("0x0030=");prn_dword0(UMCTL2_30(UMCTL2_30_2));
-	prn_string("\n");
-	prn_string("RESET:<aresetn> for Port 0 DEASSERTED");
-	prn_string("\n");
-	prn_string("RESET:<core_ddrc_rstn> DEASSERTED");
-	prn_string("\n");
-#endif
-	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_before_ctl_rst\n");
 	//prn_string ("End of dwc_umctl2_init_before_ctl_rst\n");
 	return 0;
 }
@@ -680,7 +353,6 @@ int dwc_umctl2_init_before_ctl_rst(void)
 
 int dwc_umctl2_init_after_ctl_rst(void)
 {
-	//dwc_ddrphy_phyinit_print ("//Start of dwc_umctl2_init_after_ctl_rst\n");
 	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
 #if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333) //1333MHz or 1600MHz
 
@@ -692,7 +364,6 @@ int dwc_umctl2_init_after_ctl_rst(void)
 		prn_string("SDRAM_SPEED_1333");
 		prn_string("\n");
 #endif
-
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
@@ -731,248 +402,81 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
 #endif
 
-#ifdef SDRAM_SPEED_800   //800 MHz training pass
+//#ifdef SDRAM_SPEED_800   //800 MHz training pass
+#if defined(SDRAM_SPEED_800) || defined(SDRAM_SPEED_666)
+#if defined(SDRAM_SPEED_800)
 	prn_string("SDRAM_SPEED_800");
 	prn_string("\n");
+#endif
+#if defined(SDRAM_SPEED_666)
+	prn_string("SDRAM_SPEED_666");
+	prn_string("\n");		
+#endif 
 	ctl_apb_wr(0x304, 0x00000000);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x1c4, 0xcf000000);
 	ctl_apb_rd(0x1c4);
-
 	ctl_apb_wr(0x1c4, 0xcf000000);
 	ctl_apb_wr(0x320, 0x00000000);
 	ctl_apb_wr(0x1b0, 0x00000040);
 	ctl_apb_wr(0x1b0, 0x00000040);
 	ctl_apb_wr(0x304, 0x00000002);
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
 	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
 	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00240012);
 	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
 	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
 	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
 	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
 	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00240012);
 	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
 	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
 	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
 #endif
 
-#ifdef SDRAM_SPEED_666   //666 MHz
+#if 0 //def SDRAM_SPEED_666   //666 MHz
 	prn_string("SDRAM_SPEED_666");
 	prn_string("\n");
 	ctl_apb_wr(0x304, 0x00000000);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x030, 0x00000020);
 	ctl_apb_rd(0x030);
-
 	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x1c4, 0x00000000);
 	ctl_apb_rd(0x1c4);
-
 	ctl_apb_wr(0x1c4, 0x00000000);
 	ctl_apb_wr(0x320, 0x00000000);
 	ctl_apb_wr(0x1b0, 0x00000040);
 	ctl_apb_wr(0x1b0, 0x00000040);
 	ctl_apb_wr(0x304, 0x00000002);
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
 	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
 	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00440024);
 	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
 	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
 	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
 	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
 	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00440024);
 	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
 	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
 	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
 	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
 	ctl_apb_rd(0x0d0);
 #endif
 
 
-#ifdef SDRAM_SPEED_400   //400 MHz
-	prn_string("SDRAM_SPEED_400");
-	prn_string("\n");
-	ctl_apb_wr(0x304, 0x00000000);
-	//ctl_apb_rd(0x030, 0x00000020);
-	ctl_apb_rd(0x030);
 
-	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x030, 0x00000020);
-	ctl_apb_rd(0x030);
-
-	ctl_apb_wr(0x030, 0x00000020);
-	//ctl_apb_rd(0x1c4, 0xcf000000);
-	ctl_apb_rd(0x1c4);
-
-	ctl_apb_wr(0x1c4, 0xcf000000);
-	ctl_apb_wr(0x320, 0x00000000);
-	ctl_apb_wr(0x1b0, 0x00000040);
-	ctl_apb_wr(0x1b0, 0x00000040);
-	ctl_apb_wr(0x304, 0x00000002);
-	//ctl_apb_rd(0x0d0, 0xc0020002);
-	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
-	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
-	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00240012);
-	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
-	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
-	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
-	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
-	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
-	ctl_apb_rd(0x0d0);
-
-	//ctl_apb_rd(0x1c0, 0x00000001);
-	ctl_apb_rd(0x1c0);
-
-	//ctl_apb_rd(0x000, 0x83080020);
-	ctl_apb_rd(0x000);
-
-	//ctl_apb_rd(0x0dc, 0x00240012);
-	ctl_apb_rd(0x0dc);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
-	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0e8, 0x0000004d);
-	ctl_apb_rd(0x0e8);
-
-	//ctl_apb_rd(0x0e0, 0x00310008);
-	ctl_apb_rd(0x0e0);
-
-	//ctl_apb_rd(0x0ec, 0x0000004d);
-	ctl_apb_rd(0x0ec);
-
-	//ctl_apb_rd(0x0d0, 0xc0020002);
-	ctl_apb_rd(0x0d0);
-#endif
-
-#if 0
-	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_3));
-	prn_string("\n");
-	prn_string("READ 0x0030");
-	prn_string("\n");
-	prn_string("0x0030=");prn_dword0(UMCTL2_30(UMCTL2_30_3));
-	prn_string("\n");
-	prn_string("READ 0x0030");
-	prn_string("\n");
-	prn_string("0x0030=");prn_dword0(UMCTL2_30(UMCTL2_30_3));
-	prn_string("\n");
-	prn_string("READ 0x01c4");
-	prn_string("\n");
-	prn_string("0x01c4=");prn_dword0(UMCTL2_1C4(UMCTL2_1C4_2));
-	prn_string("\n");
-	prn_string("0x0320=");prn_dword0(UMCTL2_320(UMCTL2_320_2));
-	prn_string("\n");
-	prn_string("0x01B0=");prn_dword0(UMCTL2_1B0(UMCTL2_1B0_2));
-	prn_string("\n");
-	prn_string("0x01B0=");prn_dword0(UMCTL2_1B0(UMCTL2_1B0_2));
-	prn_string("\n");
-	prn_string("0x0304=");prn_dword0(UMCTL2_304(UMCTL2_304_4));
-	prn_string("\n");
-#endif
-	//dwc_ddrphy_phyinit_print ("//End of dwc_umctl2_init_after_ctl_rst\n");
 	//prn_string ("End of dwc_umctl2_init_after_ctl_rst\n");
 	return 0;
 }
@@ -1020,8 +524,10 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 		dwc_ddrphy_apb_wr(0xd0031,1);
 
 		rd_data = (upper_16bit << 16) | low_16bit;
-		//prn_string("major =");prn_dword0(rd_data);
-		//prn_string("\n");
+		#if STREAM_MESSAGE
+		prn_string("major =");prn_dword0(rd_data);
+		prn_string("\n");
+		#endif
 		switch (rd_data & 0xffff) {
 			case 0x00:
 				//train_test = 1;
@@ -1058,9 +564,11 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				prn_string("\n");
 				break;
 			case 0x08:
-				//prn_string("Start streaming message mode.");
-				//prn_string("\n");
-                while(1)
+				#if STREAM_MESSAGE
+				prn_string("Start streaming message mode.");
+				prn_string("\n");
+				#endif
+				while(1)
                 {
 					rd_data = dwc_ddrphy_apb_rd(0xd0004);
 					if((rd_data & 0x01) == 0)
@@ -1080,8 +588,10 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				dwc_ddrphy_apb_wr(0xd0031,1);
 
 				string_index = (upper_16bit << 16) | low_16bit;
-				//prn_string("string_index=");prn_dword0(string_index);
-				//prn_string("\n");
+				#if STREAM_MESSAGE
+				prn_string("string_index=");prn_dword0(string_index);
+				prn_string("\n");
+				#endif
 				args = low_16bit & 0xffff;
 				for(i = 0; i < args; i++) {
 					while(1)
@@ -1102,8 +612,10 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 					}
 					dwc_ddrphy_apb_wr(0xd0031,1);
 					string_index = (upper_16bit << 16) | low_16bit;
-					//prn_string("args=");prn_dword0(low_16bit);
-					//prn_string("\n");
+					#if STREAM_MESSAGE
+					prn_string("args=");prn_dword0(low_16bit);
+					prn_string("\n");
+					#endif
 				}
 				break;
 			case 0x09:
