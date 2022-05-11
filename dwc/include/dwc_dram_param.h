@@ -3,8 +3,8 @@
 #define SDRAM_SPEED_1600 //PLL 800MHz
 #elif defined(PLATFORM_Q645)
 //#define SDRAM_SPEED_1600 //PLL 800MHz
-#define SDRAM_SPEED_800 //PLL 400MHz
-//#define SDRAM_SPEED_666 //PLL 333MHz
+//#define SDRAM_SPEED_800 //PLL 400MHz
+#define SDRAM_SPEED_666 //PLL 333MHz
 #endif
 //#define STREAM_MESSAGE
 
