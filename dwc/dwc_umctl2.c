@@ -477,7 +477,7 @@ void polling_sw_cfg_done()
 
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
-	#if STREAM_MESSAGE
+	#ifdef STREAM_MESSAGE
  	UINT32 string_index;
 	#endif
 	UINT16 rd_data, args, i, low_16bit, upper_16bit;
@@ -506,7 +506,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 		dwc_ddrphy_apb_wr(0xd0031,1);
 
 		rd_data = (upper_16bit << 16) | low_16bit;
-		#if STREAM_MESSAGE
+		#ifdef STREAM_MESSAGE
 		prn_string("major =");prn_dword0(rd_data);
 		prn_string("\n");
 		#endif
@@ -546,7 +546,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				prn_string("\n");
 				break;
 			case 0x08:
-				#if STREAM_MESSAGE
+				#ifdef STREAM_MESSAGE
 				prn_string("Start streaming message mode.");
 				prn_string("\n");
 				#endif
@@ -569,7 +569,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				}
 				dwc_ddrphy_apb_wr(0xd0031,1);
 
-				#if STREAM_MESSAGE
+				#ifdef STREAM_MESSAGE
 				string_index = (upper_16bit << 16) | low_16bit;
 				prn_string("string_index=");prn_dword0(string_index);
 				prn_string("\n");
@@ -593,7 +593,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 						   break;
 					}
 					dwc_ddrphy_apb_wr(0xd0031,1);
-					#if STREAM_MESSAGE
+					#ifdef STREAM_MESSAGE
 					string_index = (upper_16bit << 16) | low_16bit;
 					prn_string("args=");prn_dword0(low_16bit);
 					prn_string("\n");
