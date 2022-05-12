@@ -941,12 +941,18 @@ void dwc_ddrphy_phyinit_main(void)
 	#if SDRAM_SPEED_400
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL200_SDRAM400_RANK2\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL200_SDRAM400_RANK2.txt>
-	#endif 
+	#endif
 
 	#ifdef SDRAM_SPEED_666
+	#if 0
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS.txt>
-	#endif 
+	#endif
+	#if 1
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
+	#endif
+	#endif
 
 	#ifdef SDRAM_SPEED_800	 //800 MHz training pass
 	#if 0 //1D_TRAINING
@@ -1016,7 +1022,7 @@ void startClockResetUmctl2_of_SP(void)
 	wait_loop(1000);
 	SP_REG_AO(4, 28) =0x02000200;
 	wait_loop(1000);
-	
+
 #elif defined(PLATFORM_Q645)
 	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
