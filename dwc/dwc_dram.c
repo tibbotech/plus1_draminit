@@ -290,7 +290,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData)
 {
 	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
-		return ReadSDSector(sectorNo, pageCount, ptrPyldData);
+		return ReadSDSector(lba2sec_for_ISPBOOOT_BIN(sectorNo), pageCount, ptrPyldData);
 #ifdef CONFIG_HAVE_SNPS_USB3_DISK
 	else if (g_bootinfo.bootdev_port == USB3_PORT)
 		return usb_readSector(sectorNo, pageCount, ptrPyldData);
@@ -739,6 +739,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		}
 		else if ((bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 		{
+			fat_read_fat_table(&g_finfo, g_io_buf.usb.sect_buf);
 			ret = fat_read_file(0, &g_finfo, g_io_buf.usb.sect_buf, 0, 32, buf); //for get xboot's sector No
 			if (ret == FAIL) {
 				prn_string("load xboot hdr failed\n");
@@ -759,11 +760,11 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, IMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, IMEM_ADDR);
 			}
 		}
 		else if (Train2D == 1)
@@ -776,11 +777,11 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, IMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, IMEM_ADDR);
 			}
 		}
 		else if (Train2D == 2)
@@ -793,11 +794,11 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, IMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),IMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, IMEM_ADDR);
 			}
 		}
 	}
@@ -844,11 +845,11 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, DMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, DMEM_ADDR);
 			}
 		}
 		else if(Train2D == 1)
@@ -861,11 +862,11 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, DMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, DMEM_ADDR);
 			}
 		}
 		else if(Train2D == 2)
@@ -878,11 +879,11 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0-1),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0-1, DMEM_ADDR);
 			}
 			else
 			{
-				LoadBinCodeForSectorMode(0,(xboot_start_secotr+sectorNo0),DMEM_ADDR);
+				LoadBinCodeForSectorMode(0, sectorNo0, DMEM_ADDR);
 			}
 		}
 	}
