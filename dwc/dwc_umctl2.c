@@ -4,6 +4,8 @@
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
+//#define STREAM_MESSAGE
+
 struct umctl2_regs {
 	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
 };
@@ -631,6 +633,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 			case 0xff:
 				prn_string("Training has failed.(firmware complete)");
 				prn_string("\n");
+				while(1);
 				return;
 		}
 	}
