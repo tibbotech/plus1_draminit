@@ -118,7 +118,12 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0400,UMCTL2_400);//PCCFG
 	ctl_apb_wr(0x0404,UMCTL2_404);//PCFGR_0
 	ctl_apb_wr(0x0408,UMCTL2_408(UMCTL2_408_4));//PCFGW_0
-	ctl_apb_wr(0x0490,UMCTL2_490);//PCTRL_0
+	ctl_apb_wr(0x0490,UMCTL2_490);//PCTRL_0 BUS0
+	#ifdef PLATFORM_SP7350
+	ctl_apb_wr(0x0540,0x00000001);//BUS1
+	ctl_apb_wr(0x05f0,0x00000001);//BUS2
+	ctl_apb_wr(0x06a0,0x00000001);//BUS3
+	#endif
 	ctl_apb_wr(0x0494,UMCTL2_494);//PCFGQOS0_0
 	ctl_apb_wr(0x0498,UMCTL2_498);//PCFGQOS1_0
 	ctl_apb_wr(0x049c,UMCTL2_49C);//PCFGWQOS0_0
