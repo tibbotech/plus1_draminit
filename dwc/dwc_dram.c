@@ -289,15 +289,17 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 
 int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData)
 {
-	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
+	if (bootdevice == EMMC_BOOT)
+		return ReadSDSector(sectorNo+xboot_start_secotr, pageCount, ptrPyldData);
+	else if (bootdevice == SDCARD_ISP)
 		return ReadSDSector(lba2sec_for_training_fw(sectorNo), pageCount, ptrPyldData);
 #ifdef CONFIG_HAVE_SNPS_USB3_DISK
 	else if (g_bootinfo.bootdev_port == USB3_PORT)
-		return usb_readSector(sectorNo, pageCount, ptrPyldData);
+		return usb_readSector(lba2sec_for_training_fw(sectorNo), pageCount, ptrPyldData);
 #endif
 #ifdef CONFIG_HAVE_USB_DISK
 	else if (g_bootinfo.bootdev_port == USB2_PORT)
-		return usb2_readSector(sectorNo, pageCount, ptrPyldData);
+		return usb2_readSector(lba2sec_for_training_fw(sectorNo), pageCount, ptrPyldData);
 #endif
 	else
 		return -1;
@@ -318,8 +320,10 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	last_img_name_array_cnt = 0;
 	last_img_length_array_cnt = 0;
 
-	fat_read_fat_for_training_fw(&g_finfo, g_io_buf.usb.sect_buf, offset);
-	offset = 0;
+	if ((bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP)) {
+		fat_read_fat_for_training_fw(&g_finfo, g_io_buf.usb.sect_buf, offset);
+		offset = 0;
+	}
 
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
