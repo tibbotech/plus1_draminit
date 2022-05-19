@@ -290,7 +290,7 @@ void LoadBinCode(unsigned char Train2D, unsigned int offset, unsigned int MEM_AD
 int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData)
 {
 	if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP))
-		return ReadSDSector(lba2sec_for_ISPBOOOT_BIN(sectorNo), pageCount, ptrPyldData);
+		return ReadSDSector(lba2sec_for_training_fw(sectorNo), pageCount, ptrPyldData);
 #ifdef CONFIG_HAVE_SNPS_USB3_DISK
 	else if (g_bootinfo.bootdev_port == USB3_PORT)
 		return usb_readSector(sectorNo, pageCount, ptrPyldData);
@@ -317,6 +317,9 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	img_sum = 0;
 	last_img_name_array_cnt = 0;
 	last_img_length_array_cnt = 0;
+
+	fat_read_fat_for_training_fw(&g_finfo, g_io_buf.usb.sect_buf, offset);
+	offset = 0;
 
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
@@ -361,7 +364,7 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			img_sum =  mem[j+3];
 			//prn_string("j=");
 			//prn_dword(j);
-			if((j+8-1) > 127) //add header length 8*4=32bytes overlap block size
+			if((j+8) > 127) //add header length 8*4=32bytes overlap block size
 			{
 				i = (j+8-1)-127;//i is counter.
 				for (addr = 0; addr < mem_size; addr++)
@@ -739,7 +742,6 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 		}
 		else if ((bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 		{
-			fat_read_fat_table(&g_finfo, g_io_buf.usb.sect_buf);
 			ret = fat_read_file(0, &g_finfo, g_io_buf.usb.sect_buf, 0, 32, buf); //for get xboot's sector No
 			if (ret == FAIL) {
 				prn_string("load xboot hdr failed\n");
@@ -789,8 +791,8 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32 + DMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			value = total_length % 512;
-			prn_string("sectorNo0="); prn_dword(sectorNo0);
-			prn_string("value="); prn_dword(value);
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
@@ -836,7 +838,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 		int sectorNo0, total_length, value;
 		if (Train2D == 0)
 		{
-			prn_string("IMEM1d_len="); prn_dword(IMEM1d_len);
+			//prn_string("IMEM1d_len="); prn_dword(IMEM1d_len);
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len +32 ; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			value = total_length % 512;
@@ -857,8 +859,8 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			value = total_length % 512;
-			prn_string("sectorNo0="); prn_dword(sectorNo0);
-			prn_string("value="); prn_dword(value);
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
@@ -874,8 +876,8 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			total_length = 32 + XBOOT_len + 32 + IMEM1d_len + 32 + DMEM1d_len + 32 + IMEM2d_len + 32 + DMEM2d_len + 32 + IMDA_len + 32; //xboot header lenght + xboot length + IMEM header length
 			sectorNo0 = total_length / 512;
 			value = total_length % 512;
-			prn_string("sectorNo0="); prn_dword(sectorNo0);
-			prn_string("value="); prn_dword(value);
+			//prn_string("sectorNo0="); prn_dword(sectorNo0);
+			//prn_string("value="); prn_dword(value);
 			if(value < 0x20)
 			{
 				//prn_string("value < 0x20\n");
