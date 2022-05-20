@@ -854,8 +854,14 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			}
 		}
 	}
-#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
-	else if ((bootdevice == SPINAND_BOOT) || (bootdevice == PARA_NAND_BOOT))
+#ifdef CONFIG_HAVE_SPI_NAND
+	else if (bootdevice == SPINAND_BOOT)
+	{
+		LoadMEMForNAND(Train2D, 0);
+	}
+#endif
+#ifdef CONFIG_HAVE_PARA_NAND
+	else if (bootdevice == PARA_NAND_BOOT)
 	{
 		LoadMEMForNAND(Train2D, 0);
 	}
@@ -939,8 +945,14 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			}
 		}
 	}
-#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
-	else if ((bootdevice == SPINAND_BOOT) || (bootdevice == PARA_NAND_BOOT))
+#ifdef CONFIG_HAVE_SPI_NAND
+	else if (bootdevice == SPINAND_BOOT)
+	{
+		LoadMEMForNAND(Train2D, 1);
+	}
+#endif
+#ifdef CONFIG_HAVE_PARA_NAND
+	else if (bootdevice == PARA_NAND_BOOT)
 	{
 		LoadMEMForNAND(Train2D, 1);
 	}
