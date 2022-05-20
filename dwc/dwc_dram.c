@@ -23,7 +23,11 @@
 #define SDCARD_ISP              0x19
 #define SPI_NOR_BOOT            0x17
 #define UART_ISP                0x15
+#ifdef PLATFORM_SP7350
+#define PARA_NAND_BOOT          0x11
+#else
 #define AUTO_SCAN               0x11
+#endif
 #define USB_BOOT                0xfd
 #define SDCARD_BOOT             0xfe
 #define NAND_LARGE_BOOT         0xff
@@ -68,7 +72,7 @@ static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers 
 struct sp_registers_ao {
 	unsigned int sp_register[5][32];
 };
-static volatile struct sp_registers *sp_reg_ptr_AO = (volatile struct sp_registers_ao *)(RF_GRP_AO(0, 0));
+static volatile struct sp_registers_ao *sp_reg_ptr_AO = (volatile struct sp_registers_ao *)(RF_GRP_AO(0, 0));
 #define SP_REG_AO(GROUP, OFFSET)	(sp_reg_ptr_AO->sp_register[GROUP][OFFSET])
 #endif
 
@@ -487,12 +491,12 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 	sum = 0;
 }
 
-#ifdef CONFIG_HAVE_SPI_NAND
+#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
 void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 {
 	u32 read_bytes = 0;
 	int sz_sect = GetNANDPageCount_1K60(g_bootinfo.sys_nand.u16PyldLen) * 1024;
-	int res;
+	int res = 2;
 	u32 mem_addr = 0, mem_offset = 0;
 	u32 img_name = 0, img_length = 0, img_sum = 0;
 	u32 i, j, cnt, word16;
@@ -506,7 +510,15 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 	/* Read first page of BIN file */
 	//prn_string("Read first page\n");
 	prn_string("1st pg_off="); prn_decimal(pg_off); prn_string("\n");
-	res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+	if (bootdevice == SPINAND_BOOT) {
+#ifdef CONFIG_HAVE_SPI_NAND
+		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+#endif
+	} else {// PARA NAND
+#ifdef CONFIG_HAVE_PARA_NAND
+		res = PNANDReadNANDPage_1K60(pg_off, (u32 *)buf, &read_bytes);
+#endif
+	}
 	if (res != ROM_SUCCESS) {
 		prn_string("failed at pg="); prn_dword(pg_off);
 		//break;
@@ -542,7 +554,15 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 				j = j - cnt;
 				pg_off++;
 				//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
-				res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+				if (bootdevice == SPINAND_BOOT) {
+#ifdef CONFIG_HAVE_SPI_NAND
+					res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+#endif
+				} else {// PARA NAND
+#ifdef CONFIG_HAVE_PARA_NAND
+					res = PNANDReadNANDPage_1K60(pg_off, (u32 *)buf, &read_bytes);
+#endif
+				}
 				if (res != ROM_SUCCESS) {
 					prn_string("failed at pg="); prn_dword(pg_off);
 					//break;
@@ -595,7 +615,15 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 	while(img_length > sz_sect) {
 		pg_off++;
 		//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
-		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+		if (bootdevice == SPINAND_BOOT) {
+#ifdef CONFIG_HAVE_SPI_NAND
+			res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+#endif
+		} else {// PARA NAND
+#ifdef CONFIG_HAVE_PARA_NAND
+			res = PNANDReadNANDPage_1K60(pg_off, (u32 *)buf, &read_bytes);
+#endif
+		}
 		if (res != ROM_SUCCESS) {
 			prn_string("failed at pg="); prn_dword(pg_off);
 			//break;
@@ -623,7 +651,15 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 	//prn_string("Read last page\n");
 	pg_off++;
 	//prn_string("pg_off="); prn_decimal(pg_off); prn_string("\n");
-	res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+	if (bootdevice == SPINAND_BOOT) {
+#ifdef CONFIG_HAVE_SPI_NAND
+		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+#endif
+	} else {// PARA NAND
+#ifdef CONFIG_HAVE_PARA_NAND
+		res = PNANDReadNANDPage_1K60(pg_off, (u32 *)buf, &read_bytes);
+#endif
+	}
 	if (res != ROM_SUCCESS) {
 		prn_string("failed at pg="); prn_dword(pg_off);
 		//break;
@@ -655,7 +691,7 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 	struct BootProfileHeader *ptr = Get_Header_Profile_Ptr();
 	u32 read_bytes = 0, pg_off = 0, pg_cnt = 0;
 	u8 *buf = g_io_buf.nand.data;
-	int res;
+	int res = 2;
 	int sz_sect = GetNANDPageCount_1K60(g_bootinfo.sys_nand.u16PyldLen) * 1024;
 	int xbsize;
 
@@ -671,7 +707,15 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 	if (XBOOT_len == 0) {
 		// Get Xboot length from NAND
 		//prn_string("Get Xboot length from NAND\n");
-		res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+		if (bootdevice == SPINAND_BOOT) {
+#ifdef CONFIG_HAVE_SPI_NAND
+			res = SPINANDReadNANDPage_1K60(NAND_CS0, pg_off, (u32 *)buf, &read_bytes);
+#endif
+		} else {// PARA NAND
+#ifdef CONFIG_HAVE_PARA_NAND
+			res = PNANDReadNANDPage_1K60(pg_off, (u32 *)buf, &read_bytes);
+#endif
+		}
 		if (res != ROM_SUCCESS) {
 			prn_string("failed at pg="); prn_dword(pg_off);
 			//break;
@@ -713,6 +757,8 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 {
 	mp = 0;
+	prn_string("bootdevice:");
+	prn_dword(bootdevice);
 	if (bootdevice == SPI_NOR_BOOT)
 	{
 		struct xboot_hdr *xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET);//xboot start addr
@@ -808,8 +854,8 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			}
 		}
 	}
-#ifdef CONFIG_HAVE_SPI_NAND
-	else if (bootdevice == SPINAND_BOOT)
+#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
+	else if ((bootdevice == SPINAND_BOOT) || (bootdevice == PARA_NAND_BOOT))
 	{
 		LoadMEMForNAND(Train2D, 0);
 	}
@@ -893,8 +939,8 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 			}
 		}
 	}
-#ifdef CONFIG_HAVE_SPI_NAND
-	else if (bootdevice == SPINAND_BOOT)
+#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
+	else if ((bootdevice == SPINAND_BOOT) || (bootdevice == PARA_NAND_BOOT))
 	{
 		LoadMEMForNAND(Train2D, 1);
 	}
