@@ -214,24 +214,24 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChA = 0x3
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A0 = 0x2d
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x13
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x44
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x50
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A1 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A1 = 0x2d
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x13
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x44
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x50
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A1 = 0x1c
@@ -241,24 +241,24 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChB = 0x3
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B0 = 0x2d
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x13
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x44
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x50
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B1 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B1 = 0x2d
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x13
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x44
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x50
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B1 = 0x1c
@@ -540,7 +540,7 @@ dwc_ddrphy_apb_wr(0x2002c,0x0);
 // //##############################################################
 // 
 // // [phyinit_userCustom_customPreTrain] Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()
-
+ 
 // //##############################################################
 // Add by dz.he for real chip begin
 
@@ -645,16 +645,16 @@ dwc_ddrphy_apb_wr(0x100a4, 0x2);
 dwc_ddrphy_apb_wr(0x100a5, 0x1);
 dwc_ddrphy_apb_wr(0x100a6, 0x0);
 dwc_ddrphy_apb_wr(0x100a7, 0x3);
-
-dwc_ddrphy_apb_wr(0x110a0, 0x1);
-dwc_ddrphy_apb_wr(0x110a1, 0x2);
-dwc_ddrphy_apb_wr(0x110a2, 0x3);
-dwc_ddrphy_apb_wr(0x110a3, 0x0);
-dwc_ddrphy_apb_wr(0x110a4, 0x5);
-dwc_ddrphy_apb_wr(0x110a5, 0x6);
-dwc_ddrphy_apb_wr(0x110a6, 0x7);
-dwc_ddrphy_apb_wr(0x110a7, 0x4);
-
+ 
+dwc_ddrphy_apb_wr(0x110a0, 0x3);
+dwc_ddrphy_apb_wr(0x110a1, 0x0);
+dwc_ddrphy_apb_wr(0x110a2, 0x1);
+dwc_ddrphy_apb_wr(0x110a3, 0x2);
+dwc_ddrphy_apb_wr(0x110a4, 0x7);
+dwc_ddrphy_apb_wr(0x110a5, 0x4);
+dwc_ddrphy_apb_wr(0x110a6, 0x5);
+dwc_ddrphy_apb_wr(0x110a7, 0x6);
+ 
 dwc_ddrphy_apb_wr(0x120a0, 0x2);
 dwc_ddrphy_apb_wr(0x120a1, 0x1);
 dwc_ddrphy_apb_wr(0x120a2, 0x0);
@@ -663,22 +663,24 @@ dwc_ddrphy_apb_wr(0x120a4, 0x6);
 dwc_ddrphy_apb_wr(0x120a5, 0x5);
 dwc_ddrphy_apb_wr(0x120a6, 0x4);
 dwc_ddrphy_apb_wr(0x120a7, 0x7);
-
-dwc_ddrphy_apb_wr(0x130a0, 0x5);
-dwc_ddrphy_apb_wr(0x130a1, 0x6);
-dwc_ddrphy_apb_wr(0x130a2, 0x7);
-dwc_ddrphy_apb_wr(0x130a3, 0x4);
-dwc_ddrphy_apb_wr(0x130a4, 0x1);
-dwc_ddrphy_apb_wr(0x130a5, 0x2);
-dwc_ddrphy_apb_wr(0x130a6, 0x3);
-dwc_ddrphy_apb_wr(0x130a7, 0x0);
-
+ 
+dwc_ddrphy_apb_wr(0x130a0, 0x7);
+dwc_ddrphy_apb_wr(0x130a1, 0x4);
+dwc_ddrphy_apb_wr(0x130a2, 0x5);
+dwc_ddrphy_apb_wr(0x130a3, 0x6);
+dwc_ddrphy_apb_wr(0x130a4, 0x3);
+dwc_ddrphy_apb_wr(0x130a5, 0x0);
+dwc_ddrphy_apb_wr(0x130a6, 0x1);
+dwc_ddrphy_apb_wr(0x130a7, 0x2);
 
 dwc_ddrphy_apb_wr(0xd0000,0x0001);
 
 // Add by dz.he for real chip end
 
 // //##############################################################
+
+
+
 
 // // [phyinit_userCustom_customPreTrain] End of dwc_ddrphy_phyinit_userCustom_customPreTrain()
 // // [dwc_ddrphy_phyinit_D_loadIMEM, 1D] Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=0)
@@ -755,9 +757,8 @@ dwc_ddrphy_phyinit_F_loadDMEM (0,0);
 
 
 CSTAMP(0xAFFF0000);
-
-
 dwc_ddrphy_apb_wr(0xd0000,0x0);
+
 dwc_ddrphy_apb_wr(0x54000,0x0);
 dwc_ddrphy_apb_wr(0x54001,0x0);
 dwc_ddrphy_apb_wr(0x54002,0x0);
@@ -766,8 +767,7 @@ dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
 dwc_ddrphy_apb_wr(0x54006,0x12);
 dwc_ddrphy_apb_wr(0x54007,0x0);
-//dwc_ddrphy_apb_wr(0x54008,0x131f);
-dwc_ddrphy_apb_wr(0x54008,0x031f); //tonyh test
+dwc_ddrphy_apb_wr(0x54008,0x131f);
 dwc_ddrphy_apb_wr(0x54009,0x4);
 dwc_ddrphy_apb_wr(0x5400a,0x0);
 dwc_ddrphy_apb_wr(0x5400b,0x2);
@@ -785,15 +785,15 @@ dwc_ddrphy_apb_wr(0x54016,0x0);
 dwc_ddrphy_apb_wr(0x54017,0x0);
 dwc_ddrphy_apb_wr(0x54018,0x0);
 dwc_ddrphy_apb_wr(0x54019,0x2d54);
-dwc_ddrphy_apb_wr(0x5401a,0x13);
+dwc_ddrphy_apb_wr(0x5401a,0x33);
 dwc_ddrphy_apb_wr(0x5401b,0x4466);
-dwc_ddrphy_apb_wr(0x5401c,0x4428);
+dwc_ddrphy_apb_wr(0x5401c,0x5008);
 dwc_ddrphy_apb_wr(0x5401d,0x0);
 dwc_ddrphy_apb_wr(0x5401e,0x1c);
 dwc_ddrphy_apb_wr(0x5401f,0x2d54);
-dwc_ddrphy_apb_wr(0x54020,0x13);
+dwc_ddrphy_apb_wr(0x54020,0x33);
 dwc_ddrphy_apb_wr(0x54021,0x4466);
-dwc_ddrphy_apb_wr(0x54022,0x4428);
+dwc_ddrphy_apb_wr(0x54022,0x5008);
 dwc_ddrphy_apb_wr(0x54023,0x0);
 dwc_ddrphy_apb_wr(0x54024,0x1c);
 dwc_ddrphy_apb_wr(0x54025,0x0);
@@ -810,16 +810,16 @@ dwc_ddrphy_apb_wr(0x5402f,0x0);
 dwc_ddrphy_apb_wr(0x54030,0x0);
 dwc_ddrphy_apb_wr(0x54031,0x0);
 dwc_ddrphy_apb_wr(0x54032,0x5400);
-dwc_ddrphy_apb_wr(0x54033,0x132d);
+dwc_ddrphy_apb_wr(0x54033,0x332d);
 dwc_ddrphy_apb_wr(0x54034,0x6600);
-dwc_ddrphy_apb_wr(0x54035,0x2844);
-dwc_ddrphy_apb_wr(0x54036,0x44);
+dwc_ddrphy_apb_wr(0x54035,0x844);
+dwc_ddrphy_apb_wr(0x54036,0x50);
 dwc_ddrphy_apb_wr(0x54037,0x1c00);
 dwc_ddrphy_apb_wr(0x54038,0x5400);
-dwc_ddrphy_apb_wr(0x54039,0x132d);
+dwc_ddrphy_apb_wr(0x54039,0x332d);
 dwc_ddrphy_apb_wr(0x5403a,0x6600);
-dwc_ddrphy_apb_wr(0x5403b,0x2844);
-dwc_ddrphy_apb_wr(0x5403c,0x44);
+dwc_ddrphy_apb_wr(0x5403b,0x844);
+dwc_ddrphy_apb_wr(0x5403c,0x50);
 dwc_ddrphy_apb_wr(0x5403d,0x1c00);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);
