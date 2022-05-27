@@ -4,8 +4,6 @@
 #include <dwc_dram_param.h>
 #include <dwc_ddrphy_phyinit.h>
 
-//#define STREAM_MESSAGE
-
 struct umctl2_regs {
 	unsigned int umctl2_reg[1024];	/* change the size here, (area >> 2) */
 };
@@ -25,8 +23,7 @@ int ctl_apb_rd(UINT32 adr)
 
 int dwc_umctl2_init_before_ctl_rst(void)
 {
-	//prn_string ("Start of dwc_umctl2_init_before_ctl_rst\n");
-#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333)
+#ifdef SDRAM_SPEED_1600
  	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
 	ctl_apb_rd(0x0004);//STAT
@@ -131,11 +128,9 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_rd(0x0060);
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
-	//RESET:<aresetn> for Port 0 DEASSERTED
-	//RESET:<core_ddrc_rstn> DEASSERTED
 #endif
 
-#ifdef SDRAM_SPEED_800   //800 MHz training pass
+#ifdef SDRAM_SPEED_800
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
 	ctl_apb_rd(0x004);
@@ -237,8 +232,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x030, 0x00000020);
 #endif
 
-
-#ifdef SDRAM_SPEED_666   //666 MHz
+#ifdef SDRAM_SPEED_666
 	ctl_apb_wr(0x304, 0x00000001);
 	ctl_apb_wr(0x030, 0x00000001);
 	ctl_apb_rd(0x004);
@@ -340,24 +334,15 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x030, 0x00000020);
 
 #endif
-	//prn_string ("End of dwc_umctl2_init_before_ctl_rst\n");
 	return 0;
 }
 
 
 int dwc_umctl2_init_after_ctl_rst(void)
 {
-	//prn_string ("Start of dwc_umctl2_init_after_ctl_rst\n");
-#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333) //1333MHz or 1600MHz
-
-#if defined(SDRAM_SPEED_1600)
+#ifdef SDRAM_SPEED_1600
 	prn_string("SDRAM_SPEED_1600");
 	prn_string("\n");
-#endif
-#if defined(SDRAM_SPEED_1333)
-		prn_string("SDRAM_SPEED_1333");
-		prn_string("\n");
-#endif
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
@@ -396,7 +381,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
 #endif
 
-#ifdef SDRAM_SPEED_800   //800 MHz training pass
+#ifdef SDRAM_SPEED_800
 	prn_string("SDRAM_SPEED_800");
 	prn_string("\n");
 	ctl_apb_wr(0x304, 0x00000000);
@@ -429,7 +414,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0d0);
 #endif
 
-#ifdef SDRAM_SPEED_666   //666 MHz
+#ifdef SDRAM_SPEED_666
 	prn_string("SDRAM_SPEED_666");
 	prn_string("\n");
 	ctl_apb_wr(0x304, 0x00000000);
@@ -461,10 +446,6 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0ec);
 	ctl_apb_rd(0x0d0);
 #endif
-
-
-
-	//prn_string ("End of dwc_umctl2_init_after_ctl_rst\n");
 	return 0;
 }
 

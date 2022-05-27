@@ -8,7 +8,6 @@
 #endif
 //#define STREAM_MESSAGE
 
-// Add for New UMCTL2
 #define UMCTL2_0_1      2 //device_config: x16 device
 #define UMCTL2_0_2      0 //frequency_ratio: 1:2 Mode
 #define UMCTL2_0_3      8 //burst_rdwr: Burst length of 16
@@ -61,40 +60,23 @@
                          (UMCTL2_50_3)  <<  4 |\
                          (UMCTL2_50_4)  <<  2 )
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_54		0x004a0015
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_54		0x003e0012
-#endif
 
 #define UMCTL2_60_1     0
 #define UMCTL2_60_2     0
 #define UMCTL2_60_3     0
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_60_4     0
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_60_4     2
-#endif
 #define UMCTL2_60       ((UMCTL2_60_1)  << 16 |\
                          (UMCTL2_60_2)  <<  4 |\
                          (UMCTL2_60_3)  <<  1 |\
                          (UMCTL2_60_4)  <<  0 )
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_64	0x00610130
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_64	0x005100fe
-#endif
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_68_1     72
 #define UMCTL2_68_2     0
 #define UMCTL2_68       ((UMCTL2_68_1)  << 16 |\
                          (UMCTL2_68_2)  << 0 )
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_68	0x003c0000
-#endif
-
 
 #define UMCTL2_C0_1     0
 #define UMCTL2_C0_2     0
@@ -127,13 +109,8 @@
 #define UMCTL2_D4       ((UMCTL2_D4_1)  << 16 |\
                          (UMCTL2_D4_2)  <<  0 )
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_D8	0x00008A05
 #define UMCTL2_DC	0x0054002d
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_D8	0x00006405
-#define UMCTL2_DC	0x00440024
-#endif
 
 #define UMCTL2_E0       0x00f10028
 #define UMCTL2_E4_1     4
@@ -168,9 +145,7 @@
                          (UMCTL2_F0_10) <<  1 |\
                          (UMCTL2_F0_11) <<  0 )
 
-#define UMCTL2_F4	0x0000e745
-
-#ifdef SDRAM_SPEED_1600
+#define UMCTL2_F4		 0x0000e745
 #define UMCTL2_100       0x1b203622
 #define UMCTL2_104       0x00060630
 #define UMCTL2_108       0x070e1517 //RL=28 WL=14
@@ -178,16 +153,6 @@
 #define UMCTL2_110       0x0f04080f
 #define UMCTL2_114       0x09520c0c
 #define UMCTL2_118       0x0905000c
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_100       0x171b2d1c
-#define UMCTL2_104       0x00050528
-#define UMCTL2_108       0x070c1315
-#define UMCTL2_10C       0x0090a006
-#define UMCTL2_110       0x0c04070c
-#define UMCTL2_114       0x09520a0a
-#define UMCTL2_118       0x0905000b
-#endif
-
 #define UMCTL2_11C       0x0000080c
 
 #define UMCTL2_120_1    1
@@ -199,24 +164,11 @@
                          (UMCTL2_120_3) <<  8 |\
                          (UMCTL2_120_4) <<  0 )
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_124       0x00000028
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_124       0x40000008
-#endif
-
 #define UMCTL2_128       0x0009080b
-
 #define UMCTL2_12C       0x01010005
-
 #define UMCTL2_130       0x00020000
-
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_134       0x0c100002
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_134       0x0b100002
-#endif
-
 #define UMCTL2_138       0x00000f6b
 
 #define UMCTL2_13C_1    1
@@ -225,7 +177,7 @@
 #define UMCTL2_13C      ((UMCTL2_13C_1) << 31 |\
                          (UMCTL2_13C_2) << 24 |\
                          (UMCTL2_13C_3) <<  0 )
-#ifdef SDRAM_SPEED_1600
+
 #define UMCTL2_180_1    0
 #define UMCTL2_180_2    0
 #define UMCTL2_180_3    0
@@ -244,14 +196,8 @@
 #define UMCTL2_184      ((UMCTL2_184_1) << 20 |\
                          (UMCTL2_184_2) <<  0 )
 
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_180       0x029b0014
-#define UMCTL2_184       0x02200070
-#endif
-
 #define UMCTL2_188	0x00000000
 
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_190_1    3
 #define UMCTL2_190_2    1
 #define UMCTL2_190_3    23 //t_rddata_en = RL-5 = 23
@@ -264,9 +210,6 @@
                          (UMCTL2_190_4) << 15 |\
                          (UMCTL2_190_5) <<  8 |\
                          (UMCTL2_190_6) <<  0 )
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_190       0x03938208
-#endif
 
 #define UMCTL2_194_1    0
 #define UMCTL2_194_2    0
@@ -345,18 +288,12 @@
                          (UMCTL2_1B0_7)         << 5 |\
                          (n)                    << 0 )
 
-
-#ifdef SDRAM_SPEED_1600
 #define UMCTL2_1B4_1    23 //rdcslat=RL-5
 #define UMCTL2_1B4_2    10
 #define UMCTL2_1B4      ((UMCTL2_1B4_1) << 8 |\
                          (UMCTL2_1B4_2) << 0 )
-#elif defined(SDRAM_SPEED_1333)
-#define UMCTL2_1B4       0x00001708
-#endif
 
 #define UMCTL2_1B8	0x0000001f
-
 #define UMCTL2_1C0	0x00000001	//bit0=1:open write mask
 
 #define UMCTL2_1C4_1    1
@@ -541,4 +478,3 @@ UINT16 dwc_ddrphy_apb_rd(UINT32 adr);
 int ReadSDSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData);
 int usb_readSector(u32 lba, u32 count, u32 *dest);
 int usb2_readSector(u32 lba, u32 count, u32 *dest);
-

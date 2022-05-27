@@ -989,14 +989,8 @@ void dwc_ddrphy_phyinit_saveRetention(void)
 
 void dwc_ddrphy_phyinit_main(void)
 {
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt>
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_skiptrain.txt>
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain.txt>
-	//#include <dwc_devinit_skiptrain_zebu.txt>
-	//#include <dwc_ddrphy_phyinit_out_lpddr4_devinit_skiptrain_7Fto6F.txt>
 	prn_string("dwc_ddrphy_phyinit_main ver.23\n");
 	mp = 1;
-
 	#ifdef PLATFORM_SP7350
 	//runtimeConfig.RetEn = 1;
 	dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
