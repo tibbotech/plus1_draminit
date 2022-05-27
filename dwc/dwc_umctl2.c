@@ -218,6 +218,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x328, 0x00000000);
 	ctl_apb_wr(0x36c, 0x00100000);
 	ctl_apb_wr(0x490, 0x00000001);
+#ifdef PLATFORM_SP7350
+	ctl_apb_wr(0x0540,0x00000001);//BUS1
+	ctl_apb_wr(0x05f0,0x00000001);//BUS2
+	ctl_apb_wr(0x06a0,0x00000001);//BUS3
+#endif
 	ctl_apb_rd(0x060);
 	ctl_apb_wr(0x400, 0x00000000);
 	ctl_apb_wr(0x404, 0x0000000f);
@@ -320,6 +325,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x328, 0x00000000);
 	ctl_apb_wr(0x36c, 0x00100000);
 	ctl_apb_wr(0x490, 0x00000001);
+#ifdef PLATFORM_SP7350
+	ctl_apb_wr(0x0540,0x00000001);//BUS1
+	ctl_apb_wr(0x05f0,0x00000001);//BUS2
+	ctl_apb_wr(0x06a0,0x00000001);//BUS3
+#endif	
 	ctl_apb_rd(0x060);
 	ctl_apb_wr(0x400, 0x00000000);
 	ctl_apb_wr(0x404, 0x0000000f);
