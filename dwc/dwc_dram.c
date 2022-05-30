@@ -1019,6 +1019,17 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 	#endif
 
+	#ifdef SDRAM_SPEED_1200
+	#if 0
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL600_SDRAM1200_PDDS\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL600_SDRAM1200_PDDS.txt>
+	#endif
+	#if 1
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL600_SDRAM1200_PDDS\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL600_SDRAM1200_PDDS.txt>
+	#endif
+	#endif
+
 	#ifdef SDRAM_SPEED_1600
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_PDDS.txt>
