@@ -27,8 +27,10 @@
 #define RF_MASK_V_SET(_mask)	(((_mask) << 16) | (_mask))
 #define RF_MASK_V_CLR(_mask)	(((_mask) << 16) | 0)
 
-#if defined(PLATFORM_Q645) || defined(PLATFORM_SP7350)
+#if defined(PLATFORM_Q645)
 #define UMCTL2_REG_Base		0xF8107000
+#elif defined(CONFIG_PLATFORM_SP7350)
+#define UMCTL2_REG_Base		0xF8169000
 #else
 #define UMCTL2_REG_Base		0x9C107000
 #endif

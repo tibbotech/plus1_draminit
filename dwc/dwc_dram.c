@@ -1074,20 +1074,12 @@ void startClockResetUmctl2_of_SP(void)
 	dbg_stamp(0xA001);
 
 #ifdef PLATFORM_SP7350
-	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 3);	// presetn MO_UMCTL2_RST_B APB BUS reset
-	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 4);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
-	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 5);	// core_ddrc_rstn CLKSDRAM0_SDCTRL0_RST_B uMCTL2 core reset
-	wait_loop(1000);
-	SP_REG_AO(0, 22) = RF_MASK_V_CLR(1 << 2);	// PRESETn_APB MO_DDRPHY_RST_B APB bus reset ; CLKDFI_DDRPHY_RST_B dfi_reset
-	wait_loop(1000);
-
 	SP_REG_AO(3, 13) =0x00180008;
-	SP_REG_AO(4, 28) =0x08000800;
-	SP_REG_AO(4, 28) =0x00400040;
+	SP_REG_AO(0, 14) =0x00200020;
+	SP_REG_AO(0, 14) =0x00010001;
 	wait_loop(1000);
-	SP_REG_AO(4, 28) =0x02000200;
+	SP_REG_AO(0, 14) =0x00080008;
 	wait_loop(1000);
-
 #elif defined(PLATFORM_Q645)
 	MO3_REG->mo3_reserved[24] = 0x10001000; //PwrOKIn MO_DDRPHY_PWROKIN ddrphy pwrokin
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 10);	// presetn MO_UMCTL2_RST_B APB BUS reset
@@ -1101,10 +1093,9 @@ void startClockResetUmctl2_of_SP(void)
 	dwc_umctl2_init_before_ctl_rst();
 
 #ifdef PLATFORM_SP7350
-	SP_REG_AO(4, 28) =0x00800080;
-	SP_REG_AO(4, 28) =0x01000100;
-	wait_loop(1000);
-	SP_REG_AO(4, 28) =0x04000400;
+	SP_REG_AO(0, 14) =0x00020002;
+	SP_REG_AO(0, 14) =0x00040004;
+	SP_REG_AO(0, 14) =0x00100010;
 #elif defined(PLATFORM_Q645)
 	SP_REG(0, 25) = RF_MASK_V_CLR(1 << 9);	// aresetn_0 MO_DDRCTL_RST_B AXI bus reset
 #endif
