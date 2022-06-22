@@ -160,7 +160,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-	ctl_apb_wr(0x0f4, 0x0000033f);
+	ctl_apb_wr(0x0f4, 0x0000053f);
 	ctl_apb_wr(0x100, 0x1b203622);
 	ctl_apb_wr(0x104, 0x00060630);
 	ctl_apb_wr(0x108, 0x070e0f14);
