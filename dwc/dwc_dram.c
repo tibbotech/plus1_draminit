@@ -65,9 +65,10 @@ struct int_regs {
 struct sp_registers {
 	unsigned int sp_register[1024][32];
 };
+#ifdef PLATFORM_Q645
 static volatile struct sp_registers *sp_reg_ptr = (volatile struct sp_registers *)(RF_GRP(0, 0));
 #define SP_REG(GROUP, OFFSET)		(sp_reg_ptr->sp_register[GROUP][OFFSET])
-
+#endif
 #ifdef PLATFORM_SP7350
 struct sp_registers_ao {
 	unsigned int sp_register[5][32];
