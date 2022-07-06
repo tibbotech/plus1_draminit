@@ -24,6 +24,130 @@ int ctl_apb_rd(UINT32 adr)
 int dwc_umctl2_init_before_ctl_rst(void)
 {
 #ifdef SDRAM_SPEED_1600
+#ifdef PLATFORM_SP7350
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
+	ctl_apb_rd(0x0004);//STAT
+	ctl_apb_wr(0x0000,UMCTL2_0);//MSTR
+	ctl_apb_wr(0x0010,UMCTL2_10);//MRCTRL0
+	ctl_apb_wr(0x0014,UMCTL2_14);//MRCTRL1
+	ctl_apb_wr(0x001c,UMCTL2_1C);//MRCTRL2
+	ctl_apb_wr(0x0020,UMCTL2_20);//DERATEEN
+	ctl_apb_wr(0x0024,UMCTL2_24);//DERATEINT
+	ctl_apb_wr(0x002c,UMCTL2_2C);//DERATECTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
+	ctl_apb_wr(0x0034,UMCTL2_34);//PWRTMG
+	ctl_apb_wr(0x0038,UMCTL2_38);//HWLPCTL
+	ctl_apb_wr(0x0050,UMCTL2_50);//RFSHCTL0
+	ctl_apb_wr(0x0054,UMCTL2_54);//RFSHCTL0
+	ctl_apb_wr(0x0060,UMCTL2_60);//RFSHCTL3
+	ctl_apb_wr(0x0064,UMCTL2_64);//RFSHTMG
+	ctl_apb_wr(0x0068,UMCTL2_68);//RFSHTMG1
+	ctl_apb_wr(0x00c0,UMCTL2_C0);//CRCPARCTL0
+	ctl_apb_wr(0x00c4,UMCTL2_C4(UMCTL2_C4_1));//CRCPARCTL1
+	ctl_apb_wr(0x00d0,0x00030002);  //UMCTL2_D0);//INIT0
+	ctl_apb_wr(0x00d4,0x00010002);  //UMCTL2_D4);//INIT1
+	ctl_apb_wr(0x00d8,0x00001a00);  //UMCTL2_D8);//INIT2
+	ctl_apb_wr(0x00dc,0x0054002d);  //UMCTL2_DC);//INIT3
+	ctl_apb_wr(0x00e0,0x00310000);  //UMCTL2_E0);//INIT4
+	ctl_apb_wr(0x00e4,0x00040009);  //UMCTL2_E4);//INIT5
+	ctl_apb_wr(0x00e8,0x0000004d);  //UMCTL2_E8);//INIT6
+	ctl_apb_wr(0x00ec,0x0000004d);  //UMCTL2_EC);//INIT7
+	ctl_apb_wr(0x00f0,UMCTL2_F0);//DIMMCTL
+	ctl_apb_wr(0x00f4,UMCTL2_F4);//DIMMCTL
+	ctl_apb_wr(0x0100,UMCTL2_100);//DRAMTMG0
+	ctl_apb_wr(0x0104,UMCTL2_104);//DRAMTMG1
+	ctl_apb_wr(0x0108,UMCTL2_108);//DRAMTMG2
+	ctl_apb_wr(0x010c,UMCTL2_10C);//DRAMTMG3
+	ctl_apb_wr(0x0110,UMCTL2_110);//DRAMTMG4
+	ctl_apb_wr(0x0114,UMCTL2_114);//DRAMTMG5
+	ctl_apb_wr(0x0118,UMCTL2_118);//DRAMTMG6
+	ctl_apb_wr(0x011c,UMCTL2_11C);//DRAMTMG7
+	ctl_apb_wr(0x0120,UMCTL2_120);//DRAMTMG8
+	ctl_apb_wr(0x0124,UMCTL2_124);//DRAMTMG9
+	ctl_apb_wr(0x0128,UMCTL2_128);//DRAMTMG10
+	ctl_apb_wr(0x012c,UMCTL2_12C);//DRAMTMG11
+	ctl_apb_wr(0x0130,UMCTL2_130);//DRAMTMG12
+	ctl_apb_wr(0x0134,UMCTL2_134);//DRAMTMG13
+	ctl_apb_wr(0x0138,UMCTL2_138);//DRAMTMG14
+	ctl_apb_wr(0x013c,UMCTL2_13C);//DRAMTMG15
+	ctl_apb_wr(0x0180,UMCTL2_180);//ZQCTL0
+	ctl_apb_wr(0x0184,UMCTL2_184);//ZQCTL1
+	ctl_apb_wr(0x0188,UMCTL2_188);//ZQCTL2
+	ctl_apb_wr(0x0190,UMCTL2_190);//DFITMG0
+	ctl_apb_wr(0x0194,UMCTL2_194);//DFITMG1
+	ctl_apb_wr(0x0198,UMCTL2_198);//DFILPCFG0
+	ctl_apb_wr(0x019c,UMCTL2_19C);//DFILPCFG1
+	ctl_apb_wr(0x01a0,UMCTL2_1A0);//DFIUPD0
+	ctl_apb_wr(0x01a4,UMCTL2_1A4);//DFIUPD1
+	ctl_apb_wr(0x01a8,UMCTL2_1A8);//DFIUPD2
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_1));//DFIMISC
+	ctl_apb_wr(0x01b4,UMCTL2_1B4);//DFITMG2
+	ctl_apb_wr(0x01b8,UMCTL2_1B8);//DFITMG3
+	ctl_apb_wr(0x01c0,UMCTL2_1C0);//DBICTL
+	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_1));//DFIPHYMSTR
+
+//	ctl_apb_wr(0x0200, 0x00000007);//00000018);//00000016); //UMCTL2_200);//ADDRMAP1
+//	ctl_apb_wr(0x0204, 0x00080202);//00020202);//00080808); //UMCTL2_204);//ADDRMAP1
+//	ctl_apb_wr(0x0208, 0x02020000);//03030000);//00000000); //UMCTL2_208);//ADDRMAP2
+//	ctl_apb_wr(0x020c, 0x02020202);//03030303);//00000000); //UMCTL2_20C);//ADDRMAP3
+//	ctl_apb_wr(0x0210, 0x00001f1f);//00001F1F);//00001f1f); //UMCTL2_210);//ADDRMAP4
+//	ctl_apb_wr(0x0214, 0x080f0808);//070F0707);//070f0707); //UMCTL2_214);//ADDRMAP5
+//	ctl_apb_wr(0x0218, 0x08080808);//07070707);//09070707); //UMCTL2_218);//ADDRMAP6
+//	ctl_apb_wr(0x021c, 0x00000f08);//00000F07);//00000f07); //UMCTL2_21C);//ADDRMAP7
+//	ctl_apb_wr(0x0220, 0x00003f3f);//00003F3F);//00003f3f); //UMCTL2_220);//ADDRMAP8
+//	ctl_apb_wr(0x0224, 0x08080808);//07070707);//07070707); //UMCTL2_224);//ADDRMAP9
+//	ctl_apb_wr(0x0228, 0x08080808);//07070707);//07070707); //UMCTL2_228);//ADDRMAP10
+//	ctl_apb_wr(0x022c, 0x00000008);//001F1F07);//00000007); //UMCTL2_22C);//ADDRMAP11
+
+	ctl_apb_wr(0x0200, 0x00000016);//00000017);//UMCTL2_200);//ADDRMAP1
+	ctl_apb_wr(0x0204, 0x00080202);//00080202);//UMCTL2_204);//ADDRMAP1
+	ctl_apb_wr(0x0208, 0x02020000);//02020000);//UMCTL2_208);//ADDRMAP2
+	ctl_apb_wr(0x020c, 0x02020202);//02020202);//UMCTL2_20C);//ADDRMAP3
+	ctl_apb_wr(0x0210, 0x00001F1F);//00001F1F);//UMCTL2_210);//ADDRMAP4
+	ctl_apb_wr(0x0214, 0x070F0707);//070F0707);//UMCTL2_214);//ADDRMAP5
+	ctl_apb_wr(0x0218, 0x08070707);//07070707);//UMCTL2_218);//ADDRMAP6
+	ctl_apb_wr(0x021c, 0x00000F08);//00000F08);//UMCTL2_21C);//ADDRMAP7
+	ctl_apb_wr(0x0220, 0x00003F3F);//00003F3F);//UMCTL2_220);//ADDRMAP8
+	ctl_apb_wr(0x0224, 0x07070707);//07070707);//UMCTL2_224);//ADDRMAP9
+	ctl_apb_wr(0x0228, 0x07070707);//07070707);//UMCTL2_228);//ADDRMAP10
+	ctl_apb_wr(0x022c, 0x001F1F07);//001F1F07);//UMCTL2_22C);//ADDRMAP11
+
+	ctl_apb_wr(0x0240,UMCTL2_240);//ODTCFG
+	ctl_apb_wr(0x0244,UMCTL2_244);//ODTMAP
+	//ctl_apb_wr(0x0250,UMCTL2_250);//SCHED    //mask for test by dz.he 0628
+	ctl_apb_wr(0x0250,0x000b1784);//SCHED
+	ctl_apb_wr(0x0254,0x000000f0); //UMCTL2_254);//SCHED1
+	//ctl_apb_wr(0x025c,UMCTL2_25C);//PERFHPR1  //mask for test by dz.he 0628
+	ctl_apb_wr(0x025c,0x610001ff);//PERFHPR1
+	//ctl_apb_wr(0x0264,UMCTL2_264);//PERFLPR1  //mask for test by dz.he 0628
+	ctl_apb_wr(0x0264,0x420001ff);//PERFLPR1
+	ctl_apb_wr(0x026c,UMCTL2_26C);//PERFWR1
+	ctl_apb_wr(0x0300,0x00000000);//UMCTL2_300);//DBG0
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));//DBG1
+	ctl_apb_wr(0x030c,UMCTL2_30C);//DBGCMD
+	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_320_1));//SWCTL
+	ctl_apb_wr(0x0328,UMCTL2_328);//SWCTLSTATIC
+	ctl_apb_wr(0x036c,UMCTL2_36C);//POISONCFG
+	ctl_apb_wr(0x0400,0x00000110);//UMCTL2_400);//PCCFG
+	ctl_apb_wr(0x0404,UMCTL2_404);//PCFGR_0
+	ctl_apb_wr(0x0408,UMCTL2_408(UMCTL2_408_4));//PCFGW_0
+	ctl_apb_wr(0x0490,UMCTL2_490);//PCTRL_0
+	ctl_apb_wr(0x540, 0x00000001);
+	ctl_apb_wr(0x5f0, 0x00000001);
+	ctl_apb_wr(0x6a0, 0x00000001);
+	ctl_apb_wr(0x0494,UMCTL2_494);//PCFGQOS0_0
+	ctl_apb_wr(0x0498,UMCTL2_498);//PCFGQOS1_0
+	ctl_apb_wr(0x049c,UMCTL2_49C);//PCFGWQOS0_0
+	ctl_apb_wr(0x04a0,UMCTL2_4A0);//PCFGWQOS1_0
+	ctl_apb_rd(0x0060);
+	ctl_apb_rd(0x0030);//PWRCTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
+	//RESET:<aresetn> for Port 0 DEASSERTED
+	//RESET:<core_ddrc_rstn> DEASSERTED
+#endif
+
+#ifdef PLATFORM_Q645
  	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
 	ctl_apb_rd(0x0004);//STAT
@@ -128,6 +252,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_rd(0x0060);
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
+#endif 	
 #endif
 
 #ifdef SDRAM_SPEED_1200
