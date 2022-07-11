@@ -392,10 +392,18 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
+#ifdef NANYA
 	ctl_apb_wr(0x0f4, 0x0000032f);
+#elif defined(MICRON)
+	ctl_apb_wr(0x0f4, 0x0000053f);
+#endif
 	ctl_apb_wr(0x100, 0x11100d11);
 	ctl_apb_wr(0x104, 0x00030418);
+#ifdef NANYA
 	ctl_apb_wr(0x108, 0x04070a0d);
+#elif defined(MICRON)
+	ctl_apb_wr(0x108, 0x060c0e12);
+#endif
 	ctl_apb_wr(0x10c, 0x00606006);
 	ctl_apb_wr(0x110, 0x08040408);
 	ctl_apb_wr(0x114, 0x02030606);
@@ -499,7 +507,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
+#ifdef NANYA
 	ctl_apb_wr(0x0f4, 0x0000033f);
+#elif defined(MICRON)
+	ctl_apb_wr(0x0f4, 0x0000053f);
+#endif
 	ctl_apb_wr(0x100, 0x171b2d1c);
 	ctl_apb_wr(0x104, 0x00050528);
 	ctl_apb_wr(0x108, 0x060c0e12);
@@ -575,8 +587,16 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
 #endif
-		return 0;
-	}
+
+#ifdef NANYA
+	prn_string("NANYA");
+	prn_string("\n");
+#elif defined(MICRON)
+	prn_string("MICRON");
+	prn_string("\n");
+#endif
+	return 0;
+}
 
 
 int dwc_umctl2_init_after_ctl_rst(void)

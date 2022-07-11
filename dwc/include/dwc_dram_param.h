@@ -8,6 +8,8 @@
 #define SDRAM_SPEED_666 //PLL 333MHz
 #endif
 //#define STREAM_MESSAGE
+#define NANYA
+//#define MICRON
 
 #define UMCTL2_0_1      2 //device_config: x16 device
 #define UMCTL2_0_2      0 //frequency_ratio: 1:2 Mode
