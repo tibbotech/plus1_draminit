@@ -780,7 +780,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{
 		unsigned int sectorNo0, total_length, addr;
-		u8 *buf = (u8 *) g_io_buf.usb.draminit_tmp;
+		u8 buf[64];
 		struct xboot_hdr *xhdr = (struct xboot_hdr *)buf;
 		int ret, value;
 
