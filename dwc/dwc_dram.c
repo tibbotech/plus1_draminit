@@ -121,7 +121,7 @@ static unsigned int DRAM_SIZE_FLAG;
 #if (defined(DRAMSCAN) || defined(SISCOPE))
 static unsigned int scan_val_190;
 #endif
-u32 mp;
+int mp;
 #ifdef PLATFORM_PENTAGRAM
 #define CHIP_WARM_RESET
 #endif
@@ -159,6 +159,17 @@ UINT16 dwc_ddrphy_apb_rd(UINT32 adr)
 	UINT16 value;
 	//dwc_ddrphy_phyinit_print ("dwc_ddrphy_apb_rd(12'h%x, rd_data);\n", adr);
 	value= DWC_PHY_REG(adr);
+
+#if 0
+	if(mp == 1)
+	{
+		prn_string("APB R  PUB  ");
+		prn_dword0(adr);
+		prn_string("  ");
+		prn_dword0(value);
+		prn_string("\n");
+	}
+#endif
 	return value;
 }
 
@@ -776,6 +787,10 @@ void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D)
 			LoadBinCode(1,offset,IMEM_ADDR);
 		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d  length
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d+dm2d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 2)
+			LoadBinCode(2,offset,IMEM_ADDR);
 	}
 	else if ((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{
@@ -889,6 +904,12 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 		if (Train2D == 1)
 			LoadBinCode(1,offset,DMEM_ADDR);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d+dm2d  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d+dm2d+imda  length
+		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
+		if (Train2D == 2)
+			LoadBinCode(2,offset,DMEM_ADDR);
 	}
 	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{

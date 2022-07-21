@@ -252,7 +252,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_rd(0x0060);
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
-#endif 	
+#endif
 #endif
 
 #ifdef SDRAM_SPEED_1200
@@ -673,7 +673,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0e0);
 	ctl_apb_rd(0x0ec);
 	ctl_apb_rd(0x0d0);
-#endif 
+#endif
 
 #ifdef SDRAM_SPEED_800
 	prn_string("SDRAM_SPEED_800");
@@ -764,7 +764,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 	#endif
 	UINT16 rd_data, args, i, low_16bit, upper_16bit;
 	UINT8 train_test = 0;
-
+    mp = 0;
 	prn_string("Start to wait for the training firmware to complete v.00 !!!");
 	prn_string("\n");
 	while (train_test == 0) {
@@ -826,6 +826,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				train_test = 1;
 				prn_string("Training has run successfully.(firmware complete)");
 				prn_string("\n");
+				mp = 1;
 				break;
 			case 0x08:
 				#ifdef STREAM_MESSAGE

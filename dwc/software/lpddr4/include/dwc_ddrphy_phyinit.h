@@ -42,4 +42,5 @@ float fmodf (float x, float y);
 float fmod (float x, float y);
 
 extern int NumRegSaved;    ///< Current Number of registers saved.
+extern int mp;
 

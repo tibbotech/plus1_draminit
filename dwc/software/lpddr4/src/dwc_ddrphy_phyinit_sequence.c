@@ -17,6 +17,21 @@ void dwc_ddrphy_phyinit_Diagnostic_test(void)
 {
 	dwc_ddrphy_phyinit_D_loadIMEM( 2 ); /* load Diagnostic image */
 	dwc_ddrphy_phyinit_F_loadDMEM(0, 2);
+
+	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54200,0x04);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54201,0x0102);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54202,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54203,0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54204,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54205,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54206,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54207,0x0100);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54208,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54209,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x5420a,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x5420b,0);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,1);
 	dwc_ddrphy_phyinit_userCustom_io_write16((tDRTUB | csr_UctWriteProt_ADDR), 0x01);
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_DctWriteProt_ADDR), 0x01);
 	dwc_ddrphy_phyinit_userCustom_io_write16((tDRTUB | csr_UctWriteOnly_ADDR), 0);
@@ -29,6 +44,10 @@ void dwc_ddrphy_phyinit_Diagnostic_test(void)
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroReset_ADDR), 1);
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0);
 	/* Read back diagnostics return data */
+
+	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,0);
+	dwc_ddrphy_phyinit_userCustom_io_read16(0x5420b);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,1);
 }
 
 int dwc_ddrphy_phyinit_sequence (int skip_training, int Train2D, int debug) {
