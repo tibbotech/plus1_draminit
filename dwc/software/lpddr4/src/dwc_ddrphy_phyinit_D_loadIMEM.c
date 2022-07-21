@@ -20,7 +20,7 @@
  *
  * \return void
  */
-
+#ifdef PLATFORM_SP7350
 void Changing_SDRAMRDQS_of_Zebu_Emulation(void)
 {
 	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,0x0); //DWC_DDRPHYA_APBONLY0_MicroContMuxSel
@@ -173,7 +173,7 @@ void Changing_SDRAMRDQS_of_Zebu_Emulation(void)
 	dwc_ddrphy_phyinit_userCustom_io_write16(0x1386B,0x006F);
 	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,0x1); //DWC_DDRPHYA_APBONLY0_MicroContMuxSel
 }
-
+#endif
  
 void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 {
@@ -235,7 +235,10 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
   //dwc_ddrphy_phyinit_cmnt("%s WriteImem: COMPLETED\n", printf_header);
   fflush(stdout);
 #else
+#ifdef PLATFORM_SP7350
+	//For zebu using only. Need to init BDL delay. Realy chip don't run this function.
 	Changing_SDRAMRDQS_of_Zebu_Emulation();
+#endif
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x0);
 	dwc_ddrphy_phyinit_D_loadIMEM_of_SP(Train2D);
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x1);

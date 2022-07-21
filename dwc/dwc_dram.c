@@ -1047,8 +1047,8 @@ void dwc_ddrphy_phyinit_main(void)
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL600_SDRAM1200_PDDS.txt>
 	#endif
 	#if 1
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL600_SDRAM1200_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL600_SDRAM1200_PDDS.txt>
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2.txt>
 	#endif
 	#endif
 

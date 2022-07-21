@@ -31,7 +31,9 @@ unsigned short dwc_ddrphy_apb_rd(unsigned int adr);
 
 void dwc_ddrphy_phyinit_D_loadIMEM_of_SP(int Train2D);
 void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D);
+#ifdef PLATFORM_SP7350
 void Changing_SDRAMRDQS_of_Zebu_Emulation( void);
+#endif
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP(void);
 void dwc_dvdrphy_phyinit_Write_DMEM(void);
 void dwc_ddrphy_phyinit_Diagnostic_test(void);
