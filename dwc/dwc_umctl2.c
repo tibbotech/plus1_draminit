@@ -148,110 +148,105 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #endif
 
 #ifdef PLATFORM_Q645
- 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_5));
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_1));//PWRCTL
-	ctl_apb_rd(0x0004);//STAT
-	ctl_apb_wr(0x0000,UMCTL2_0);//MSTR
-	ctl_apb_wr(0x0010,UMCTL2_10);//MRCTRL0
-	ctl_apb_wr(0x0014,UMCTL2_14);//MRCTRL1
-	ctl_apb_wr(0x001c,UMCTL2_1C);//MRCTRL2
-	ctl_apb_wr(0x0020,UMCTL2_20);//DERATEEN
-	ctl_apb_wr(0x0024,UMCTL2_24);//DERATEINT
-	ctl_apb_wr(0x002c,UMCTL2_2C);//DERATECTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
-	ctl_apb_wr(0x0034,UMCTL2_34);//PWRTMG
-	ctl_apb_wr(0x0038,UMCTL2_38);//HWLPCTL
-	ctl_apb_wr(0x0050,UMCTL2_50);//RFSHCTL0
-	ctl_apb_wr(0x0054,UMCTL2_54);//RFSHCTL0
-	ctl_apb_wr(0x0060,UMCTL2_60);//RFSHCTL3
-	ctl_apb_wr(0x0064,UMCTL2_64);//RFSHTMG
-	ctl_apb_wr(0x0068,UMCTL2_68);//RFSHTMG1
-	ctl_apb_wr(0x00c0,UMCTL2_C0);//CRCPARCTL0
-	ctl_apb_wr(0x00c4,UMCTL2_C4(UMCTL2_C4_1));//CRCPARCTL1
-	ctl_apb_wr(0x00d0,UMCTL2_D0);//INIT0
-	ctl_apb_wr(0x00d4,UMCTL2_D4);//INIT1
-	ctl_apb_wr(0x00d8,UMCTL2_D8);//INIT2
-	ctl_apb_wr(0x00dc,UMCTL2_DC);//INIT3
-	ctl_apb_wr(0x00e0,UMCTL2_E0);//INIT4
-	ctl_apb_wr(0x00e4,UMCTL2_E4);//INIT5
-	ctl_apb_wr(0x00e8,UMCTL2_E8);//INIT6
-	ctl_apb_wr(0x00ec,UMCTL2_EC);//INIT7
-	ctl_apb_wr(0x00f0,UMCTL2_F0);//DIMMCTL
-	ctl_apb_wr(0x00f4,UMCTL2_F4);//DIMMCTL
-	ctl_apb_wr(0x0100,UMCTL2_100);//DRAMTMG0
-	ctl_apb_wr(0x0104,UMCTL2_104);//DRAMTMG1
-	ctl_apb_wr(0x0108,UMCTL2_108);//DRAMTMG2
-	ctl_apb_wr(0x010c,UMCTL2_10C);//DRAMTMG3
-	ctl_apb_wr(0x0110,UMCTL2_110);//DRAMTMG4
-	ctl_apb_wr(0x0114,UMCTL2_114);//DRAMTMG5
-	ctl_apb_wr(0x0118,UMCTL2_118);//DRAMTMG6
-	ctl_apb_wr(0x011c,UMCTL2_11C);//DRAMTMG7
-	ctl_apb_wr(0x0120,UMCTL2_120);//DRAMTMG8
-	ctl_apb_wr(0x0124,UMCTL2_124);//DRAMTMG9
-	ctl_apb_wr(0x0128,UMCTL2_128);//DRAMTMG10
-	ctl_apb_wr(0x012c,UMCTL2_12C);//DRAMTMG11
-	ctl_apb_wr(0x0130,UMCTL2_130);//DRAMTMG12
-	ctl_apb_wr(0x0134,UMCTL2_134);//DRAMTMG13
-	ctl_apb_wr(0x0138,UMCTL2_138);//DRAMTMG14
-	ctl_apb_wr(0x013c,UMCTL2_13C);//DRAMTMG15
-	ctl_apb_wr(0x0180,UMCTL2_180);//ZQCTL0
-	ctl_apb_wr(0x0184,UMCTL2_184);//ZQCTL1
-	ctl_apb_wr(0x0188,UMCTL2_188);//ZQCTL2
-
-	ctl_apb_wr(0x0190,UMCTL2_190);//DFITMG0 0x0397820a
-
-	ctl_apb_wr(0x0194,UMCTL2_194);//DFITMG1
-	ctl_apb_wr(0x0198,UMCTL2_198);//DFILPCFG0
-	ctl_apb_wr(0x019c,UMCTL2_19C);//DFILPCFG1
-	ctl_apb_wr(0x01a0,UMCTL2_1A0);//DFIUPD0
-	ctl_apb_wr(0x01a4,UMCTL2_1A4);//DFIUPD1
-	ctl_apb_wr(0x01a8,UMCTL2_1A8);//DFIUPD2
-	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_1));//DFIMISC
-	ctl_apb_wr(0x01b4,UMCTL2_1B4);//DFITMG2
-	ctl_apb_wr(0x01b8,UMCTL2_1B8);//DFITMG3
-	ctl_apb_wr(0x01c0,UMCTL2_1C0);//DBICTL
-	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_1));//DFIPHYMSTR
-	ctl_apb_wr(0x0200,UMCTL2_200);//ADDRMAP1
-	ctl_apb_wr(0x0204,UMCTL2_204);//ADDRMAP1
-	ctl_apb_wr(0x0208,UMCTL2_208);//ADDRMAP2
-	ctl_apb_wr(0x020c,UMCTL2_20C);//ADDRMAP3
-	ctl_apb_wr(0x0210,UMCTL2_210);//ADDRMAP4
-	ctl_apb_wr(0x0214,UMCTL2_214);//ADDRMAP5
-	ctl_apb_wr(0x0218,UMCTL2_218);//ADDRMAP6
-	ctl_apb_wr(0x021c,UMCTL2_21C);//ADDRMAP7
-	ctl_apb_wr(0x0220,UMCTL2_220);//ADDRMAP8
-	ctl_apb_wr(0x0224,UMCTL2_224);//ADDRMAP9
-	ctl_apb_wr(0x0228,UMCTL2_228);//ADDRMAP10
-	ctl_apb_wr(0x022c,UMCTL2_22C);//ADDRMAP11
-	ctl_apb_wr(0x0240,UMCTL2_240);//ODTCFG
-	ctl_apb_wr(0x0244,UMCTL2_244);//ODTMAP
-	ctl_apb_wr(0x0250,UMCTL2_250);//SCHED
-	ctl_apb_wr(0x0254,UMCTL2_254);//SCHED1
-	ctl_apb_wr(0x025c,UMCTL2_25C);//PERFHPR1
-	ctl_apb_wr(0x0264,UMCTL2_264);//PERFLPR1
-	ctl_apb_wr(0x026c,UMCTL2_26C);//PERFWR1
-	ctl_apb_wr(0x0300,UMCTL2_300);//DBG0
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));//DBG1
-	ctl_apb_wr(0x030c,UMCTL2_30C);//DBGCMD
-	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_320_1));//SWCTL
-	ctl_apb_wr(0x0328,UMCTL2_328);//SWCTLSTATIC
-	ctl_apb_wr(0x036c,UMCTL2_36C);//POISONCFG
-	ctl_apb_wr(0x0400,UMCTL2_400);//PCCFG
-	ctl_apb_wr(0x0404,UMCTL2_404);//PCFGR_0
-	ctl_apb_wr(0x0408,UMCTL2_408(UMCTL2_408_4));//PCFGW_0
-	ctl_apb_wr(0x0490,UMCTL2_490);//PCTRL_0 BUS0
-	#ifdef PLATFORM_SP7350
-	ctl_apb_wr(0x0540,0x00000001);//BUS1
-	ctl_apb_wr(0x05f0,0x00000001);//BUS2
-	ctl_apb_wr(0x06a0,0x00000001);//BUS3
-	#endif
-	ctl_apb_wr(0x0494,UMCTL2_494);//PCFGQOS0_0
-	ctl_apb_wr(0x0498,UMCTL2_498);//PCFGQOS1_0
-	ctl_apb_wr(0x049c,UMCTL2_49C);//PCFGWQOS0_0
-	ctl_apb_wr(0x04a0,UMCTL2_4A0);//PCFGWQOS1_0
-	ctl_apb_rd(0x0060);
-	ctl_apb_rd(0x0030);//PWRCTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_2));//PWRCTL
+	ctl_apb_wr(0x304, 0x00000001);
+	ctl_apb_wr(0x030, 0x00000001);
+	ctl_apb_rd(0x004);
+	ctl_apb_wr(0x000, 0x83080020);
+	ctl_apb_wr(0x010, 0x40003030);
+	ctl_apb_wr(0x014, 0x00008043);
+	ctl_apb_wr(0x01c, 0x040df7d4);
+	ctl_apb_wr(0x020, 0x00001202);
+	ctl_apb_wr(0x024, 0x0c3a97b5);
+	ctl_apb_wr(0x02c, 0x00000000);
+	ctl_apb_wr(0x030, 0x00000020);
+	ctl_apb_wr(0x034, 0x0040b904);
+	ctl_apb_wr(0x038, 0x004e0000);
+	ctl_apb_wr(0x050, 0x00210000);
+	ctl_apb_wr(0x054, 0x00100042);
+	ctl_apb_wr(0x060, 0x00000000);
+	ctl_apb_wr(0x064, 0x00618130);
+	ctl_apb_wr(0x068, 0x00480000);
+	ctl_apb_wr(0x0c0, 0x00000000);
+	ctl_apb_wr(0x0c4, 0x00000000);
+	ctl_apb_wr(0x0d0, 0xc0020002);
+	ctl_apb_wr(0x0d4, 0x00010002);
+	ctl_apb_wr(0x0d8, 0x0000e205);
+	ctl_apb_wr(0x0dc, 0x0054002d);
+	ctl_apb_wr(0x0e0, 0x00310008);
+	ctl_apb_wr(0x0e4, 0x00040009);
+	ctl_apb_wr(0x0e8, 0x0000004d);
+	ctl_apb_wr(0x0ec, 0x0000004d);
+	ctl_apb_wr(0x0f0, 0x00000000);
+	ctl_apb_wr(0x0f4, 0x0000054f);
+	ctl_apb_wr(0x100, 0x1b203622);
+	ctl_apb_wr(0x104, 0x00060630);
+	ctl_apb_wr(0x108, 0x070e0f14);
+	ctl_apb_wr(0x10c, 0x00b0c006);
+	ctl_apb_wr(0x110, 0x0f04080f);
+	ctl_apb_wr(0x114, 0x02040c0c);
+	ctl_apb_wr(0x118, 0x01010007);
+	ctl_apb_wr(0x11c, 0x00000402);
+	ctl_apb_wr(0x120, 0x01010101);
+	ctl_apb_wr(0x124, 0x00000008);
+	ctl_apb_wr(0x128, 0x00020a00);
+	ctl_apb_wr(0x12c, 0x0101001a);
+	ctl_apb_wr(0x130, 0x00020000);
+	ctl_apb_wr(0x134, 0x0c100002);
+	ctl_apb_wr(0x138, 0x00000136);
+	ctl_apb_wr(0x13c, 0x80000000);
+	ctl_apb_wr(0x180, 0xd3200018);
+	ctl_apb_wr(0x184, 0x028b282b);
+	ctl_apb_wr(0x188, 0x00000000);
+	ctl_apb_wr(0x190, 0x0397820a);
+	ctl_apb_wr(0x194, 0x00090202);
+	ctl_apb_wr(0x198, 0x07513011);
+	ctl_apb_wr(0x19c, 0x00000071);
+	ctl_apb_wr(0x1a0, 0xe0400018);
+	ctl_apb_wr(0x1a4, 0x0042009c);
+	ctl_apb_wr(0x1a8, 0x00000000);
+	ctl_apb_wr(0x1b0, 0x00000041);
+	ctl_apb_wr(0x1b4, 0x0000170a);
+	ctl_apb_wr(0x1b8, 0x00000008);
+	ctl_apb_wr(0x1c0, 0x00000000);
+	ctl_apb_wr(0x1c4, 0x00000000);
+	ctl_apb_wr(0x200, 0x00000017);
+	ctl_apb_wr(0x204, 0x00080202);
+	ctl_apb_wr(0x208, 0x02020000);
+	ctl_apb_wr(0x20c, 0x02020202);
+	ctl_apb_wr(0x210, 0x00001F1F);
+	ctl_apb_wr(0x214, 0x070F0707);
+	ctl_apb_wr(0x218, 0x07070707);
+	ctl_apb_wr(0x21c, 0x00000F08);
+	ctl_apb_wr(0x220, 0x00003F3F);
+	ctl_apb_wr(0x224, 0x07070707);
+	ctl_apb_wr(0x228, 0x07070707);
+	ctl_apb_wr(0x22c, 0x001F1F07);
+	ctl_apb_wr(0x240, 0x06080a48);
+	ctl_apb_wr(0x244, 0x00000000);
+	ctl_apb_wr(0x250, 0x00dd3f00);
+	ctl_apb_wr(0x254, 0x00000000);
+	ctl_apb_wr(0x25c, 0x0f000001);
+	ctl_apb_wr(0x264, 0x0f00007f);
+	ctl_apb_wr(0x26c, 0x0f00007f);
+	ctl_apb_wr(0x300, 0x00000000);
+	ctl_apb_wr(0x304, 0x00000000);
+	ctl_apb_wr(0x30c, 0x00000000);
+	ctl_apb_wr(0x320, 0x00000001);
+	ctl_apb_wr(0x328, 0x00000000);
+	ctl_apb_wr(0x36c, 0x00100000);
+	ctl_apb_wr(0x490, 0x00000001);
+	ctl_apb_rd(0x060);
+	ctl_apb_wr(0x400, 0x00000000);
+	ctl_apb_wr(0x404, 0x0000000f);
+	ctl_apb_wr(0x404, 0x0000100f);
+	ctl_apb_wr(0x404, 0x0000100f);
+	ctl_apb_wr(0x404, 0x0000100f);
+	ctl_apb_wr(0x408, 0x0000400f);
+	ctl_apb_wr(0x408, 0x0000500f);
+	ctl_apb_wr(0x408, 0x0000500f);
+	ctl_apb_wr(0x408, 0x0000100f);
+	ctl_apb_rd(0x030);
+	ctl_apb_wr(0x030, 0x00000020);
 #endif
 #endif
 
@@ -604,6 +599,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 #ifdef SDRAM_SPEED_1600
 	prn_string("SDRAM_SPEED_1600");
 	prn_string("\n");
+	#ifdef PLATFORM_SP7350
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
 	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
@@ -615,6 +611,19 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
 	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
+	#else
+	ctl_apb_wr(0x304, 0x00000000);
+	ctl_apb_rd(0x030);
+	ctl_apb_wr(0x030, 0x00000020);
+	ctl_apb_rd(0x030);
+	ctl_apb_wr(0x030, 0x00000020);
+	ctl_apb_rd(0x1c4);
+	ctl_apb_wr(0x1c4, 0x00000000);
+	ctl_apb_wr(0x320, 0x00000000);
+	ctl_apb_wr(0x1b0, 0x00000040);
+	ctl_apb_wr(0x1b0, 0x00000040);
+	ctl_apb_wr(0x304, 0x00000002);
+	#endif
 	ctl_apb_rd(0x00d0);//INIT0
 	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
 	ctl_apb_rd(0x0000);//MSTR 'h80080020

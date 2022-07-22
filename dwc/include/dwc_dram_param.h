@@ -307,7 +307,7 @@
 #define UMCTL2_200	0x00000008 //for 2G size
 #else
 #define UMCTL2_200	0x00000007 //for 4G size
-#endif 
+#endif
 #define UMCTL2_204	0x00000204
 #define UMCTL2_208	0x02040000
 #define UMCTL2_20C	0x00050406
@@ -318,7 +318,7 @@
 #define UMCTL2_21C	0x00000f07 //for 2G size
 #else
 #define UMCTL2_21C	0x00000f08 //for 4G size
-#endif 
+#endif
 #define UMCTL2_220	0x00000000
 
 #define UMCTL2_224	0x09090b0b
