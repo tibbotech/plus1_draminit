@@ -1053,8 +1053,8 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef SDRAM_SPEED_1600
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL800_SDRAM1600_PDDS.txt>
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0.txt>
 	#endif
 	#endif
 }
