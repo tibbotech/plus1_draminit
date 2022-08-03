@@ -985,11 +985,11 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 void dwc_ddrphy_phyinit_saveRetention(void)
 {
 	volatile unsigned int *addr;
-	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0x100000);
+	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0xFA280000);
 	prn_string("save retention value: ");
-	prn_dword0((unsigned int)ADDRESS_CONVERT(0x100000));
+	prn_dword0((unsigned int)ADDRESS_CONVERT(0xFA280000));
 	prn_string(" - ");
-	prn_dword((unsigned int)ADDRESS_CONVERT(0x110000));
+	prn_dword((unsigned int)ADDRESS_CONVERT(0xFA290000));
 
 	int regIndx=0;
 	addr = beg;
@@ -1008,6 +1008,42 @@ void dwc_ddrphy_phyinit_saveRetention(void)
 		addr++;
 	}
 }
+
+void dwc_ddrphy_phyinit_restoreRetention(void)
+{
+	volatile unsigned int *addr;
+	unsigned int *beg  = (unsigned int *)ADDRESS_CONVERT(0xFA280000);
+	unsigned int phyadr, val;
+	prn_string("restore retention value: ");
+	prn_dword0((unsigned int)ADDRESS_CONVERT(0xFA280000));
+	prn_string(" - ");
+	prn_dword((unsigned int)ADDRESS_CONVERT(0xFA290000));
+
+	int regIndx=0;
+	addr = beg;
+
+	dwc_ddrphy_apb_wr(0xd0000, 0x00);
+	dwc_ddrphy_apb_wr(0xc0080, 0x03);
+	for (regIndx = 0; regIndx < NumRegSaved; regIndx++)
+	{
+	    phyadr = *addr;
+		prn_string("regIndx: ");
+		prn_dword0(regIndx);
+		prn_string("; Address: ");
+		prn_dword0(phyadr);
+		addr++;
+
+	    val = *addr;
+		prn_string("; Value: ");
+		prn_dword0(val);
+		prn_string("\n");
+		addr++;
+		dwc_ddrphy_apb_wr(phyadr, val);
+	}
+	dwc_ddrphy_apb_wr(0xc0080, 0x02);
+	dwc_ddrphy_apb_wr(0xd0000, 0x01);
+}
+
 
 void dwc_ddrphy_phyinit_main(void)
 {
@@ -1166,6 +1202,7 @@ int dram_init(unsigned int dram_id)
 
 		prn_string("dram_init_end\n");
 		//dwc_ddrphy_phyinit_saveRetention();
+		//dwc_ddrphy_phyinit_restoreRetention();
 		return SUCCESS;
 	} // end of for loop :: loop_time for initial & training time control
 
