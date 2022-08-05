@@ -175,6 +175,7 @@ UINT16 dwc_ddrphy_apb_rd(UINT32 adr)
 
 #define IMEM_ADDR 0x50000
 #define DMEM_ADDR 0x54000
+#define DIA_DMEM_ADDR 0x54200
 #define mem_size 128
 unsigned int sum = 0;
 unsigned int mem[mem_size];
@@ -909,7 +910,7 @@ void dwc_ddrphy_phyinit_F_loadDMEM_of_SP(int pstate, int Train2D)
 		offset = offset + sizeof(struct xboot_hdr) + xhdr->length;//xboot+im1d+dm1d+im2d+dm2d+imda  length
 		xhdr = (struct xboot_hdr*)(SPI_FLASH_BASE + SPI_XBOOT_OFFSET + offset);
 		if (Train2D == 2)
-			LoadBinCode(2,offset,DMEM_ADDR);
+			LoadBinCode(2,offset,DIA_DMEM_ADDR);
 	}
 	else if((bootdevice == EMMC_BOOT) || (bootdevice == SDCARD_ISP) || (bootdevice == USB_ISP))
 	{
