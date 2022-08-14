@@ -25,12 +25,12 @@ void dwc_ddrphy_phyinit_Diagnostic_test(void)
 	dwc_ddrphy_phyinit_F_loadDMEM(0, 2);
 
 	dwc_ddrphy_phyinit_userCustom_io_write16(0xd0000,0);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54200,0x05);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54201,0x0102);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54202,0);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54203,0x00);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54204,0);
-	dwc_ddrphy_phyinit_userCustom_io_write16(0x54205,0x100);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54200,0x06);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54201,0x01);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54202,0x3f00);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54203,0xff);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54204,0x100);
+	dwc_ddrphy_phyinit_userCustom_io_write16(0x54205,0xff00);
 	dwc_ddrphy_phyinit_userCustom_io_write16(0x54206,0);
 	dwc_ddrphy_phyinit_userCustom_io_write16(0x54207,0);
 	dwc_ddrphy_phyinit_userCustom_io_write16(0x54208,0);
