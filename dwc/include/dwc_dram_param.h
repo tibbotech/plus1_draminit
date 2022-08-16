@@ -9,7 +9,9 @@
 #endif
 //#define STREAM_MESSAGE
 #define NANYA
-//#define MICRON
+//#define MT53D1024M32D4
+//#define MT53E1G32D2
+
 
 #define UMCTL2_0_1      2 //device_config: x16 device
 #define UMCTL2_0_2      0 //frequency_ratio: 1:2 Mode
