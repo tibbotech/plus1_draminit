@@ -592,14 +592,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #endif
 
 #ifdef NANYA
-	prn_string("NANYA");
-	prn_string("\n");
+	prn_string("NANYA\n");
 #elif defined(MT53D1024M32D4)
-	prn_string("MT53D1024M32D4");
-	prn_string("\n");
+	prn_string("MT53D1024M32D4\n");
 #elif defined(MT53E1G32D2)
-	prn_string("MT53E1G32D2");
-	prn_string("\n");
+	prn_string("MT53E1G32D2\n");
 #endif
 	return 0;
 }
@@ -608,8 +605,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 int dwc_umctl2_init_after_ctl_rst(void)
 {
 #ifdef SDRAM_SPEED_1600
-	prn_string("SDRAM_SPEED_1600");
-	prn_string("\n");
+	prn_string("SDRAM_SPEED_1600\n");
 	#ifdef PLATFORM_SP7350
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
@@ -663,8 +659,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 #endif
 
 #ifdef SDRAM_SPEED_1200
-	prn_string("SDRAM_SPEED_1200");
-	prn_string("\n");
+	prn_string("SDRAM_SPEED_1200\n");
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
@@ -696,8 +691,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 #endif
 
 #ifdef SDRAM_SPEED_800
-	prn_string("SDRAM_SPEED_800");
-	prn_string("\n");
+	prn_string("SDRAM_SPEED_800\n");
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
@@ -729,8 +723,7 @@ int dwc_umctl2_init_after_ctl_rst(void)
 #endif
 
 #ifdef SDRAM_SPEED_666
-	prn_string("SDRAM_SPEED_666");
-	prn_string("\n");
+	prn_string("SDRAM_SPEED_666\n");
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
@@ -770,8 +763,7 @@ void polling_sw_cfg_done()
 	while (1) {
 		rd_data = ctl_apb_rd(0x324);
 		if (rd_data == 1) {
-			prn_string("Register programming done!!!");
-			prn_string("\n");
+			prn_string("Register programming done!!!\n");
 			break;
 		}
 	}
@@ -785,8 +777,7 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 	UINT16 rd_data, args, i, low_16bit, upper_16bit;
 	UINT8 train_test = 0;
     mp = 0;
-	prn_string("Start to wait for the training firmware to complete v.00 !!!");
-	prn_string("\n");
+	prn_string("Start to wait for the training firmware to complete v.00 !!!\n");
 	while (train_test == 0) {
 		while (1) {
 			rd_data = dwc_ddrphy_apb_rd(0xd0004);/* When set to 0, the PMU has a message for the user */
@@ -815,43 +806,34 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 		switch (rd_data & 0xffff) {
 			case 0x00:
 				//train_test = 1;
-				prn_string("End of initialization.");
-				prn_string("\n");
+				prn_string("End of initialization.\n");
 				break;
 			case 0x01:
-				prn_string("End of fine write leveling.");
-				prn_string("\n");
+				prn_string("End of fine write leveling.\n");
 				break;
 			case 0x02:
-				prn_string("End of read enable training.");
-				prn_string("\n");
+				prn_string("End of read enable training.\n");
 				break;
 			case 0x03:
-				prn_string("End of read delay center optimization.");
-				prn_string("\n");
+				prn_string("End of read delay center optimization.\n");
 				break;
 			case 0x04:
-				prn_string("End of write delay center optimization.");
-				prn_string("\n");
+				prn_string("End of write delay center optimization.\n");
 				break;
 			case 0x05:
-				prn_string("End of 2D read delay/voltage center optimization.");
-				prn_string("\n");
+				prn_string("End of 2D read delay/voltage center optimization.\n");
 				break;
 			case 0x06:
-				prn_string("End of 2D write delay/voltage center optimization.");
-				prn_string("\n");
+				prn_string("End of 2D write delay/voltage center optimization.\n");
 				break;
 			case 0x07:
 				train_test = 1;
-				prn_string("Training has run successfully.(firmware complete)");
-				prn_string("\n");
+				prn_string("Training has run successfully.(firmware complete)\n");
 				mp = 1;
 				break;
 			case 0x08:
 				#ifdef STREAM_MESSAGE
-				prn_string("Start streaming message mode.");
-				prn_string("\n");
+				prn_string("Start streaming message mode.\n");
 				#endif
 				while(1)
                 {
@@ -904,36 +886,28 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				}
 				break;
 			case 0x09:
-				prn_string("End of max read latency training.");
-				prn_string("\n");
+				prn_string("End of max read latency training.\n");
 				break;
 			case 0x0a:
-				prn_string("End of read dq deskew training.");
-				prn_string("\n");
+				prn_string("End of read dq deskew training.\n");
 				break;
 			case 0x0b:
-				prn_string("Reserved.");
-				prn_string("\n");
+				prn_string("Reserved.\n");
 				break;
 			case 0x0c:
-				prn_string("End of all DB training(MREP/DWL/MRD/MWD complete).");
-				prn_string("\n");
+				prn_string("End of all DB training(MREP/DWL/MRD/MWD complete).\n");
 				break;
 			case 0x0d:
-				prn_string("End of CA training.");
-				prn_string("\n");
+				prn_string("End of CA training.\n");
 				break;
 			case 0xfd:
-				prn_string("End of MPR read delay center optimization.");
-				prn_string("\n");
+				prn_string("End of MPR read delay center optimization.\n");
 				break;
 			case 0xfe:
-				prn_string("End of Wrtie leveling coarse delay.");
-				prn_string("\n");
+				prn_string("End of Wrtie leveling coarse delay.\n");
 				break;
 			case 0xff:
-				prn_string("Training has failed.(firmware complete)");
-				prn_string("\n");
+				prn_string("Training has failed.(firmware complete)\n");
 				while(1);
 				return;
 		}

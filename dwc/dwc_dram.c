@@ -1048,7 +1048,7 @@ void dwc_ddrphy_phyinit_restoreRetention(void)
 
 void dwc_ddrphy_phyinit_main(void)
 {
-	prn_string("dwc_ddrphy_phyinit_main ver.23\n");
+	prn_string("dwc_ddrphy_phyinit_main ver.24\n");
 	mp = 1;
 	#ifdef PLATFORM_SP7350
 	//runtimeConfig.RetEn = 1;
