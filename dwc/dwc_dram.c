@@ -1057,36 +1057,24 @@ void dwc_ddrphy_phyinit_main(void)
 
 	#elif defined(PLATFORM_Q645)
 	#ifdef SDRAM_SPEED_666
-	#if 0
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL333_SDRAM666_PDDS.txt>
-	#endif
-	#if 1
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
 	#endif
-	#endif
 
 	#ifdef SDRAM_SPEED_800
-	#if 0
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL400_SDRAM800_PDDS.txt>
-	#endif
-	#if 1
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
-	#endif
 	#endif
 
 	#ifdef SDRAM_SPEED_1200
 	#if 0
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL600_SDRAM1200_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d_PLL600_SDRAM1200_PDDS.txt>
-	#endif
-	#if 1
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2.txt>
 	#endif
+	#if 1
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA\n");
+	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
+	#endif	
 	#endif
 
 	#ifdef SDRAM_SPEED_1600
