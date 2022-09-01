@@ -395,14 +395,14 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#ifdef NANYA
+#if defined(NANYA) || defined(MT53E1G32D2)
 	ctl_apb_wr(0x0f4, 0x0000032f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);
 #endif
 	ctl_apb_wr(0x100, 0x11100d11);
 	ctl_apb_wr(0x104, 0x00030418);
-#ifdef NANYA
+#if defined(NANYA) || defined(MT53E1G32D2)
 	ctl_apb_wr(0x108, 0x04070a0d);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x108, 0x060c0e12);
@@ -510,7 +510,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#ifdef NANYA
+#if defined(NANYA) || defined(MT53E1G32D2)
 	ctl_apb_wr(0x0f4, 0x0000033f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);

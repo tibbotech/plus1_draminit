@@ -1067,28 +1067,20 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef SDRAM_SPEED_1200
-	#if 0
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_23_2400_ASIC_RANK2.txt>
-	#endif
-	#if 1
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA\n");
 	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
-	#endif	
 	#endif
 
 	#ifdef SDRAM_SPEED_1600
-	#ifdef MT53E1G32D2
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1.txt>
-	#else
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test.txt>
-	#endif
-
-	#if 0
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_28_3200_ASIC_RANK2_PLL_quick2d_0\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_28_3200_ASIC_RANK2_PLL_quick2d_0.txt>
+	#ifdef NANYA
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332\n");
+		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332.txt>
+	#elif defined(MT53E1G32D2)
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1\n");
+		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1.txt>
+	#elif defined(MT53D1024M32D4)
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test\n");
+		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test.txt>
 	#endif
 	#endif
 	#endif
