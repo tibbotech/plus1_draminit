@@ -209,7 +209,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x1b8, 0x00000008);
 	ctl_apb_wr(0x1c0, 0x00000000);
 	ctl_apb_wr(0x1c4, 0x00000000);
-#ifdef MT53E1G32D2
+#ifdef MT53E1G32D2_A
 	ctl_apb_wr(0x200, 0x00000018);
 #else
 	ctl_apb_wr(0x200, 0x00000017);
@@ -220,7 +220,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x210, 0x00001F1F);
 	ctl_apb_wr(0x214, 0x070F0707);
 	ctl_apb_wr(0x218, 0x07070707);
-#ifdef MT53E1G32D2
+#ifdef MT53E1G32D2_A
 	ctl_apb_wr(0x21c, 0x00000F07);
 #else
 	ctl_apb_wr(0x21c, 0x00000F08);
@@ -395,14 +395,14 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#if defined(NANYA) || defined(MT53E1G32D2)
+#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x0f4, 0x0000032f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);
 #endif
 	ctl_apb_wr(0x100, 0x11100d11);
 	ctl_apb_wr(0x104, 0x00030418);
-#if defined(NANYA) || defined(MT53E1G32D2)
+#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x108, 0x04070a0d);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x108, 0x060c0e12);
@@ -510,7 +510,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#if defined(NANYA) || defined(MT53E1G32D2)
+#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x0f4, 0x0000033f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);
@@ -594,9 +594,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #ifdef NANYA
 	prn_string("NANYA\n");
 #elif defined(MT53D1024M32D4)
-	prn_string("MT53D1024M32D4\n");
-#elif defined(MT53E1G32D2)
-	prn_string("MT53E1G32D2\n");
+	prn_string("MT53D1024M32D4, 2rank, FBGA=D9WHT\n");
+#elif defined(MT53E1G32D2_A)
+	prn_string("MT53E1G32D2_A, 1rank, FBGA=D9ZQX\n");
+#elif defined(MT53E1G32D2_B)
+	prn_string("MT53E1G32D2_B, 2rank, FBGA=D8CJG\n");
 #endif
 	return 0;
 }

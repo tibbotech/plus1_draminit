@@ -9,8 +9,9 @@
 #endif
 //#define STREAM_MESSAGE
 #define NANYA
-//#define MT53D1024M32D4
-//#define MT53E1G32D2
+//#define MT53D1024M32D4 /*2 rank,FBGA code = D9WHT*/
+//#define MT53E1G32D2_A  /*1 rank,FBGA code = D9ZQX*/
+//#define MT53E1G32D2_B  /*2 rank, FBGA code = D8CJG*/
 
 
 #define UMCTL2_0_1      2 //device_config: x16 device
