@@ -351,6 +351,8 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)
 			|| (mem[j] == IMDA_HDR_MAGIC) || (mem[j] == DMDA_HDR_MAGIC)) //j is array number
 		{
+			//prn_string("j=");
+			//prn_dword(j);
 			//prn_string("mem[j]=");
 			//prn_dword(mem[j]);
 			img_name = mem[j];
@@ -360,38 +362,41 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				break;
 			}
 
-			if(mem[j] == IM1D_HDR_MAGIC)
-				IMEM1d_len = mem[j+2];
-			else if(mem[j] == DM1D_HDR_MAGIC)
-				DMEM1d_len = mem[j+2];
-			else if(mem[j] == IM2D_HDR_MAGIC)
-				IMEM2d_len = mem[j+2];
-			else if(mem[j] == DM2D_HDR_MAGIC)
-				DMEM2d_len = mem[j+2];
-			else if(mem[j] == IMDA_HDR_MAGIC)
-				IMDA_len = mem[j+2];
-			else if(mem[j] == DMDA_HDR_MAGIC)
-				DMDA_len = mem[j+2];
-			//prn_string("leng=");
-			//prn_dword(mem[j+2]);
 			img_length = mem[j+2];
-			if((j+2) == 127)
-			{
+			//prn_string("img_length=");
+			//prn_dword(img_length);
+
+			if (img_name == IM1D_HDR_MAGIC)
+				IMEM1d_len = img_length;
+			else if(img_name == DM1D_HDR_MAGIC)
+				DMEM1d_len = img_length;
+			else if(img_name == IM2D_HDR_MAGIC)
+				IMEM2d_len = img_length;
+			else if(img_name == DM2D_HDR_MAGIC)
+				DMEM2d_len = img_length;
+			else if(img_name == IMDA_HDR_MAGIC)
+				IMDA_len = img_length;
+			else if(img_name == DMDA_HDR_MAGIC)
+				DMDA_len = img_length;
+
+			if (j == 125) {
 				last_img_length_array_cnt = 127;
 				break;
 			}
-			//prn_string("checksum=");
-			//prn_dword(mem[j+3]);
+
 			img_sum =  mem[j+3];
-			//prn_string("j=");
-			//prn_dword(j);
-			if((j+8) > 127) //add header length 8*4=32bytes overlap block size
-			{
-				i = (j+8-1)-127;//i is counter.
+			//prn_string("img_sum=");
+			//prn_dword(img_sum);
+
+			if (j >= 120) {
+				// Header locates at the lastest 8 words of a sector.
 				for (addr = 0; addr < mem_size; addr++)
 					mem[addr]=0;
+
 				offset++;
 				ReadSector(offset, 1, mem);
+
+				i = j - 120;
 				tcpsum(i, 128, mem, 0);//checksum
 			}
 			else
@@ -399,13 +404,14 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				i = j+8;
 				tcpsum(i, 128, mem, 0);//checksum
 			}
-			for (j = i; j < 128; j++) {
+
+			for (; i < 128; i++) {
 				/*****write register *********/
-				word16 = mem[j]&0xFFFF;
+				word16 = mem[i] & 0xFFFF;
 				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
 				//printf_offset_value(mem_offset,word16);
 				mem_offset++;
-				word16 = (mem[j]>>16)&0xFFFF;
+				word16 = (mem[i] >> 16) & 0xFFFF;
 				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
 				//printf_offset_value(mem_offset,word16);
 				mem_offset++;
@@ -413,6 +419,10 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			}
 			break;
 		}
+	}
+	if (j == 128) {
+		prn_string("Missing f/w header!\n");
+		while (1);
 	}
 
 	if((last_img_name_array_cnt == 126) || (last_img_name_array_cnt == 127)
@@ -439,15 +449,31 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 			img_sum =  mem[0];
 			i = 5;
 		}
+
+		if ((last_img_name_array_cnt == 126) || (last_img_name_array_cnt == 127)) {
+			if (img_name == IM1D_HDR_MAGIC)
+				IMEM1d_len = img_length;
+			else if (img_name == DM1D_HDR_MAGIC)
+				DMEM1d_len = img_length;
+			else if(img_name == IM2D_HDR_MAGIC)
+				IMEM2d_len = img_length;
+			else if(img_name == DM2D_HDR_MAGIC)
+				DMEM2d_len = img_length;
+			else if(img_name == IMDA_HDR_MAGIC)
+				IMDA_len = img_length;
+			else if(img_name == DMDA_HDR_MAGIC)
+				DMDA_len = img_length;
+		}
+
 		tcpsum(i, 128, mem, 0);//checksum
 
-		for (j = i; j < 128; j++) {
+		for (; i < 128; i++) {
 			/*****write register *********/
-			word16 = mem[j]&0xFFFF;
+			word16 = mem[i] & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
 			//printf_offset_value(mem_offset,word16);
 			mem_offset++;
-			word16 = (mem[j]>>16)&0xFFFF;
+			word16 = (mem[i] >> 16) & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
 			//printf_offset_value(mem_offset,word16);
 			mem_offset++;
