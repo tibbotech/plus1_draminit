@@ -325,7 +325,7 @@ int ReadSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrP
 void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsigned int MEM_ADDR)
 {
 	unsigned short i, j, addr, word16;
-	unsigned short mem_offset, img_length,cnt;
+	unsigned short mem_offset, img_length, cnt;
 	unsigned int img_name, img_sum;
 	unsigned short last_img_name_array_cnt, last_img_length_array_cnt;
 
@@ -344,27 +344,25 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 
 	//Read first block
 	for (addr = 0; addr < mem_size; addr++)
-		mem[addr]=0;
+		mem[addr] = 0;
+
 	ReadSector(offset, 1, mem);
+
 	for (j = 0; j < 128; j++) {
-		if((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
+		if ((mem[j] == IM1D_HDR_MAGIC) || (mem[j] == DM1D_HDR_MAGIC)
 			|| (mem[j] == IM2D_HDR_MAGIC) || (mem[j] == DM2D_HDR_MAGIC)
-			|| (mem[j] == IMDA_HDR_MAGIC) || (mem[j] == DMDA_HDR_MAGIC)) //j is array number
-		{
-			//prn_string("j=");
-			//prn_dword(j);
-			//prn_string("mem[j]=");
-			//prn_dword(mem[j]);
+			|| (mem[j] == IMDA_HDR_MAGIC) || (mem[j] == DMDA_HDR_MAGIC)) {
+
+			//prn_string("j="); prn_dword(j);
+			//prn_string("mem[j]="); prn_dword(mem[j]);
 			img_name = mem[j];
-			if((j == 126) || (j == 127))
-			{
+			if ((j == 126) || (j == 127)) {
 				last_img_name_array_cnt = j;
 				break;
 			}
 
-			img_length = mem[j+2];
-			//prn_string("img_length=");
-			//prn_dword(img_length);
+			img_length = mem[j + 2];
+			//prn_string("img_length="); prn_dword(img_length);
 
 			if (img_name == IM1D_HDR_MAGIC)
 				IMEM1d_len = img_length;
@@ -384,36 +382,33 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				break;
 			}
 
-			img_sum =  mem[j+3];
-			//prn_string("img_sum=");
-			//prn_dword(img_sum);
+			img_sum = mem[j + 3];
+			//prn_string("img_sum="); prn_dword(img_sum);
 
 			if (j >= 120) {
 				// Header locates at the lastest 8 words of a sector.
 				for (addr = 0; addr < mem_size; addr++)
-					mem[addr]=0;
+					mem[addr] = 0;
 
 				offset++;
 				ReadSector(offset, 1, mem);
 
 				i = j - 120;
-				tcpsum(i, 128, mem, 0);//checksum
+			} else {
+				i = j + 8;
 			}
-			else
-			{
-				i = j+8;
-				tcpsum(i, 128, mem, 0);//checksum
-			}
+			tcpsum(i, 128, mem, 0); //checksum
 
 			for (; i < 128; i++) {
 				/*****write register *********/
 				word16 = mem[i] & 0xFFFF;
 				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-				//printf_offset_value(mem_offset,word16);
+				//printf_offset_value(mem_offset, word16);
 				mem_offset++;
+
 				word16 = (mem[i] >> 16) & 0xFFFF;
 				dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-				//printf_offset_value(mem_offset,word16);
+				//printf_offset_value(mem_offset, word16);
 				mem_offset++;
 				img_length -= 4;
 			}
@@ -425,28 +420,25 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 		while (1);
 	}
 
-	if((last_img_name_array_cnt == 126) || (last_img_name_array_cnt == 127)
-		|| (last_img_length_array_cnt == 127))
-	{
+	if ((last_img_name_array_cnt == 126) || (last_img_name_array_cnt == 127)
+		|| (last_img_length_array_cnt == 127)) {
+
 		for (addr = 0; addr < mem_size; addr++)
-			mem[addr]=0;
+			mem[addr] = 0;
+
 		offset++;
 		ReadSector(offset, 1, mem);
-		if(last_img_name_array_cnt == 126)
-		{
+
+		if (last_img_name_array_cnt == 126) {
 			img_length = mem[0];
-			img_sum =  mem[1];
+			img_sum = mem[1];
 			i = 6;
-		}
-		else if(last_img_name_array_cnt == 127)
-		{
+		} else if (last_img_name_array_cnt == 127) {
 			img_length = mem[1];
-			img_sum =  mem[2];
+			img_sum = mem[2];
 			i = 7;
-		}
-		else if(last_img_length_array_cnt == 127)
-		{
-			img_sum =  mem[0];
+		} else if (last_img_length_array_cnt == 127) {
+			img_sum = mem[0];
 			i = 5;
 		}
 
@@ -455,74 +447,80 @@ void LoadBinCodeForSectorMode(unsigned char Train2D, unsigned int offset, unsign
 				IMEM1d_len = img_length;
 			else if (img_name == DM1D_HDR_MAGIC)
 				DMEM1d_len = img_length;
-			else if(img_name == IM2D_HDR_MAGIC)
+			else if (img_name == IM2D_HDR_MAGIC)
 				IMEM2d_len = img_length;
-			else if(img_name == DM2D_HDR_MAGIC)
+			else if (img_name == DM2D_HDR_MAGIC)
 				DMEM2d_len = img_length;
-			else if(img_name == IMDA_HDR_MAGIC)
+			else if (img_name == IMDA_HDR_MAGIC)
 				IMDA_len = img_length;
-			else if(img_name == DMDA_HDR_MAGIC)
+			else if (img_name == DMDA_HDR_MAGIC)
 				DMDA_len = img_length;
 		}
 
-		tcpsum(i, 128, mem, 0);//checksum
+		tcpsum(i, 128, mem, 0); //checksum
 
 		for (; i < 128; i++) {
 			/*****write register *********/
 			word16 = mem[i] & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-			//printf_offset_value(mem_offset,word16);
+			//printf_offset_value(mem_offset, word16);
 			mem_offset++;
+
 			word16 = (mem[i] >> 16) & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-			//printf_offset_value(mem_offset,word16);
+			//printf_offset_value(mem_offset, word16);
 			mem_offset++;
 			img_length -= 4;
 		}
 	}
 
 	//Read middle block
-	while(img_length > 512)
-	{
+	while (img_length > 512) {
 		for (addr = 0; addr < mem_size; addr++)
-			mem[addr]=0;
+			mem[addr] = 0;
+
 		offset++;
 		ReadSector(offset, 1, mem);
-		tcpsum(0, 128, mem, 0);//checksum
+
+		tcpsum(0, 128, mem, 0); //checksum
+
 		for (j = 0; j < 128; j++) {
 			/*****write register *********/
-			word16 = mem[j]&0xFFFF;
+			word16 = mem[j] & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-			//printf_offset_value(mem_offset,word16);
+			//printf_offset_value(mem_offset, word16);
 			mem_offset++;
-			word16 = (mem[j]>>16)&0xFFFF;
+
+			word16 = (mem[j] >> 16) & 0xFFFF;
 			dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-			//printf_offset_value(mem_offset,word16);
+			//printf_offset_value(mem_offset, word16);
 			mem_offset++;
 		}
 		img_length -= 512;
-		//prn_string("img_length");
-		//prn_dword(img_length);
+		//prn_string("img_length"); prn_dword(img_length);
 	}
 
 	//Read last block
 	for (addr = 0; addr < mem_size; addr++)
-		mem[addr]=0;
+		mem[addr] = 0;
+
 	offset++;
 	ReadSector(offset, 1, mem);
-	cnt = img_length/4;
-	tcpsum(0, cnt, mem, 1);//checksum
-	//prn_string("cnt=");
-	//prn_dword(cnt);
+
+	cnt = img_length / 4;
+	tcpsum(0, cnt, mem, 1); //checksum
+
+	//prn_string("cnt="); prn_dword(cnt);
 	for (j = 0; j < cnt; j++){
 		/*****write register *********/
-		word16 = mem[j]&0xFFFF;
+		word16 = mem[j] & 0xFFFF;
 		dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-		//printf_offset_value(mem_offset,word16);
+		//printf_offset_value(mem_offset, word16);
 		mem_offset++;
-		word16 = (mem[j]>>16)&0xFFFF;
+
+		word16 = (mem[j] >> 16) & 0xFFFF;
 		dwc_ddrphy_apb_wr(MEM_ADDR+mem_offset, word16);
-		//printf_offset_value(mem_offset,word16);
+		//printf_offset_value(mem_offset, word16);
 		mem_offset++;
 	}
 
