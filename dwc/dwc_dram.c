@@ -572,8 +572,6 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 			img_length = buf[i+2];
 			img_sum    = buf[i+3];
 			prn_string("img_name="); prn_dword(img_name);
-			prn_string("img_length="); prn_dword(img_length);
-			prn_string("img_sum="); prn_dword(img_sum);
 
 			// Check if BIN image is correct
 			if (((Train2D == 0) && (mem_type == 0) && (img_name != IM1D_HDR_MAGIC)) ||
@@ -606,15 +604,16 @@ void LoadBinForNAND(int Train2D, int mem_type, u32 pg_off, UINT32 *buf)
 				}
 
 				// Get BIN checksum and length again
-				if (j > 4) {
+				if (j >= 5) {
 					img_sum = buf[j-5];
-					//prn_string("img_sum="); prn_dword(img_sum);
 				}
-				if (j > 5) {
-					img_length = buf[j-4];
-					//prn_string("img_length="); prn_dword(img_length);
+				if (j >= 6) {
+					img_length = buf[j-6];
 				}
 			}
+			prn_string("img_length="); prn_dword(img_length);
+			prn_string("img_sum="); prn_dword(img_sum);
+
 			tcpsum(j, cnt, buf, 0);
 
 			// Store BIN file length. Add it to header length, 32 bytes.
