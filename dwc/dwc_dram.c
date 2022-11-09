@@ -218,22 +218,22 @@ void DwcCheckSum(unsigned int magic, unsigned int checksum)
 		else if (magic == DMDA_HDR_MAGIC)
 			prn_string("DMDA ");
 
-		prn_string("checksum error!!!!\n");
+		prn_string("checksum error!\n");
 		prn_string("sum="); prn_dword(sum);
 		prn_string("checksum="); prn_dword((checksum));
 	} else {
 		if (magic == IM1D_HDR_MAGIC)
-			prn_string("1D IMEM checksum ok!!!!\n");
+			prn_string("1D IMEM checksum ok\n");
 		else if (magic == DM1D_HDR_MAGIC)
-			prn_string("1D DMEM checksum ok!!!!\n");
+			prn_string("1D DMEM checksum ok\n");
 		else if (magic == IM2D_HDR_MAGIC)
-			prn_string("2D IMEM checksum ok!!!!\n");
+			prn_string("2D IMEM checksum ok\n");
 		else if (magic == DM2D_HDR_MAGIC)
-			prn_string("2D DMEM checksum ok!!!!\n");
+			prn_string("2D DMEM checksum ok\n");
 		else if (magic == IMDA_HDR_MAGIC)
-			prn_string("IMDA checksum ok!!!!\n");
+			prn_string("IMDA checksum ok\n");
 		else if (magic == DMDA_HDR_MAGIC)
-			prn_string("DMDA checksum ok!!!!\n");
+			prn_string("DMDA checksum ok\n");
 	}
 	sum = 0;    // Reset DWC checksum
 }
@@ -764,22 +764,22 @@ void LoadMEMForNAND(int Train2D, int mem_type)
 
 	if (mem_type == 0) {
 		if (Train2D == 0) {
-			pg_cnt = XBOOT_len + sz_sect - 1;
+			pg_cnt = XBOOT_len;
 		} else {
 			//prn_string("DMEM1d_len="); prn_dword(DMEM1d_len);
-			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len + sz_sect - 1;
+			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len;
 		}
 	} else {
 		if (Train2D == 0) {
 			//prn_string("IMEM1d_len="); prn_dword(IMEM1d_len);
-			pg_cnt = XBOOT_len + IMEM1d_len + sz_sect - 1;
+			pg_cnt = XBOOT_len + IMEM1d_len;
 		} else {
 			//prn_string("IMEM2d_len="); prn_dword(IMEM2d_len);
-			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len + IMEM2d_len + sz_sect - 1;
+			pg_cnt = XBOOT_len + IMEM1d_len + DMEM1d_len + IMEM2d_len;
 		}
 	}
 	pg_cnt /= sz_sect;
-	pg_off = pg_off + pg_cnt - 1;
+	pg_off = pg_off + pg_cnt;
 
 	LoadBinForNAND(Train2D, mem_type, pg_off, (u32 *)buf);
 }
@@ -1199,7 +1199,7 @@ int dram_init(unsigned int dram_id)
 		ret = ctl_trigger_init_and_wait_normal();
 
 		if (ret == WAIT_FLAG_FAIL) {
-			prn_string("WAIT_FLAG_FAIL!!!!\n");
+			prn_string("WAIT_FLAG_FAIL!\n");
 			return FAIL;
 		} else if (ret == 0) {
 			prn_string("loop_time = ");
