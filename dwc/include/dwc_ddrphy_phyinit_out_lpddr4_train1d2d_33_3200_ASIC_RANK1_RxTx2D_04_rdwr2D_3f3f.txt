@@ -1,5 +1,5 @@
 //========================== Note Path ==========================
-// /home/dqak645temp/dz.he/FW/lpddr4/37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_33.2/dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt
+// /home/dqak645temp/dz.he/FW/lpddr4/33_3200_ASIC_RANK1/dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt
 //========================== Note Path ==========================
 
 // [dwc_ddrphy_phyinit_main] Start of dwc_ddrphy_phyinit_main()
@@ -30,9 +30,9 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PhyDrvImpedance to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].BPZNResVal to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].EnabledDQsChA to 0x10
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChA to 0x3
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChA to 0x1
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].EnabledDQsChB to 0x10
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChB to 0x3
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChB to 0x1
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].Pstate to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].DRAMFreq to 0xc80
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].PllBypassEn to 0x0
@@ -41,9 +41,9 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].PhyDrvImpedance to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].BPZNResVal to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].EnabledDQsChA to 0x10
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].CsPresentChA to 0x3
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].CsPresentChA to 0x1
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].EnabledDQsChB to 0x10
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].CsPresentChB to 0x3
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].CsPresentChB to 0x1
 //[dwc_ddrphy_phyinit_calcMb] End of dwc_ddrphy_phyinit_calcMb()
 // // [phyinit_print_dat] // ####################################################
 // // [phyinit_print_dat] // 
@@ -63,7 +63,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputBasic.Frequency[1] = 1067
 // // [phyinit_print_dat] userInputBasic.Frequency[2] = 933
 // // [phyinit_print_dat] userInputBasic.Frequency[3] = 800
-// // [phyinit_print_dat] userInputBasic.NumRank_dfi0 = 2
+// // [phyinit_print_dat] userInputBasic.NumRank_dfi0 = 1
 // // [phyinit_print_dat] userInputBasic.ReadDBIEnable[0] = 0
 // // [phyinit_print_dat] userInputBasic.ReadDBIEnable[1] = 0
 // // [phyinit_print_dat] userInputBasic.ReadDBIEnable[2] = 0
@@ -86,7 +86,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputBasic.PllBypass[3] = 0
 // // [phyinit_print_dat] userInputBasic.Dfi1Exists = 1
 // // [phyinit_print_dat] userInputBasic.Train2D = 0
-// // [phyinit_print_dat] userInputBasic.NumRank_dfi1 = 2
+// // [phyinit_print_dat] userInputBasic.NumRank_dfi1 = 1
 // // [phyinit_print_dat] userInputBasic.NumActiveDbyteDfi0 = 2
 // // [phyinit_print_dat] userInputBasic.NumPStates = 1
 // // [phyinit_print_dat] userInputBasic.NumActiveDbyteDfi1 = 2
@@ -118,7 +118,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.SnpsUmctlF0RC5x[3] = 0
-// // [phyinit_print_dat] userInputAdvanced.WDQSExt = 1
+// // [phyinit_print_dat] userInputAdvanced.WDQSExt = 0
 // // [phyinit_print_dat] userInputAdvanced.RxEnBackOff = 1
 // // [phyinit_print_dat] userInputAdvanced.Lp4LowPowerDrv = 0
 // // [phyinit_print_dat] userInputAdvanced.TrainSequenceCtrl = 0
@@ -226,15 +226,15 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].Share2DVrefResult = 0x1
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyConfigOverride = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChA = 0x10
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChA = 0x3
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChA = 0x1
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A0 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A0 = 0x1c
@@ -243,25 +243,25 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A1 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A1 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A1 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CATerminatingRankChA = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChB = 0x10
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChB = 0x3
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChB = 0x1
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B0 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B0 = 0x1c
@@ -270,10 +270,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B1 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B1 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B1 = 0x1c
@@ -314,15 +314,15 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].Voltage_Weight2D = 0x1f
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyConfigOverride = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].EnabledDQsChA = 0x10
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChA = 0x3
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChA = 0x1
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_A0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A0 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_A0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A0 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_A0 = 0x1c
@@ -331,25 +331,25 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A1 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_A1 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A1 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_A1 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR24_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].CATerminatingRankChA = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].EnabledDQsChB = 0x10
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChB = 0x3
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChB = 0x1
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_B0 = 0x54
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B0 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B0 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_B0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B0 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B0 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B0 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_B0 = 0x1c
@@ -358,10 +358,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B1 = 0x2d
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B1 = 0x33
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_B1 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B1 = 0x66
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B1 = 0x5c
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B1 = 0x47
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_B1 = 0x1c
@@ -534,8 +534,8 @@ dwc_ddrphy_apb_wr(0x90204,0x0);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x1
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4PostambleExt to 0x1
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl to 0x1e3
-dwc_ddrphy_apb_wr(0x20024,0x1e3);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl to 0xe3
+dwc_ddrphy_apb_wr(0x20024,0xe3);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DbyteDllModeCntrl to 0x2
 dwc_ddrphy_apb_wr(0x2003a,0x2);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DllLockParam to 0x212
@@ -869,10 +869,10 @@ dwc_ddrphy_apb_wr(0x54003,0xc80);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
 dwc_ddrphy_apb_wr(0x54006,0x12);
-dwc_ddrphy_apb_wr(0x54007,0x0);
+dwc_ddrphy_apb_wr(0x54007,0x0004);
 dwc_ddrphy_apb_wr(0x54008,0x131f);
 dwc_ddrphy_apb_wr(0x54009,0x4);
-dwc_ddrphy_apb_wr(0x5400a,0x0);
+dwc_ddrphy_apb_wr(0x5400a,0x3f3f);
 dwc_ddrphy_apb_wr(0x5400b,0x2);
 dwc_ddrphy_apb_wr(0x5400c,0x0);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
@@ -880,7 +880,7 @@ dwc_ddrphy_apb_wr(0x5400e,0x0);
 dwc_ddrphy_apb_wr(0x5400f,0x100);
 dwc_ddrphy_apb_wr(0x54010,0x0);
 dwc_ddrphy_apb_wr(0x54011,0x0);
-dwc_ddrphy_apb_wr(0x54012,0x310);
+dwc_ddrphy_apb_wr(0x54012,0x110);
 dwc_ddrphy_apb_wr(0x54013,0x0);
 dwc_ddrphy_apb_wr(0x54014,0x0);
 dwc_ddrphy_apb_wr(0x54015,0x0);
@@ -889,14 +889,14 @@ dwc_ddrphy_apb_wr(0x54017,0x0);
 dwc_ddrphy_apb_wr(0x54018,0x0);
 dwc_ddrphy_apb_wr(0x54019,0x2d54);
 dwc_ddrphy_apb_wr(0x5401a,0x33);
-dwc_ddrphy_apb_wr(0x5401b,0x4733);
-dwc_ddrphy_apb_wr(0x5401c,0x5c28);
+dwc_ddrphy_apb_wr(0x5401b,0x4766);
+dwc_ddrphy_apb_wr(0x5401c,0x4728);
 dwc_ddrphy_apb_wr(0x5401d,0x0);
 dwc_ddrphy_apb_wr(0x5401e,0x1c);
 dwc_ddrphy_apb_wr(0x5401f,0x2d54);
 dwc_ddrphy_apb_wr(0x54020,0x33);
-dwc_ddrphy_apb_wr(0x54021,0x4733);
-dwc_ddrphy_apb_wr(0x54022,0x5c28);
+dwc_ddrphy_apb_wr(0x54021,0x4766);
+dwc_ddrphy_apb_wr(0x54022,0x4728);
 dwc_ddrphy_apb_wr(0x54023,0x0);
 dwc_ddrphy_apb_wr(0x54024,0x1c);
 dwc_ddrphy_apb_wr(0x54025,0x0);
@@ -906,7 +906,7 @@ dwc_ddrphy_apb_wr(0x54028,0x0);
 dwc_ddrphy_apb_wr(0x54029,0x0);
 dwc_ddrphy_apb_wr(0x5402a,0x0);
 dwc_ddrphy_apb_wr(0x5402b,0x1000);
-dwc_ddrphy_apb_wr(0x5402c,0x3);
+dwc_ddrphy_apb_wr(0x5402c,0x1);
 dwc_ddrphy_apb_wr(0x5402d,0x0);
 dwc_ddrphy_apb_wr(0x5402e,0x0);
 dwc_ddrphy_apb_wr(0x5402f,0x0);
@@ -914,15 +914,15 @@ dwc_ddrphy_apb_wr(0x54030,0x0);
 dwc_ddrphy_apb_wr(0x54031,0x0);
 dwc_ddrphy_apb_wr(0x54032,0x5400);
 dwc_ddrphy_apb_wr(0x54033,0x332d);
-dwc_ddrphy_apb_wr(0x54034,0x3300);
+dwc_ddrphy_apb_wr(0x54034,0x6600);
 dwc_ddrphy_apb_wr(0x54035,0x2847);
-dwc_ddrphy_apb_wr(0x54036,0x5c);
+dwc_ddrphy_apb_wr(0x54036,0x47);
 dwc_ddrphy_apb_wr(0x54037,0x1c00);
 dwc_ddrphy_apb_wr(0x54038,0x5400);
 dwc_ddrphy_apb_wr(0x54039,0x332d);
-dwc_ddrphy_apb_wr(0x5403a,0x3300);
+dwc_ddrphy_apb_wr(0x5403a,0x6600);
 dwc_ddrphy_apb_wr(0x5403b,0x2847);
-dwc_ddrphy_apb_wr(0x5403c,0x5c);
+dwc_ddrphy_apb_wr(0x5403c,0x47);
 dwc_ddrphy_apb_wr(0x5403d,0x1c00);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);
@@ -1077,10 +1077,10 @@ dwc_ddrphy_apb_wr(0x54003,0xc80);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
 dwc_ddrphy_apb_wr(0x54006,0x12);
-dwc_ddrphy_apb_wr(0x54007,0x0);
+dwc_ddrphy_apb_wr(0x54007,0x0004);
 dwc_ddrphy_apb_wr(0x54008,0x61);
 dwc_ddrphy_apb_wr(0x54009,0x4);
-dwc_ddrphy_apb_wr(0x5400a,0x0);
+dwc_ddrphy_apb_wr(0x5400a,0x3f3f);
 dwc_ddrphy_apb_wr(0x5400b,0x2);
 dwc_ddrphy_apb_wr(0x5400c,0x0);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
@@ -1088,7 +1088,7 @@ dwc_ddrphy_apb_wr(0x5400e,0x0);
 dwc_ddrphy_apb_wr(0x5400f,0x100);
 dwc_ddrphy_apb_wr(0x54010,0x1f7f);
 dwc_ddrphy_apb_wr(0x54011,0x0);
-dwc_ddrphy_apb_wr(0x54012,0x310);
+dwc_ddrphy_apb_wr(0x54012,0x110);
 dwc_ddrphy_apb_wr(0x54013,0x0);
 dwc_ddrphy_apb_wr(0x54014,0x0);
 dwc_ddrphy_apb_wr(0x54015,0x0);
@@ -1097,14 +1097,14 @@ dwc_ddrphy_apb_wr(0x54017,0x0);
 dwc_ddrphy_apb_wr(0x54018,0x0);
 dwc_ddrphy_apb_wr(0x54019,0x2d54);
 dwc_ddrphy_apb_wr(0x5401a,0x33);
-dwc_ddrphy_apb_wr(0x5401b,0x4733);
-dwc_ddrphy_apb_wr(0x5401c,0x5c28);
+dwc_ddrphy_apb_wr(0x5401b,0x4766);
+dwc_ddrphy_apb_wr(0x5401c,0x4728);
 dwc_ddrphy_apb_wr(0x5401d,0x0);
 dwc_ddrphy_apb_wr(0x5401e,0x1c);
 dwc_ddrphy_apb_wr(0x5401f,0x2d54);
 dwc_ddrphy_apb_wr(0x54020,0x33);
-dwc_ddrphy_apb_wr(0x54021,0x4733);
-dwc_ddrphy_apb_wr(0x54022,0x5c28);
+dwc_ddrphy_apb_wr(0x54021,0x4766);
+dwc_ddrphy_apb_wr(0x54022,0x4728);
 dwc_ddrphy_apb_wr(0x54023,0x0);
 dwc_ddrphy_apb_wr(0x54024,0x1c);
 dwc_ddrphy_apb_wr(0x54025,0x0);
@@ -1114,7 +1114,7 @@ dwc_ddrphy_apb_wr(0x54028,0x0);
 dwc_ddrphy_apb_wr(0x54029,0x0);
 dwc_ddrphy_apb_wr(0x5402a,0x0);
 dwc_ddrphy_apb_wr(0x5402b,0x1000);
-dwc_ddrphy_apb_wr(0x5402c,0x3);
+dwc_ddrphy_apb_wr(0x5402c,0x1);
 dwc_ddrphy_apb_wr(0x5402d,0x0);
 dwc_ddrphy_apb_wr(0x5402e,0x0);
 dwc_ddrphy_apb_wr(0x5402f,0x0);
@@ -1122,15 +1122,15 @@ dwc_ddrphy_apb_wr(0x54030,0x0);
 dwc_ddrphy_apb_wr(0x54031,0x0);
 dwc_ddrphy_apb_wr(0x54032,0x5400);
 dwc_ddrphy_apb_wr(0x54033,0x332d);
-dwc_ddrphy_apb_wr(0x54034,0x3300);
+dwc_ddrphy_apb_wr(0x54034,0x6600);
 dwc_ddrphy_apb_wr(0x54035,0x2847);
-dwc_ddrphy_apb_wr(0x54036,0x5c);
+dwc_ddrphy_apb_wr(0x54036,0x47);
 dwc_ddrphy_apb_wr(0x54037,0x1c00);
 dwc_ddrphy_apb_wr(0x54038,0x5400);
 dwc_ddrphy_apb_wr(0x54039,0x332d);
-dwc_ddrphy_apb_wr(0x5403a,0x3300);
+dwc_ddrphy_apb_wr(0x5403a,0x6600);
 dwc_ddrphy_apb_wr(0x5403b,0x2847);
-dwc_ddrphy_apb_wr(0x5403c,0x5c);
+dwc_ddrphy_apb_wr(0x5403c,0x47);
 dwc_ddrphy_apb_wr(0x5403d,0x1c00);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);

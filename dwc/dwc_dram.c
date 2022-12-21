@@ -1099,8 +1099,8 @@ void dwc_ddrphy_phyinit_main(void)
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f\n");
 		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f.txt>
 	#elif defined(MT53E1G32D2_A)
-		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1\n");
-		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1.txt>
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1_RxTx2D_04_rdwr2D_3f3f\n");
+		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1_RxTx2D_04_rdwr2D_3f3f.txt>
 	#elif defined(MT53D1024M32D4) || defined(MT53E1G32D2_B)
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test\n");
 		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_quick2d_0_test.txt>
