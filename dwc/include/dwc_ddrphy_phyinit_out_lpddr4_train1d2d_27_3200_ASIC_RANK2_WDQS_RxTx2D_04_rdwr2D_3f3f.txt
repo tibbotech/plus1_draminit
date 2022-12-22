@@ -535,7 +535,6 @@ dwc_ddrphy_apb_wr(0x90204,0x0);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4PostambleExt to 0x1
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x1
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DqsPreambleControl to 0xe3
-//dwc_ddrphy_apb_wr(0x20024,0xe3);
 dwc_ddrphy_apb_wr(0x20024,0x1e3);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming DbyteDllModeCntrl to 0x2
 dwc_ddrphy_apb_wr(0x2003a,0x2);
@@ -735,8 +734,8 @@ dwc_ddrphy_apb_wr(0x8055,0x15f);
 
 dwc_ddrphy_apb_wr(0x9055,0x15f);
 
-dwc_ddrphy_apb_wr(0x200c7, 0x20);  //PllCtrl1
-dwc_ddrphy_apb_wr(0x200ca, 0x0124);  // PllTestMode
+dwc_ddrphy_apb_wr(0x200c7, 0x21);  //PllCtrl1
+dwc_ddrphy_apb_wr(0x200ca, 0x0024);  // PllTestMode
 dwc_ddrphy_apb_wr(0x200cc, 0x017f);  //PllCtrl4
 
 
@@ -870,10 +869,10 @@ dwc_ddrphy_apb_wr(0x54003,0xc80);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
 dwc_ddrphy_apb_wr(0x54006,0x12);
-dwc_ddrphy_apb_wr(0x54007,0x0);
+dwc_ddrphy_apb_wr(0x54007,0x0004);
 dwc_ddrphy_apb_wr(0x54008,0x131f);
 dwc_ddrphy_apb_wr(0x54009,0x4);
-dwc_ddrphy_apb_wr(0x5400a,0x0);
+dwc_ddrphy_apb_wr(0x5400a,0x3f3f);
 dwc_ddrphy_apb_wr(0x5400b,0x2);
 dwc_ddrphy_apb_wr(0x5400c,0x0);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
@@ -1078,10 +1077,10 @@ dwc_ddrphy_apb_wr(0x54003,0xc80);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
 dwc_ddrphy_apb_wr(0x54006,0x12);
-dwc_ddrphy_apb_wr(0x54007,0x0);
+dwc_ddrphy_apb_wr(0x54007,0x0004);
 dwc_ddrphy_apb_wr(0x54008,0x61);
 dwc_ddrphy_apb_wr(0x54009,0x4);
-dwc_ddrphy_apb_wr(0x5400a,0x0);
+dwc_ddrphy_apb_wr(0x5400a,0x3f3f);
 dwc_ddrphy_apb_wr(0x5400b,0x2);
 dwc_ddrphy_apb_wr(0x5400c,0x0);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
