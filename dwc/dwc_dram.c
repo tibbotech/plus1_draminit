@@ -1075,8 +1075,21 @@ void dwc_ddrphy_phyinit_main(void)
 	mp = 1;
 	#ifdef PLATFORM_SP7350
 	//runtimeConfig.RetEn = 1;
+
+	#ifdef DRAM_TYPE_LPDDR4
 	dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
 	//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
+	#endif
+
+	#ifdef DRAM_TYPE_DDR4
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_train1d2d\n");
+	#include <dwc_ddrphy_phyinit_out_ddr4_train1d2d.txt>
+	#endif
+
+	#ifdef DRAM_TYPE_DDR3
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_train1d\n");
+	#include <dwc_ddrphy_phyinit_out_ddr3_train1d.txt>
+	#endif
 
 	#elif defined(PLATFORM_Q645)
 	#ifdef SDRAM_SPEED_666
@@ -1146,6 +1159,16 @@ void startClockResetUmctl2_of_SP(void)
 	dbg_stamp(0xA001);
 
 #ifdef PLATFORM_SP7350
+	#ifdef DRAM_TYPE_DDR4
+		SP_REG_AO(3,11) = 0xFFFF0808;
+		SP_REG_AO(3,12) = 0xFFFFC0BE;
+		SP_REG_AO(3,13) = 0xFFFF0107;
+	#endif
+	#ifdef DRAM_TYPE_DDR3
+		SP_REG_AO(3,11) = 0x00180010;
+		SP_REG_AO(3,11) = 0x7f801800;
+		SP_REG_AO(3,12) = 0xFFFFC0BF;
+	#endif
 	SP_REG_AO(3, 13) =0x00180008;
 	SP_REG_AO(0, 14) =0x00200020;
 	SP_REG_AO(0, 14) =0x00010001;
