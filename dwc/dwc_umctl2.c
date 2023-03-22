@@ -581,9 +581,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #ifdef DRAM_TYPE_DDR4
 	ctl_apb_wr(0x304,0x00000001);
 	ctl_apb_wr(0x030,0x00000001);
-	rd_data=ctl_apb_rd(0x004);
-	while(rd_data!=0x00000000){
-	    rd_data=ctl_apb_rd(0x004);}
+	ctl_apb_rd(0x004);
 	ctl_apb_wr(0x000,0x83040210);//M
 	ctl_apb_wr(0x010,0x40003030); //M
 	ctl_apb_wr(0x014,0x00024f12);
