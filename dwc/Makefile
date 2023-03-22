@@ -18,24 +18,41 @@ CFLAGS = -DCONFIG_PLATFORM_SP7350
 endif
 
 # Get Platform configuration from xboot/.config
-PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
-SPI_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SPI_NAND")
-ifeq (${SPI_NAND_CFG},CONFIG_HAVE_SPI_NAND=y)
-CFLAGS += -DCONFIG_HAVE_SPI_NAND
+PROJECT_ROOT = $(shell cd ../../../boot/xboot && pwd)
+# Get Dram type
+HAVE_LPDDR4_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_LPDDR4")
+ifeq (${HAVE_LPDDR4_CFG},CONFIG_LPDDR4=y)
+CFLAGS += -DCONFIG_LPDDR4
 endif
-HAVE_SNPS_USB3_DISK_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SNPS_USB3_DISK")
-ifeq (${HAVE_SNPS_USB3_DISK_CFG},CONFIG_HAVE_SNPS_USB3_DISK=y)
-CFLAGS += -DCONFIG_HAVE_SNPS_USB3_DISK
+HAVE_DDR4_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_DDR4")
+ifeq (${HAVE_DDR4_CFG},CONFIG_DDR4=y)
+CFLAGS += -DCONFIG_DDR4
 endif
-HAVE_USB_DISK_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_USB_DISK")
-ifeq (${HAVE_USB_DISK_CFG},CONFIG_HAVE_USB_DISK=y)
-CFLAGS += -DCONFIG_HAVE_USB_DISK
+HAVE_LPDDR3_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_LPDDR3")
+ifeq (${HAVE_LPDDR3_CFG},CONFIG_LPDDR3=y)
+CFLAGS += -DCONFIG_LPDDR3
 endif
-HAVE_PARA_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_PARA_NAND")
-ifeq (${HAVE_PARA_NAND_CFG},CONFIG_HAVE_PARA_NAND=y)
-CFLAGS += -DCONFIG_HAVE_PARA_NAND
+HAVE_DDR3_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_DDR3")
+ifeq (${HAVE_DDR3_CFG},CONFIG_DDR3=y)
+CFLAGS += -DCONFIG_DDR3
 endif
-
+# Get Dram FPGA code
+HAVE_NANYA_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_NANYA")
+ifeq (${HAVE_NANYA_CFG},CONFIG_NANYA=y)
+CFLAGS += -DCONFIG_NANYA
+endif
+HAVE_D9WHT_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_D9WHT")
+ifeq (${HAVE_D9WHT_CFG},CONFIG_D9WHT=y)
+CFLAGS += -DCONFIG_D9WHT
+endif
+HAVE_D9ZQX_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_D9ZQX")
+ifeq (${HAVE_D9ZQX_CFG},CONFIG_D9ZQX=y)
+CFLAGS += -DCONFIG_D9ZQX
+endif
+HAVE_D8CJG_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_D8CJG")
+ifeq (${HAVE_D8CJG_CFG},CONFIG_D8CJG=y)
+CFLAGS += -DCONFIG_D8CJG
+endif
 
 CFLAGS += -D$(SIM_TYPE)\
 	  -D$(QUICK_SIM)_QUICK_SIM

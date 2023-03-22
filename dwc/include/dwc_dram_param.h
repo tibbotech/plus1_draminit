@@ -1,8 +1,14 @@
 
 #ifdef PLATFORM_SP7350
+#if defined(CONFIG_LPDDR4)
 #define DRAM_TYPE_LPDDR4
-//#define DRAM_TYPE_DDR4
-//#define DRAM_TYPE_DDR3
+#elif defined(CONFIG_DDR4)
+#define DRAM_TYPE_DDR4
+#elif defined(CONFIG_LPDDR3)
+#define DRAM_TYPE_LPDDR3
+#elif defined(CONFIG_DDR3)
+#define DRAM_TYPE_DDR3
+#endif
 #define SDRAM_SPEED_1600	//PLL 800MHz
 //#define SDRAM_SPEED_1200	//PLL 600MHz
 //#define SDRAM_SPEED_1066	//PLL 533.3MHz
@@ -18,11 +24,15 @@
 //#define SDRAM_SPEED_666	//PLL 333MHz
 #endif
 //#define STREAM_MESSAGE
+#if defined(CONFIG_NANYA)
 #define NANYA
-//#define MT53D1024M32D4 /*2 rank,FBGA code = D9WHT*/
-//#define MT53E1G32D2_A  /*1 rank,FBGA code = D9ZQX*/
-//#define MT53E1G32D2_B  /*2 rank, FBGA code = D8CJG*/
-
+#elif defined(CONFIG_D9WHT)
+#define MT53D1024M32D4 /*2 rank,FBGA code = D9WHT*/
+#elif defined(CONFIG_D9ZQX)
+#define MT53E1G32D2_A  /*1 rank,FBGA code = D9ZQX*/
+#elif defined(CONFIG_D8CJG)
+#define MT53E1G32D2_B  /*2 rank, FBGA code = D8CJG*/
+#endif
 
 #define UMCTL2_0_1      2 //device_config: x16 device
 #define UMCTL2_0_2      0 //frequency_ratio: 1:2 Mode
