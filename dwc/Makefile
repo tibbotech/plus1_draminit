@@ -17,6 +17,24 @@ ifeq (${PLATFROM},SP7350)
 CFLAGS = -DCONFIG_PLATFORM_SP7350
 endif
 
+PROJECT_ROOT = $(shell cd ../../xboot/ && pwd)
+SPI_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SPI_NAND")
+ifeq (${SPI_NAND_CFG},CONFIG_HAVE_SPI_NAND=y)
+CFLAGS += -DCONFIG_HAVE_SPI_NAND
+endif
+HAVE_SNPS_USB3_DISK_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_SNPS_USB3_DISK")
+ifeq (${HAVE_SNPS_USB3_DISK_CFG},CONFIG_HAVE_SNPS_USB3_DISK=y)
+CFLAGS += -DCONFIG_HAVE_SNPS_USB3_DISK
+endif
+HAVE_USB_DISK_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_USB_DISK")
+ifeq (${HAVE_USB_DISK_CFG},CONFIG_HAVE_USB_DISK=y)
+CFLAGS += -DCONFIG_HAVE_USB_DISK
+endif
+HAVE_PARA_NAND_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_HAVE_PARA_NAND")
+ifeq (${HAVE_PARA_NAND_CFG},CONFIG_HAVE_PARA_NAND=y)
+CFLAGS += -DCONFIG_HAVE_PARA_NAND
+endif
+
 # Get Platform configuration from xboot/.config
 PROJECT_ROOT = $(shell cd ../../../boot/xboot && pwd)
 # Get Dram type
