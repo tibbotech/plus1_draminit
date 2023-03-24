@@ -381,14 +381,14 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
+#if defined(NT6AN1024F32AV) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x0f4, 0x0000032f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);
 #endif
 	ctl_apb_wr(0x100, 0x11100d11);
 	ctl_apb_wr(0x104, 0x00030418);
-#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
+#if defined(NT6AN1024F32AV) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x108, 0x04070a0d);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x108, 0x060c0e12);
@@ -496,7 +496,7 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_wr(0x0e8, 0x0000004d);
 	ctl_apb_wr(0x0ec, 0x0000004d);
 	ctl_apb_wr(0x0f0, 0x00000000);
-#if defined(NANYA) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
+#if defined(NT6AN1024F32AV) || defined(MT53E1G32D2_A) || defined(MT53E1G32D2_B)
 	ctl_apb_wr(0x0f4, 0x0000033f);
 #elif defined(MT53D1024M32D4)
 	ctl_apb_wr(0x0f4, 0x0000053f);
@@ -832,8 +832,8 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	ctl_apb_rd(0x030);
 #endif//#ifdef DRAM_TYPE_DDR3
 
-#ifdef NANYA
-	prn_string("NANYA\n");
+#ifdef NT6AN1024F32AV
+	prn_string("NT6AN1024F32AV\n");
 #elif defined(MT53D1024M32D4)
 	prn_string("MT53D1024M32D4, 2rank, FBGA=D9WHT\n");
 #elif defined(MT53E1G32D2_A)

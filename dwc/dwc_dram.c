@@ -1108,7 +1108,7 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef SDRAM_SPEED_1600
-	#ifdef NANYA
+	#ifdef NT6AN1024F32AV
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
 		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
 	#elif defined(MT53E1G32D2_A)

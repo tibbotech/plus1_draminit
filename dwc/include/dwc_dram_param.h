@@ -24,13 +24,13 @@
 //#define SDRAM_SPEED_666	//PLL 333MHz
 #endif
 //#define STREAM_MESSAGE
-#if defined(CONFIG_NANYA)
-#define NANYA
-#elif defined(CONFIG_D9WHT)
+#if defined(CONFIG_NT6AN1024F32AV)
+#define NT6AN1024F32AV
+#elif defined(CONFIG_MT53D1024M32D4)
 #define MT53D1024M32D4 /*2 rank,FBGA code = D9WHT*/
-#elif defined(CONFIG_D9ZQX)
+#elif defined(CONFIG_MT53E1G32D2_A)
 #define MT53E1G32D2_A  /*1 rank,FBGA code = D9ZQX*/
-#elif defined(CONFIG_D8CJG)
+#elif defined(CONFIG_MT53E1G32D2_B)
 #define MT53E1G32D2_B  /*2 rank, FBGA code = D8CJG*/
 #endif
 
