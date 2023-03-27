@@ -1,3 +1,4 @@
+#include <auto_config.h>
 
 #ifdef PLATFORM_SP7350
 #if defined(CONFIG_LPDDR4)
