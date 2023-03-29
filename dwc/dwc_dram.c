@@ -1083,40 +1083,40 @@ void dwc_ddrphy_phyinit_main(void)
 
 	#ifdef DRAM_TYPE_DDR4
 	prn_string("dwc_ddrphy_phyinit_out_ddr4_train1d2d\n");
-	#include <dwc_ddrphy_phyinit_out_ddr4_train1d2d.txt>
+	#include <SP7350/dwc_ddrphy_phyinit_out_ddr4_train1d2d.txt>
 	#endif
 
 	#ifdef DRAM_TYPE_DDR3
 	prn_string("dwc_ddrphy_phyinit_out_ddr3_train1d\n");
-	#include <dwc_ddrphy_phyinit_out_ddr3_train1d.txt>
+	#include <SP7350/dwc_ddrphy_phyinit_out_ddr3_train1d.txt>
 	#endif
 
 	#elif defined(PLATFORM_Q645)
 	#ifdef SDRAM_SPEED_666
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_800
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_1200
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA\n");
-	#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_1600
 	#ifdef NT6AN1024F32AV
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
-		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
+		#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
 	#elif defined(MT53E1G32D2_A)
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
-		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
+		#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_33_3200_ASIC_RANK1_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
 	#elif defined(MT53D1024M32D4) || defined(MT53E1G32D2_B)
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
-		#include <dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
+		#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
 	#endif
 	#endif
 	#endif

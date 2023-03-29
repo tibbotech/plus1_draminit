@@ -1,5 +1,5 @@
 //========================== Note Path ==========================
-// /home/dqak645temp/dz.he/FW/lpddr4/23_2400_ASIC_RANK2/dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt
+// /home/dqak654temp/dz.he/FW/lpddr4/13_q654_1066_datarate_ASIC/dwc_ddrphy_phyinit_out_lpddr4_train1d2d.txt
 //========================== Note Path ==========================
 
 // [dwc_ddrphy_phyinit_main] Start of dwc_ddrphy_phyinit_main()
@@ -23,7 +23,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 //  [dwc_ddrphy_phyinit_userCustom_overrideUserInput] End of dwc_ddrphy_phyinit_userCustom_overrideUserInput()
 //[dwc_ddrphy_phyinit_calcMb] Start of dwc_ddrphy_phyinit_calcMb()
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].Pstate to 0x0
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].DRAMFreq to 0x960
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].DRAMFreq to 0x42a
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PllBypassEn to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].DfiFreqRatio to 0x2
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].PhyOdtImpedance to 0x0
@@ -34,7 +34,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].EnabledDQsChB to 0x10
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_1D[0].CsPresentChB to 0x3
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].Pstate to 0x0
-// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].DRAMFreq to 0x960
+// // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].DRAMFreq to 0x42a
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].PllBypassEn to 0x0
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].DfiFreqRatio to 0x2
 // // [dwc_ddrphy_phyinit_softSetMb] Setting mb_LPDDR4_2D[0].PhyOdtImpedance to 0x0
@@ -59,10 +59,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] // Printing values in user input structure
 // // [phyinit_print_dat] // 
 // // [phyinit_print_dat] // ####################################################
-// // [phyinit_print_dat] userInputBasic.Frequency[0] = 1200
-// // [phyinit_print_dat] userInputBasic.Frequency[1] = 1067
+// // [phyinit_print_dat] userInputBasic.Frequency[0] = 533
+// // [phyinit_print_dat] userInputBasic.Frequency[1] = 1333
 // // [phyinit_print_dat] userInputBasic.Frequency[2] = 933
-// // [phyinit_print_dat] userInputBasic.Frequency[3] = 800
+// // [phyinit_print_dat] userInputBasic.Frequency[3] = 666
 // // [phyinit_print_dat] userInputBasic.NumRank_dfi0 = 2
 // // [phyinit_print_dat] userInputBasic.ReadDBIEnable[0] = 0
 // // [phyinit_print_dat] userInputBasic.ReadDBIEnable[1] = 0
@@ -72,7 +72,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputBasic.DimmType = 4
 // // [phyinit_print_dat] userInputBasic.DfiMode = 0
 // // [phyinit_print_dat] userInputBasic.DramType = 2
-// // [phyinit_print_dat] userInputBasic.HardMacroVer = 4
+// // [phyinit_print_dat] userInputBasic.HardMacroVer = 0
 // // [phyinit_print_dat] userInputBasic.DfiFreqRatio[0] = 1
 // // [phyinit_print_dat] userInputBasic.DfiFreqRatio[1] = 1
 // // [phyinit_print_dat] userInputBasic.DfiFreqRatio[2] = 1
@@ -91,10 +91,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputBasic.NumPStates = 1
 // // [phyinit_print_dat] userInputBasic.NumActiveDbyteDfi1 = 2
 // // [phyinit_print_dat] userInputAdvanced.TxSlewRiseAC = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[0] = 7
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[1] = 7
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[2] = 7
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[3] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[0] = 6
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[1] = 6
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[2] = 6
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[3] = 6
 // // [phyinit_print_dat] userInputAdvanced.Lp4WLS[0] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4WLS[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4WLS[2] = 0
@@ -123,7 +123,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.Lp4LowPowerDrv = 0
 // // [phyinit_print_dat] userInputAdvanced.TrainSequenceCtrl = 0
 // // [phyinit_print_dat] userInputAdvanced.EnableDfiCsPolarityFix = 0
-// // [phyinit_print_dat] userInputAdvanced.Lp4WL[0] = 4
+// // [phyinit_print_dat] userInputAdvanced.Lp4WL[0] = 1
 // // [phyinit_print_dat] userInputAdvanced.Lp4WL[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4WL[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4WL[3] = 0
@@ -131,7 +131,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[1] = 10
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[2] = 10
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrTrainInterval[3] = 10
-// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[0] = 4
+// // [phyinit_print_dat] userInputAdvanced.Lp4nWR[0] = 1
 // // [phyinit_print_dat] userInputAdvanced.Lp4nWR[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4nWR[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4nWR[3] = 0
@@ -159,10 +159,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4DbiWr[3] = 0
 // // [phyinit_print_dat] userInputAdvanced.SnpsUmctlOpt = 0
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[0] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[1] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[2] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[3] = 60
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[0] = 40
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[1] = 40
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[2] = 40
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[3] = 40
 // // [phyinit_print_dat] userInputAdvanced.PhyInitSequenceNum = 0
 // // [phyinit_print_dat] userInputAdvanced.DisablePhyUpdate = 0
 // // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[0] = 0
@@ -176,11 +176,11 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[2] = 5
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[3] = 5
 // // [phyinit_print_dat] userInputAdvanced.DisableUnusedAddrLns = 0
-// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 40
-// // [phyinit_print_dat] userInputAdvanced.ExtCalResVal = 1
+// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 20
+// // [phyinit_print_dat] userInputAdvanced.ExtCalResVal = 0
 // // [phyinit_print_dat] userInputAdvanced.TxSlewFallAC = 5
 // // [phyinit_print_dat] userInputAdvanced.EnableHighClkSkewFix = 0
-// // [phyinit_print_dat] userInputAdvanced.Lp4RL[0] = 4
+// // [phyinit_print_dat] userInputAdvanced.Lp4RL[0] = 1
 // // [phyinit_print_dat] userInputAdvanced.Lp4RL[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4RL[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.Lp4RL[3] = 0
@@ -199,16 +199,16 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] // Printing values of 1D message block input/inout fields, PState=0
 // // [phyinit_print_dat] // 
 // // [phyinit_print_dat] // ####################################################
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved00 = 0x40
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved00 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MsgMisc = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].Pstate = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].PllBypassEn = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].DRAMFreq = 0x960
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].DRAMFreq = 0x42a
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].DfiFreqRatio = 0x2
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].BPZNResVal = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyOdtImpedance = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyDrvImpedance = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyVref = 0x12
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyVref = 0x14
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].Lp4Misc = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].Reserved0E = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].SequenceCtrl = 0x131f
@@ -227,26 +227,26 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].PhyConfigOverride = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChA = 0x10
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChA = 0x3
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A0 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A0 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A0 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A0 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A0 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A0 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A0 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A0 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_A0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A1 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_A1 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_A1 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_A1 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_A1 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A1 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_A1 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_A1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_A1 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_A1 = 0x1c
@@ -254,26 +254,26 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CATerminatingRankChA = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].EnabledDQsChB = 0x10
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].CsPresentChB = 0x3
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B0 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B0 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B0 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B0 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B0 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B0 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B0 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B0 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR24_B0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B1 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR1_B1 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR2_B1 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR3_B1 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR4_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR11_B1 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B1 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR12_B1 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR13_B1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_1D[0].MR14_B1 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR16_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR17_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_1D[0].MR22_B1 = 0x1c
@@ -284,16 +284,16 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] // Printing values of 2D message block input/inout fields, PState=0
 // // [phyinit_print_dat] // 
 // // [phyinit_print_dat] // ####################################################
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].Reserved00 = 0x40
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].Reserved00 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MsgMisc = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].Pstate = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].PllBypassEn = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].DRAMFreq = 0x960
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].DRAMFreq = 0x42a
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].DfiFreqRatio = 0x2
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].BPZNResVal = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyOdtImpedance = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyDrvImpedance = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyVref = 0x12
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyVref = 0x14
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].Lp4Misc = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].Reserved0E = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].SequenceCtrl = 0x61
@@ -310,31 +310,31 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].RX2D_TrainOpt = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].TX2D_TrainOpt = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].Share2DVrefResult = 0x1
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].Delay_Weight2D = 0x7f
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].Voltage_Weight2D = 0x1f
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].Delay_Weight2D = 0x20
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].Voltage_Weight2D = 0x80
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].PhyConfigOverride = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].EnabledDQsChA = 0x10
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChA = 0x3
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_A0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A0 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_A0 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A0 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A0 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A0 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A0 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A0 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A0 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A0 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_A0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_A0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR24_A0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_A1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A1 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_A1 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_A1 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_A1 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_A1 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A1 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A1 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_A1 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_A1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_A1 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_A1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_A1 = 0x1c
@@ -342,26 +342,26 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].CATerminatingRankChA = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].EnabledDQsChB = 0x10
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].CsPresentChB = 0x3
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_B0 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B0 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B0 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_B0 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B0 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B0 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B0 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B0 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B0 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B0 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B0 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B0 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B0 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_B0 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_B0 = 0x1c
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR24_B0 = 0x0
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_B1 = 0x44
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B1 = 0x24
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B1 = 0x33
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR1_B1 = 0x14
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR2_B1 = 0x9
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR3_B1 = 0x1b
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR4_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR11_B1 = 0x66
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B1 = 0x47
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B1 = 0x28
-// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B1 = 0x47
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR12_B1 = 0x22
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR13_B1 = 0x8
+// // [phyinit_print_dat] mb_LPDDR4_2D[0].MR14_B1 = 0x20
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR16_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR17_B1 = 0x0
 // // [phyinit_print_dat] mb_LPDDR4_2D[0].MR22_B1 = 0x1c
@@ -412,20 +412,20 @@ dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy ();
 // //##############################################################
 // // TxPreDrvMode[2] = userInputBasic.Lp4xMode 
 // //##############################################################
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxSlewRate::TxPreDrvMode to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxSlewRate::TxPreP to 0xf
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxSlewRate::TxPreN to 0x7
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxSlewRate::TxPreDrvMode to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxSlewRate::TxPreP to 0xf
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxSlewRate::TxPreN to 0x6
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x1005f,0x17f);
-dwc_ddrphy_apb_wr(0x1015f,0x17f);
-dwc_ddrphy_apb_wr(0x1105f,0x17f);
-dwc_ddrphy_apb_wr(0x1115f,0x17f);
-dwc_ddrphy_apb_wr(0x1205f,0x17f);
-dwc_ddrphy_apb_wr(0x1215f,0x17f);
-dwc_ddrphy_apb_wr(0x1305f,0x17f);
-dwc_ddrphy_apb_wr(0x1315f,0x17f);
+dwc_ddrphy_apb_wr(0x1005f,0x16f);
+dwc_ddrphy_apb_wr(0x1015f,0x16f);
+dwc_ddrphy_apb_wr(0x1105f,0x16f);
+dwc_ddrphy_apb_wr(0x1115f,0x16f);
+dwc_ddrphy_apb_wr(0x1205f,0x16f);
+dwc_ddrphy_apb_wr(0x1215f,0x16f);
+dwc_ddrphy_apb_wr(0x1305f,0x16f);
+dwc_ddrphy_apb_wr(0x1315f,0x16f);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=0
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=0
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x5, ANIB=0
@@ -496,8 +496,8 @@ dwc_ddrphy_apb_wr(0x8055,0x15f);
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
 dwc_ddrphy_apb_wr(0x9055,0x15f);
-dwc_ddrphy_apb_wr(0x200c5,0xa);
-// // [phyinit_C_initPhyConfig] Pstate=0,  Memclk=1200MHz, Programming PllCtrl2 to a based on DfiClk frequency = 600.
+dwc_ddrphy_apb_wr(0x200c5,0x6);
+// // [phyinit_C_initPhyConfig] Pstate=0,  Memclk=533MHz, Programming PllCtrl2 to 6 based on DfiClk frequency = 266.
 // 
 // //##############################################################
 // //
@@ -519,81 +519,79 @@ dwc_ddrphy_apb_wr(0x200c5,0xa);
 // //     For MemClk frequency < 933MHz, the valid range of ARdPtrInitVal_p0[3:0] is: 0-5
 // //
 // //##############################################################
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming ARdPtrInitVal to 0x2
-dwc_ddrphy_apb_wr(0x2002e,0x2);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming ARdPtrInitVal to 0x1
+dwc_ddrphy_apb_wr(0x2002e,0x1);
 // 
 // //##############################################################
 // // Seq0BGPR4       = 0: Make ProcOdtAlwaysOn = 0 and ProcOdtAlwaysOff = 0 
 // //##############################################################
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOff  to 0x0
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOn   to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOff  to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming ProcOdtCtl: Seq0BGPR4.ProcOdtAlwaysOn   to 0x0
 dwc_ddrphy_apb_wr(0x90204,0x0);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::TwoTckRxDqsPre to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::TwoTckTxDqsPre to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::PositionDfeInit to 0x0
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::LP4PostambleExt to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DqsPreambleControl to 0xe3
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::TwoTckRxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::TwoTckTxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::PositionDfeInit to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::LP4TglTwoTckTxDqsPre to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::LP4PostambleExt to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DqsPreambleControl to 0xe3
 dwc_ddrphy_apb_wr(0x20024,0xe3);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DbyteDllModeCntrl to 0x2
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DbyteDllModeCntrl to 0x2
 dwc_ddrphy_apb_wr(0x2003a,0x2);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DllLockParam to 0x212
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DllLockParam to 0x212
 dwc_ddrphy_apb_wr(0x2007d,0x212);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DllGainCtl to 0x61
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DllGainCtl to 0x61
 dwc_ddrphy_apb_wr(0x2007c,0x61);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming ProcOdtTimeCtl to 0x2
-dwc_ddrphy_apb_wr(0x20056,0x2);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxOdtDrvStren::ODTStrenP to 0x0
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxOdtDrvStren::ODTStrenN to 0x18
-dwc_ddrphy_apb_wr(0x1004d,0x600);
-dwc_ddrphy_apb_wr(0x1014d,0x600);
-dwc_ddrphy_apb_wr(0x1104d,0x600);
-dwc_ddrphy_apb_wr(0x1114d,0x600);
-dwc_ddrphy_apb_wr(0x1204d,0x600);
-dwc_ddrphy_apb_wr(0x1214d,0x600);
-dwc_ddrphy_apb_wr(0x1304d,0x600);
-dwc_ddrphy_apb_wr(0x1314d,0x600);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x3f
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x38
-dwc_ddrphy_apb_wr(0x10049,0xe3f);
-dwc_ddrphy_apb_wr(0x10149,0xe3f);
-dwc_ddrphy_apb_wr(0x11049,0xe3f);
-dwc_ddrphy_apb_wr(0x11149,0xe3f);
-dwc_ddrphy_apb_wr(0x12049,0xe3f);
-dwc_ddrphy_apb_wr(0x12149,0xe3f);
-dwc_ddrphy_apb_wr(0x13049,0xe3f);
-dwc_ddrphy_apb_wr(0x13149,0xe3f);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming ProcOdtTimeCtl to 0xa
+dwc_ddrphy_apb_wr(0x20056,0xa);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxOdtDrvStren::ODTStrenP to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxOdtDrvStren::ODTStrenN to 0x38
+dwc_ddrphy_apb_wr(0x1004d,0xe00);
+dwc_ddrphy_apb_wr(0x1014d,0xe00);
+dwc_ddrphy_apb_wr(0x1104d,0xe00);
+dwc_ddrphy_apb_wr(0x1114d,0xe00);
+dwc_ddrphy_apb_wr(0x1204d,0xe00);
+dwc_ddrphy_apb_wr(0x1214d,0xe00);
+dwc_ddrphy_apb_wr(0x1304d,0xe00);
+dwc_ddrphy_apb_wr(0x1314d,0xe00);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x38
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x38
+dwc_ddrphy_apb_wr(0x10049,0xe38);
+dwc_ddrphy_apb_wr(0x10149,0xe38);
+dwc_ddrphy_apb_wr(0x11049,0xe38);
+dwc_ddrphy_apb_wr(0x11149,0xe38);
+dwc_ddrphy_apb_wr(0x12049,0xe38);
+dwc_ddrphy_apb_wr(0x12149,0xe38);
+dwc_ddrphy_apb_wr(0x13049,0xe38);
+dwc_ddrphy_apb_wr(0x13149,0xe38);
 // // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x1f
-// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x3
-dwc_ddrphy_apb_wr(0x43,0x7f);
-dwc_ddrphy_apb_wr(0x1043,0x7f);
-dwc_ddrphy_apb_wr(0x2043,0x7f);
-dwc_ddrphy_apb_wr(0x3043,0x7f);
-dwc_ddrphy_apb_wr(0x4043,0x7f);
-dwc_ddrphy_apb_wr(0x5043,0x7f);
-dwc_ddrphy_apb_wr(0x6043,0x7f);
-dwc_ddrphy_apb_wr(0x7043,0x7f);
-dwc_ddrphy_apb_wr(0x8043,0x7f);
-dwc_ddrphy_apb_wr(0x9043,0x7f);
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x1f
+dwc_ddrphy_apb_wr(0x43,0x3ff);
+dwc_ddrphy_apb_wr(0x1043,0x3ff);
+dwc_ddrphy_apb_wr(0x2043,0x3ff);
+dwc_ddrphy_apb_wr(0x3043,0x3ff);
+dwc_ddrphy_apb_wr(0x4043,0x3ff);
+dwc_ddrphy_apb_wr(0x5043,0x3ff);
+dwc_ddrphy_apb_wr(0x6043,0x3ff);
+dwc_ddrphy_apb_wr(0x7043,0x3ff);
+dwc_ddrphy_apb_wr(0x8043,0x3ff);
+dwc_ddrphy_apb_wr(0x9043,0x3ff);
 // // [phyinit_C_initPhyConfig] Programming DfiMode to 0x3
 dwc_ddrphy_apb_wr(0x20018,0x3);
 // // [phyinit_C_initPhyConfig] Programming DfiCAMode to 0x4
 dwc_ddrphy_apb_wr(0x20075,0x4);
-// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPd50 to 0x1
-// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPu50 to 0x1
-dwc_ddrphy_apb_wr(0x20050,0x11);
-// // [phyinit_C_initPhyConfig] Programming CalVRefs to 0x2
-dwc_ddrphy_apb_wr(0x2009b,0x2);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming CalUclkInfo::CalUClkTicksPer1uS to 0x258
-dwc_ddrphy_apb_wr(0x20008,0x258);
+// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPd50 to 0x0
+// // [phyinit_C_initPhyConfig] Programming CalDrvStr0::CalDrvStrPu50 to 0x0
+dwc_ddrphy_apb_wr(0x20050,0x0);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming CalUclkInfo::CalUClkTicksPer1uS to 0x10b
+dwc_ddrphy_apb_wr(0x20008,0x10b);
 // // [phyinit_C_initPhyConfig] Programming CalRate::CalInterval to 0x9
 // // [phyinit_C_initPhyConfig] Programming CalRate::CalOnce to 0x0
 dwc_ddrphy_apb_wr(0x20088,0x9);
 // // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInSel to 0x4
-// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInDAC to 0x1d
-// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal to 0xec
-dwc_ddrphy_apb_wr(0x200b2,0xec);
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInDAC to 0x20
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal to 0x104
+dwc_ddrphy_apb_wr(0x200b2,0x104);
 // // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl::MajorModeDbyte to 0x2
 // // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl to 0x5a1
 dwc_ddrphy_apb_wr(0x10043,0x5a1);
@@ -604,10 +602,10 @@ dwc_ddrphy_apb_wr(0x12043,0x5a1);
 dwc_ddrphy_apb_wr(0x12143,0x5a1);
 dwc_ddrphy_apb_wr(0x13043,0x5a1);
 dwc_ddrphy_apb_wr(0x13143,0x5a1);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DfiFreqRatio_p0 to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DfiFreqRatio_p0 to 0x1
 dwc_ddrphy_apb_wr(0x200fa,0x1);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TristateModeCA::DisDynAdrTri_p0 to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming TristateModeCA::DDR2TMode_p0 to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TristateModeCA::DisDynAdrTri_p0 to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming TristateModeCA::DDR2TMode_p0 to 0x0
 dwc_ddrphy_apb_wr(0x20019,0x1);
 // // [phyinit_C_initPhyConfig] Programming DfiFreqXlat*
 dwc_ddrphy_apb_wr(0x200f0,0x0);
@@ -628,7 +626,7 @@ dwc_ddrphy_apb_wr(0x1204a,0x500);
 dwc_ddrphy_apb_wr(0x1304a,0x500);
 // // [phyinit_C_initPhyConfig] Programming MasterX4Config::X4TG to 0x0
 dwc_ddrphy_apb_wr(0x20025,0x0);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1200MHz, Programming DMIPinPresent::RdDbiEnabled to 0x0
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=533MHz, Programming DMIPinPresent::RdDbiEnabled to 0x0
 dwc_ddrphy_apb_wr(0x2002d,0x0);
 dwc_ddrphy_apb_wr(0x2002c,0x0);
 // // [phyinit_C_initPhyConfig] End of dwc_ddrphy_phyinit_C_initPhyConfig()
@@ -643,26 +641,25 @@ dwc_ddrphy_apb_wr(0x2002c,0x0);
 // //##############################################################
 // 
 // // [phyinit_userCustom_customPreTrain] Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()
- 
-// //##############################################################
+ // //##############################################################
 // Add by dz.he for real chip begin
 
 dwc_ddrphy_apb_wr(0xd0000,0x0000);
 
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=800MHz, Programming TxSlewRate::TxPreDrvMode to 0x1
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=800MHz, Programming TxSlewRate::TxPreP to 0xf
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=800MHz, Programming TxSlewRate::TxPreN to 0x7
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreDrvMode to 0x1
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreP to 0xf
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=1600MHz, Programming TxSlewRate::TxPreN to 0x6
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x1005f,0x17f);
-dwc_ddrphy_apb_wr(0x1015f,0x17f);
-dwc_ddrphy_apb_wr(0x1105f,0x17f);
-dwc_ddrphy_apb_wr(0x1115f,0x17f);
-dwc_ddrphy_apb_wr(0x1205f,0x17f);
-dwc_ddrphy_apb_wr(0x1215f,0x17f);
-dwc_ddrphy_apb_wr(0x1305f,0x17f);
-dwc_ddrphy_apb_wr(0x1315f,0x17f);
+dwc_ddrphy_apb_wr(0x1005f,0x16f);
+dwc_ddrphy_apb_wr(0x1015f,0x16f);
+dwc_ddrphy_apb_wr(0x1105f,0x16f);
+dwc_ddrphy_apb_wr(0x1115f,0x16f);
+dwc_ddrphy_apb_wr(0x1205f,0x16f);
+dwc_ddrphy_apb_wr(0x1215f,0x16f);
+dwc_ddrphy_apb_wr(0x1305f,0x16f);
+dwc_ddrphy_apb_wr(0x1315f,0x16f);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x1, ANIB=0
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=0
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x5, ANIB=0
@@ -734,55 +731,20 @@ dwc_ddrphy_apb_wr(0x8055,0x15f);
 
 dwc_ddrphy_apb_wr(0x9055,0x15f);
 
+
+
+// For PLL
 dwc_ddrphy_apb_wr(0x200c7, 0x20);  //PllCtrl1
 dwc_ddrphy_apb_wr(0x200ca, 0x0124);  // PllTestMode
 dwc_ddrphy_apb_wr(0x200cc, 0x017f);  //PllCtrl4
 
 
-// For DQ swap
-dwc_ddrphy_apb_wr(0x100a0, 0x6);
-dwc_ddrphy_apb_wr(0x100a1, 0x5);
-dwc_ddrphy_apb_wr(0x100a2, 0x4);
-dwc_ddrphy_apb_wr(0x100a3, 0x7);
-dwc_ddrphy_apb_wr(0x100a4, 0x2);
-dwc_ddrphy_apb_wr(0x100a5, 0x1);
-dwc_ddrphy_apb_wr(0x100a6, 0x0);
-dwc_ddrphy_apb_wr(0x100a7, 0x3);
- 
-dwc_ddrphy_apb_wr(0x110a0, 0x3);
-dwc_ddrphy_apb_wr(0x110a1, 0x0);
-dwc_ddrphy_apb_wr(0x110a2, 0x1);
-dwc_ddrphy_apb_wr(0x110a3, 0x2);
-dwc_ddrphy_apb_wr(0x110a4, 0x7);
-dwc_ddrphy_apb_wr(0x110a5, 0x4);
-dwc_ddrphy_apb_wr(0x110a6, 0x5);
-dwc_ddrphy_apb_wr(0x110a7, 0x6);
- 
-dwc_ddrphy_apb_wr(0x120a0, 0x2);
-dwc_ddrphy_apb_wr(0x120a1, 0x1);
-dwc_ddrphy_apb_wr(0x120a2, 0x0);
-dwc_ddrphy_apb_wr(0x120a3, 0x3);
-dwc_ddrphy_apb_wr(0x120a4, 0x6);
-dwc_ddrphy_apb_wr(0x120a5, 0x5);
-dwc_ddrphy_apb_wr(0x120a6, 0x4);
-dwc_ddrphy_apb_wr(0x120a7, 0x7);
- 
-dwc_ddrphy_apb_wr(0x130a0, 0x7);
-dwc_ddrphy_apb_wr(0x130a1, 0x4);
-dwc_ddrphy_apb_wr(0x130a2, 0x5);
-dwc_ddrphy_apb_wr(0x130a3, 0x6);
-dwc_ddrphy_apb_wr(0x130a4, 0x3);
-dwc_ddrphy_apb_wr(0x130a5, 0x0);
-dwc_ddrphy_apb_wr(0x130a6, 0x1);
-dwc_ddrphy_apb_wr(0x130a7, 0x2);
+// DQ swap
+
 
 dwc_ddrphy_apb_wr(0xd0000,0x0001);
 
 // Add by dz.he for real chip end
-
-// //##############################################################
-
-
 
 
 // // [phyinit_userCustom_customPreTrain] End of dwc_ddrphy_phyinit_userCustom_customPreTrain()
@@ -801,7 +763,7 @@ dwc_ddrphy_apb_wr(0xd0000,0x0001);
 // 
 // // [dwc_ddrphy_phyinit_D_loadIMEM, 1D] Programming MemResetL to 0x2
 dwc_ddrphy_apb_wr(0x20060,0x2);
-// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4x_multiphy_tsmc12ffc18_3.30a/3.30a/firmware/Latest//lpddr4/lpddr4_pmu_train_imem.incv
+// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4_multiphy_v2_tsmc12ffc18_C3/2.70a/firmware/A-2020.06-SP1/lpddr4/lpddr4_pmu_train_imem.incv
 
 // // 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.
 // //       This allows the memory controller unrestricted access to the configuration CSRs. 
@@ -847,7 +809,7 @@ dwc_ddrphy_phyinit_userCustom_E_setDfiClk (0);
 // // 
 // //##############################################################
 // 
-// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4x_multiphy_tsmc12ffc18_3.30a/3.30a/firmware/Latest//lpddr4/lpddr4_pmu_train_dmem.incv
+// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4_multiphy_v2_tsmc12ffc18_C3/2.70a/firmware/A-2020.06-SP1/lpddr4/lpddr4_pmu_train_dmem.incv
 
 // // 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.
 // //       This allows the memory controller unrestricted access to the configuration CSRs. 
@@ -862,13 +824,13 @@ dwc_ddrphy_phyinit_F_loadDMEM (0,0);
 CSTAMP(0xDADADA04);
 dwc_ddrphy_apb_wr(0xd0000,0x0);
 
-dwc_ddrphy_apb_wr(0x54000,0x40);
+dwc_ddrphy_apb_wr(0x54000,0x0);
 dwc_ddrphy_apb_wr(0x54001,0x0);
 dwc_ddrphy_apb_wr(0x54002,0x0);
-dwc_ddrphy_apb_wr(0x54003,0x960);
+dwc_ddrphy_apb_wr(0x54003,0x42a);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
-dwc_ddrphy_apb_wr(0x54006,0x12);
+dwc_ddrphy_apb_wr(0x54006,0x14);
 dwc_ddrphy_apb_wr(0x54007,0x0);
 dwc_ddrphy_apb_wr(0x54008,0x131f);
 dwc_ddrphy_apb_wr(0x54009,0x4);
@@ -887,16 +849,16 @@ dwc_ddrphy_apb_wr(0x54015,0x0);
 dwc_ddrphy_apb_wr(0x54016,0x0);
 dwc_ddrphy_apb_wr(0x54017,0x0);
 dwc_ddrphy_apb_wr(0x54018,0x0);
-dwc_ddrphy_apb_wr(0x54019,0x2444);
-dwc_ddrphy_apb_wr(0x5401a,0x33);
-dwc_ddrphy_apb_wr(0x5401b,0x4766);
-dwc_ddrphy_apb_wr(0x5401c,0x4728);
+dwc_ddrphy_apb_wr(0x54019,0x914);
+dwc_ddrphy_apb_wr(0x5401a,0x1b);
+dwc_ddrphy_apb_wr(0x5401b,0x2266);
+dwc_ddrphy_apb_wr(0x5401c,0x2008);
 dwc_ddrphy_apb_wr(0x5401d,0x0);
 dwc_ddrphy_apb_wr(0x5401e,0x1c);
-dwc_ddrphy_apb_wr(0x5401f,0x2444);
-dwc_ddrphy_apb_wr(0x54020,0x33);
-dwc_ddrphy_apb_wr(0x54021,0x4766);
-dwc_ddrphy_apb_wr(0x54022,0x4728);
+dwc_ddrphy_apb_wr(0x5401f,0x914);
+dwc_ddrphy_apb_wr(0x54020,0x1b);
+dwc_ddrphy_apb_wr(0x54021,0x2266);
+dwc_ddrphy_apb_wr(0x54022,0x2008);
 dwc_ddrphy_apb_wr(0x54023,0x0);
 dwc_ddrphy_apb_wr(0x54024,0x1c);
 dwc_ddrphy_apb_wr(0x54025,0x0);
@@ -912,17 +874,17 @@ dwc_ddrphy_apb_wr(0x5402e,0x0);
 dwc_ddrphy_apb_wr(0x5402f,0x0);
 dwc_ddrphy_apb_wr(0x54030,0x0);
 dwc_ddrphy_apb_wr(0x54031,0x0);
-dwc_ddrphy_apb_wr(0x54032,0x4400);
-dwc_ddrphy_apb_wr(0x54033,0x3324);
+dwc_ddrphy_apb_wr(0x54032,0x1400);
+dwc_ddrphy_apb_wr(0x54033,0x1b09);
 dwc_ddrphy_apb_wr(0x54034,0x6600);
-dwc_ddrphy_apb_wr(0x54035,0x2847);
-dwc_ddrphy_apb_wr(0x54036,0x47);
+dwc_ddrphy_apb_wr(0x54035,0x822);
+dwc_ddrphy_apb_wr(0x54036,0x20);
 dwc_ddrphy_apb_wr(0x54037,0x1c00);
-dwc_ddrphy_apb_wr(0x54038,0x4400);
-dwc_ddrphy_apb_wr(0x54039,0x3324);
+dwc_ddrphy_apb_wr(0x54038,0x1400);
+dwc_ddrphy_apb_wr(0x54039,0x1b09);
 dwc_ddrphy_apb_wr(0x5403a,0x6600);
-dwc_ddrphy_apb_wr(0x5403b,0x2847);
-dwc_ddrphy_apb_wr(0x5403c,0x47);
+dwc_ddrphy_apb_wr(0x5403b,0x822);
+dwc_ddrphy_apb_wr(0x5403c,0x20);
 dwc_ddrphy_apb_wr(0x5403d,0x1c00);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);
@@ -1023,7 +985,7 @@ dwc_ddrphy_phyinit_userCustom_E_setDfiClk (0);
 // //##############################################################
 // 
 // 
-// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4x_multiphy_tsmc12ffc18_3.30a/3.30a/firmware/Latest//lpddr4_2d/lpddr4_2d_pmu_train_imem.incv
+// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4_multiphy_v2_tsmc12ffc18_C3/2.70a/firmware/A-2020.06-SP1/lpddr4_2d/lpddr4_2d_pmu_train_imem.incv
 
 // // 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.
 // //       This allows the memory controller unrestricted access to the configuration CSRs. 
@@ -1055,7 +1017,7 @@ dwc_ddrphy_apb_wr(0xd0000,0x1);
 // // 
 // //##############################################################
 // 
-// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4x_multiphy_tsmc12ffc18_3.30a/3.30a/firmware/Latest//lpddr4_2d/lpddr4_2d_pmu_train_dmem.incv
+// [dwc_ddrphy_phyinit_storeIncvFile] Reading input file: /eda/synopsys/DesignWare/dwc_lpddr4_multiphy_v2_tsmc12ffc18_C3/2.70a/firmware/A-2020.06-SP1/lpddr4_2d/lpddr4_2d_pmu_train_dmem.incv
 
 // // 1.	Enable access to the internal CSRs by setting the MicroContMuxSel CSR to 0.
 // //       This allows the memory controller unrestricted access to the configuration CSRs. 
@@ -1070,13 +1032,13 @@ dwc_ddrphy_phyinit_F_loadDMEM (0,1);
 CSTAMP(0xDADADA14);
 dwc_ddrphy_apb_wr(0xd0000,0x0);
 
-dwc_ddrphy_apb_wr(0x54000,0x40);
+dwc_ddrphy_apb_wr(0x54000,0x0);
 dwc_ddrphy_apb_wr(0x54001,0x0);
 dwc_ddrphy_apb_wr(0x54002,0x0);
-dwc_ddrphy_apb_wr(0x54003,0x960);
+dwc_ddrphy_apb_wr(0x54003,0x42a);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
-dwc_ddrphy_apb_wr(0x54006,0x12);
+dwc_ddrphy_apb_wr(0x54006,0x14);
 dwc_ddrphy_apb_wr(0x54007,0x0);
 dwc_ddrphy_apb_wr(0x54008,0x61);
 dwc_ddrphy_apb_wr(0x54009,0x4);
@@ -1086,7 +1048,7 @@ dwc_ddrphy_apb_wr(0x5400c,0x0);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
 dwc_ddrphy_apb_wr(0x5400e,0x0);
 dwc_ddrphy_apb_wr(0x5400f,0x100);
-dwc_ddrphy_apb_wr(0x54010,0x1f7f);
+dwc_ddrphy_apb_wr(0x54010,0x8020);
 dwc_ddrphy_apb_wr(0x54011,0x0);
 dwc_ddrphy_apb_wr(0x54012,0x310);
 dwc_ddrphy_apb_wr(0x54013,0x0);
@@ -1095,16 +1057,16 @@ dwc_ddrphy_apb_wr(0x54015,0x0);
 dwc_ddrphy_apb_wr(0x54016,0x0);
 dwc_ddrphy_apb_wr(0x54017,0x0);
 dwc_ddrphy_apb_wr(0x54018,0x0);
-dwc_ddrphy_apb_wr(0x54019,0x2444);
-dwc_ddrphy_apb_wr(0x5401a,0x33);
-dwc_ddrphy_apb_wr(0x5401b,0x4766);
-dwc_ddrphy_apb_wr(0x5401c,0x4728);
+dwc_ddrphy_apb_wr(0x54019,0x914);
+dwc_ddrphy_apb_wr(0x5401a,0x1b);
+dwc_ddrphy_apb_wr(0x5401b,0x2266);
+dwc_ddrphy_apb_wr(0x5401c,0x2008);
 dwc_ddrphy_apb_wr(0x5401d,0x0);
 dwc_ddrphy_apb_wr(0x5401e,0x1c);
-dwc_ddrphy_apb_wr(0x5401f,0x2444);
-dwc_ddrphy_apb_wr(0x54020,0x33);
-dwc_ddrphy_apb_wr(0x54021,0x4766);
-dwc_ddrphy_apb_wr(0x54022,0x4728);
+dwc_ddrphy_apb_wr(0x5401f,0x914);
+dwc_ddrphy_apb_wr(0x54020,0x1b);
+dwc_ddrphy_apb_wr(0x54021,0x2266);
+dwc_ddrphy_apb_wr(0x54022,0x2008);
 dwc_ddrphy_apb_wr(0x54023,0x0);
 dwc_ddrphy_apb_wr(0x54024,0x1c);
 dwc_ddrphy_apb_wr(0x54025,0x0);
@@ -1120,17 +1082,17 @@ dwc_ddrphy_apb_wr(0x5402e,0x0);
 dwc_ddrphy_apb_wr(0x5402f,0x0);
 dwc_ddrphy_apb_wr(0x54030,0x0);
 dwc_ddrphy_apb_wr(0x54031,0x0);
-dwc_ddrphy_apb_wr(0x54032,0x4400);
-dwc_ddrphy_apb_wr(0x54033,0x3324);
+dwc_ddrphy_apb_wr(0x54032,0x1400);
+dwc_ddrphy_apb_wr(0x54033,0x1b09);
 dwc_ddrphy_apb_wr(0x54034,0x6600);
-dwc_ddrphy_apb_wr(0x54035,0x2847);
-dwc_ddrphy_apb_wr(0x54036,0x47);
+dwc_ddrphy_apb_wr(0x54035,0x822);
+dwc_ddrphy_apb_wr(0x54036,0x20);
 dwc_ddrphy_apb_wr(0x54037,0x1c00);
-dwc_ddrphy_apb_wr(0x54038,0x4400);
-dwc_ddrphy_apb_wr(0x54039,0x3324);
+dwc_ddrphy_apb_wr(0x54038,0x1400);
+dwc_ddrphy_apb_wr(0x54039,0x1b09);
 dwc_ddrphy_apb_wr(0x5403a,0x6600);
-dwc_ddrphy_apb_wr(0x5403b,0x2847);
-dwc_ddrphy_apb_wr(0x5403c,0x47);
+dwc_ddrphy_apb_wr(0x5403b,0x822);
+dwc_ddrphy_apb_wr(0x5403c,0x20);
 dwc_ddrphy_apb_wr(0x5403d,0x1c00);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);
@@ -1709,14 +1671,14 @@ dwc_ddrphy_apb_wr(0x2003a,0x2);
 // // [phyinit_I_loadPIEImage] Programming DfiWrRdDataCsConfig: DfiWrDataCsPolarity to 0x1
 // // [phyinit_I_loadPIEImage] Programming DfiWrRdDataCsConfig: DfiRdDataCsPolarity to 0x1
 dwc_ddrphy_apb_wr(0x200be,0x3);
-// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1200MHz, Programming Seq0BDLY0 to 0x4b
-dwc_ddrphy_apb_wr(0x2000b,0x4b);
-// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1200MHz, Programming Seq0BDLY1 to 0x96
-dwc_ddrphy_apb_wr(0x2000c,0x96);
-// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1200MHz, Programming Seq0BDLY2 to 0x5dc
-dwc_ddrphy_apb_wr(0x2000d,0x5dc);
-// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=1200MHz, Programming Seq0BDLY3 to 0x2c
-dwc_ddrphy_apb_wr(0x2000e,0x2c);
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=533MHz, Programming Seq0BDLY0 to 0x21
+dwc_ddrphy_apb_wr(0x2000b,0x21);
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=533MHz, Programming Seq0BDLY1 to 0x42
+dwc_ddrphy_apb_wr(0x2000c,0x42);
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=533MHz, Programming Seq0BDLY2 to 0x29a
+dwc_ddrphy_apb_wr(0x2000d,0x29a);
+// // [phyinit_I_loadPIEImage] Pstate=0,  Memclk=533MHz, Programming Seq0BDLY3 to 0x21
+dwc_ddrphy_apb_wr(0x2000e,0x21);
 dwc_ddrphy_apb_wr(0x9000c,0x0);
 dwc_ddrphy_apb_wr(0x9000d,0x173);
 dwc_ddrphy_apb_wr(0x9000e,0x60);
@@ -1726,9 +1688,9 @@ dwc_ddrphy_apb_wr(0x90011,0xdfbd);
 dwc_ddrphy_apb_wr(0x90012,0x2060);
 dwc_ddrphy_apb_wr(0x90013,0x6152);
 // // [phyinit_I_loadPIEImage] Enabling Phy Master Interface for DRAM drift compensation
-// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=1200MHz, Programming PPTTrainSetup::PhyMstrTrainInterval to 0xa
-// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=1200MHz, Programming PPTTrainSetup::PhyMstrMaxReqToAck to 0x5
-// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=1200MHz, Programming PPTTrainSetup2::PhyMstrFreqOverride to 0x3
+// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=533MHz, Programming PPTTrainSetup::PhyMstrTrainInterval to 0xa
+// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=533MHz, Programming PPTTrainSetup::PhyMstrMaxReqToAck to 0x5
+// // [phyinit_I_loadPIEImage] Pstate=0, Memclk=533MHz, Programming PPTTrainSetup2::PhyMstrFreqOverride to 0x3
 dwc_ddrphy_apb_wr(0x20010,0x5a);
 dwc_ddrphy_apb_wr(0x20011,0x3);
 // // [phyinit_I_loadPIEImage] Pstate=0, Programming AcsmPlayback0x0 to 0xe0
