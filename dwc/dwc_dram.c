@@ -1077,8 +1077,45 @@ void dwc_ddrphy_phyinit_main(void)
 	//runtimeConfig.RetEn = 1;
 
 	#ifdef DRAM_TYPE_LPDDR4
-	dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
-	//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
+	#ifdef SDRAM_SPEED_1600
+	#if 1 //for zebu
+		dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
+		//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
+	#else //for real chip
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350\n");
+		#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350.txt>
+	#endif
+	#endif
+
+	#ifdef SDRAM_SPEED_1200
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2400_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2400_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_1066
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2133_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2133_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_933
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1866_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1866_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_800
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1600_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1600_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_733
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1466_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1466_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_533
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350.txt>
+	#endif
 	#endif
 
 	#ifdef DRAM_TYPE_DDR4
@@ -1092,21 +1129,6 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#elif defined(PLATFORM_Q645)
-	#ifdef SDRAM_SPEED_666
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS\n");
-	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
-	#endif
-
-	#ifdef SDRAM_SPEED_800
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS\n");
-	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
-	#endif
-
-	#ifdef SDRAM_SPEED_1200
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA\n");
-	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
-	#endif
-
 	#ifdef SDRAM_SPEED_1600
 	#ifdef NT6AN1024F32AV
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_37_3200_RANK2_DQ_CA_ODT80_WDQS_VREFDQ_332_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
@@ -1118,6 +1140,21 @@ void dwc_ddrphy_phyinit_main(void)
 		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d\n");
 		#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_27_3200_ASIC_RANK2_WDQS_RxTx2D_04_rdwr2D_3f3f_quick2d.txt>
 	#endif
+	#endif
+
+	#ifdef SDRAM_SPEED_1200
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA\n");
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_35_2400_ASIC_RANK2_WDQA.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_800
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS\n");
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL400_SDRAM800_PDDS.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_666
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS\n");
+	#include <Q645/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_PLL333_SDRAM666_PDDS.txt>
 	#endif
 	#endif
 }
