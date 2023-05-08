@@ -288,7 +288,7 @@ void polling_sw_cfg_done()
 void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 {
 	#ifdef STREAM_MESSAGE
- 	UINT32 string_index;
+ 	UINT32 value;
 	#endif
 	UINT16 rd_data, args, i, low_16bit, upper_16bit;
 	UINT8 train_test = 0;
@@ -371,8 +371,8 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 				dwc_ddrphy_apb_wr(0xd0031,1);
 
 				#ifdef STREAM_MESSAGE
-				string_index = (upper_16bit << 16) | low_16bit;
-				prn_string("string_index=");prn_dword0(string_index);
+				value = (upper_16bit << 16) | low_16bit;
+				prn_string("string_index=");prn_dword0(value);
 				prn_string("\n");
 				#endif
 				args = low_16bit & 0xffff;
@@ -395,8 +395,8 @@ void dwc_ddrphy_phyinit_userCustom_G_waitFwDone_of_SP()
 					}
 					dwc_ddrphy_apb_wr(0xd0031,1);
 					#ifdef STREAM_MESSAGE
-					string_index = (upper_16bit << 16) | low_16bit;
-					prn_string("args=");prn_dword0(low_16bit);
+					value = (upper_16bit << 16) | low_16bit;
+					prn_string("args=");prn_dword0(value);
 					prn_string("\n");
 					#endif
 				}
