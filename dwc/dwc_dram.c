@@ -78,7 +78,7 @@ static volatile struct sp_registers_ao *sp_reg_ptr_AO = (volatile struct sp_regi
 #endif
 
 struct dwc_phy_regs {
-	UINT16 dwc_phy_reg[4096];	/* change the size here, (area >> 2) */
+	UINT16 dwc_phy_reg[0x90200];	/* change the size here, (area >> 2) */
 };
 static volatile struct dwc_phy_regs *dwc_phy_reg_ptr = (volatile struct dwc_phy_regs *)(DWC_PHY_REG_Base);
 #define DWC_PHY_REG(OFFSET)		(dwc_phy_reg_ptr->dwc_phy_reg[OFFSET ])
