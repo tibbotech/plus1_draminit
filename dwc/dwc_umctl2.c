@@ -16,7 +16,7 @@ void ctl_apb_wr(UINT32 adr, UINT32 dat)
 }
 int ctl_apb_rd(UINT32 adr)
 {
-	UINT16 value;
+	UINT32 value;
 	value = UMCTL2_REG(adr);
 	return value;
 }
