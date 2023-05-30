@@ -3,7 +3,7 @@
  *  \addtogroup CustFunc
  *  @{
  */
-#include "dwc_ddrphy_phyinit_userCustom.h"
+//#include "dwc_ddrphy_phyinit_userCustom.h"
 
 /** \brief  This function must be used to trigger setting DfiClk to the 
  * frequency associated with the input PState.
@@ -27,10 +27,10 @@
  *
  * \return integer value = Pstate
  */
-int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indicating associated DfiClk Frequency*/) { 
+//int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indicating associated DfiClk Frequency*/) { 
 
-    char *printf_header;
-    printf_header = "// [dwc_ddrphy_phyinit_userCustom_E_setDfiClk]";
+    //char *printf_header;
+    //printf_header = "// [dwc_ddrphy_phyinit_userCustom_E_setDfiClk]";
 
     //dwc_ddrphy_phyinit_cmnt ("\n");
     //dwc_ddrphy_phyinit_cmnt ("\n");
@@ -45,7 +45,7 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
     //dwc_ddrphy_phyinit_print ("dwc_ddrphy_phyinit_userCustom_E_setDfiClk (%d);\n\n", pstate);
     //dwc_ddrphy_phyinit_cmnt ("\n");
 
-    dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_E_setDfiClk()\n", printf_header);
-    return (pstate);
-}
+    //dwc_ddrphy_phyinit_cmnt ("%s End of dwc_ddrphy_phyinit_userCustom_E_setDfiClk()\n", printf_header);
+    //return (pstate);
+//}
 /** @} */

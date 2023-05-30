@@ -1299,3 +1299,42 @@ int dram_init_main(unsigned int gbootRom_boot_mode)
 #endif
 	return 1;
 }
+
+int Change_freq_main(unsigned int gbootRom_boot_mode, unsigned int pstate)
+{
+	bootdevice=gbootRom_boot_mode;
+	prn_string("bootdevice=");
+	prn_dword(bootdevice);
+	// init params
+	ckobd_training_flag = 1;
+
+	if(pstate == 0)
+		apb_ctl_before_change_clock_2400to3200();
+
+	if(pstate == 1)
+		apb_ctl_before_change_clock_3200to2400();
+
+
+
+	return 1;
+}
+
+int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indicating associated DfiClk Frequency*/) {
+	prn_string("dwc_ddrphy_phyinit_userCustom_E_setDfiClk\n");
+	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);
+
+	if (pstate == 0) { //PLLD 800MHz
+		prn_string("PLLD: 800MHz\n");
+		SP_REG(4, 13) = RF_MASK_V(0xFFFF, 0x800B);  //PLLD PSTDIV
+		SP_REG(4, 14) = RF_MASK_V(0xFFFF, 0x2B35);  //PLLD FBKDIV 32
+    }
+
+    if (pstate == 1) { //PLLD 666MHz
+		prn_string("PLLD: 600MHz\n");
+		SP_REG(4, 13) = RF_MASK_V(0xFFFF, 0x920B);//600MHz, SDRAM clock 1200MHz, datarate 2400
+		SP_REG(4, 14) = RF_MASK_V(0x000C, 0x0008);
+    }
+
+	SP_REG(0, 22) = RF_MASK_V_CLR(0 << 4);
+    return (pstate);
+}
