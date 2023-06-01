@@ -1321,6 +1321,7 @@ int Change_freq_main(unsigned int gbootRom_boot_mode, unsigned int pstate)
 
 int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indicating associated DfiClk Frequency*/) {
 	prn_string("dwc_ddrphy_phyinit_userCustom_E_setDfiClk\n");
+	#ifdef PLATFORM_Q645
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);
 
 	if (pstate == 0) { //PLLD 800MHz
@@ -1336,5 +1337,6 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
     }
 
 	SP_REG(0, 22) = RF_MASK_V_CLR(0 << 4);
+	#endif
     return (pstate);
 }
