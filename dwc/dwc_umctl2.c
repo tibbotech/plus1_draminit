@@ -81,6 +81,10 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #endif
 
 #ifdef SDRAM_SPEED_666
+#ifdef PLATFORM_SP7350
+	prn_string("dwc_umctl2_lpddr4_666_SP7350\n");
+	#include <SP7350/dwc_umctl2_lpddr4_666_SP7350.txt>
+#endif
 #ifdef PLATFORM_Q645
 	prn_string("dwc_umctl2_lpddr4_666_Q645\n");
 	#include <Q645/dwc_umctl2_lpddr4_666_Q645.txt>

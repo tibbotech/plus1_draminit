@@ -16,6 +16,7 @@
 //#define SDRAM_SPEED_933		//PLL 466.6MHz
 //#define SDRAM_SPEED_800		//PLL 400MHz
 //#define SDRAM_SPEED_733		//PLL 366.6MHz
+//#define SDRAM_SPEED_666		//PLL 333.3MHz
 //#define SDRAM_SPEED_533		//PLL 266.6MHz
 #elif defined(PLATFORM_Q645)
 #define DRAM_TYPE_LPDDR4

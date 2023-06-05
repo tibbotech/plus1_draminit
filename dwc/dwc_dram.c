@@ -1112,6 +1112,11 @@ void dwc_ddrphy_phyinit_main(void)
 	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1466_SP7350.txt>
 	#endif
 
+	#ifdef SDRAM_SPEED_666
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1333_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1333_SP7350.txt>
+	#endif
+
 	#ifdef SDRAM_SPEED_533
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350\n");
 	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350.txt>
