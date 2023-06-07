@@ -504,10 +504,10 @@ int ctl_trigger_init_and_wait_normal()
 	return 1;
 }
 
-void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
+void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 {
 	UINT32 rd_data;
-	prn_string("apb_ctl_before_change_clock_2400to3200\n");
+	prn_string("apb_ctl_before_change_clock\n");
 
 	rd_data = ctl_apb_rd(0x490);
 	ctl_apb_wr(0x490, rd_data & 0xfffffffe);  //Step1. This blocks AXI ports from taking anymore transactions
@@ -540,24 +540,51 @@ void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
 	// Skip Step9. for DDR4
 	////////////////////////////////////////////////
 	//LPDDR4 MR UPDATE
-	while(1) {
-		rd_data = ctl_apb_rd(0x018);
-		if((rd_data & 1) == 0){
-			//$display($time,, "Mode reg setting by MC");
-			ctl_apb_wr(0x014,0x022d);
-			ctl_apb_wr(0x010,0x80000038);
-			break;
+	if(ps == 0) {
+		while(1) {
+			rd_data = ctl_apb_rd(0x018);
+			if((rd_data & 1) == 0){
+				//$display($time,, "Mode reg setting by MC");
+				ctl_apb_wr(0x014,0x022d);
+				ctl_apb_wr(0x010,0x80000038);
+				break;
+			}
+		}
+		while(1) {
+			rd_data = ctl_apb_rd(0x018);
+			if((rd_data & 1) == 0){
+				//$display($time,, "Mode reg setting by MC");
+				ctl_apb_wr(0x014,0x0154);
+				ctl_apb_wr(0x010,0x80000038);
+				break;
+			}
 		}
 	}
-	while(1) {
-		rd_data = ctl_apb_rd(0x018);
-		if((rd_data & 1) == 0){
-			//$display($time,, "Mode reg setting by MC");
-			ctl_apb_wr(0x014,0x0154);
-			ctl_apb_wr(0x010,0x80000038);
-			break;
-		}
+	else {
+		while(1) {
+				rd_data = ctl_apb_rd(0x018);
+				if((rd_data & 1) == 0){
+				 //$display($time,, "Mode reg setting by MC");
+				ctl_apb_wr(0x014,0x0224);
+				ctl_apb_wr(0x010,0x80000038);
+				 break;
+				}
+			}
+			//prn_string("0006\n");
+
+			while(1) {
+				rd_data = ctl_apb_rd(0x018);
+				if((rd_data & 1) == 0){
+				 //$display($time,, "Mode reg setting by MC");
+				ctl_apb_wr(0x014,0x0144);
+				ctl_apb_wr(0x010,0x80000038);
+				 break;
+				}
+			}
 	}
+
+
+	//prn_string("0007\n");
 	///////////////////////////////////////////////////////////////
 	rd_data = ctl_apb_rd(0x198);
 	ctl_apb_wr(0x198, rd_data & 0xfffffeff);  //Step10.Setting DFILPCF0.dfi_lp_en_sr = 0.
@@ -575,6 +602,8 @@ void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
 
 	rd_data = ctl_apb_rd(0x30);
 	ctl_apb_wr(0x30, (rd_data | (1<<5)));  //Step12. Enter the self-refresh mode.
+	rd_data = ctl_apb_rd(0x30);
+	_delay_1ms(200);
 	rd_data = ctl_apb_rd(0x04);
 	while((rd_data & 0x3) != 0x3){
 	  rd_data = ctl_apb_rd(0x04);  //Step12. Indicating that the DWC_ddr_umclt2 controller is in self-refresh mode
@@ -599,7 +628,10 @@ void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
 	//$display($time, "[Debug] Step14. Ensure the uMCTL2 initizlization state isn't reset.");
 
 	rd_data = ctl_apb_rd(0x1b0);
-	ctl_apb_wr(0x1b0, rd_data&0xffffe0ff);  //Step15. dfi_freq[4:0] = 0x00, Go to PHY state P0.
+	if(ps == 0)
+		ctl_apb_wr(0x1b0, rd_data&0xffffe0ff);  //Step15. dfi_freq[4:0] = 0x00, Go to PHY state P0.
+	else
+		ctl_apb_wr(0x1b0, ((rd_data & 0xffffe0ff) | (1<<8) ));
 	//$display($time, "[Debug] Step15. Go to PHY state P0");
 
 	rd_data = ctl_apb_rd(0x1b0);
@@ -611,31 +643,59 @@ void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
 	//$display($time, "[Debug] Step16. Poll dfi_init_complete = 0;");
 
 	//change frequency
-	dwc_ddrphy_phyinit_userCustom_E_setDfiClk (0);
+	dwc_ddrphy_phyinit_userCustom_E_setDfiClk (ps);
 	//$display($time, "[Debug] Step17. change frequency to 1600");
 	//Step17. uMCTL2 frequency change.
 	//Step18. Update any register which may be require to change for the new frequency
-
-	ctl_apb_wr(0x050, 0x00210004);
-	ctl_apb_wr(0x054, 0x00100042);
-	ctl_apb_wr(0x060, 0x00000000);
-	ctl_apb_wr(0x064, 0x00618130);
-	ctl_apb_wr(0x068, 0x00480000);
-	ctl_apb_wr(0x0d8, 0x0000e205);
-	ctl_apb_wr(0x0dc, 0x0054002d);
-	ctl_apb_wr(0x100, 0x1b203622);
-	ctl_apb_wr(0x104, 0x00060630);
-	ctl_apb_wr(0x108, 0x070e0f14);
-	ctl_apb_wr(0x10c, 0x00b0c006);
-	ctl_apb_wr(0x110, 0x0f04080f);
-	ctl_apb_wr(0x114, 0x02040c0c);
-	ctl_apb_wr(0x118, 0x01010007);
-	ctl_apb_wr(0x124, 0x00000008);
-	ctl_apb_wr(0x134, 0x0c100002);
-	ctl_apb_wr(0x180, 0xd3200018);
-	ctl_apb_wr(0x184, 0x028b282b);
-	ctl_apb_wr(0x190, 0x0397820a);
-	ctl_apb_wr(0x1b4, 0x0000170a);
+	if(ps == 0)
+	{
+		ctl_apb_wr(0x050, 0x00210004);
+		ctl_apb_wr(0x054, 0x00100042);
+		ctl_apb_wr(0x060, 0x00000000);
+		//ctl_apb_wr(0x064, 0x00618130);
+		ctl_apb_wr(0x064, 0x00090072);
+		ctl_apb_wr(0x068, 0x00480000);
+		ctl_apb_wr(0x0d8, 0x0000e205);
+		ctl_apb_wr(0x0dc, 0x0054002d);
+		ctl_apb_wr(0x100, 0x1b203622);
+		ctl_apb_wr(0x104, 0x00060630);
+		ctl_apb_wr(0x108, 0x070e0f14);
+		ctl_apb_wr(0x10c, 0x00b0c006);
+		ctl_apb_wr(0x110, 0x0f04080f);
+		ctl_apb_wr(0x114, 0x02040c0c);
+		ctl_apb_wr(0x118, 0x01010007);
+		ctl_apb_wr(0x124, 0x00000008);
+		ctl_apb_wr(0x134, 0x0c100002);
+		ctl_apb_wr(0x180, 0xd3200018);
+		ctl_apb_wr(0x184, 0x028b282b);
+		ctl_apb_wr(0x190, 0x0397820a);
+		ctl_apb_wr(0x1b4, 0x0000170a);
+	}
+	else
+	{
+		ctl_apb_wr(0x050, 0x00210000);
+		ctl_apb_wr(0x054, 0x00100042);
+		ctl_apb_wr(0x060, 0x00000000);
+		//ctl_apb_wr(0x064, 0x00618130);
+		ctl_apb_wr(0x064, 0x00090072);
+		ctl_apb_wr(0x068, 0x00480000);
+		ctl_apb_wr(0x0d8, 0x0000e205);
+		ctl_apb_wr(0x0dc, 0x0054002d);
+		ctl_apb_wr(0x100, 0x1b203622);
+		ctl_apb_wr(0x104, 0x00060630);
+		ctl_apb_wr(0x108, 0x070e0f14);
+		ctl_apb_wr(0x10c, 0x00b0c006);
+		ctl_apb_wr(0x110, 0x0f04080f);
+		ctl_apb_wr(0x114, 0x02040c0c);
+		ctl_apb_wr(0x118, 0x01010007);
+		ctl_apb_wr(0x124, 0x00000008);
+		ctl_apb_wr(0x128, 0x00020a00);
+		ctl_apb_wr(0x134, 0x0c100002);
+		ctl_apb_wr(0x180, 0xd3200018);
+		ctl_apb_wr(0x184, 0x028b282b);
+		ctl_apb_wr(0x190, 0x03938208);
+		ctl_apb_wr(0x1b4, 0x00001308);
+	}
 
 	rd_data = ctl_apb_rd(0x1b0);
 	ctl_apb_wr(0x1b0, rd_data&0xffffffdf);  //Step19. Set  DFIMISC.dfi_init_start to 0. The PHY performs internal sequences to relock PLLs and calibrate ZQ/Delay-Line
@@ -666,174 +726,3 @@ void apb_ctl_before_change_clock_2400to3200() //Ch6.3.3.6
 
 	ctl_apb_wr(0x490,0x00000001); //axi port 0 enable.
 }
-
-void apb_ctl_before_change_clock_3200to2400() //Ch6.3.3.6
-{
-	UINT32 rd_data;
-	prn_string("apb_ctl_before_change_clock_3200to2400\n");
-
-	rd_data = ctl_apb_rd(0x490);
-	ctl_apb_wr(0x490, rd_data & 0xfffffffe);  //Step1. This blocks AXI ports from taking anymore transactions
-
-	rd_data = ctl_apb_rd(0x3fc);
-	while(rd_data != 0){
-	  rd_data = ctl_apb_rd(0x3fc);  //Step2. Wait until all AXI ports are IDLE.
-	}
-	//$display($time, "[Debug] All AXI ports are IDLE.!!!");
-
-	rd_data = ctl_apb_rd(0x20);
-	ctl_apb_wr(0x20, rd_data | (1<<13));  //Step5.
-
-	rd_data = ctl_apb_rd(0x304);
-	ctl_apb_wr(0x304, rd_data | (1<<1));  //Step6. New command are accepted by uMCTL2.
-
-	rd_data = ctl_apb_rd(0x308);
-	while((rd_data & (3<<28)) != (3<<28)){
-	  rd_data = ctl_apb_rd(0x308);  //Step7. Ensure all outstanding commands have been sent on the DFi.
-	}
-	//$display($time, "[Debug] Step7. Ensure all outstanding commands have been sent on the DFi.");
-
-	rd_data = ctl_apb_rd(0x308);
-	while((rd_data & (3<<25)) != (3<<25)){
-	  rd_data = ctl_apb_rd(0x308);  //Step8. Ensure that write and read data buffer are empty.
-	}
-	//$display($time, "[Debug] Step8. Ensure that write and read data buffer are empty.");
-
-	// Skip Step9. for DDR4
-	////////////////////////////////////////////////
-	//LPDDR4 MR UPDATE
-	while(1) {
-		rd_data = ctl_apb_rd(0x018);
-		if((rd_data & 1) == 0){
-		 //$display($time,, "Mode reg setting by MC");
-		ctl_apb_wr(0x014,0x0224);
-		ctl_apb_wr(0x010,0x80000038);
-		 break;
-		}
-	}
-
-	while(1) {
-		rd_data = ctl_apb_rd(0x018);
-		if((rd_data & 1) == 0){
-		 //$display($time,, "Mode reg setting by MC");
-		ctl_apb_wr(0x014,0x0144);
-		ctl_apb_wr(0x010,0x80000038);
-		 break;
-		}
-	}
-	///////////////////////////////////////////////////////////////
-	rd_data = ctl_apb_rd(0x198);
-	ctl_apb_wr(0x198, rd_data & 0xfffffeff);  //Step10.Setting DFILPCF0.dfi_lp_en_sr = 0.
-
-	rd_data = ctl_apb_rd(0x1bc);
-	while((rd_data & (1<<1)) != 0){
-	   rd_data = ctl_apb_rd(0x1bc);  //Step10.Poll DFISTAT.dfi_lp_ack = 0.
-	}
-	//$display($time, "[Debug] Step10. Poll DFISTAT.dfi_lp_ack = 0.");
-
-	rd_data = ctl_apb_rd(0x04);
-	while((rd_data & 0x7) == 0x3){
-	  rd_data = ctl_apb_rd(0x04);  //Step11. Indicating that the DWC_ddr_umclt2 controller is not in self-refresh mode
-	}
-	//$display($time, "[Debug] Step11. Indicating that the DWC_ddr_umclt2 controller is not in self-refresh mode");
-
-	rd_data = ctl_apb_rd(0x30);
-	ctl_apb_wr(0x30, (rd_data | (1<<5)));  //Step12. Enter the self-refresh mode.
-
-	rd_data = ctl_apb_rd(0x04);
-	while((rd_data & 0x3) != 0x3){
-	  rd_data = ctl_apb_rd(0x04);  //Step12. Indicating that the DWC_ddr_umclt2 controller is in self-refresh mode
-	}
-	rd_data = ctl_apb_rd(0x04);
-	//$display($time, "[Debug] Step12. Indicating that the DWC_ddr_umclt2 controller is in self-refresh mode");
-	while((rd_data & (3<<4)) != (2<<4)){
-	  rd_data = ctl_apb_rd(0x04);  //Step12. Ensure transition to self-refresh is due to software.
-	}
-	//$display($time, "[Debug] Step12. Ensure transition to self-refresh is due to software.");
-
-	rd_data = ctl_apb_rd(0x308);
-	while((rd_data & (3<<28)) != (3<<28)){
-	  rd_data = ctl_apb_rd(0x308);  //Step13. Ensure all outstanding commands have been sent on the DFi.
-	}
-	//$display($time, "[Debug] Step13. Ensure all outstanding commands have been sent on the DFi.");
-
-	ctl_apb_wr(0x320,0x00000000);   //SWCTL
-
-	rd_data = ctl_apb_rd(0x1b0);
-	ctl_apb_wr(0x1b0, rd_data & 0xfffffffe);  //Step14.  set dfi_init_complete_en = 0, Ensure the uMCTL2 initizlization state isn't reset
-
-	//$display($time, "[Debug] Step14. Ensure the uMCTL2 initizlization state isn't reset.");
-
-	rd_data = ctl_apb_rd(0x1b0);
-	ctl_apb_wr(0x1b0, ((rd_data & 0xffffe0ff) | (1<<8) ));  //Step15. dfi_freq[4:0] = 0x01, Go to PHY state P1. //tonyh test
-	//$display($time, "[Debug] Step15. Go to PHY state P1");
-
-	rd_data = ctl_apb_rd(0x1b0);
-	ctl_apb_wr(0x1b0, rd_data | (1<<5));  //Step16. dfi_init_start = 1
-
-	rd_data = ctl_apb_rd(0x1bc);
-	while((rd_data & 1) != 0){
-	  rd_data = ctl_apb_rd(0x1bc);  //Step16. Poll dfi_init_complete = 0;
-	}
-	//$display($time, "[Debug] Step16. Poll dfi_init_complete = 0;");
-
-	//change frequency
-	dwc_ddrphy_phyinit_userCustom_E_setDfiClk (1);
-	//$display($time, "[Debug] Step17. change frequency to 1600");
-	//Step17. uMCTL2 frequency change.
-	//Step18. Update any register which may be require to change for the new frequency
-	ctl_apb_wr(0x050, 0x00210000);
-	ctl_apb_wr(0x054, 0x00100042);
-	ctl_apb_wr(0x060, 0x00000000);
-	ctl_apb_wr(0x064, 0x00618130);
-	ctl_apb_wr(0x068, 0x00480000);
-	ctl_apb_wr(0x0d8, 0x0000e205);
-	ctl_apb_wr(0x0dc, 0x0054002d);
-	ctl_apb_wr(0x100, 0x1b203622);
-	ctl_apb_wr(0x104, 0x00060630);
-	ctl_apb_wr(0x108, 0x070e0f14);
-	ctl_apb_wr(0x10c, 0x00b0c006);
-	ctl_apb_wr(0x110, 0x0f04080f);
-	ctl_apb_wr(0x114, 0x02040c0c);
-	ctl_apb_wr(0x118, 0x01010007);
-	ctl_apb_wr(0x124, 0x00000008);
-	ctl_apb_wr(0x128, 0x00020a00);
-	ctl_apb_wr(0x134, 0x0c100002);
-	ctl_apb_wr(0x180, 0xd3200018);
-	ctl_apb_wr(0x184, 0x028b282b);
-	ctl_apb_wr(0x190, 0x03938208);
-	ctl_apb_wr(0x1b4, 0x00001308);
-
-	rd_data = ctl_apb_rd(0x1b0);
-	ctl_apb_wr(0x1b0, rd_data&0xffffffdf);  //Step19. Set  DFIMISC.dfi_init_start to 0. The PHY performs internal sequences to relock PLLs and calibrate ZQ/Delay-Line
-
-	//$display($time, "[Debug] Step19. Set  DFIMISC.dfi_init_start to 0.");
-	rd_data = ctl_apb_rd(0x1bc);
-	while((rd_data & 1) != 1){  //Step20. PHY asserts dfi_init_compele. The controller polls DFSTAT.dfi_init_complete = 1.
-	  rd_data = ctl_apb_rd(0x1bc);
-	}
-	//$display($time, "[Debug] Step20. PHY asserts dfi_init_compele. The controller polls DFSTAT.dfi_init_complete = 1.");
-
-	rd_data = ctl_apb_rd(0x30);
-	ctl_apb_wr(0x30, rd_data&0xffffffdf);  //Step21 Request the DWC_ddr_umctl2_controller to exit self-refresh
-
-	rd_data = ctl_apb_rd(0x04);
-	while((rd_data & 7) == 3){
-	  rd_data = ctl_apb_rd(0x04);  //Step21. Indicating that the DWC_ddr_umclt2 controller is not in self-refresh mode
-	}
-	//$display($time, "[Debug] Step21. Indicating that the DWC_ddr_umclt2 controller is not in self-refresh mode.");
-
-	rd_data = ctl_apb_rd(0x198);
-	ctl_apb_wr(0x198, rd_data | (1<<8));  //Step22. Self-refresh entry.
-
-	//Step23. If necessary due to frequency change, Update MR register setting of the DRAM
-	// Update MR register in Step 9
-	//Step24. For DDR4
-	//Step25. Enable HIF commands
-	rd_data = ctl_apb_rd(0x304);
-	ctl_apb_wr(0x304, rd_data & 0xfffffffd);  //Step25. Enable HIF commands
-
-	ctl_apb_wr(0x490,0x00000001); //axi port 0 enable.
-}
-
-
