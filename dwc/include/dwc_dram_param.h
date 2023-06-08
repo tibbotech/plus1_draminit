@@ -523,6 +523,5 @@ UINT16 dwc_ddrphy_apb_rd(UINT32 adr);
 int ReadSDSector(unsigned int sectorNo, unsigned int pageCount, unsigned int *ptrPyldData);
 int usb_readSector(u32 lba, u32 count, u32 *dest);
 int usb2_readSector(u32 lba, u32 count, u32 *dest);
-void apb_ctl_before_change_clock_3200to2400();
-void apb_ctl_before_change_clock_2400to3200();
+void apb_ctl_before_change_clock(unsigned int ps);
 int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate);

@@ -603,7 +603,7 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 	rd_data = ctl_apb_rd(0x30);
 	ctl_apb_wr(0x30, (rd_data | (1<<5)));  //Step12. Enter the self-refresh mode.
 	rd_data = ctl_apb_rd(0x30);
-	_delay_1ms(200);
+	//_delay_1ms(200);
 	rd_data = ctl_apb_rd(0x04);
 	while((rd_data & 0x3) != 0x3){
 	  rd_data = ctl_apb_rd(0x04);  //Step12. Indicating that the DWC_ddr_umclt2 controller is in self-refresh mode

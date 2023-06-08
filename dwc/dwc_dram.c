@@ -1315,8 +1315,6 @@ int Change_freq_main(unsigned int gbootRom_boot_mode, unsigned int pstate)
 
 	apb_ctl_before_change_clock(pstate);
 
-
-
 	return 1;
 }
 
