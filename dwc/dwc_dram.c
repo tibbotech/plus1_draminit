@@ -1087,6 +1087,11 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 	#endif
 
+	#ifdef SDRAM_SPEED_1333
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2666_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2666_SP7350.txt>
+	#endif
+
 	#ifdef SDRAM_SPEED_1200
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2400_SP7350\n");
 	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_2400_SP7350.txt>
@@ -1117,9 +1122,19 @@ void dwc_ddrphy_phyinit_main(void)
 	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1333_SP7350.txt>
 	#endif
 
+	#ifdef SDRAM_SPEED_600
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1200_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1200_SP7350.txt>
+	#endif
+
 	#ifdef SDRAM_SPEED_533
 	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350\n");
 	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_1066_SP7350.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_400
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_800_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_800_SP7350.txt>
 	#endif
 	#endif
 
