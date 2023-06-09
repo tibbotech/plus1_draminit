@@ -176,7 +176,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[2] = 5
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[3] = 5
 // // [phyinit_print_dat] userInputAdvanced.DisableUnusedAddrLns = 0
-// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 20
+// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 40
 // // [phyinit_print_dat] userInputAdvanced.ExtCalResVal = 0
 // // [phyinit_print_dat] userInputAdvanced.TxSlewFallAC = 5
 // // [phyinit_print_dat] userInputAdvanced.EnableHighClkSkewFix = 0
@@ -564,18 +564,18 @@ dwc_ddrphy_apb_wr(0x12049,0xe38);
 dwc_ddrphy_apb_wr(0x12149,0xe38);
 dwc_ddrphy_apb_wr(0x13049,0xe38);
 dwc_ddrphy_apb_wr(0x13149,0xe38);
-// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x1f
-// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x1f
-dwc_ddrphy_apb_wr(0x43,0x3ff);
-dwc_ddrphy_apb_wr(0x1043,0x3ff);
-dwc_ddrphy_apb_wr(0x2043,0x3ff);
-dwc_ddrphy_apb_wr(0x3043,0x3ff);
-dwc_ddrphy_apb_wr(0x4043,0x3ff);
-dwc_ddrphy_apb_wr(0x5043,0x3ff);
-dwc_ddrphy_apb_wr(0x6043,0x3ff);
-dwc_ddrphy_apb_wr(0x7043,0x3ff);
-dwc_ddrphy_apb_wr(0x8043,0x3ff);
-dwc_ddrphy_apb_wr(0x9043,0x3ff);
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x3
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x3
+dwc_ddrphy_apb_wr(0x43,0x63);
+dwc_ddrphy_apb_wr(0x1043,0x63);
+dwc_ddrphy_apb_wr(0x2043,0x63);
+dwc_ddrphy_apb_wr(0x3043,0x63);
+dwc_ddrphy_apb_wr(0x4043,0x63);
+dwc_ddrphy_apb_wr(0x5043,0x63);
+dwc_ddrphy_apb_wr(0x6043,0x63);
+dwc_ddrphy_apb_wr(0x7043,0x63);
+dwc_ddrphy_apb_wr(0x8043,0x63);
+dwc_ddrphy_apb_wr(0x9043,0x63);
 // // [phyinit_C_initPhyConfig] Programming DfiMode to 0x3
 dwc_ddrphy_apb_wr(0x20018,0x3);
 // // [phyinit_C_initPhyConfig] Programming DfiCAMode to 0x4
