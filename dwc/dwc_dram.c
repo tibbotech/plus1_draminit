@@ -1078,7 +1078,7 @@ void dwc_ddrphy_phyinit_main(void)
 
 	#ifdef DRAM_TYPE_LPDDR4
 	#ifdef SDRAM_SPEED_1600
-	#if 1 //for zebu
+	#if 0 //for zebu
 		dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
 		//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
 	#else //for real chip

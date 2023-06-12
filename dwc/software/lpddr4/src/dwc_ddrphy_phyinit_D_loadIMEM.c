@@ -237,7 +237,7 @@ void dwc_ddrphy_phyinit_D_loadIMEM (int Train2D)
 #else
 #ifdef PLATFORM_SP7350
 	//For zebu using only. Need to init BDL delay. Realy chip don't run this function.
-	Changing_SDRAMRDQS_of_Zebu_Emulation();
+	//Changing_SDRAMRDQS_of_Zebu_Emulation();
 #endif
 	dwc_ddrphy_phyinit_userCustom_io_write16((tAPBONLY | csr_MicroContMuxSel_ADDR), 0x0);
 	dwc_ddrphy_phyinit_D_loadIMEM_of_SP(Train2D);

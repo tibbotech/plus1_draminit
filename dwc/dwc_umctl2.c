@@ -26,10 +26,10 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #ifdef DRAM_TYPE_LPDDR4
 #ifdef SDRAM_SPEED_1600
 #ifdef PLATFORM_SP7350
-	prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_zebu\n");
-	#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_zebu.txt>
-	//prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_realchip\n");
-	//#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_realchip.txt>
+	//prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_zebu\n");
+	//#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_zebu.txt>
+	prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_realchip\n");
+	#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_realchip.txt>
 #endif
 #ifdef PLATFORM_Q645
 	prn_string("dwc_umctl2_lpddr4_1600_Q645\n");
