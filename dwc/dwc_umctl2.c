@@ -199,6 +199,46 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
 #endif
 
+#ifdef SDRAM_SPEED_1333
+	prn_string("SDRAM_SPEED_1333\n");
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
+	ctl_apb_rd(0x0030);//PWRCTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
+	ctl_apb_rd(0x0030);//PWRCTL
+	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3)); //PWRCTL
+	ctl_apb_rd(0x01c4);//DFIPHYMSTR
+	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));//DFIPHYMSTR
+	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_304_2));//SWCTL
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
+	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
+	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
+	ctl_apb_rd(0x00d0);//INIT0
+	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
+	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x0000);//MSTR 'h80080020
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
+	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
+	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
+#endif
+
 #ifdef SDRAM_SPEED_1200
 	prn_string("SDRAM_SPEED_1200\n");
 	ctl_apb_wr(0x304, 0x00000000);
