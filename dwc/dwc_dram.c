@@ -1071,20 +1071,15 @@ void dwc_ddrphy_phyinit_restoreRetention(void)
 
 void dwc_ddrphy_phyinit_main(void)
 {
-	prn_string("dwc_ddrphy_phyinit_main ver.24\n");
+	prn_string("dwc_ddrphy_phyinit_main 20230621\n");
 	mp = 1;
 	#ifdef PLATFORM_SP7350
 	//runtimeConfig.RetEn = 1;
 
 	#ifdef DRAM_TYPE_LPDDR4
 	#ifdef SDRAM_SPEED_1600
-	#if 0 //for zebu
-		dwc_ddrphy_phyinit_sequence(2,0,0); /* training 1D */
-		//dwc_ddrphy_phyinit_sequence(0,1,0); /* training 1D,2D */
-	#else //for real chip
-		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350\n");
-		#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350.txt>
-	#endif
+	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350\n");
+	#include <SP7350/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_1333

@@ -26,8 +26,6 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #ifdef DRAM_TYPE_LPDDR4
 #ifdef SDRAM_SPEED_1600
 #ifdef PLATFORM_SP7350
-	//prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_zebu\n");
-	//#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_zebu.txt>
 	prn_string("dwc_umctl2_lpddr4_1600_SP7350_for_realchip\n");
 	#include <SP7350/dwc_umctl2_lpddr4_1600_SP7350_for_realchip.txt>
 #endif
@@ -145,8 +143,13 @@ int dwc_umctl2_init_before_ctl_rst(void)
 
 int dwc_umctl2_init_after_ctl_rst(void)
 {
-#ifdef SDRAM_SPEED_1600
+#if defined(SDRAM_SPEED_1600) || defined(SDRAM_SPEED_1333)
+	#ifdef SDRAM_SPEED_1600
 	prn_string("SDRAM_SPEED_1600\n");
+	#endif
+	#ifdef SDRAM_SPEED_1333
+	prn_string("SDRAM_SPEED_1333\n");
+	#endif
 	#ifdef PLATFORM_SP7350
 	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
 	ctl_apb_rd(0x0030);//PWRCTL
@@ -172,46 +175,6 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_wr(0x1b0, 0x00000040);
 	ctl_apb_wr(0x304, 0x00000002);
 	#endif
-	ctl_apb_rd(0x00d0);//INIT0
-	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
-	ctl_apb_rd(0x0000);//MSTR 'h80080020
-	ctl_apb_rd(0x0000);//MSTR 'h80080020
-	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
-	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
-	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
-	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
-	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
-	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
-	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
-	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
-	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
-	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
-	ctl_apb_rd(0x0000);//MSTR 'h80080020
-	ctl_apb_rd(0x0000);//MSTR 'h80080020
-	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
-	ctl_apb_rd(0x00dc);//INIT3 'h0054002d
-	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
-	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
-	ctl_apb_rd(0x00e8);//INIT6 'h0004004d
-	ctl_apb_rd(0x00e0);//INIT4 'h00f10028
-	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
-	ctl_apb_rd(0x00ec);//INIT7 'h0000004d
-	ctl_apb_rd(0x00d0);//INIT0 'hc0020003
-#endif
-
-#ifdef SDRAM_SPEED_1333
-	prn_string("SDRAM_SPEED_1333\n");
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_3));
-	ctl_apb_rd(0x0030);//PWRCTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3));//PWRCTL
-	ctl_apb_rd(0x0030);//PWRCTL
-	ctl_apb_wr(0x0030,UMCTL2_30(UMCTL2_30_3)); //PWRCTL
-	ctl_apb_rd(0x01c4);//DFIPHYMSTR
-	ctl_apb_wr(0x01c4,UMCTL2_1C4(UMCTL2_1C4_2));//DFIPHYMSTR
-	ctl_apb_wr(0x0320,UMCTL2_320(UMCTL2_304_2));//SWCTL
-	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
-	ctl_apb_wr(0x01b0,UMCTL2_1B0(UMCTL2_1B0_2));//DFIMISC
-	ctl_apb_wr(0x0304,UMCTL2_304(UMCTL2_304_4));
 	ctl_apb_rd(0x00d0);//INIT0
 	ctl_apb_rd(0x01c0);//DBICTL 'h00000006
 	ctl_apb_rd(0x0000);//MSTR 'h80080020
