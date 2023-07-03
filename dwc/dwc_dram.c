@@ -1331,6 +1331,40 @@ int Change_freq_main(unsigned int gbootRom_boot_mode, unsigned int pstate)
 int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indicating associated DfiClk Frequency*/) {
 #ifdef CHANGE_CLOCK
 	prn_string("dwc_ddrphy_phyinit_userCustom_E_setDfiClk\n");
+
+	#ifdef PLATFORM_SP7350
+	SP_REG_AO(0, 2) =0x00200020;
+
+	if (pstate == 0) { //PLLD 800MHz
+		prn_string("PLLD: 800MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF1008;
+		SP_REG_AO(3, 12) =0xFFFFC0BE;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+    }
+
+    if (pstate == 1) { //PLLD 666MHz
+		prn_string("PLLD: 666MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF0808;
+		SP_REG_AO(3, 12) =0xFFFFC0BE;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+
+	if (pstate == 2) { //PLLD 466MHz
+		prn_string("PLLD: 466MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF180A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+    }
+
+    if (pstate == 3) { //PLLD 333MHz
+		prn_string("PLLD: 333MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF080A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+	SP_REG_AO(0, 2) =0x00200000;
+	#endif
+
 	#ifdef PLATFORM_Q645
 	SP_REG(0, 22) = RF_MASK_V_CLR(1 << 4);
 
