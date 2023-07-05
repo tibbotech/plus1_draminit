@@ -93,9 +93,10 @@ static volatile struct dwc_phy_regs *dwc_phy_reg_ptr = (volatile struct dwc_phy_
 #define SCAN_TRIM_LEN		5
 
 static unsigned int ckobd_training_flag = 0;
+#if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
 static unsigned int pg_off_prev = 0;
 static unsigned int chk_multi_img_in_same_page = 0;
-
+#endif
 //static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
 //static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
 //static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
