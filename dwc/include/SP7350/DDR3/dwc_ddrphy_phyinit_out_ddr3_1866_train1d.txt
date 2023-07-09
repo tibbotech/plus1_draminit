@@ -1,3 +1,7 @@
+//========================== Note Path ==========================
+// /home/dqak654temp/dz.he/FW/ddr3/04_ddr3l_1866_datarate_ASIC/dwc_ddrphy_phyinit_out_ddr3_train1d.txt
+//========================== Note Path ==========================
+
 // [dwc_ddrphy_phyinit_main] Start of dwc_ddrphy_phyinit_main()
 // [dwc_ddrphy_phyinit_sequence] Start of dwc_ddrphy_phyinit_sequence()
 // [dwc_ddrphy_phyinit_initStruct] Start of dwc_ddrphy_phyinit_initStruct()
@@ -87,10 +91,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.EnableHighClkSkewFix = 0
 // // [phyinit_print_dat] userInputAdvanced.DramByteSwap = 0
 // // [phyinit_print_dat] userInputAdvanced.ExtCalResVal = 0
-// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[0] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[1] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[2] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[3] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[0] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[1] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[2] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseDQ[3] = 7
 // // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[0] = 0
 // // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.D4TxPreambleLength[2] = 0
@@ -100,18 +104,18 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.D4RxPreambleLength[3] = 0
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[0] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[1] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[2] = 15
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[3] = 15
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[0] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[1] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[2] = 7
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallDQ[3] = 7
 // // [phyinit_print_dat] userInputAdvanced.CalOnce = 0
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[0] = 0
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[1] = 0
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[2] = 0
 // // [phyinit_print_dat] userInputAdvanced.PhyMstrMaxReqToAck[3] = 0
 // // [phyinit_print_dat] userInputAdvanced.DisableUnusedAddrLns = 0
-// // [phyinit_print_dat] userInputAdvanced.TxSlewFallAC = 15
-// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 20
+// // [phyinit_print_dat] userInputAdvanced.TxSlewFallAC = 3
+// // [phyinit_print_dat] userInputAdvanced.ATxImpedance = 40
 // // [phyinit_print_dat] userInputAdvanced.PhyInitSequenceNum = 0
 // // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[0] = 0
 // // [phyinit_print_dat] userInputAdvanced.Is2Ttiming[1] = 0
@@ -126,17 +130,17 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] userInputAdvanced.CalInterval = 9
 // // [phyinit_print_dat] userInputAdvanced.WDQSExt = 0
 // // [phyinit_print_dat] userInputAdvanced.MemAlertPUImp = 5
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[0] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[1] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[2] = 60
-// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[3] = 60
-// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseAC = 15
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[0] = 120
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[1] = 120
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[2] = 120
+// // [phyinit_print_dat] userInputAdvanced.ODTImpedance[3] = 120
+// // [phyinit_print_dat] userInputAdvanced.TxSlewRiseAC = 4
 // // [phyinit_print_dat] userInputAdvanced.TrainSequenceCtrl = 0
 // // [phyinit_print_dat] userInputAdvanced.MemAlertSyncBypass = 0
-// // [phyinit_print_dat] userInputAdvanced.TxImpedance[0] = 60
-// // [phyinit_print_dat] userInputAdvanced.TxImpedance[1] = 60
-// // [phyinit_print_dat] userInputAdvanced.TxImpedance[2] = 60
-// // [phyinit_print_dat] userInputAdvanced.TxImpedance[3] = 60
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[0] = 34
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[1] = 34
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[2] = 34
+// // [phyinit_print_dat] userInputAdvanced.TxImpedance[3] = 34
 // // [phyinit_print_dat] userInputSim.tDQS2DQ    = 0
 // // [phyinit_print_dat] userInputSim.tDQSCK     = 200
 // // [phyinit_print_dat] userInputSim.tSTAOFF[0] = 0
@@ -149,7 +153,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] //
 // // [phyinit_print_dat] // ####################################################
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Reserved00 = 0x0
-// // [phyinit_print_dat] mb_DDR3U_1D[0].MsgMisc = 0x6
+// // [phyinit_print_dat] mb_DDR3U_1D[0].MsgMisc = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Pstate = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].PllBypassEn = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].DRAMFreq = 0x74a
@@ -157,7 +161,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_DDR3U_1D[0].BPZNResVal = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].PhyOdtImpedance = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].PhyDrvImpedance = 0x0
-// // [phyinit_print_dat] mb_DDR3U_1D[0].PhyVref = 0x56
+// // [phyinit_print_dat] mb_DDR3U_1D[0].PhyVref = 0x40
 // // [phyinit_print_dat] mb_DDR3U_1D[0].DramType = 0x1
 // // [phyinit_print_dat] mb_DDR3U_1D[0].DisabledDbyte = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].EnabledDQs = 0x20
@@ -167,7 +171,7 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_DDR3U_1D[0].AddrMirror = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].PhyCfg = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].SequenceCtrl = 0x31f
-// // [phyinit_print_dat] mb_DDR3U_1D[0].HdtCtrl = 0xc8
+// // [phyinit_print_dat] mb_DDR3U_1D[0].HdtCtrl = 0x4
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Share2DVrefResult = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Reserved1E = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Reserved1F = 0x0
@@ -176,10 +180,10 @@ dwc_ddrphy_phyinit_userCustom_overrideUserInput ();
 // // [phyinit_print_dat] mb_DDR3U_1D[0].PhyConfigOverride = 0x0
 // // [phyinit_print_dat] mb_DDR3U_1D[0].DFIMRLMargin = 0x1
 // // [phyinit_print_dat] mb_DDR3U_1D[0].Reserved5D = 0x0
-// // [phyinit_print_dat] mb_DDR3U_1D[0].MR0 = 0x104
-// // [phyinit_print_dat] mb_DDR3U_1D[0].MR1 = 0x4
-// // [phyinit_print_dat] mb_DDR3U_1D[0].MR2 = 0x20
-// // [phyinit_print_dat] mb_DDR3U_1D[0].AcsmOdtCtrl0 = 0x21
+// // [phyinit_print_dat] mb_DDR3U_1D[0].MR0 = 0xf14
+// // [phyinit_print_dat] mb_DDR3U_1D[0].MR1 = 0x40
+// // [phyinit_print_dat] mb_DDR3U_1D[0].MR2 = 0x420
+// // [phyinit_print_dat] mb_DDR3U_1D[0].AcsmOdtCtrl0 = 0x22
 // // [phyinit_print_dat] mb_DDR3U_1D[0].AcsmOdtCtrl1 = 0x12
 // // [phyinit_print_dat] mb_DDR3U_1D[0].AcsmOdtCtrl2 = 0x84
 // // [phyinit_print_dat] mb_DDR3U_1D[0].AcsmOdtCtrl3 = 0x48
@@ -233,89 +237,89 @@ dwc_ddrphy_phyinit_userCustom_B_startClockResetPhy ();
 // // TxPreDrvMode[2] = 0
 // //##############################################################
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxSlewRate::TxPreDrvMode to 0x3
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxSlewRate::TxPreP to 0xf
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxSlewRate::TxPreN to 0xf
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxSlewRate::TxPreP to 0x7
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxSlewRate::TxPreN to 0x7
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for TxSlewRate::TxPreP and TxSlewRate::TxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x1005f,0x3ff);
-dwc_ddrphy_apb_wr(0x1015f,0x3ff);
-dwc_ddrphy_apb_wr(0x1105f,0x3ff);
-dwc_ddrphy_apb_wr(0x1115f,0x3ff);
-dwc_ddrphy_apb_wr(0x1205f,0x3ff);
-dwc_ddrphy_apb_wr(0x1215f,0x3ff);
-dwc_ddrphy_apb_wr(0x1305f,0x3ff);
-dwc_ddrphy_apb_wr(0x1315f,0x3ff);
+dwc_ddrphy_apb_wr(0x1005f,0x377);
+dwc_ddrphy_apb_wr(0x1015f,0x377);
+dwc_ddrphy_apb_wr(0x1105f,0x377);
+dwc_ddrphy_apb_wr(0x1115f,0x377);
+dwc_ddrphy_apb_wr(0x1205f,0x377);
+dwc_ddrphy_apb_wr(0x1215f,0x377);
+dwc_ddrphy_apb_wr(0x1305f,0x377);
+dwc_ddrphy_apb_wr(0x1315f,0x377);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=0
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=0
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=0
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=0
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=0
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x55,0x3ff);
+dwc_ddrphy_apb_wr(0x55,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=1
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=1
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=1
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=1
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=1
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x1055,0x3ff);
+dwc_ddrphy_apb_wr(0x1055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=2
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=2
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=2
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=2
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=2
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x2055,0x3ff);
+dwc_ddrphy_apb_wr(0x2055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=3
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=3
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=3
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=3
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=3
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x3055,0x3ff);
+dwc_ddrphy_apb_wr(0x3055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x0, ANIB=4
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=4
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=4
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=4
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=4
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x4055,0xff);
+dwc_ddrphy_apb_wr(0x4055,0x34);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x0, ANIB=5
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=5
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=5
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=5
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=5
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x5055,0xff);
+dwc_ddrphy_apb_wr(0x5055,0x34);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=6
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=6
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=6
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=6
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=6
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x6055,0x3ff);
+dwc_ddrphy_apb_wr(0x6055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=7
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=7
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=7
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=7
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=7
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x7055,0x3ff);
+dwc_ddrphy_apb_wr(0x7055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=8
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=8
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=8
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=8
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=8
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x8055,0x3ff);
+dwc_ddrphy_apb_wr(0x8055,0x334);
 // // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreDrvMode to 0x3, ANIB=9
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0xf, ANIB=9
-// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0xf, ANIB=9
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreP to 0x4, ANIB=9
+// // [phyinit_C_initPhyConfig] Programming ATxSlewRate::ATxPreN to 0x3, ANIB=9
 // // [phyinit_C_initPhyConfig] ### NOTE ### Optimal setting for ATxSlewRate::ATxPreP and ATxSlewRate::ATxPreP are technology specific.
 // // [phyinit_C_initPhyConfig] ### NOTE ### Please consult the "Output Slew Rate" section of HSpice Model App Note in specific technology for recommended settings
 
-dwc_ddrphy_apb_wr(0x9055,0x3ff);
+dwc_ddrphy_apb_wr(0x9055,0x334);
 dwc_ddrphy_apb_wr(0x200c5,0xb);
 // // [phyinit_C_initPhyConfig] Pstate=0,  Memclk=933MHz, Programming PllCtrl2 to b based on DfiClk frequency = 466.
 //
@@ -349,6 +353,7 @@ dwc_ddrphy_apb_wr(0x2002e,0x2);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming DqsPreambleControl::LP4SttcPreBridgeRxEn to 0x0
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming DqsPreambleControl to 0x0
 dwc_ddrphy_apb_wr(0x20024,0x0);
+//dwc_ddrphy_apb_wr(0x20024,0x1e3); //tonyh test
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming DbyteDllModeCntrl to 0x0
 dwc_ddrphy_apb_wr(0x2003a,0x0);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming DllLockParam to 0x212
@@ -357,38 +362,38 @@ dwc_ddrphy_apb_wr(0x2007d,0x212);
 dwc_ddrphy_apb_wr(0x2007c,0x61);
 // // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming ProcOdtTimeCtl to 0xa
 dwc_ddrphy_apb_wr(0x20056,0xa);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxOdtDrvStren::ODTStrenP to 0x8
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxOdtDrvStren::ODTStrenN to 0x8
-dwc_ddrphy_apb_wr(0x1004d,0x208);
-dwc_ddrphy_apb_wr(0x1014d,0x208);
-dwc_ddrphy_apb_wr(0x1104d,0x208);
-dwc_ddrphy_apb_wr(0x1114d,0x208);
-dwc_ddrphy_apb_wr(0x1204d,0x208);
-dwc_ddrphy_apb_wr(0x1214d,0x208);
-dwc_ddrphy_apb_wr(0x1304d,0x208);
-dwc_ddrphy_apb_wr(0x1314d,0x208);
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x18
-// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x18
-dwc_ddrphy_apb_wr(0x10049,0x618);
-dwc_ddrphy_apb_wr(0x10149,0x618);
-dwc_ddrphy_apb_wr(0x11049,0x618);
-dwc_ddrphy_apb_wr(0x11149,0x618);
-dwc_ddrphy_apb_wr(0x12049,0x618);
-dwc_ddrphy_apb_wr(0x12149,0x618);
-dwc_ddrphy_apb_wr(0x13049,0x618);
-dwc_ddrphy_apb_wr(0x13149,0x618);
-// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x1f
-// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x1f
-dwc_ddrphy_apb_wr(0x43,0x3ff);
-dwc_ddrphy_apb_wr(0x1043,0x3ff);
-dwc_ddrphy_apb_wr(0x2043,0x3ff);
-dwc_ddrphy_apb_wr(0x3043,0x3ff);
-dwc_ddrphy_apb_wr(0x4043,0x3ff);
-dwc_ddrphy_apb_wr(0x5043,0x3ff);
-dwc_ddrphy_apb_wr(0x6043,0x3ff);
-dwc_ddrphy_apb_wr(0x7043,0x3ff);
-dwc_ddrphy_apb_wr(0x8043,0x3ff);
-dwc_ddrphy_apb_wr(0x9043,0x3ff);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxOdtDrvStren::ODTStrenP to 0x2
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxOdtDrvStren::ODTStrenN to 0x2
+dwc_ddrphy_apb_wr(0x1004d,0x82);
+dwc_ddrphy_apb_wr(0x1014d,0x82);
+dwc_ddrphy_apb_wr(0x1104d,0x82);
+dwc_ddrphy_apb_wr(0x1114d,0x82);
+dwc_ddrphy_apb_wr(0x1204d,0x82);
+dwc_ddrphy_apb_wr(0x1214d,0x82);
+dwc_ddrphy_apb_wr(0x1304d,0x82);
+dwc_ddrphy_apb_wr(0x1314d,0x82);
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqP to 0x3a
+// // [phyinit_C_initPhyConfig] Pstate=0, Memclk=933MHz, Programming TxImpedanceCtrl1::DrvStrenFSDqN to 0x3a
+dwc_ddrphy_apb_wr(0x10049,0xeba);
+dwc_ddrphy_apb_wr(0x10149,0xeba);
+dwc_ddrphy_apb_wr(0x11049,0xeba);
+dwc_ddrphy_apb_wr(0x11149,0xeba);
+dwc_ddrphy_apb_wr(0x12049,0xeba);
+dwc_ddrphy_apb_wr(0x12149,0xeba);
+dwc_ddrphy_apb_wr(0x13049,0xeba);
+dwc_ddrphy_apb_wr(0x13149,0xeba);
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenP to 0x3
+// // [phyinit_C_initPhyConfig] Programming ATxImpedance::ADrvStrenN to 0x3
+dwc_ddrphy_apb_wr(0x43,0x63);
+dwc_ddrphy_apb_wr(0x1043,0x63);
+dwc_ddrphy_apb_wr(0x2043,0x63);
+dwc_ddrphy_apb_wr(0x3043,0x63);
+dwc_ddrphy_apb_wr(0x4043,0x63);
+dwc_ddrphy_apb_wr(0x5043,0x63);
+dwc_ddrphy_apb_wr(0x6043,0x63);
+dwc_ddrphy_apb_wr(0x7043,0x63);
+dwc_ddrphy_apb_wr(0x8043,0x63);
+dwc_ddrphy_apb_wr(0x9043,0x63);
 // // [phyinit_C_initPhyConfig] Programming DfiMode to 0x5
 dwc_ddrphy_apb_wr(0x20018,0x5);
 // // [phyinit_C_initPhyConfig] Programming DfiCAMode to 0x0
@@ -401,10 +406,10 @@ dwc_ddrphy_apb_wr(0x20008,0x1d3);
 // // [phyinit_C_initPhyConfig] Programming CalRate::CalInterval to 0x9
 // // [phyinit_C_initPhyConfig] Programming CalRate::CalOnce to 0x0
 dwc_ddrphy_apb_wr(0x20088,0x9);
-// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInSel to 0x0
-// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInDAC to 0x41
-// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal to 0x208
-dwc_ddrphy_apb_wr(0x200b2,0x208);
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInSel to 0x4
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal::GlobalVrefInDAC to 0x65
+// // [phyinit_C_initPhyConfig] Pstate=0, Programming VrefInGlobal to 0x32c
+dwc_ddrphy_apb_wr(0x200b2,0x32c);
 // // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl::MajorModeDbyte to 0x0
 // // [phyinit_C_initPhyConfig] Pstate=0, Programming DqDqsRcvCntrl to 0x581
 dwc_ddrphy_apb_wr(0x10043,0x581);
@@ -452,6 +457,60 @@ dwc_ddrphy_apb_wr(0x2002c,0x0);
 // //##############################################################
 //
 // // [phyinit_userCustom_customPreTrain] Start of dwc_ddrphy_phyinit_userCustom_customPreTrain()
+ // //##############################################################
+// Add by dz.he for real chip begin
+
+dwc_ddrphy_apb_wr(0xd0000,0x0000);
+
+// For PLL
+dwc_ddrphy_apb_wr(0x200c7, 0x20);  //PllCtrl1
+dwc_ddrphy_apb_wr(0x200ca, 0x0124);  // PllTestMode
+dwc_ddrphy_apb_wr(0x200cc, 0x017f);  //PllCtrl4
+
+#if 0
+// DQ swap for DDR3
+dwc_ddrphy_apb_wr(0x100a0, 0x0);
+dwc_ddrphy_apb_wr(0x100a1, 0x7);
+dwc_ddrphy_apb_wr(0x100a2, 0x1);
+dwc_ddrphy_apb_wr(0x100a3, 0x6);
+dwc_ddrphy_apb_wr(0x100a4, 0x3);
+dwc_ddrphy_apb_wr(0x100a5, 0x4);
+dwc_ddrphy_apb_wr(0x100a6, 0x2);
+dwc_ddrphy_apb_wr(0x100a7, 0x5);
+
+dwc_ddrphy_apb_wr(0x110a0, 0x1);
+dwc_ddrphy_apb_wr(0x110a1, 0x7);
+dwc_ddrphy_apb_wr(0x110a2, 0x3);
+dwc_ddrphy_apb_wr(0x110a3, 0x5);
+dwc_ddrphy_apb_wr(0x110a4, 0x0);
+dwc_ddrphy_apb_wr(0x110a5, 0x4);
+dwc_ddrphy_apb_wr(0x110a6, 0x2);
+dwc_ddrphy_apb_wr(0x110a7, 0x6);
+
+dwc_ddrphy_apb_wr(0x120a0, 0x7);
+dwc_ddrphy_apb_wr(0x120a1, 0x0);
+dwc_ddrphy_apb_wr(0x120a2, 0x6);
+dwc_ddrphy_apb_wr(0x120a3, 0x1);
+dwc_ddrphy_apb_wr(0x120a4, 0x4);
+dwc_ddrphy_apb_wr(0x120a5, 0x3);
+dwc_ddrphy_apb_wr(0x120a6, 0x5);
+dwc_ddrphy_apb_wr(0x120a7, 0x2);
+
+dwc_ddrphy_apb_wr(0x130a0, 0x6);
+dwc_ddrphy_apb_wr(0x130a1, 0x0);
+dwc_ddrphy_apb_wr(0x130a2, 0x4);
+dwc_ddrphy_apb_wr(0x130a3, 0x2);
+dwc_ddrphy_apb_wr(0x130a4, 0x7);
+dwc_ddrphy_apb_wr(0x130a5, 0x3);
+dwc_ddrphy_apb_wr(0x130a6, 0x5);
+dwc_ddrphy_apb_wr(0x130a7, 0x1);
+#endif
+dwc_ddrphy_apb_wr(0xd0000,0x0001);
+
+// Add by dz.he for real chip end
+
+
+
 // // [phyinit_userCustom_customPreTrain] End of dwc_ddrphy_phyinit_userCustom_customPreTrain()
 // // [dwc_ddrphy_phyinit_D_loadIMEM, 1D] Start of dwc_ddrphy_phyinit_D_loadIMEM (Train2D=0)
 //
@@ -482,6 +541,7 @@ dwc_ddrphy_phyinit_D_loadIMEM (0);
 #endif
 
 CSTAMP(0xDADADA02);
+
 
 // // [dwc_ddrphy_phyinit_WriteOutMem] DONE.  Index 0x4000
 // // 2.	Isolate the APB access from the internal CSRs by setting the MicroContMuxSel CSR to 1.
@@ -528,19 +588,20 @@ dwc_ddrphy_phyinit_F_loadDMEM (0,0);
 CSTAMP(0xDADADA04);
 dwc_ddrphy_apb_wr(0xd0000,0x0);
 
-dwc_ddrphy_apb_wr(0x54000,0x600);
+dwc_ddrphy_apb_wr(0x54000,0x0);
 dwc_ddrphy_apb_wr(0x54001,0x0);
 dwc_ddrphy_apb_wr(0x54002,0x0);
 dwc_ddrphy_apb_wr(0x54003,0x74a);
 dwc_ddrphy_apb_wr(0x54004,0x2);
 dwc_ddrphy_apb_wr(0x54005,0x0);
-dwc_ddrphy_apb_wr(0x54006,0x156);
+dwc_ddrphy_apb_wr(0x54006,0x140);
 dwc_ddrphy_apb_wr(0x54007,0x2000);
-dwc_ddrphy_apb_wr(0x54008,0x303);
+//dwc_ddrphy_apb_wr(0x54008,0x303);
+dwc_ddrphy_apb_wr(0x54008,0x101);//tonyh test
 dwc_ddrphy_apb_wr(0x54009,0x0);
 dwc_ddrphy_apb_wr(0x5400a,0x0);
 dwc_ddrphy_apb_wr(0x5400b,0x31f);
-dwc_ddrphy_apb_wr(0x5400c,0xc8);
+dwc_ddrphy_apb_wr(0x5400c,0x4);
 dwc_ddrphy_apb_wr(0x5400d,0x0);
 dwc_ddrphy_apb_wr(0x5400e,0x0);
 dwc_ddrphy_apb_wr(0x5400f,0x0);
@@ -575,9 +636,9 @@ dwc_ddrphy_apb_wr(0x5402b,0x0);
 dwc_ddrphy_apb_wr(0x5402c,0x0);
 dwc_ddrphy_apb_wr(0x5402d,0x0);
 dwc_ddrphy_apb_wr(0x5402e,0x0);
-dwc_ddrphy_apb_wr(0x5402f,0x104);
-dwc_ddrphy_apb_wr(0x54030,0x4);
-dwc_ddrphy_apb_wr(0x54031,0x20);
+dwc_ddrphy_apb_wr(0x5402f,0xf14);
+dwc_ddrphy_apb_wr(0x54030,0x40);
+dwc_ddrphy_apb_wr(0x54031,0x420);
 dwc_ddrphy_apb_wr(0x54032,0x0);
 dwc_ddrphy_apb_wr(0x54033,0x0);
 dwc_ddrphy_apb_wr(0x54034,0x0);
@@ -586,17 +647,17 @@ dwc_ddrphy_apb_wr(0x54036,0x0);
 dwc_ddrphy_apb_wr(0x54037,0x0);
 dwc_ddrphy_apb_wr(0x54038,0x0);
 dwc_ddrphy_apb_wr(0x54039,0x0);
-dwc_ddrphy_apb_wr(0x5403a,0x1221);
+dwc_ddrphy_apb_wr(0x5403a,0x1222);
 dwc_ddrphy_apb_wr(0x5403b,0x4884);
 dwc_ddrphy_apb_wr(0x5403c,0x0);
 dwc_ddrphy_apb_wr(0x5403d,0x0);
 dwc_ddrphy_apb_wr(0x5403e,0x0);
 dwc_ddrphy_apb_wr(0x5403f,0x0);
+// // [dwc_ddrphy_phyinit_WriteOutMem] DONE.  Index 0x364
 
 #endif
 CSTAMP(0xDADADA05);
 
-// // [dwc_ddrphy_phyinit_WriteOutMem] DONE.  Index 0x364
 // // 2.	Isolate the APB access from the internal CSRs by setting the MicroContMuxSel CSR to 1.
 // //      This allows the firmware unrestricted access to the configuration CSRs.
 dwc_ddrphy_apb_wr(0xd0000,0x1);

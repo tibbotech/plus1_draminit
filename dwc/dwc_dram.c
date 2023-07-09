@@ -1161,8 +1161,25 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef DRAM_TYPE_DDR3
-	prn_string("dwc_ddrphy_phyinit_out_ddr3_train1d\n");
-	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_train1d.txt>
+	#ifdef SDRAM_SPEED_933
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_1866_train1d\n");
+	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1866_train1d.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_800
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_1600_train1d\n");
+	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1600_train1d.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_666
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_1333_train1d\n");
+	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1333_train1d.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_533
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_1066_train1d_rank1\n");
+	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1066_train1d_rank1.txt>
+	#endif
 	#endif
 
 	#elif defined(PLATFORM_Q645)

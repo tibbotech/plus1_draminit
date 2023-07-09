@@ -124,8 +124,25 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #endif
 
 #ifdef DRAM_TYPE_DDR3
-	prn_string("dwc_umctl2_ddr3_SP7350\n");
-	#include <SP7350/DDR3/dwc_umctl2_ddr3_SP7350.txt>
+#ifdef SDRAM_SPEED_933
+	prn_string("Q654_DDR3_ASIC_SDRAM_DATARATE_1866\n");
+	#include <SP7350/DDR3/Q654_DDR3_ASIC_SDRAM_DATARATE_1866.txt>
+#endif
+
+#ifdef SDRAM_SPEED_800
+	prn_string("Q654_DDR3_ASIC_SDRAM_DATARATE_1600\n");
+	#include <SP7350/DDR3/Q654_DDR3_ASIC_SDRAM_DATARATE_1600.txt>
+#endif
+
+#ifdef SDRAM_SPEED_666
+	prn_string("Q654_DDR3_ASIC_SDRAM_DATARATE_1333\n");
+	#include <SP7350/DDR3/Q654_DDR3_ASIC_SDRAM_DATARATE_1333.txt>
+#endif
+
+#ifdef SDRAM_SPEED_533
+	prn_string("Q654_DDR3_ASIC_SDRAM_DATARATE_1066\n");
+	#include <SP7350/DDR3/Q654_DDR3_ASIC_SDRAM_DATARATE_1066.txt>
+#endif
 #endif
 
 #ifdef NT6AN1024F32AV
@@ -136,6 +153,8 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	prn_string("MT53E1G32D2_A, 1rank, FBGA=D9ZQX\n");
 #elif defined(MT53E1G32D2_B)
 	prn_string("MT53E1G32D2_B, 2rank, FBGA=D8CJG\n");
+#elif defined(MT41K512M16VRP)
+	prn_string("MT41K512M16VRP, 1rank, FBGA=D9ZWN\n");
 #endif
 	return 0;
 }
@@ -234,8 +253,13 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0d0);
 #endif
 
-#ifdef SDRAM_SPEED_800
+#if defined(SDRAM_SPEED_933) || defined(SDRAM_SPEED_800)
+	#ifdef SDRAM_SPEED_933
+	prn_string("SDRAM_SPEED_933\n");
+	#endif
+	#ifdef SDRAM_SPEED_800
 	prn_string("SDRAM_SPEED_800\n");
+	#endif
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
@@ -266,8 +290,13 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0d0);
 #endif
 
-#ifdef SDRAM_SPEED_666
+#if defined(SDRAM_SPEED_666) || defined(SDRAM_SPEED_533)
+	#ifdef SDRAM_SPEED_666
 	prn_string("SDRAM_SPEED_666\n");
+	#endif
+	#ifdef SDRAM_SPEED_533
+	prn_string("SDRAM_SPEED_533\n");
+	#endif
 	ctl_apb_wr(0x304, 0x00000000);
 	ctl_apb_rd(0x030);
 	ctl_apb_wr(0x030, 0x00000020);
