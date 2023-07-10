@@ -119,8 +119,20 @@ int dwc_umctl2_init_before_ctl_rst(void)
 #endif
 
 #ifdef DRAM_TYPE_DDR4
-	prn_string("dwc_umctl2_ddr4_SP7350\n");
-	#include <SP7350/DDR4/dwc_umctl2_ddr4_SP7350.txt>
+#ifdef SDRAM_SPEED_1333
+		prn_string("Q654_DDR4_ASIC_SDRAM_DATARATE_2666.txt\n");
+	#include <SP7350/DDR3/Q654_DDR4_ASIC_SDRAM_DATARATE_2666.txt>
+#endif
+
+#ifdef SDRAM_SPEED_933
+		prn_string("Q654_DDR4_ASIC_SDRAM_DATARATE_1866\n");
+	#include <SP7350/DDR3/Q654_DDR4_ASIC_SDRAM_DATARATE_1866.txt>
+#endif
+
+#ifdef SDRAM_SPEED_666
+		prn_string("Q654_DDR4_ASIC_SDRAM_DATARATE_1333\n");
+	#include <SP7350/DDR3/Q654_DDR4_ASIC_SDRAM_DATARATE_1333.txt>
+#endif
 #endif
 
 #ifdef DRAM_TYPE_DDR3
@@ -153,6 +165,8 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	prn_string("MT53E1G32D2_A, 1rank, FBGA=D9ZQX\n");
 #elif defined(MT53E1G32D2_B)
 	prn_string("MT53E1G32D2_B, 2rank, FBGA=D8CJG\n");
+#elif defined(MT40A2G16SKL_B)
+	prn_string("MT40A2G16SKL_B, 1rank, FBGA=D9XQF\n");
 #elif defined(MT41K512M16VRP)
 	prn_string("MT41K512M16VRP, 1rank, FBGA=D9ZWN\n");
 #endif

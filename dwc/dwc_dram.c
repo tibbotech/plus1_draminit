@@ -1156,8 +1156,20 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef DRAM_TYPE_DDR4
-	prn_string("dwc_ddrphy_phyinit_out_ddr4_train1d2d\n");
-	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_train1d2d.txt>
+	#ifdef SDRAM_SPEED_1333
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_933
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_1866_train1d2d\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_1866_train1d2d.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_666
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_1333_train1d2d\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_1333_train1d2d.txt>
+	#endif
 	#endif
 
 	#ifdef DRAM_TYPE_DDR3
