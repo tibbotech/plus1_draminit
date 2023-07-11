@@ -731,7 +731,7 @@ dwc_ddrphy_apb_wr(0x200c7, 0x20);  //PllCtrl1
 dwc_ddrphy_apb_wr(0x200ca, 0x0124);  // PllTestMode
 dwc_ddrphy_apb_wr(0x200cc, 0x017f);  //PllCtrl4
 
-
+#if 0
 // DQ swap for DDR4
 dwc_ddrphy_apb_wr(0x100a0, 0x0);
 dwc_ddrphy_apb_wr(0x100a1, 0x7);
@@ -768,7 +768,7 @@ dwc_ddrphy_apb_wr(0x130a4, 0x2);
 dwc_ddrphy_apb_wr(0x130a5, 0x5);
 dwc_ddrphy_apb_wr(0x130a6, 0x3);
 dwc_ddrphy_apb_wr(0x130a7, 0x4);
-
+#endif
 dwc_ddrphy_apb_wr(0xd0000,0x0001);
 
 // Add by dz.he for real chip end
