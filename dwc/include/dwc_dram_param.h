@@ -38,8 +38,8 @@
 #define MT53E1G32D2_A  /*Micron 1Gbx32, 1 rank, FBGA code = D9ZQX*/
 #elif defined(CONFIG_MT53E1G32D2_B)
 #define MT53E1G32D2_B  /*Micron 1Gbx32, 2 rank, FBGA code = D8CJG*/
-#elif defined(CONFIG_MT40A2G16SKL_B)
-#define MT40A2G16SKL_B  /*Micron 2Gbx16, 1 rank, FBGA code = D9XQF*/
+#elif defined(CONFIG_MT40A512M16TB)
+#define MT40A512M16TB  /*Micron 512Mx16, 1 rank, FBGA code = D8BPK*/
 #elif defined(CONFIG_MT41K512M16VRP)
 #define MT41K512M16VRP  /*Micron 512Mx16, 1 rank, FBGA code = D9ZWN*/
 #elif defined(CONFIG_K4AAG165WA)

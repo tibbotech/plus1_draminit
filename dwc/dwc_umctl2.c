@@ -170,8 +170,8 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	prn_string("MT53E1G32D2_A, 1rank, FBGA=D9ZQX\n");
 #elif defined(MT53E1G32D2_B)
 	prn_string("MT53E1G32D2_B, 2rank, FBGA=D8CJG\n");
-#elif defined(MT40A2G16SKL_B)
-	prn_string("MT40A2G16SKL_B, 1rank, FBGA=D9XQF\n");
+#elif defined(MT40A512M16TB)
+	prn_string("MT40A512M16TB, 1rank, FBGA=D8BPK\n");
 #elif defined(MT41K512M16VRP)
 	prn_string("MT41K512M16VRP, 1rank, FBGA=D9ZWN\n");
 #endif
