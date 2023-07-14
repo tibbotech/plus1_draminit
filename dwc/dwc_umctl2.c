@@ -272,7 +272,10 @@ int dwc_umctl2_init_after_ctl_rst(void)
 	ctl_apb_rd(0x0d0);
 #endif
 
-#if defined(SDRAM_SPEED_933) || defined(SDRAM_SPEED_800)
+#if defined(SDRAM_SPEED_1066) || defined(SDRAM_SPEED_933) || defined(SDRAM_SPEED_800)
+	#ifdef SDRAM_SPEED_1066
+	prn_string("SDRAM_SPEED_1066\n");
+	#endif
 	#ifdef SDRAM_SPEED_933
 	prn_string("SDRAM_SPEED_933\n");
 	#endif
