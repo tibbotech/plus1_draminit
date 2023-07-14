@@ -83,27 +83,12 @@ struct dwc_phy_regs {
 static volatile struct dwc_phy_regs *dwc_phy_reg_ptr = (volatile struct dwc_phy_regs *)(DWC_PHY_REG_Base);
 #define DWC_PHY_REG(OFFSET)		(dwc_phy_reg_ptr->dwc_phy_reg[OFFSET ])
 
-#define TEST_LEN_0		(4 << 10)
-
-#define DRAM_0_SDC_REG_BASE	33
-#define DRAM_0_PHY_REG_BASE	768
-#define DRAM_1_SDC_REG_BASE	0	/* N/A */
-#define DRAM_1_PHY_REG_BASE	0	/* N/A */
-
-#define SCAN_TRIM_LEN		5
-
 static unsigned int ckobd_training_flag = 0;
 #if defined(CONFIG_HAVE_SPI_NAND) || defined(CONFIG_HAVE_PARA_NAND)
 static unsigned int pg_off_prev = 0;
 static unsigned int chk_multi_img_in_same_page = 0;
 #endif
-//static unsigned int data_byte_0_RDQSG_left_total_tap = 0;
-//static unsigned int data_byte_0_RDQSG_right_total_tap = 0;
-//static unsigned int data_byte_1_RDQSG_left_total_tap = 0;
-//static unsigned int data_byte_1_RDQSG_right_total_tap = 0;
-
 static unsigned int bootdevice;
-
 static unsigned int XBOOT_len  = 0;
 static unsigned int IMEM1d_len = 0;
 static unsigned int DMEM1d_len = 0;
@@ -112,18 +97,6 @@ static unsigned int DMEM2d_len = 0;
 static unsigned int IMDA_len = 0;
 static unsigned int DMDA_len = 0;
 
-
-#ifdef CONFIG_DRAM_SIZE_USE_OTP
-static unsigned int DRAM_SIZE_FLAG;
-#define DRAM_SIZE_512Mb  0x0
-#define DRAM_SIZE_1Gb    0x1
-#define DRAM_SIZE_2Gb    0x2
-#define DRAM_SIZE_4Gb    0x3
-#endif
-
-#if (defined(DRAMSCAN) || defined(SISCOPE))
-static unsigned int scan_val_190;
-#endif
 int mp;
 #ifdef PLATFORM_PENTAGRAM
 #define CHIP_WARM_RESET
