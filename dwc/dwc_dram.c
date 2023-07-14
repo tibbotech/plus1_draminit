@@ -1171,9 +1171,9 @@ void dwc_ddrphy_phyinit_main(void)
 	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_1866_train1d2d_rank1.txt>
 	#endif
 
-	#ifdef SDRAM_SPEED_666
-	prn_string("dwc_ddrphy_phyinit_out_ddr4_1333_train1d2d_rank1\n");
-	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_1333_train1d2d_rank1.txt>
+	#ifdef SDRAM_SPEED_800
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_1600_train1d2d_rank1_CL_14\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_1600_train1d2d_rank1_CL_14.txt>
 	#endif
 	#endif
 
