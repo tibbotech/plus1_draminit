@@ -1135,8 +1135,13 @@ void dwc_ddrphy_phyinit_main(void)
 	#endif
 
 	#ifdef SDRAM_SPEED_1333
+	#ifdef CHANGE_CLOCK
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_2666_2133_1866_1600_train1d2d_rank1\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_2666_2133_1866_1600_train1d2d_rank1.txt>
+	#else
 	prn_string("dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d_rank1\n");
 	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d_rank1.txt>
+	#endif
 	#endif
 
 	#ifdef SDRAM_SPEED_1066
@@ -1368,7 +1373,7 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
 
 	#ifdef PLATFORM_SP7350
 	SP_REG_AO(0, 2) =0x00200020;
-
+	#ifdef DRAM_TYPE_LPDDR4
 	if (pstate == 0) { //PLLD 800MHz
 		prn_string("PLLD: 800MHz\n");
 		SP_REG_AO(3, 11) =0xFFFF1008;
@@ -1396,6 +1401,37 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
 		SP_REG_AO(3, 12) =0xFFFFC0BC;
 		SP_REG_AO(3, 13) =0xFFFF0107;
 	}
+	#endif
+
+	#ifdef DRAM_TYPE_DDR4
+	if (pstate == 0) { //PLLD 666MHz
+		prn_string("PLLD: 666MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF0808;
+		SP_REG_AO(3, 12) =0xFFFFC0BE;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+
+    if (pstate == 1) { //PLLD 533MHz
+		prn_string("PLLD: 533MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF200A;
+		SP_REG_AO(3, 12) =0xFFFFC0BD;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+
+	if (pstate == 2) { //PLLD 466MHz
+		prn_string("PLLD: 466MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF180A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+    }
+
+    if (pstate == 3) { //PLLD 400MHz
+		prn_string("PLLD: 400MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF100A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+	#endif
 	SP_REG_AO(0, 2) =0x00200000;
 	#endif
 
@@ -1427,6 +1463,6 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
 	SP_REG(0, 22) = RF_MASK_V_CLR(0 << 4);
 	#endif
 
-#endif
+	#endif
     return (pstate);
 }

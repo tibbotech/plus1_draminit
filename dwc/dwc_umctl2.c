@@ -727,6 +727,7 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 	//$display($time, "[Debug] Step17. change frequency to 1600");
 	//Step17. uMCTL2 frequency change.
 	//Step18. Update any register which may be require to change for the new frequency
+#ifdef DRAM_TYPE_LPDDR4
 	if(ps == 0)
 	{
 		ctl_apb_wr(0x050, 0x00210004);
@@ -776,6 +777,86 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 		ctl_apb_wr(0x190, 0x03938208);
 		ctl_apb_wr(0x1b4, 0x00001308);
 	}
+#endif
+
+#ifdef DRAM_TYPE_DDR4
+	if(ps==0){
+		ctl_apb_wr(0x064 , 0x00a2016f); //2666 data-rate
+	ctl_apb_wr(0x100 , 0x14182d16);
+	ctl_apb_wr(0x104 , 0x00040520);
+	ctl_apb_wr(0x108 , 0x070a060e);
+	ctl_apb_wr(0x10c , 0x0000400d);
+	ctl_apb_wr(0x110 , 0x0a05050b);
+	ctl_apb_wr(0x114 , 0x07070504);
+	ctl_apb_wr(0x118 , 0x01010000);
+	ctl_apb_wr(0x11c , 0x00000707);
+	ctl_apb_wr(0x120 , 0x0c0c160c);
+	ctl_apb_wr(0x124 , 0x0002040b);
+	ctl_apb_wr(0x128 , 0x000e0c0a);
+	ctl_apb_wr(0x12c , 0x0001000e);
+	ctl_apb_wr(0x130 , 0x0d000008);
+	ctl_apb_wr(0x190 , 0x038f8209);
+	ctl_apb_wr(0x1b4 , 0x00000f09);
+	}
+	else if(ps==1){
+	ctl_apb_wr(0x064 , 0x009200d2); //2133 data-rate
+	ctl_apb_wr(0x100 , 0x12152814);
+		ctl_apb_wr(0x104 , 0x0004051d);
+		ctl_apb_wr(0x108 , 0x0609060d);
+		ctl_apb_wr(0x10c , 0x0000400c);
+		ctl_apb_wr(0x110 , 0x0904040a);
+		ctl_apb_wr(0x114 , 0x06060403);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000606);
+		ctl_apb_wr(0x120 , 0x07071407);
+		ctl_apb_wr(0x124 , 0x0002040a);
+		ctl_apb_wr(0x128 , 0x00000005);
+		ctl_apb_wr(0x12c , 0x1a09010e);
+		ctl_apb_wr(0x130 , 0x0c000008);
+		ctl_apb_wr(0x190 , 0x038d8207);
+		ctl_apb_wr(0x194 , 0x00080101);
+		ctl_apb_wr(0x1b4 , 0x00000d07);
+	}
+	else if(ps==2){
+	ctl_apb_wr(0x064 , 0x00710101);  //1866 data-rate
+	ctl_apb_wr(0x100 , 0x0f111f0f);
+		ctl_apb_wr(0x104 , 0x00030416);
+		ctl_apb_wr(0x108 , 0x0507050b);
+		ctl_apb_wr(0x10c , 0x0000400c);
+		ctl_apb_wr(0x110 , 0x07030308);
+		ctl_apb_wr(0x114 , 0x05050403);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000505);
+		ctl_apb_wr(0x120 , 0x09090f09);
+		ctl_apb_wr(0x124 , 0x00020309);
+		ctl_apb_wr(0x128 , 0x00000005);
+		ctl_apb_wr(0x12c , 0x1807010e);
+		ctl_apb_wr(0x130 , 0x0c000008);
+		ctl_apb_wr(0x190 , 0x03898205);
+		ctl_apb_wr(0x194 , 0x00080101);
+		ctl_apb_wr(0x1b4 , 0x00000905);
+	}
+	else if(ps==3){
+	ctl_apb_wr(0x064 , 0x0061008c); //1600 data-rate
+	ctl_apb_wr(0x100 , 0x0e0e1a0d);
+		ctl_apb_wr(0x104 , 0x00030313);
+		ctl_apb_wr(0x108 , 0x0507050a);
+		ctl_apb_wr(0x10c , 0x0000400c);
+		ctl_apb_wr(0x110 , 0x06030307);
+		ctl_apb_wr(0x114 , 0x04040302);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000404);
+		ctl_apb_wr(0x120 , 0x05050d05);
+		ctl_apb_wr(0x124 , 0x00020308);
+		ctl_apb_wr(0x128 , 0x00000005);
+		ctl_apb_wr(0x12c , 0x1206010e);
+		ctl_apb_wr(0x130 , 0x0c000008);
+		ctl_apb_wr(0x190 , 0x03898205);
+		ctl_apb_wr(0x194 , 0x00080101);
+		ctl_apb_wr(0x1b4 , 0x00000905);
+	}
+#endif
+
 
 	rd_data = ctl_apb_rd(0x1b0);
 	ctl_apb_wr(0x1b0, rd_data&0xffffffdf);  //Step19. Set  DFIMISC.dfi_init_start to 0. The PHY performs internal sequences to relock PLLs and calibrate ZQ/Delay-Line
@@ -796,6 +877,46 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 
 	rd_data = ctl_apb_rd(0x198);
 	ctl_apb_wr(0x198, rd_data | (1<<8));  //Step22. Self-refresh entry.
+
+	#ifdef DRAM_TYPE_DDR4
+        while(1) {
+	    rd_data = ctl_apb_rd(0x018);
+	    if((rd_data & 1) == 0) break;
+	}
+	if(ps==0) ctl_apb_wr(0x014,0x0b44);
+	else if(ps == 1) ctl_apb_wr(0x014,0x0940);
+	else if(ps == 2) ctl_apb_wr(0x014,0x0524);
+	else if(ps == 3) ctl_apb_wr(0x014,0x0324);
+	ctl_apb_wr(0x010,0x800000f8);  //mode register 0
+
+        while(1) {
+	    rd_data = ctl_apb_rd(0x018);
+	    if((rd_data & 1) == 0) break;
+	}
+	if(ps==0) ctl_apb_wr(0x014,0x0020);
+	else if(ps == 1) ctl_apb_wr(0x014,0x0018);
+	else if(ps == 2) ctl_apb_wr(0x014,0x0008);
+	else if(ps == 3) ctl_apb_wr(0x014,0x0008);
+	ctl_apb_wr(0x010,0x800020f8);  //mode register 2
+
+        while(1) {
+	    rd_data = ctl_apb_rd(0x018);
+	    if((rd_data & 1) == 0) break;
+	}
+	if(ps==3) ctl_apb_wr(0x014,0x0000);
+	else          ctl_apb_wr(0x014,0x0200);
+	ctl_apb_wr(0x010,0x800030f8);  //mode register 3
+
+        while(1) {
+	    rd_data = ctl_apb_rd(0x018);
+	    if((rd_data & 1) == 0) break;
+	}
+	if(ps==0) ctl_apb_wr(0x014,0x1017);
+	else if(ps == 1) ctl_apb_wr(0x014,0x0817);
+	else                 ctl_apb_wr(0x014,0x0417);
+	ctl_apb_wr(0x010,0x800060f8);  //mode register 6
+
+	#endif
 
 	//Step23. If necessary due to frequency change, Update MR register setting of the DRAM
 	// Update MR register in Step 9
