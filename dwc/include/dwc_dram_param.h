@@ -3,14 +3,17 @@
 #ifdef PLATFORM_SP7350
 #if defined(CONFIG_LPDDR4)
 #define DRAM_TYPE_LPDDR4
+#define SDRAM_SPEED_1600	//PLL 800MHz
 #elif defined(CONFIG_DDR4)
 #define DRAM_TYPE_DDR4
+#define SDRAM_SPEED_1333	//PLL 666MHz
 #elif defined(CONFIG_LPDDR3)
 #define DRAM_TYPE_LPDDR3
 #elif defined(CONFIG_DDR3)
 #define DRAM_TYPE_DDR3
+#define SDRAM_SPEED_933		//PLL 466.6MHz
 #endif
-#define SDRAM_SPEED_1600	//PLL 800MHz
+//#define SDRAM_SPEED_1600	//PLL 800MHz
 //#define SDRAM_SPEED_1333	//PLL 666MHz
 //#define SDRAM_SPEED_1200	//PLL 600MHz
 //#define SDRAM_SPEED_1066	//PLL 533.3MHz
@@ -21,6 +24,7 @@
 //#define SDRAM_SPEED_600		//PLL 300MHz
 //#define SDRAM_SPEED_533		//PLL 266.6MHz
 //#define SDRAM_SPEED_400		//PLL 200MHz
+
 #elif defined(PLATFORM_Q645)
 #define DRAM_TYPE_LPDDR4
 #define SDRAM_SPEED_1600	//PLL 800MHz
