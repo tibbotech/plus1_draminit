@@ -129,6 +129,11 @@ int dwc_umctl2_init_before_ctl_rst(void)
 	#include <SP7350/DDR4/Q654_DDR4_ASIC_SDRAM_DATARATE_2666.txt>
 #endif
 
+#ifdef SDRAM_SPEED_1066
+	prn_string("Q654_DDR4_ASIC_SDRAM_DATARATE_2400\n");
+	#include <SP7350/DDR4/Q654_DDR4_ASIC_SDRAM_DATARATE_2400.txt>
+#endif
+
 #ifdef SDRAM_SPEED_933
 	prn_string("Q654_DDR4_ASIC_SDRAM_DATARATE_1866\n");
 	#include <SP7350/DDR4/Q654_DDR4_ASIC_SDRAM_DATARATE_1866.txt>

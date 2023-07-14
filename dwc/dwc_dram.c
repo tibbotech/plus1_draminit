@@ -1093,7 +1093,7 @@ void dwc_ddrphy_phyinit_restoreRetention(void)
 
 void dwc_ddrphy_phyinit_main(void)
 {
-	prn_string("dwc_ddrphy_phyinit_main 20230709\n");
+	prn_string("dwc_ddrphy_phyinit_main 20230714\n");
 	mp = 1;
 	#ifdef PLATFORM_SP7350
 	//runtimeConfig.RetEn = 1;
@@ -1164,6 +1164,11 @@ void dwc_ddrphy_phyinit_main(void)
 	#ifdef SDRAM_SPEED_1333
 	prn_string("dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d_rank1\n");
 	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_2666_train1d2d_rank1.txt>
+	#endif
+
+	#ifdef SDRAM_SPEED_1066
+	prn_string("dwc_ddrphy_phyinit_out_ddr4_2133_train1d2d_rank1_CL18_WL12\n");
+	#include <SP7350/DDR4/dwc_ddrphy_phyinit_out_ddr4_2133_train1d2d_rank1_CL18_WL12.txt>
 	#endif
 
 	#ifdef SDRAM_SPEED_933
