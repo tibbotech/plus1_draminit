@@ -664,6 +664,28 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 	}
 
 
+	#ifdef DRAM_TYPE_DDR3
+	while(1) {
+		rd_data = ctl_apb_rd(0x018);
+		if((rd_data & 1) == 0) break;
+	}
+	if(ps==0)		ctl_apb_wr(0x014,0x0f14);		// 1866 datarate
+	else if(ps == 1) ctl_apb_wr(0x014,0x0d70);		// 1600 datarate
+	else if(ps == 2) ctl_apb_wr(0x014,0x0b50);		// 1333 datarate
+	else if(ps == 3) ctl_apb_wr(0x014,0x0930);		// 1066 datarate
+	ctl_apb_wr(0x010,0x800000f8);
+
+	while(1) {
+		rd_data = ctl_apb_rd(0x018);
+		if((rd_data & 1) == 0) break;
+	}
+	if(ps==0)		ctl_apb_wr(0x014,0x0420);		// 1866 datarate
+	else if(ps == 1) ctl_apb_wr(0x014,0x0418);		// 1600 datarate
+	else if(ps == 2) ctl_apb_wr(0x014,0x0410);		// 1333 datarate
+	else if(ps == 3) ctl_apb_wr(0x014,0x0408);		// 1066 datarate
+	ctl_apb_wr(0x010,0x800020f8);
+	#endif
+
 	//prn_string("0007\n");
 	///////////////////////////////////////////////////////////////
 	rd_data = ctl_apb_rd(0x198);

@@ -1162,8 +1162,13 @@ void dwc_ddrphy_phyinit_main(void)
 
 	#ifdef DRAM_TYPE_DDR3
 	#ifdef SDRAM_SPEED_933
+	#ifdef CHANGE_CLOCK
+	prn_string("dwc_ddrphy_phyinit_out_ddr3_1866_1600_1333_1066_train1d_rank1\n");
+	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1866_1600_1333_1066_train1d_rank1.txt>
+	#else
 	prn_string("dwc_ddrphy_phyinit_out_ddr3_1866_train1d\n");
 	#include <SP7350/DDR3/dwc_ddrphy_phyinit_out_ddr3_1866_train1d.txt>
+	#endif
 	#endif
 
 	#ifdef SDRAM_SPEED_800
@@ -1429,6 +1434,37 @@ int dwc_ddrphy_phyinit_userCustom_E_setDfiClk (int pstate /*!< Input Pstate indi
 		prn_string("PLLD: 400MHz\n");
 		SP_REG_AO(3, 11) =0xFFFF100A;
 		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+	#endif
+
+
+	#ifdef DRAM_TYPE_DDR3
+	if (pstate == 0) { //PLLD 466MHz
+		prn_string("PLLD: 466MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF9812;
+		SP_REG_AO(3, 12) =0xFFFFC0BF;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+
+    if (pstate == 1) { //PLLD 400MHz
+		prn_string("PLLD: 400MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF100A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+	}
+
+	if (pstate == 2) { //PLLD 333MHz
+		prn_string("PLLD: 333MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF080A;
+		SP_REG_AO(3, 12) =0xFFFFC0BC;
+		SP_REG_AO(3, 13) =0xFFFF0107;
+    }
+
+    if (pstate == 3) { //PLLD 266MHz
+		prn_string("PLLD: 266MHz\n");
+		SP_REG_AO(3, 11) =0xFFFF2012;
+		SP_REG_AO(3, 12) =0xFFFFC0BD;
 		SP_REG_AO(3, 13) =0xFFFF0107;
 	}
 	#endif
