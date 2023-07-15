@@ -620,6 +620,7 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 	// Skip Step9. for DDR4
 	////////////////////////////////////////////////
 	//LPDDR4 MR UPDATE
+	#ifdef DRAM_TYPE_LPDDR4
 	if(ps == 0) {
 		while(1) {
 			rd_data = ctl_apb_rd(0x018);
@@ -662,7 +663,7 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 				}
 			}
 	}
-
+	#endif
 
 	#ifdef DRAM_TYPE_DDR3
 	while(1) {
@@ -878,6 +879,70 @@ void apb_ctl_before_change_clock(unsigned int ps) //Ch6.3.3.6
 		ctl_apb_wr(0x1b4 , 0x00000905);
 	}
 #endif
+
+#ifdef DRAM_TYPE_DDR3
+	if(ps==0){
+	ctl_apb_wr(0x064 , 0x007100a4);  //1866 data-rate
+	ctl_apb_wr(0x100 , 0x0e111f10);
+		ctl_apb_wr(0x104 , 0x00030416);
+		ctl_apb_wr(0x108 , 0x0507050a);
+		ctl_apb_wr(0x10c , 0x00002007);
+		ctl_apb_wr(0x110 , 0x07020308);
+		ctl_apb_wr(0x114 , 0x05050403);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000505);
+		ctl_apb_wr(0x120 , 0x00000801);
+		ctl_apb_wr(0x180 , 0x10960026);
+		ctl_apb_wr(0x190 , 0x03888204);
+		ctl_apb_wr(0x1b4 , 0x00000804);
+	}
+	else if(ps==1){
+	ctl_apb_wr(0x064 , 0x0061008c);  //1600 data-rate
+	ctl_apb_wr(0x100 , 0x0d101a0e);
+		ctl_apb_wr(0x104 , 0x00030313);
+		ctl_apb_wr(0x108 , 0x04060509);
+		ctl_apb_wr(0x10c , 0x00002006);
+		ctl_apb_wr(0x110 , 0x06020307);
+		ctl_apb_wr(0x114 , 0x04040302);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000404);
+		ctl_apb_wr(0x120 , 0x00000701);
+		ctl_apb_wr(0x180 , 0x10800020);
+		ctl_apb_wr(0x190 , 0x03868203);
+		ctl_apb_wr(0x1b4 , 0x00000603);
+	}
+	else if(ps==2){
+	ctl_apb_wr(0x064 , 0x00510075);  //1333 data-rate
+	ctl_apb_wr(0x100 , 0x0b0f160b);
+		ctl_apb_wr(0x104 , 0x00020310);
+		ctl_apb_wr(0x108 , 0x04050408);
+		ctl_apb_wr(0x10c , 0x00002007);
+		ctl_apb_wr(0x110 , 0x05020206);
+		ctl_apb_wr(0x114 , 0x04040302);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000404);
+		ctl_apb_wr(0x120 , 0x00000601);
+		ctl_apb_wr(0x180 , 0x10800020);
+		ctl_apb_wr(0x190 , 0x03848202);
+		ctl_apb_wr(0x1b4 , 0x00000402);
+	}
+	else if(ps==3){
+	ctl_apb_wr(0x064 , 0x0040005e);  //1066 data-rate
+	ctl_apb_wr(0x100 , 0x0a0e1109);
+		ctl_apb_wr(0x104 , 0x0002020d);
+		ctl_apb_wr(0x108 , 0x03040407);
+		ctl_apb_wr(0x10c , 0x00002006);
+		ctl_apb_wr(0x110 , 0x04020205);
+		ctl_apb_wr(0x114 , 0x03030302);
+		ctl_apb_wr(0x118 , 0x01010000);
+		ctl_apb_wr(0x11c , 0x00000303);
+		ctl_apb_wr(0x120 , 0x00000501);
+		ctl_apb_wr(0x180 , 0x10800020);
+		ctl_apb_wr(0x190 , 0x03828201);
+		ctl_apb_wr(0x1b4 , 0x00000201);
+	}
+#endif
+
 
 
 	rd_data = ctl_apb_rd(0x1b0);
