@@ -1073,8 +1073,13 @@ void dwc_ddrphy_phyinit_main(void)
 
 	#ifdef DRAM_TYPE_LPDDR4
 	#ifdef SDRAM_SPEED_1600
-	prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350\n");
-	#include <SP7350/LPDDR4/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350.txt>
+	#ifdef NT6AN1024F32AV
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350_nayna\n");
+		#include <SP7350/LPDDR4/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350_nayna.txt>
+	#else
+		prn_string("dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350\n");
+		#include <SP7350/LPDDR4/dwc_ddrphy_phyinit_out_lpddr4_train1d2d_3200_SP7350.txt>
+	#endif
 	#endif
 
 	#ifdef SDRAM_SPEED_1333
