@@ -1,6 +1,9 @@
 include Makefile.in
 
 PROJECT_ROOT = $(shell cd ../xboot/ && pwd)
+ifneq ($(O),)
+PROJECT_ROOT = $(O)../
+endif
 COMMON_DIR = common
 LIB = lib
 BIN = bin
@@ -30,7 +33,7 @@ else ifeq ($(MK_SCAN),1)
 	DRAMSCAN = 1
 endif
 
-LDFLAGS = -T autogen.ld
+LDFLAGS = -T $(O)autogen.ld
 LDFLAGS += -L $(shell dirname `$(CC) -print-libgcc-file-name`) -lgcc
 LDFLAGS += -Wl,--build-id=none
 CFLAGS = -Os -Wall -g  -nostdlib -fno-builtin -Iinclude
@@ -55,15 +58,15 @@ CFLAGS += -fdata-sections -ffunction-sections
 LDFLAGS += -Wl,--gc-sections
 
 # Get Platform configuration from xboot/.config
-PLATFROM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_PLATFORM_I143")
+PLATFROM_CFG := $$(cat $(PROJECT_ROOT).config | grep "CONFIG_PLATFORM_I143")
 ifeq (${PLATFROM_CFG},CONFIG_PLATFORM_I143=y)
 CC = $(CROSS)gcc
 CFLAGS += -DCONFIG_PLATFORM_I143
 endif
 
 # Get DRAM configuration from ../../.config or Makefile.in
-USE_DRAM_CFG := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_USE_DRAM_CFG")
-DRAM0_SIZE := $(shell cat $(PROJECT_ROOT)/.config | grep "CONFIG_DRAM0_SIZE_CFG")
+USE_DRAM_CFG := $$(cat $(PROJECT_ROOT).config | grep "CONFIG_USE_DRAM_CFG")
+DRAM0_SIZE := $$(cat $(PROJECT_ROOT).config | grep "CONFIG_DRAM0_SIZE_CFG")
 
 CFLAGS += -D$(SIM_TYPE)\
 	  -D$(QUICK_SIM)_QUICK_SIM
@@ -120,7 +123,9 @@ CSOURCES += $(COMMON_DIR)/diag.c $(COMMON_DIR)/common.c
 #CSOURCES += $(LIB)/div0.c
 CSOURCES += $(LIB)/eabi_compat.c
 
-OBJS = $(ASOURCES:.S=.o) $(CSOURCES:.c=.o)
+#OBJS = $(addprefix $(O),$(ASOURCES:.S=.o) $(CSOURCES:.c=.o))
+OBJS = $(addprefix $(O),$(CSOURCES:.c=.o))
+OBJS += $(ASOURCES:.S=.o)
 
 
 all: $(TARGET)
@@ -128,22 +133,22 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 ifeq ($(MK_DRAM_INIT),1)
-	$(CC) -E -x c -DDRAM_INIT $(SRC_LD) | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAM_INIT $(SRC_LD) | grep -v '^#' > $(O)autogen.ld
 else ifeq ($(MK_DEBUG),1)
-	$(CC) -E -x c -DDRAM_INIT_DEBUG $(SRC_LD) | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAM_INIT_DEBUG $(SRC_LD) | grep -v '^#' > $(O)autogen.ld
 else ifeq ($(MK_SISCOPE),1)
-	$(CC) -E -x c -DSISCOPE   $(SRC_LD) | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DSISCOPE   $(SRC_LD) | grep -v '^#' > $(O)autogen.ld
 else ifeq ($(MK_SCAN),1)
-	$(CC) -E -x c -DDRAMSCAN  $(SRC_LD) | grep -v '^#' > autogen.ld
+	$(CC) -E -x c -DDRAMSCAN  $(SRC_LD) | grep -v '^#' > $(O)autogen.ld
 endif
-	@mkdir -p $(BIN)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(BIN)/$(TARGET) -Wl,-Map,$(BIN)/$(TARGET).map
-	$(OBJCOPY) -O binary -S $(BIN)/$(TARGET) $(BIN)/$(TARGET).bin
-	$(OBJDUMP) -d -S $(BIN)/$(TARGET) > $(BIN)/$(TARGET).dis
+	@mkdir -p $(O)$(BIN)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(O)$(BIN)/$(TARGET) -Wl,-Map,$(O)$(BIN)/$(TARGET).map
+	$(OBJCOPY) -O binary -S $(O)$(BIN)/$(TARGET) $(O)$(BIN)/$(TARGET).bin
+	$(OBJDUMP) -d -S $(O)$(BIN)/$(TARGET) > $(O)$(BIN)/$(TARGET).dis
 ifeq ($(DRAM_INIT),1)
 	@# Add image header
-	@bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(BIN)/$(TARGET).bin $(BIN)/$(TARGET).img $(ARCH)
-	@sz=`du -sb bin/$(TARGET).img|cut -f1` ; \
+	bash ./add_uhdr.sh draminit-`date +%Y%m%d-%H%M%S` $(O)$(BIN)/$(TARGET).bin $(O)$(BIN)/$(TARGET).img $(ARCH)
+	@sz=`du -sb $(O)bin/$(TARGET).img|cut -f1` ; \
 	printf "draminit size = %d (hex %x)\n" $$sz $$sz
 	@if echo $(CFLAGS) | grep -q "DRAM_INIT_DEBUG=1" ;then \
 		echo ">> Debug version is built" ; \
@@ -153,19 +158,21 @@ ifeq ($(DRAM_INIT),1)
 endif
 
 %.o: %.S
+	install -d $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-%.o: %.c
+$(O)%.o: %.c
+	install -d $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 # Dependency
-.depend: $(ASOURCES) $(CSOURCES)
-	@rm -f .depend >/dev/null
-	@$(CC) $(CFLAGS) -MM $^ >> ./.depend
-sinclude .depend
+$(O)draminit.depend: $(ASOURCES) $(CSOURCES)
+	@rm -f $(O)draminit.depend >/dev/null
+	@$(CC) $(CFLAGS) -MM $^ >> $(O)draminit.depend 2>/dev/null
+sinclude $(O)draminit.depend
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) autogen.ld
-	rm -rf $(BIN)
-	rm -f .depend
+	rm -f $(OBJS) $(O)autogen.ld
+	rm -rf $(O)$(BIN)
+	rm -f $(O)draminit.depend
